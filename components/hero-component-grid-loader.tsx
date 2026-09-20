@@ -10,6 +10,7 @@ const SLUGS = [
   "grid-reveal",
   "cycle-list",
   "drop-text",
+  "pulse-loader",
   "soft-button",
   "status-tag",
 ] as const;

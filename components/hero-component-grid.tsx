@@ -29,16 +29,16 @@ const componentTiles: ComponentTile[] = [
     className: "lg:col-span-3 lg:row-span-1",
   },
   {
-  name: "Cycle List",
-  slug: "cycle-list",
-  className: "lg:col-span-3 lg:row-span-1",
-},
+    name: "Cycle List",
+    slug: "cycle-list",
+    className: "lg:col-span-3 lg:row-span-1",
+  },
   {
     name: "Soft Button",
     slug: "soft-button",
     className: "lg:col-span-3 lg:row-span-1",
   },
-   {
+  {
     name: "Drop Text",
     slug: "drop-text",
     className: "lg:col-span-3 lg:row-span-1",
@@ -46,6 +46,11 @@ const componentTiles: ComponentTile[] = [
   {
     name: "Status Tag",
     slug: "status-tag",
+    className: "lg:col-span-3 lg:row-span-1",
+  },
+  {
+    name: "Pulse Loader",
+    slug: "pulse-loader",
     className: "lg:col-span-3 lg:row-span-1",
   },
 ];

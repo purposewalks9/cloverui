@@ -37,6 +37,23 @@
       "category": "display"
     },
     {
+      "name": "pulse-loader",
+      "type": "registry:component",
+      "title": "Pulse Loader",
+      "description": "A breathing concentric-ring loader that pulses in and out on a loop, with a customizable base color, ring count, size, and speed.",
+      "files": [
+        {
+          "path": "registry/clover-ui/pulse-loader.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [],
+      "category": "feedback"
+    },
+    {
       "name": "slide-text",
       "type": "registry:component",
       "title": "Slide Text",

@@ -1,0 +1,79 @@
+import { Demo, AccentDemo, FastDemo, ThreeRingDemo } from './demo'
+
+## Preview
+
+<DemoCanvas>
+  <DemoPreview><Demo /></DemoPreview>
+  <DemoCode>
+```tsx file=./demo.tsx
+```
+  </DemoCode>
+</DemoCanvas>
+
+## Examples
+
+### Custom color
+
+Each ring is derived from `color`, mixed toward white the further out it sits — pass any color and the whole loader recolors itself.
+
+<DemoCanvas>
+  <DemoPreview><AccentDemo /></DemoPreview>
+  <DemoCode>
+```tsx
+    <PulseLoader color="#E1E900" size={160} />
+```
+  </DemoCode>
+</DemoCanvas>
+
+### Faster pulse
+
+<DemoCanvas>
+  <DemoPreview><FastDemo /></DemoPreview>
+  <DemoCode>
+```tsx
+    <PulseLoader color="#8B5CF6" duration={0.9} stagger={0.08} size={140} />
+```
+  </DemoCode>
+</DemoCanvas>
+
+### Fewer rings
+
+<DemoCanvas>
+  <DemoPreview><ThreeRingDemo /></DemoPreview>
+  <DemoCode>
+```tsx
+    <PulseLoader color="#F43F5E" rings={3} size={140} />
+```
+  </DemoCode>
+</DemoCanvas>
+
+## Installation
+
+<InstallationTabs item="pulse-loader">
+```tsx file=../../registry/clover-ui/pulse-loader.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { PulseLoader } from "@/components/pulse-loader";
+
+<PulseLoader />
+```
+
+## Props
+
+<PropsTable data={[
+  { name: "color", type: "string", default: '"#0B87DA"' },
+  { name: "rings", type: "number", default: "4" },
+  { name: "minOpacity", type: "number", default: "0.2" },
+  { name: "maxOpacity", type: "number", default: "1" },
+  { name: "size", type: "number", default: "60" },
+  { name: "duration", type: "number", default: "1.8" },
+  { name: "contraction", type: "number", default: "0.55" },
+  { name: "stagger", type: "number", default: "0.15" },
+  { name: "className", type: "string" },
+  { name: "ringClassName", type: "string" },
+  { name: "autoStart", type: "boolean", default: "true" },
+]} />
