@@ -29,6 +29,11 @@ const componentTiles: ComponentTile[] = [
     className: "lg:col-span-3 lg:row-span-1",
   },
   {
+  name: "Cycle List",
+  slug: "cycle-list",
+  className: "lg:col-span-3 lg:row-span-1",
+},
+  {
     name: "Soft Button",
     slug: "soft-button",
     className: "lg:col-span-3 lg:row-span-1",

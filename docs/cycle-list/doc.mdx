@@ -1,0 +1,85 @@
+import { Demo, BlueDemo, FastDemo } from './demo'
+
+## Preview
+
+<DemoCanvas>
+  <DemoPreview><Demo /></DemoPreview>
+  <DemoCode>
+```tsx file=./demo.tsx
+```
+  </DemoCode>
+</DemoCanvas>
+
+## Examples
+
+### Custom active color
+
+`activeColor` defaults to green, but takes any color — whichever item is currently active, plus the tracking dot, switch to it as the list cycles.
+
+<DemoCanvas>
+  <DemoPreview><BlueDemo /></DemoPreview>
+  <DemoCode>
+```tsx
+    <CycleList
+      items={["Slower reviews", "Scope creep", "Missed deadlines"]}
+      activeColor="#60A5FA"
+    />
+```
+  </DemoCode>
+</DemoCanvas>
+
+### Faster interval
+
+<DemoCanvas>
+  <DemoPreview><FastDemo /></DemoPreview>
+  <DemoCode>
+```tsx
+    <CycleList
+      items={["Distractions", "Context switching", "Multitasking"]}
+      activeColor="#8B5CF6"
+      interval={900}
+    />
+```
+  </DemoCode>
+</DemoCanvas>
+
+## Installation
+
+<InstallationTabs item="cycle-list">
+```tsx file=../../registry/clover-ui/cycle-list.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { CycleList } from "@/components/cycle-list";
+
+<CycleList
+  items={["Overconfidence", "Lack of reliability", "Missed deadlines"]}
+/>
+```
+
+## Props
+
+<PropsTable data={[
+  { name: "items", type: "string[]" },
+  { name: "color", type: "string", default: '"#ffffff"' },
+  { name: "activeColor", type: "string", default: '"#22C55E"' },
+  { name: "mutedColor", type: "string", default: '"#71717a"' },
+  { name: "itemRotation", type: "number", default: "4" },
+  { name: "curvature", type: "number", default: "26" },
+  { name: "interval", type: "number", default: "1800" },
+  { name: "className", type: "string" },
+  { name: "listClassName", type: "string" },
+  { name: "itemClassName", type: "string" },
+  { name: "autoStart", type: "boolean", default: "true" },
+  { name: "inView", type: "boolean", default: "false" },
+  { name: "once", type: "boolean", default: "true" },
+  { name: "onStart", type: "() => void" },
+  { name: "onChange", type: "(index: number) => void" },
+]} />
+
+## Ref API
+
+`CycleList` exposes `play()`, `pause()`, and `reset()` through a ref.
