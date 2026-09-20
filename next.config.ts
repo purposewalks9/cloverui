@@ -1,5 +1,4 @@
 import createMDX from "@next/mdx";
-import { withContentCollections } from "@content-collections/next";
 import codeImport from "remark-code-import";
 import rehypeShiki from "@shikijs/rehype";
 import remarkGfm from "remark-gfm";
@@ -50,4 +49,4 @@ const withMDX = createMDX({
   },
 });
 
-export default withContentCollections(withMDX(nextConfig));
+export default withMDX(nextConfig);
