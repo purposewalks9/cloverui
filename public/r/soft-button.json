@@ -1,0 +1,19 @@
+{
+  "name": "soft-button",
+  "type": "registry:component",
+  "title": "Soft Button",
+  "description": "A locked glossy pill button with a small set of hand-tuned color styles and sizes.",
+  "dependencies": [
+    "@radix-ui/react-slot"
+  ],
+  "registryDependencies": [],
+  "category": "button",
+  "files": [
+    {
+      "path": "registry/clover-ui/soft-button.tsx",
+      "content": "import * as React from \"react\";\nimport { Slot, Slottable } from \"@radix-ui/react-slot\";\n\ntype Color =\n  | \"red\"\n  | \"green\"\n  | \"darkRed\"\n  | \"lime\";\n\ntype SizeVariant = \"sm\" | \"default\" | \"lg\";\n\ninterface SoftButtonProps\n  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, \"className\"> {\n  children: React.ReactNode;\n  color?: Color;\n  size?: SizeVariant;\n  asChild?: boolean;\n}\n\nconst colorMap: Record<Color, string> = {\n  red: [\n    \"bg-[radial-gradient(ellipse_at_center,#ff1515_0%,#ff1b1b_35%,#ff4b4b_68%,#ff7777_100%)]\",\n    \"text-black\",\n  ].join(\" \"),\n\n  green: [\n    \"bg-[radial-gradient(ellipse_at_center,#4a9500_0%,#579f0b_35%,#86b744_68%,#a9c978_100%)]\",\n    \"text-white\",\n  ].join(\" \"),\n\n  darkRed: [\n    \"bg-[radial-gradient(ellipse_at_center,#ff1717_0%,#f00000_38%,#b90000_72%,#9f0000_100%)]\",\n    \"text-black\",\n  ].join(\" \"),\n\n  lime: [\n    \"bg-[radial-gradient(ellipse_at_center,#7dff00_0%,#73ed00_38%,#58b900_70%,#4b9700_100%)]\",\n    \"text-black\",\n  ].join(\" \"),\n};\n\nconst sizeMap: Record<SizeVariant, string> = {\n  sm: \"h-9 px-5 text-sm\",\n  default: \"h-12 px-8 text-base\",\n  lg: \"h-16 px-12 text-xl\",\n};\n\nconst SoftButton = React.forwardRef<HTMLButtonElement, SoftButtonProps>(\n  (\n    {\n      children,\n      color = \"red\",\n      size = \"default\",\n      asChild = false,\n      ...props\n    },\n    ref,\n  ) => {\n    const Comp = asChild ? Slot : \"button\";\n\n    return (\n      <Comp\n        ref={ref}\n        className={[\n          \"group relative inline-flex cursor-pointer items-center justify-center\",\n          \"gap-2 overflow-hidden whitespace-nowrap rounded-full\",\n          \"font-semibold\",\n          \"transition-[filter,transform,box-shadow] duration-200\",\n          \"active:translate-y-0 active:scale-[0.98] active:brightness-95\",\n          \"disabled:pointer-events-none disabled:opacity-50\",\n          \"[&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0\",\n          colorMap[color],\n          sizeMap[size],\n        ].join(\" \")}\n        {...props}\n      >\n        \n\n        <span\n          aria-hidden\n          className=\"pointer-events-none absolute inset-[1px] rounded-[inherit] shadow-[inset_0_1px_2px_rgba(255,255,255,0.35),inset_0_-2px_3px_rgba(0,0,0,0.12)]\"\n        />\n\n        {asChild ? (\n          <Slottable>{children}</Slottable>\n        ) : (\n          <span className=\"relative flex items-center gap-2\">\n            {children}\n          </span>\n        )}\n      </Comp>\n    );\n  },\n);\n\nSoftButton.displayName = \"SoftButton\";\n\nexport { SoftButton };",
+      "type": "registry:component",
+      "target": "components/soft-button.tsx"
+    }
+  ]
+}

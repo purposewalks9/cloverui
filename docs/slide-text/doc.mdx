@@ -1,0 +1,91 @@
+import { CharacterDemo, CenterDemo, Demo, OutDemo } from './demo'
+
+## Preview
+
+<DemoCanvas>
+  <DemoPreview><Demo /></DemoPreview>
+  <DemoCode>
+    ```tsx file=./demo.tsx
+    ```
+  </DemoCode>
+</DemoCanvas>
+
+## Examples
+
+### Characters
+
+<DemoCanvas>
+  <DemoPreview><CharacterDemo /></DemoPreview>
+  <DemoCode>
+    ```tsx
+    <SlideText splitBy="characters" color="#8B5CF6">
+      Every letter moves.
+    </SlideText>
+    ```
+  </DemoCode>
+</DemoCanvas>
+
+### Start from the center
+
+<DemoCanvas>
+  <DemoPreview><CenterDemo /></DemoPreview>
+  <DemoCode>
+    ```tsx
+    <SlideText from="center" direction="left" color="#60A5FA">
+      Start from the center.
+    </SlideText>
+    ```
+  </DemoCode>
+</DemoCanvas>
+
+### Slide out
+
+<DemoCanvas>
+  <DemoPreview><OutDemo /></DemoPreview>
+  <DemoCode>
+    ```tsx
+    <SlideText mode="out" direction="right" color="#F43F5E">
+      Slide text out.
+    </SlideText>
+    ```
+  </DemoCode>
+</DemoCanvas>
+
+## Installation
+
+<InstallationTabs item="slide-text">
+```tsx file=../../registry/clover-ui/slide-text.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { SlideText } from "@/components/slide-text";
+
+<SlideText>Your text here</SlideText>
+```
+
+## Props
+
+<PropsTable data={[
+  { name: "children", type: "string" },
+  { name: "splitBy", type: '"words" | "characters"', default: '"words"' },
+  { name: "direction", type: '"left" | "right"', default: '"right"' },
+  { name: "mode", type: '"in" | "out"', default: '"in"' },
+  { name: "distance", type: "number", default: "48" },
+  { name: "color", type: "string", default: '"hsl(var(--primary))"' },
+  { name: "landedClassName", type: "string", default: '"text-foreground"' },
+  { name: "delay", type: "number", default: "0" },
+  { name: "stagger", type: "number", default: "0.045" },
+  { name: "from", type: '"first" | "last" | "center"', default: '"first"' },
+  { name: "transition", type: "AnimationOptions" },
+  { name: "className", type: "string" },
+  { name: "wordClassName", type: "string" },
+  { name: "charClassName", type: "string" },
+  { name: "autoStart", type: "boolean", default: "true" },
+  { name: "inView", type: "boolean", default: "false" },
+  { name: "once", type: "boolean", default: "true" },
+  { name: "onStart", type: "() => void" },
+  { name: "onComplete", type: "() => void" },
+]} />

@@ -1,0 +1,91 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "clover-ui",
+  "homepage": "https://cloverui.dev",
+  "author": "purposewalks9 (https://github.com/purposewalks9)",
+  "items": [
+    {
+      "name": "grid-reveal",
+      "type": "registry:component",
+      "title": "Grid Reveal",
+      "description": "A configurable grid of blocks that dissolves away to reveal content underneath, with random, wave, diagonal, and center patterns.",
+      "files": [
+        {
+          "path": "registry/clover-ui/grid-reveal.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [],
+      "category": "animation"
+    },
+    {
+      "name": "gauge-text",
+      "type": "registry:component",
+      "title": "Gauge Text",
+      "description": "An animated stat that counts up to a number next to a fixed gauge icon, e.g. \"89x faster\".",
+      "files": [
+        {
+          "path": "registry/clover-ui/gauge-text.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "category": "display"
+    },
+    {
+      "name": "slide-text",
+      "type": "registry:component",
+      "title": "Slide Text",
+      "description": "Text that slides into or out of place, word by word or character by character.",
+      "files": [
+        {
+          "path": "registry/clover-ui/slide-text.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [],
+      "category": "animation"
+    },
+    {
+      "name": "soft-button",
+      "type": "registry:component",
+      "title": "Soft Button",
+      "description": "A locked glossy pill button with a small set of hand-tuned color styles and sizes.",
+      "files": [
+        {
+          "path": "registry/clover-ui/soft-button.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "@radix-ui/react-slot"
+      ],
+      "registryDependencies": [],
+      "category": "button"
+    },
+    {
+      "name": "status-tag",
+      "type": "registry:component",
+      "title": "Status Tag",
+      "description": "A compact status pill that expands on hover to reveal the status label.",
+      "files": [
+        {
+          "path": "registry/clover-ui/status-tag.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "category": "feedback"
+    }
+  ]
+}

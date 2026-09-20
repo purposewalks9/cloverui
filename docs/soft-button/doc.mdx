@@ -1,0 +1,68 @@
+import { ColorsDemo, Demo, SizesDemo } from './demo'
+
+## Preview
+
+<DemoCanvas>
+  <DemoPreview><Demo /></DemoPreview>
+  <DemoCode>
+    ```tsx file=./demo.tsx
+    ```
+  </DemoCode>
+</DemoCanvas>
+
+## Examples
+
+### Colors
+
+The visual treatment is intentionally locked. Choose one of the built-in colors rather than overriding the component with a custom class.
+
+<DemoCanvas>
+  <DemoPreview><ColorsDemo /></DemoPreview>
+  <DemoCode>
+    ```tsx
+    <SoftButton color="red">Red</SoftButton>
+    <SoftButton color="green">Green</SoftButton>
+    <SoftButton color="darkRed">Dark red</SoftButton>
+    <SoftButton color="lime">Lime</SoftButton>
+    ```
+  </DemoCode>
+</DemoCanvas>
+
+### Sizes
+
+<DemoCanvas>
+  <DemoPreview><SizesDemo /></DemoPreview>
+  <DemoCode>
+    ```tsx
+    <SoftButton size="sm">Small</SoftButton>
+    <SoftButton size="default">Default</SoftButton>
+    <SoftButton size="lg">Large</SoftButton>
+    ```
+  </DemoCode>
+</DemoCanvas>
+
+## Installation
+
+<InstallationTabs item="soft-button">
+```tsx file=../../registry/clover-ui/soft-button.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { SoftButton } from "@/components/soft-button";
+
+<SoftButton color="green">Get started</SoftButton>
+```
+
+The component deliberately does not expose `className`. Its gradients, text treatment, radius, glow, and interaction states remain part of the Clover UI design system.
+
+## Props
+
+<PropsTable data={[
+  { name: "children", type: "React.ReactNode" },
+  { name: "color", type: '"red" | "green" | "darkRed" | "lime"', default: '"red"' },
+  { name: "size", type: '"sm" | "default" | "lg"', default: '"default"' },
+  { name: "asChild", type: "boolean", default: "false" },
+]} />

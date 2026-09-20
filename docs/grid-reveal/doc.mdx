@@ -1,0 +1,101 @@
+import { Demo, SequentialDemo, DenseDemo, SlowDemo } from './demo'
+
+## Preview
+
+<DemoCanvas>
+  <DemoPreview><Demo /></DemoPreview>
+  <DemoCode>
+```tsx file=./demo.tsx
+```
+  </DemoCode>
+</DemoCanvas>
+
+## Examples
+
+### Sequential pattern
+
+`pattern="sequential"` reveals blocks in row order instead of scattered.
+
+<DemoCanvas>
+  <DemoPreview><SequentialDemo /></DemoPreview>
+  <DemoCode>
+```tsx
+    <GridReveal
+      rows={8}
+      cols={8}
+      color="#8B5CF6"
+      pattern="sequential"
+      blockDuration={0.22}
+      stagger={0.012}
+    >
+      <YourContent />
+    </GridReveal>
+```
+  </DemoCode>
+</DemoCanvas>
+
+### Denser grid
+
+More rows and columns make for a finer-grained reveal.
+
+<DemoCanvas>
+  <DemoPreview><DenseDemo /></DemoPreview>
+  <DemoCode>
+```tsx
+    <GridReveal rows={12} cols={12} color="#60A5FA" pattern="random">
+      <YourContent />
+    </GridReveal>
+```
+  </DemoCode>
+</DemoCanvas>
+
+### Slower reveal
+
+Increase `blockDuration` and `stagger` for a more deliberate animation.
+
+<DemoCanvas>
+  <DemoPreview><SlowDemo /></DemoPreview>
+  <DemoCode>
+```tsx
+    <GridReveal
+      rows={6}
+      cols={6}
+      color="#F43F5E"
+      blockDuration={0.5}
+      stagger={0.05}
+    >
+      <YourContent />
+    </GridReveal>
+```
+  </DemoCode>
+</DemoCanvas>
+
+## Installation
+
+<InstallationTabs item="grid-reveal">
+```tsx file=../../registry/clover-ui/grid-reveal.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { GridReveal } from "@/components/grid-reveal";
+
+<GridReveal rows={8} cols={8} color="#E1E900">
+  <YourContent />
+</GridReveal>
+```
+
+## Props
+
+<PropsTable data={[
+  { name: "children", type: "React.ReactNode" },
+  { name: "rows", type: "number", default: "8" },
+  { name: "cols", type: "number", default: "8" },
+  { name: "color", type: "string", default: '"hsl(var(--primary))"' },
+  { name: "pattern", type: '"random" | "sequential"', default: '"random"' },
+  { name: "blockDuration", type: "number", default: "0.28" },
+  { name: "stagger", type: "number", default: "0.018" },
+  { name: "className", type: "string" },
+]} />

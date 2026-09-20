@@ -1,0 +1,66 @@
+import { Demo, LabelsDemo, StatusesDemo } from './demo'
+
+## Preview
+
+<DemoCanvas>
+  <DemoPreview><Demo /></DemoPreview>
+  <DemoCode>
+    ```tsx file=./demo.tsx
+    ```
+  </DemoCode>
+</DemoCanvas>
+
+Hover the tag to expand its label.
+
+## Examples
+
+### Statuses
+
+<DemoCanvas>
+  <DemoPreview><StatusesDemo /></DemoPreview>
+  <DemoCode>
+    ```tsx
+    <StatusTag status="draft" />
+    <StatusTag status="in-progress" />
+    <StatusTag status="in-review" />
+    <StatusTag status="completed" />
+    ```
+  </DemoCode>
+</DemoCanvas>
+
+### Custom labels
+
+<DemoCanvas>
+  <DemoPreview><LabelsDemo /></DemoPreview>
+  <DemoCode>
+    ```tsx
+    <StatusTag status="draft" label="Planned" />
+    <StatusTag status="completed" label="Shipped" />
+    ```
+  </DemoCode>
+</DemoCanvas>
+
+## Installation
+
+<InstallationTabs item="status-tag">
+```tsx file=../../registry/clover-ui/status-tag.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { StatusTag } from "@/components/status-tag";
+
+<StatusTag status="in-review" />
+```
+
+The tag is self-contained: it owns its hover group, so it can sit inside another interactive card without inheriting the card's hover state.
+
+## Props
+
+<PropsTable data={[
+  { name: "status", type: '"draft" | "in-progress" | "in-review" | "completed"' },
+  { name: "label", type: "string" },
+  { name: "className", type: "string" },
+]} />
