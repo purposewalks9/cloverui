@@ -1,4 +1,4 @@
-import { Demo, SequentialDemo, DenseDemo, SlowDemo } from './demo'
+import { Demo, WaveDemo, DiagonalDemo, CenterDemo, LoopDemo } from './demo'
 
 ## Preview
 
@@ -12,21 +12,21 @@ import { Demo, SequentialDemo, DenseDemo, SlowDemo } from './demo'
 
 ## Examples
 
-### Sequential pattern
+### Wave
 
-`pattern="sequential"` reveals blocks in row order instead of scattered.
+`pattern="wave"` reveals column by column.
 
 <DemoCanvas>
-  <DemoPreview><SequentialDemo /></DemoPreview>
+  <DemoPreview><WaveDemo /></DemoPreview>
   <DemoCode>
 ```tsx
     <GridReveal
       rows={8}
       cols={8}
       color="#8B5CF6"
-      pattern="sequential"
+      pattern="wave"
       blockDuration={0.22}
-      stagger={0.012}
+      stagger={0.03}
     >
       <YourContent />
     </GridReveal>
@@ -34,35 +34,50 @@ import { Demo, SequentialDemo, DenseDemo, SlowDemo } from './demo'
   </DemoCode>
 </DemoCanvas>
 
-### Denser grid
+### Diagonal
 
-More rows and columns make for a finer-grained reveal.
+`pattern="diagonal"` sweeps corner to corner.
 
 <DemoCanvas>
-  <DemoPreview><DenseDemo /></DemoPreview>
+  <DemoPreview><DiagonalDemo /></DemoPreview>
   <DemoCode>
 ```tsx
-    <GridReveal rows={12} cols={12} color="#60A5FA" pattern="random">
+    <GridReveal rows={8} cols={8} color="#60A5FA" pattern="diagonal">
       <YourContent />
     </GridReveal>
 ```
   </DemoCode>
 </DemoCanvas>
 
-### Slower reveal
+### Center out
 
-Increase `blockDuration` and `stagger` for a more deliberate animation.
+`pattern="center"` radiates outward from the middle of the grid.
 
 <DemoCanvas>
-  <DemoPreview><SlowDemo /></DemoPreview>
+  <DemoPreview><CenterDemo /></DemoPreview>
+  <DemoCode>
+```tsx
+    <GridReveal rows={8} cols={8} color="#F43F5E" pattern="center">
+      <YourContent />
+    </GridReveal>
+```
+  </DemoCode>
+</DemoCanvas>
+
+### Looping
+
+Set `loop` to continuously cover and reveal the content, with `loopDelay` controlling the pause between cycles.
+
+<DemoCanvas>
+  <DemoPreview><LoopDemo /></DemoPreview>
   <DemoCode>
 ```tsx
     <GridReveal
       rows={6}
       cols={6}
-      color="#F43F5E"
-      blockDuration={0.5}
-      stagger={0.05}
+      color="#34D399"
+      loop
+      loopDelay={0.8}
     >
       <YourContent />
     </GridReveal>
@@ -91,11 +106,22 @@ import { GridReveal } from "@/components/grid-reveal";
 
 <PropsTable data={[
   { name: "children", type: "React.ReactNode" },
-  { name: "rows", type: "number", default: "8" },
-  { name: "cols", type: "number", default: "8" },
-  { name: "color", type: "string", default: '"hsl(var(--primary))"' },
-  { name: "pattern", type: '"random" | "sequential"', default: '"random"' },
-  { name: "blockDuration", type: "number", default: "0.28" },
-  { name: "stagger", type: "number", default: "0.018" },
+  { name: "rows", type: "number", default: "6" },
+  { name: "cols", type: "number", default: "10" },
+  { name: "color", type: "string", default: '"#000000"' },
+  { name: "blockDuration", type: "number", default: "0.45" },
+  { name: "stagger", type: "number", default: "0.03" },
+  { name: "duration", type: "number", description: "Total time for the grid to clear. Overrides stagger when set." },
+  { name: "pattern", type: '"random" | "wave" | "diagonal" | "center"', default: '"random"' },
+  { name: "loop", type: "boolean", default: "false" },
+  { name: "loopDelay", type: "number", default: "0.6" },
+  { name: "gap", type: "number", default: "0" },
   { name: "className", type: "string" },
+  { name: "gridClassName", type: "string" },
+  { name: "blockClassName", type: "string" },
+  { name: "autoStart", type: "boolean", default: "true" },
+  { name: "inView", type: "boolean", default: "false" },
+  { name: "once", type: "boolean", default: "true" },
+  { name: "onStart", type: "() => void" },
+  { name: "onComplete", type: "() => void" },
 ]} />

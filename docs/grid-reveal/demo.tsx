@@ -21,63 +21,86 @@ export function Demo() {
   );
 }
 
-export function SequentialDemo() {
+export function WaveDemo() {
   return (
     <GridReveal
       rows={8}
       cols={8}
       color="#8B5CF6"
-      pattern="sequential"
+      pattern="wave"
       blockDuration={0.22}
-      stagger={0.012}
+      stagger={0.03}
       className="aspect-square w-full max-w-[220px]"
     >
       <div className="flex aspect-square w-full items-center justify-center">
         <div className="text-center">
-          <p className="text-base font-medium tracking-tight">In order</p>
-          <p className="mt-1 text-xs text-muted-foreground">Row by row.</p>
+          <p className="text-base font-medium tracking-tight">Wave</p>
+          <p className="mt-1 text-xs text-muted-foreground">Column by column.</p>
         </div>
       </div>
     </GridReveal>
   );
 }
 
-export function DenseDemo() {
+export function DiagonalDemo() {
   return (
     <GridReveal
-      rows={12}
-      cols={12}
+      rows={8}
+      cols={8}
       color="#60A5FA"
-      pattern="random"
-      blockDuration={0.2}
-      stagger={0.008}
+      pattern="diagonal"
+      blockDuration={0.24}
+      stagger={0.02}
       className="aspect-square w-full max-w-[220px]"
     >
       <div className="flex aspect-square w-full items-center justify-center">
         <div className="text-center">
-          <p className="text-base font-medium tracking-tight">Denser grid</p>
-          <p className="mt-1 text-xs text-muted-foreground">12 x 12 blocks.</p>
+          <p className="text-base font-medium tracking-tight">Diagonal</p>
+          <p className="mt-1 text-xs text-muted-foreground">Corner to corner.</p>
         </div>
       </div>
     </GridReveal>
   );
 }
 
-export function SlowDemo() {
+export function CenterDemo() {
+  return (
+    <GridReveal
+      rows={8}
+      cols={8}
+      color="#F43F5E"
+      pattern="center"
+      blockDuration={0.26}
+      stagger={0.025}
+      className="aspect-square w-full max-w-[220px]"
+    >
+      <div className="flex aspect-square w-full items-center justify-center">
+        <div className="text-center">
+          <p className="text-base font-medium tracking-tight">Center out</p>
+          <p className="mt-1 text-xs text-muted-foreground">Radiates outward.</p>
+        </div>
+      </div>
+    </GridReveal>
+  );
+}
+
+export function LoopDemo() {
   return (
     <GridReveal
       rows={6}
       cols={6}
-      color="#F43F5E"
+      color="#34D399"
       pattern="random"
-      blockDuration={0.5}
-      stagger={0.05}
+      blockDuration={0.3}
+      stagger={0.03}
+      loop
+      loopDelay={0.8}
       className="aspect-square w-full max-w-[220px]"
     >
       <div className="flex aspect-square w-full items-center justify-center">
         <div className="text-center">
-          <p className="text-base font-medium tracking-tight">Slow reveal</p>
-          <p className="mt-1 text-xs text-muted-foreground">Longer stagger.</p>
+          <p className="text-base font-medium tracking-tight">Looping</p>
+          <p className="mt-1 text-xs text-muted-foreground">Covers and reveals.</p>
         </div>
       </div>
     </GridReveal>
