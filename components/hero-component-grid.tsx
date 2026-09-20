@@ -38,6 +38,11 @@ const componentTiles: ComponentTile[] = [
     slug: "soft-button",
     className: "lg:col-span-3 lg:row-span-1",
   },
+   {
+    name: "Drop Text",
+    slug: "drop-text",
+    className: "lg:col-span-3 lg:row-span-1",
+  },
   {
     name: "Status Tag",
     slug: "status-tag",

@@ -45,7 +45,7 @@ export function OutDemo() {
       direction="right"
       color="#F43F5E"
       autoStart
-      className="text-3xl font-medium"
+      className="text-2xl font-medium"
     >
       Slide text out.
     </SlideText>

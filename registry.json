@@ -54,6 +54,40 @@
       "category": "animation"
     },
     {
+      "name": "smokey-text",
+      "type": "registry:component",
+      "title": "Smokey Text",
+      "description": "Text that drifts through a sequence of smoke-gray tones before settling on its final color, word by word or character by character.",
+      "files": [
+        {
+          "path": "registry/clover-ui/smokey-text.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [],
+      "category": "animation"
+    },
+    {
+      "name": "cycle-list",
+      "type": "registry:component",
+      "title": "Cycle List",
+      "description": "A list that cycles focus through its items on an interval, with a dot marker that follows a curved track to the active item.",
+      "files": [
+        {
+          "path": "registry/clover-ui/cycle-list.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [],
+      "category": "display"
+    },
+    {
       "name": "soft-button",
       "type": "registry:component",
       "title": "Soft Button",

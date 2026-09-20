@@ -7,7 +7,7 @@ export function Demo() {
       suffix="x"
       label="faster"
       color="#E1E900"
-      className="text-3xl font-semibold sm:text-4xl"
+      className="text-2xl font-meduim"
     />
   );
 }
@@ -21,7 +21,7 @@ export function SlowDemo() {
       speed="slow"
       label="slower on cold starts"
       color="#F43F5E"
-      className="text-2xl font-semibold"
+      className="text-2xl font-meduim"
     />
   );
 }
@@ -34,7 +34,7 @@ export function FastDemo() {
       speed="fast"
       label="faster builds"
       color="#60A5FA"
-      className="text-2xl font-semibold"
+       className="text-2xl font-meduim"
     />
   );
 }
@@ -48,7 +48,7 @@ export function NoIconDemo() {
       label="uptime"
       showIcon={false}
       color="#8B5CF6"
-      className="text-2xl font-semibold"
+      className="text-2xl font-meduim"
     />
   );
 }

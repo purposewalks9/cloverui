@@ -1,0 +1,97 @@
+import { Demo, CharacterDemo, FastDemo, NoBounceDemo } from './demo'
+
+## Preview
+
+<DemoCanvas>
+  <DemoPreview><Demo /></DemoPreview>
+  <DemoCode>
+```tsx file=./demo.tsx
+```
+  </DemoCode>
+</DemoCanvas>
+
+## Examples
+
+### Characters
+
+<DemoCanvas>
+  <DemoPreview><CharacterDemo /></DemoPreview>
+  <DemoCode>
+```tsx
+    <DropText splitBy="characters" stagger={0.025}>
+      Every letter falls.
+    </DropText>
+```
+  </DemoCode>
+</DemoCanvas>
+
+### Faster speed
+
+`speed` scales how fast each unit falls and how tightly staggered they are — it never changes when the drop starts.
+
+<DemoCanvas>
+  <DemoPreview><FastDemo /></DemoPreview>
+  <DemoCode>
+```tsx
+    <DropText speed={2.5}>
+      Quick drop, no delay.
+    </DropText>
+```
+  </DemoCode>
+</DemoCanvas>
+
+### No bounce
+
+Set `bounce` to `0` for a plain, weightless fall instead of a settling overshoot.
+
+<DemoCanvas>
+  <DemoPreview><NoBounceDemo /></DemoPreview>
+  <DemoCode>
+```tsx
+    <DropText bounce={0} speed={1.5}>
+      A crisp, weightless fall.
+    </DropText>
+```
+  </DemoCode>
+</DemoCanvas>
+
+## Installation
+
+<InstallationTabs item="drop-text">
+```tsx file=../../registry/clover-ui/drop-text.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { DropText } from "@/components/drop-text";
+
+<DropText>Your text here</DropText>
+```
+
+## Props
+
+<PropsTable data={[
+  { name: "children", type: "string" },
+  { name: "splitBy", type: '"words" | "characters"', default: '"words"' },
+  { name: "dropDistance", type: "number", default: "40" },
+  { name: "speed", type: "number", default: "1" },
+  { name: "duration", type: "number", default: "0.5" },
+  { name: "stagger", type: "number", default: "0.05" },
+  { name: "delay", type: "number", default: "0" },
+  { name: "bounce", type: "number", default: "0.35" },
+  { name: "landedClassName", type: "string" },
+  { name: "className", type: "string" },
+  { name: "wordClassName", type: "string" },
+  { name: "charClassName", type: "string" },
+  { name: "autoStart", type: "boolean", default: "true" },
+  { name: "inView", type: "boolean", default: "false" },
+  { name: "once", type: "boolean", default: "true" },
+  { name: "onStart", type: "() => void" },
+  { name: "onComplete", type: "() => void" },
+]} />
+
+## Ref API
+
+`DropText` exposes `play()` and `reset()` through a ref when you need to trigger the drop yourself.

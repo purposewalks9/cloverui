@@ -14,35 +14,19 @@ import {
 import { cn } from "@/lib/utils";
 
 export interface CycleListProps {
-  /** The items that take turns being "active". */
   items: string[];
-
-  /** Color of the idle track. */
   color?: string;
-
-  /** Color the active item and the dot switch to. Defaults to green. */
   activeColor?: string;
-
-  /** Color of items that aren't currently active. */
   mutedColor?: string;
-
-  /** Small tilt applied to inactive items, in degrees. */
   itemRotation?: number;
-
-  /** How far the arc bulges outward from the text, in pixels. */
   curvature?: number;
-
-  /** Time each item stays active before moving to the next, in ms. */
   interval?: number;
-
   className?: string;
   listClassName?: string;
   itemClassName?: string;
-
   autoStart?: boolean;
   inView?: boolean;
   once?: boolean;
-
   onStart?: () => void;
   onChange?: (index: number) => void;
 }
@@ -82,6 +66,7 @@ const CycleList = forwardRef<CycleListRef, CycleListProps>(
     const pathRef = useRef<SVGPathElement>(null);
     const [trackHeight, setTrackHeight] = useState(0);
     const [dotPos, setDotPos] = useState({ x: 0, y: 0 });
+    const hasPositioned = useRef(false);
 
     const clear = useCallback(() => {
       if (timerRef.current) {
@@ -103,6 +88,7 @@ const CycleList = forwardRef<CycleListRef, CycleListProps>(
     const reset = useCallback(() => {
       clear();
       setActiveIndex(0);
+      hasPositioned.current = false;
       setRunning(!inView && autoStart);
     }, [clear, inView, autoStart]);
 
@@ -140,8 +126,9 @@ const CycleList = forwardRef<CycleListRef, CycleListProps>(
       return () => ro.disconnect();
     }, [items.length]);
 
-    // Walk the dot along the curve to match the active item's position.
-    useEffect(() => {
+    // Position the dot before paint so it never animates in from (0,0)
+    // on first mount — it's already sitting at the start of the curve.
+    useLayoutEffect(() => {
       const path = pathRef.current;
       if (!path || trackHeight === 0) return;
 
@@ -151,6 +138,7 @@ const CycleList = forwardRef<CycleListRef, CycleListProps>(
       const point = path.getPointAtLength(percent * total);
 
       setDotPos({ x: point.x, y: point.y });
+      hasPositioned.current = true;
     }, [activeIndex, trackHeight, items.length]);
 
     const trackWidth = curvature + 12;
@@ -161,7 +149,6 @@ const CycleList = forwardRef<CycleListRef, CycleListProps>(
         viewport={{ once, margin: "-10% 0px -10% 0px" }}
         onViewportEnter={inView ? handleViewportEnter : undefined}
       >
-        {/* Curved track + shifting dot — mirrored so the arc bulges the other way */}
         <svg
           width={trackWidth}
           height={trackHeight || 1}
@@ -182,8 +169,13 @@ const CycleList = forwardRef<CycleListRef, CycleListProps>(
             <motion.circle
               r={5}
               fill={activeColor}
+              initial={false}
               animate={{ cx: dotPos.x, cy: dotPos.y }}
-              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              transition={
+                hasPositioned.current
+                  ? { duration: 0.4, ease: [0.22, 1, 0.36, 1] }
+                  : { duration: 0 }
+              }
             />
           </g>
         </svg>
