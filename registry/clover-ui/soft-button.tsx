@@ -95,7 +95,6 @@ const SoftButton = React.forwardRef<HTMLButtonElement, SoftButtonProps>(
           "group relative inline-flex cursor-pointer items-center justify-center",
           "gap-2 overflow-hidden whitespace-nowrap rounded-full font-semibold",
           "transition-[filter,transform,box-shadow] duration-300 ease-out",
-          "hover:-translate-y-0.5 hover:brightness-[1.04] hover:shadow-[0_11px_26px_-9px_var(--soft-glow)]",
           "active:translate-y-0 active:scale-[0.98] active:brightness-95",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--soft-focus)] focus-visible:ring-offset-2 focus-visible:ring-offset-background",
           "disabled:pointer-events-none disabled:opacity-50",
