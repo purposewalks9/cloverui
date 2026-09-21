@@ -19,7 +19,7 @@ export function RootHeader() {
 
         <div className="flex items-center gap-3">
           <div className="hidden sm:block">
-            <SoftButton asChild size="sm" color="pink">
+            <SoftButton asChild size="sm" color="yellow">
               <Link href={siteConfig.links.sponsor} target="_blank" rel="noreferrer">
                 <Heart className="mr-1.5 h-4 w-4" />
                 Sponsor
