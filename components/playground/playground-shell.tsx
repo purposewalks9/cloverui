@@ -8,14 +8,11 @@ import { generateCode, type ControlDef } from "@/lib/playground";
 import { ControlPanel } from "./control-panel";
 
 interface PlaygroundShellProps {
-  /** Name printed in the generated JSX, e.g. "SoftButton" */
   componentName: string;
   controls: ControlDef[];
   defaultProps: Record<string, unknown>;
-  /** One-line comment prepended to the code panel, for props left out of `controls` (e.g. required `data`) */
   codeNote?: string;
   stageClassName?: string;
-  /** Renders the live component using the current toolbar values */
   render: (values: Record<string, unknown>) => React.ReactNode;
 }
 
@@ -58,16 +55,19 @@ export function PlaygroundShell({
   }
 
   return (
-    <div className="not-prose my-6 overflow-hidden flex flex-row rounded-lg border border-border">
-      <div className="flex flex-1 flex-col">
+    <div className="not-prose my-6 flex overflow-hidden rounded-lg border border-border">
+      <div className="flex min-w-0 flex-1 flex-col">
         <div
           className={cn(
-            "relative flex min-h-[28rem] flex-1 items-center justify-center overflow-auto p-14",
+            "relative flex min-h-[28rem] flex-1 items-center justify-center overflow-hidden p-6",
             "bg-[radial-gradient(currentColor_1px,transparent_1px)] bg-[size:16px_16px] text-border",
             stageClassName,
           )}
         >
-          <div key={replayKey} className="w-full text-foreground">
+          <div
+            key={replayKey}
+            className="flex min-w-0 max-w-full items-center justify-center text-foreground"
+          >
             {render(values)}
           </div>
         </div>
@@ -76,11 +76,12 @@ export function PlaygroundShell({
           <pre className="max-h-72 overflow-auto p-4 font-mono text-sm leading-relaxed">
             <code>{fullCode}</code>
           </pre>
+
           <Button
             type="button"
             variant="outline"
             size="icon"
-            className="absolute top-2.5 right-2.5 size-7 dark:bg-[#191919] dark:hover:bg-[#212121]"
+            className="absolute right-2.5 top-2.5 size-7 dark:bg-[#191919] dark:hover:bg-[#212121]"
             onClick={copy}
             aria-label="Copy code"
           >
@@ -93,11 +94,12 @@ export function PlaygroundShell({
         </div>
       </div>
 
-      <div className="w-full shrink-0 border-t border-border bg-muted/20 lg:w-64 lg:border-t-0 lg:border-l">
+      <div className="w-full shrink-0 border-t border-border bg-muted/20 lg:w-64 lg:border-l lg:border-t-0">
         <div className="flex items-center justify-between gap-2 border-b border-border px-3 py-2">
           <span className="text-xs font-medium text-muted-foreground">
             Props
           </span>
+
           <div className="inline-flex -space-x-px rounded-md shadow-none">
             <Button
               type="button"
@@ -109,6 +111,7 @@ export function PlaygroundShell({
               <RotateCcw className="size-3" />
               Reset
             </Button>
+
             <Button
               type="button"
               variant="outline"
@@ -121,7 +124,12 @@ export function PlaygroundShell({
             </Button>
           </div>
         </div>
-        <ControlPanel controls={controls} values={values} onChange={setValue} />
+
+        <ControlPanel
+          controls={controls}
+          values={values}
+          onChange={setValue}
+        />
       </div>
     </div>
   );
