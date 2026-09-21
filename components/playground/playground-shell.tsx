@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { CheckIcon, Copy, RotateCcw } from "lucide-react";
+import { CheckIcon, Copy, RefreshCw, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { generateCode, type ControlDef } from "@/lib/playground";
@@ -29,6 +29,7 @@ export function PlaygroundShell({
 }: PlaygroundShellProps) {
   const [values, setValues] = React.useState(defaultProps);
   const [copied, setCopied] = React.useState(false);
+  const [replayKey, setReplayKey] = React.useState(0);
 
   const code = React.useMemo(
     () => generateCode(componentName, controls, values),
@@ -43,6 +44,11 @@ export function PlaygroundShell({
 
   function reset() {
     setValues(defaultProps);
+    setReplayKey((k) => k + 1);
+  }
+
+  function replay() {
+    setReplayKey((k) => k + 1);
   }
 
   function copy() {
@@ -52,57 +58,70 @@ export function PlaygroundShell({
   }
 
   return (
-    <div className="not-prose my-6 overflow-hidden rounded-lg border border-border">
-      <div className="flex flex-col lg:flex-row">
-        {/* Stage — wide preview, wireframe grid background */}
+    <div className="not-prose my-6 overflow-hidden flex flex-row rounded-lg border border-border">
+      <div className="flex flex-1 flex-col">
         <div
           className={cn(
-            "relative flex min-h-80 flex-1 items-center justify-center overflow-auto p-10",
+            "relative flex min-h-[28rem] flex-1 items-center justify-center overflow-auto p-14",
             "bg-[radial-gradient(currentColor_1px,transparent_1px)] bg-[size:16px_16px] text-border",
             stageClassName,
           )}
         >
-          <div className="text-foreground">{render(values)}</div>
+          <div key={replayKey} className="w-full text-foreground">
+            {render(values)}
+          </div>
         </div>
 
-        {/* Prop toolbar */}
-        <div className="w-full shrink-0 border-t border-border bg-muted/20 lg:w-64 lg:border-t-0 lg:border-l">
-          <div className="flex items-center justify-between border-b border-border px-4 py-2.5">
-            <span className="text-xs font-medium text-muted-foreground">
-              Props
-            </span>
-            <button
-              type="button"
-              onClick={reset}
-              className="flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
-            >
-              <RotateCcw className="size-3" />
-              Reset
-            </button>
-          </div>
-          <ControlPanel controls={controls} values={values} onChange={setValue} />
+        <div className="relative border-t border-border">
+          <pre className="max-h-72 overflow-auto p-4 font-mono text-sm leading-relaxed">
+            <code>{fullCode}</code>
+          </pre>
+          <Button
+            type="button"
+            variant="outline"
+            size="icon"
+            className="absolute top-2.5 right-2.5 size-7 dark:bg-[#191919] dark:hover:bg-[#212121]"
+            onClick={copy}
+            aria-label="Copy code"
+          >
+            {copied ? (
+              <CheckIcon className="size-3.5 text-emerald-500" />
+            ) : (
+              <Copy className="size-3.5" />
+            )}
+          </Button>
         </div>
       </div>
 
-      {/* Code — always in sync with the toolbar above */}
-      <div className="relative border-t border-border">
-        <pre className="max-h-72 overflow-auto p-4 font-mono text-sm leading-relaxed">
-          <code>{fullCode}</code>
-        </pre>
-        <Button
-          type="button"
-          variant="outline"
-          size="icon"
-          className="absolute top-2.5 right-2.5 size-7 dark:bg-[#191919] dark:hover:bg-[#212121]"
-          onClick={copy}
-          aria-label="Copy code"
-        >
-          {copied ? (
-            <CheckIcon className="size-3.5 text-emerald-500" />
-          ) : (
-            <Copy className="size-3.5" />
-          )}
-        </Button>
+      <div className="w-full shrink-0 border-t border-border bg-muted/20 lg:w-64 lg:border-t-0 lg:border-l">
+        <div className="flex items-center justify-between gap-2 border-b border-border px-3 py-2">
+          <span className="text-xs font-medium text-muted-foreground">
+            Props
+          </span>
+          <div className="inline-flex -space-x-px rounded-md shadow-none">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={reset}
+              className="h-7 rounded-e-none border-r-0 px-2 text-xs font-normal shadow-none"
+            >
+              <RotateCcw className="size-3" />
+              Reset
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={replay}
+              className="h-7 rounded-s-none px-2 text-xs font-normal shadow-none"
+            >
+              <RefreshCw className="size-3" />
+              Replay
+            </Button>
+          </div>
+        </div>
+        <ControlPanel controls={controls} values={values} onChange={setValue} />
       </div>
     </div>
   );

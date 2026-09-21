@@ -1,12 +1,16 @@
 "use client";
 
+import { Check, ChevronDown } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Toggle } from "@/components/ui/toggle";
+import { Button } from "@/components/ui/button";
 import {
-  NativeSelect,
-  NativeSelectOption,
-} from "@/components/ui/native-select";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import type { ControlDef } from "@/lib/playground";
 import { ColorField } from "./color-field";
 
@@ -73,21 +77,39 @@ function Field({
         </Toggle>
       );
 
-    case "select":
+    case "select": {
+      const selected = control.options.find((opt) => opt.value === value);
       return (
-        <NativeSelect
-          id={control.prop}
-          value={value as string}
-          onChange={(e) => onChange(e.target.value)}
-          className="h-8 w-32 text-xs"
-        >
-          {control.options.map((opt) => (
-            <NativeSelectOption key={opt.value} value={opt.value}>
-              {opt.label}
-            </NativeSelectOption>
-          ))}
-        </NativeSelect>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              id={control.prop}
+              type="button"
+              variant="outline"
+              size="sm"
+              className="h-8 w-32 justify-between text-xs font-normal"
+            >
+              <span className="truncate">{selected?.label ?? "Select"}</span>
+              <ChevronDown className="size-3.5 shrink-0 text-muted-foreground" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-32">
+            {control.options.map((opt) => (
+              <DropdownMenuItem
+                key={opt.value}
+                onSelect={() => onChange(opt.value)}
+                className="justify-between text-xs"
+              >
+                {opt.label}
+                {opt.value === value && (
+                  <Check className="size-3.5 text-muted-foreground" />
+                )}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
       );
+    }
 
     case "number":
       return (
