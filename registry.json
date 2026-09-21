@@ -71,23 +71,6 @@
       "category": "animation"
     },
     {
-      "name": "smokey-text",
-      "type": "registry:component",
-      "title": "Smokey Text",
-      "description": "Text that drifts through a sequence of smoke-gray tones before settling on its final color, word by word or character by character.",
-      "files": [
-        {
-          "path": "registry/clover-ui/smokey-text.tsx",
-          "type": "registry:component"
-        }
-      ],
-      "dependencies": [
-        "motion"
-      ],
-      "registryDependencies": [],
-      "category": "animation"
-    },
-    {
       "name": "cycle-list",
       "type": "registry:component",
       "title": "Cycle List",
@@ -155,6 +138,21 @@
       ],
       "registryDependencies": [],
       "category": "animation"
+    },
+    {
+      "name": "candlestick-chart",
+      "type": "registry:component",
+      "title": "Candlestick Chart",
+      "description": "A responsive candlestick chart with drag-to-pan, wheel-to-zoom, an animated cursor, and an OHLC tooltip.",
+      "files": [
+        {
+          "path": "registry/clover-ui/candle-chart-stick.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "category": "display"
     },
     {
       "name": "text-gif",

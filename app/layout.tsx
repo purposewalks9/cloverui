@@ -38,7 +38,7 @@ export const metadata: Metadata = constructMetadata({
   title: "Clover UI",
 });
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

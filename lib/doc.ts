@@ -12,7 +12,7 @@ const CATEGORY_LABELS: Record<string, string> = {
   background: "Backgrounds",
   interactive: "Interactive",
   display: "Display",
-  chart: "Charts",
+  "candlestick-chart": "Charts",
 };
 
 const CATEGORY_ORDER = [
@@ -23,7 +23,7 @@ const CATEGORY_ORDER = [
   "background",
   "interactive",
   "display",
-  "chart",
+  "candlestick-chart",
 ];
 
 function toDocItem(item: RegistryItem): DocItem {

@@ -10,6 +10,7 @@ const SLUGS = [
   "grid-reveal",
   "cycle-list",
   "text-gif",
+  "candlestick-chart",
   "drop-text",
   "gamepad-nav",
   "token-fall",

@@ -1,0 +1,110 @@
+import { Demo, CustomColorDemo, CurrencyDemo, WithoutAnimationDemo, WideBodiesDemo } from './demo'
+
+## Preview
+
+<DemoCanvas>
+  <DemoPreview><Demo /></DemoPreview>
+  <DemoCode>
+```tsx file=./demo.tsx
+```
+  </DemoCode>
+</DemoCanvas>
+
+## Examples
+
+### Custom colors
+
+Override `upColor` and `downColor` to match your palette instead of the default green/red.
+
+<DemoCanvas>
+  <DemoPreview><CustomColorDemo /></DemoPreview>
+  <DemoCode>
+```tsx
+    <CandleChartStick
+      data={data}
+      name="AAPL"
+      upColor="#60A5FA"
+      downColor="#F5A623"
+      defaultIndex={4}
+    />
+```
+  </DemoCode>
+</DemoCanvas>
+
+### Custom tooltip format
+
+Pass `formatValue` to control how O/H/L/C values render in the tooltip.
+
+<DemoCanvas>
+  <DemoPreview><CurrencyDemo /></DemoPreview>
+  <DemoCode>
+```tsx
+    <CandleChartStick
+      data={data}
+      name="AAPL"
+      formatValue={(v) => `$${v.toFixed(2)}`}
+    />
+```
+  </DemoCode>
+</DemoCanvas>
+
+### Without animation
+
+Set `animated={false}` to snap the cursor and tooltip instantly instead of transitioning.
+
+<DemoCanvas>
+  <DemoPreview><WithoutAnimationDemo /></DemoPreview>
+  <DemoCode>
+```tsx
+    <CandleChartStick data={data} name="AAPL" animated={false} />
+```
+  </DemoCode>
+</DemoCanvas>
+
+### Wider candle bodies
+
+Tune `bodyWidthRatio` (0–1) to control how much of each column the candle body fills.
+
+<DemoCanvas>
+  <DemoPreview><WideBodiesDemo /></DemoPreview>
+  <DemoCode>
+```tsx
+    <CandleChartStick data={data} name="AAPL" bodyWidthRatio={0.8} />
+```
+  </DemoCode>
+</DemoCanvas>
+
+## Installation
+
+<InstallationTabs item="candlestick-chart">
+```tsx file=../../registry/clover-ui/candle-chart-stick.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { CandleChartStick, type Candle } from "@/components/candle-chart-stick";
+
+const data: Candle[] = [
+  { time: "Mon", open: 220.1, high: 226.4, low: 218.3, close: 224.8 },
+  { time: "Tue", open: 224.8, high: 229.2, low: 221.6, close: 219.4 },
+];
+
+<CandleChartStick data={data} name="AAPL" />
+```
+
+<PropsTable data={[
+  { name: "data", type: "Candle[]", description: "Array of `{ time, open, high, low, close }` objects — one candle per entry." },
+  { name: "name", type: "string", description: "Series name shown next to the indicator dot in the tooltip." },
+  { name: "upColor", type: "string", default: '"#22c55e"', description: "Wick + body color when close >= open." },
+  { name: "downColor", type: "string", default: '"#ef4444"', description: "Wick + body color when close < open." },
+  { name: "width", type: "number", default: "640", description: "Maximum chart width in px. Preserves a 640:220 aspect ratio." },
+  { name: "formatValue", type: "(value: number) => React.ReactNode", description: "Format each O/H/L/C value in the tooltip." },
+  { name: "defaultIndex", type: "number", description: "Index of the active candle on initial render. Defaults to the last candle." },
+  { name: "showXAxis", type: "boolean", default: "true", description: "Show X-axis tick labels at the bottom." },
+  { name: "animated", type: "boolean", default: "true", description: "Smoothly animate the cursor and tooltip when the active candle changes." },
+  { name: "tickCount", type: "number", default: "6", description: "Target number of X-axis ticks." },
+  { name: "bodyWidthRatio", type: "number", default: "0.6", description: "Fraction (0–1) of each column's width used by the candle body." },
+  { name: "className", type: "string" },
+]} />

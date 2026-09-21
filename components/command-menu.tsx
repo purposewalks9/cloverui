@@ -76,7 +76,7 @@ export function SearchForm({ docSchema }: { docSchema: DocSchema }) {
         items: group.items.map((item) => ({
           value: item.id,
           label: item.title,
-          url: `/docs/${item.id}`,
+          url: isComponentGroup ? `/components/${item.id}` : `/docs/${item.id}`,
           isComponent: isComponentGroup,
         })),
       };
