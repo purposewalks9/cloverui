@@ -4,8 +4,8 @@ export function Demo() {
   return (
     <SlideText
       color="#E1E900"
-      stagger={0.08}
-      className="text-2xl font-medium"
+      stagger={0.065}
+      className="text-center text-2xl font-semibold tracking-tight"
     >
       Clover UI, one word at a time.
     </SlideText>
@@ -17,8 +17,8 @@ export function CharacterDemo() {
     <SlideText
       splitBy="characters"
       color="#8B5CF6"
-      stagger={0.035}
-      className="text-2xl font-medium"
+      stagger={0.028}
+      className="text-2xl font-semibold tracking-tight"
     >
       Every letter moves.
     </SlideText>
@@ -31,7 +31,8 @@ export function CenterDemo() {
       from="center"
       direction="left"
       color="#60A5FA"
-      className="text-2xl font-medium"
+      stagger={0.07}
+      className="text-2xl font-semibold tracking-tight"
     >
       Start from the center.
     </SlideText>
@@ -44,10 +45,22 @@ export function OutDemo() {
       mode="out"
       direction="right"
       color="#F43F5E"
-      autoStart
-      className="text-2xl font-medium"
+      className="text-2xl font-semibold tracking-tight"
     >
       Slide text out.
+    </SlideText>
+  );
+}
+
+export function GradientDemo() {
+  return (
+    <SlideText
+      splitBy="words"
+      color="#E1E900"
+      landedClassName="text-foreground"
+      className="text-center text-3xl tracking-[-0.04em]"
+    >
+      Motion gives static type a pulse.
     </SlideText>
   );
 }

@@ -1,3 +1,4 @@
+
 "use client";
 
 import * as React from "react";
@@ -8,9 +9,10 @@ const VIEWBOX_H = 220;
 const PAD_X = 8;
 const PAD_Y_TOP = 24;
 const PAD_Y_BOTTOM = 12;
-const LINE_WIDTH = 2;
-const TRANSITION = "200ms cubic-bezier(0.16, 1, 0.3, 1)";
+const LINE_WIDTH = 1;
+const TRANSITION = "160ms cubic-bezier(0.22, 1, 0.36, 1)";
 const MIN_VISIBLE = 8;
+
 const TOOLTIP_SHADOW = [
   "0 0 0 1px rgba(0, 0, 0, 0.04)",
   "0 1px 2px rgba(0, 0, 0, 0.04)",
@@ -34,14 +36,12 @@ export interface CandleChartStickProps {
   width?: number;
   formatValue?: (v: number) => React.ReactNode;
   defaultIndex?: number;
-  /** Number of candles visible at once before any zooming. Default: min(100, data.length). */
   defaultVisibleCount?: number;
   showXAxis?: boolean;
   animated?: boolean;
   tickCount?: number;
   bodyWidthRatio?: number;
   maxBodyWidth?: number;
-  /** Enable wheel-to-zoom + drag-to-pan. Default true. */
   zoomable?: boolean;
   className?: string;
 }
@@ -71,37 +71,63 @@ export function CandleChartStick({
     data.length,
   );
 
-  // rangeStart/visibleCount define the "window" into `data` that's rendered.
   const [rangeStart, setRangeStart] = React.useState(
     Math.max(0, data.length - initialVisible),
   );
+
   const [visibleCount, setVisibleCount] = React.useState(initialVisible);
-  const [containerWidth, setContainerWidth] = React.useState<number>(width);
-  const [activeLocalIndex, setActiveLocalIndex] = React.useState<number>(
-    visibleCount - 1,
+  const [containerWidth, setContainerWidth] = React.useState(width);
+
+  const [activeLocalIndex, setActiveLocalIndex] = React.useState(
+    defaultIndex !== undefined
+      ? Math.max(0, Math.min(defaultIndex, initialVisible - 1))
+      : initialVisible - 1,
   );
+
   const [isDragging, setIsDragging] = React.useState(false);
 
   const dragState = React.useRef<{
     startX: number;
     startRange: number;
   } | null>(null);
+
   const rafRef = React.useRef<number | null>(null);
+  const dragRafRef = React.useRef<number | null>(null);
 
   React.useEffect(() => {
     if (!root.current) return;
+
     const ro = new ResizeObserver((entries) => {
       const w = entries[0]?.contentRect.width;
       if (w) setContainerWidth(w);
     });
+
     ro.observe(root.current);
+
     return () => ro.disconnect();
+  }, []);
+
+  React.useEffect(() => {
+    return () => {
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+      }
+
+      if (dragRafRef.current !== null) {
+        cancelAnimationFrame(dragRafRef.current);
+      }
+    };
   }, []);
 
   const clampRange = React.useCallback(
     (start: number, count: number) => {
-      const c = Math.max(MIN_VISIBLE, Math.min(count, data.length));
+      const c = Math.max(
+        Math.min(MIN_VISIBLE, data.length),
+        Math.min(Math.round(count), data.length),
+      );
+
       const s = Math.max(0, Math.min(start, data.length - c));
+
       return { start: s, count: c };
     },
     [data.length],
@@ -114,10 +140,14 @@ export function CandleChartStick({
 
   const { candles, colWidth } = React.useMemo(() => {
     const n = visibleData.length;
-    if (n === 0) return { candles: [], colWidth: 0 };
+
+    if (n === 0) {
+      return { candles: [], colWidth: 0 };
+    }
 
     const allLows = visibleData.map((d) => d.low);
     const allHighs = visibleData.map((d) => d.high);
+
     const minV = Math.min(...allLows);
     const maxV = Math.max(...allHighs);
     const range = maxV - minV || 1;
@@ -126,13 +156,15 @@ export function CandleChartStick({
     const innerH = VIEWBOX_H - PAD_Y_TOP - PAD_Y_BOTTOM;
     const col = innerW / n;
 
-    const toY = (v: number) => PAD_Y_TOP + (1 - (v - minV) / range) * innerH;
+    const toY = (v: number) =>
+      PAD_Y_TOP + (1 - (v - minV) / range) * innerH;
 
     const mapped = visibleData.map((d, i) => {
       const cx = PAD_X + (i + 0.5) * col;
       const isUp = d.close >= d.open;
       const yOpen = toY(d.open);
       const yClose = toY(d.close);
+
       return {
         ...d,
         index: i,
@@ -150,45 +182,68 @@ export function CandleChartStick({
 
   const active =
     candles[Math.min(activeLocalIndex, candles.length - 1)] ?? candles[0];
+
   const activeXPct = active ? active.cx / VIEWBOX_W : 0;
 
-  // --- Hover (throttled via rAF so we never do more than one state update per frame) ---
   const handleHover = React.useCallback(
     (clientX: number) => {
       if (!root.current || candles.length === 0 || colWidth === 0) return;
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+      }
+
       rafRef.current = requestAnimationFrame(() => {
-        const rect = root.current!.getBoundingClientRect();
+        if (!root.current) return;
+
+        const rect = root.current.getBoundingClientRect();
         const relPx = (clientX - rect.left) / rect.width;
         const relSvgX = relPx * VIEWBOX_W;
+
         const idx = Math.floor((relSvgX - PAD_X) / colWidth);
-        setActiveLocalIndex(Math.max(0, Math.min(candles.length - 1, idx)));
+
+        setActiveLocalIndex(
+          Math.max(0, Math.min(candles.length - 1, idx)),
+        );
       });
     },
     [candles.length, colWidth],
   );
 
-  // --- Drag to pan ---
   function onPointerDown(e: React.PointerEvent<HTMLDivElement>) {
-    if (!zoomable) return;
-    dragState.current = { startX: e.clientX, startRange: rangeStart };
+    if (!zoomable || e.button !== 0) return;
+
+    dragState.current = {
+      startX: e.clientX,
+      startRange: rangeStart,
+    };
+
     setIsDragging(true);
-    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+    e.currentTarget.setPointerCapture(e.pointerId);
   }
 
   function onPointerMove(e: React.PointerEvent<HTMLDivElement>) {
-    if (dragState.current && root.current) {
-      const rect = root.current.getBoundingClientRect();
+    if (dragState.current && root.current && colWidth > 0) {
       const dxPx = e.clientX - dragState.current.startX;
-      const dxSvg = (dxPx / rect.width) * VIEWBOX_W;
+      const dxSvg = (dxPx / root.current.getBoundingClientRect().width) * VIEWBOX_W;
       const dCandles = -(dxSvg / colWidth);
+
       const { start } = clampRange(
         dragState.current.startRange + dCandles,
         visibleCount,
       );
-      setRangeStart(Math.round(start));
+
+      if (dragRafRef.current !== null) {
+        cancelAnimationFrame(dragRafRef.current);
+      }
+
+      dragRafRef.current = requestAnimationFrame(() => {
+        setRangeStart(Math.round(start));
+      });
+
       return;
     }
+
     handleHover(e.clientX);
   }
 
@@ -196,22 +251,24 @@ export function CandleChartStick({
     if (dragState.current) {
       dragState.current = null;
       setIsDragging(false);
-      (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+
+      if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+        e.currentTarget.releasePointerCapture(e.pointerId);
+      }
     }
   }
 
-  // --- Wheel to zoom (stretch the visible window in/out) ---
   function onWheel(e: React.WheelEvent<HTMLDivElement>) {
     if (!zoomable || !root.current) return;
+
     e.preventDefault();
 
     const rect = root.current.getBoundingClientRect();
     const relPx = (e.clientX - rect.left) / rect.width;
 
-    const zoomFactor = e.deltaY > 0 ? 1.15 : 1 / 1.15;
+    const zoomFactor = e.deltaY > 0 ? 1.12 : 1 / 1.12;
     const newCount = visibleCount * zoomFactor;
 
-    // Keep the candle under the cursor stationary while zooming
     const cursorIndexInWindow = relPx * visibleCount;
     const cursorAbsIndex = rangeStart + cursorIndexInWindow;
 
@@ -225,21 +282,32 @@ export function CandleChartStick({
   }
 
   const axisVisible = showXAxis && candles.length > 0;
+
   const tickIndices = React.useMemo(() => {
     if (!axisVisible) return [];
+
     const n = candles.length;
-    const maxFit = Math.max(2, Math.floor(containerWidth / 80));
+    const maxFit = Math.max(2, Math.floor(containerWidth / 88));
     const count = Math.min(tickCount, maxFit, n);
+
     if (count <= 1) return [0];
+
     return Array.from({ length: count }, (_, i) =>
       Math.round((i * (n - 1)) / (count - 1)),
     );
   }, [axisVisible, candles.length, tickCount, containerWidth]);
 
   React.useEffect(() => {
-    // keep active index in range when the window resizes
-    setActiveLocalIndex((i) => Math.min(i, candles.length - 1));
+    setActiveLocalIndex((i) =>
+      Math.max(0, Math.min(i, candles.length - 1)),
+    );
   }, [candles.length]);
+
+  React.useEffect(() => {
+    setRangeStart((start) =>
+      Math.max(0, Math.min(start, data.length - visibleCount)),
+    );
+  }, [data.length, visibleCount]);
 
   if (candles.length === 0 || !active) return null;
 
@@ -248,10 +316,16 @@ export function CandleChartStick({
 
   return (
     <div
-      style={{ maxWidth: width } as React.CSSProperties}
+      style={
+        {
+          maxWidth: width,
+          "--chart-up": upColor,
+          "--chart-down": downColor,
+        } as React.CSSProperties
+      }
       className={cn(
         "w-full select-none",
-        "[--spell-line:#c7c7c7] [--spell-up:theme(colors.green.500)] [--spell-down:theme(colors.red.500)]",
+        "[--spell-line:#c7c7c7]",
         "dark:[--spell-line:#4f4f4f]",
         className,
       )}
@@ -261,6 +335,7 @@ export function CandleChartStick({
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
         onPointerLeave={onPointerUp}
         onWheel={onWheel}
         className={cn(
@@ -274,10 +349,14 @@ export function CandleChartStick({
           viewBox={`0 0 ${VIEWBOX_W} ${VIEWBOX_H}`}
           fill="none"
           preserveAspectRatio="xMidYMid meet"
-          style={{ overflow: "visible" }}
+          style={{
+            overflow: "visible",
+            shapeRendering: "geometricPrecision",
+          }}
         >
           {candles.map((c) => {
             const color = c.isUp ? upColor : downColor;
+
             return (
               <g key={rangeStart + c.index}>
                 <line
@@ -289,12 +368,13 @@ export function CandleChartStick({
                   strokeWidth={1.4}
                   strokeLinecap="round"
                 />
+
                 <rect
                   x={c.cx - bw / 2}
                   y={c.bodyTop}
                   width={bw}
                   height={c.bodyHeight}
-                  rx={1}
+                  rx={Math.min(1.5, bw / 4)}
                   fill={color}
                 />
               </g>
@@ -306,6 +386,7 @@ export function CandleChartStick({
           (() => {
             const cursorPx = activeXPct * containerWidth;
             const tooltipOnLeft = activeXPct > 0.5;
+
             return (
               <>
                 <div
@@ -317,7 +398,6 @@ export function CandleChartStick({
                     transform: `translate3d(${cursorPx - LINE_WIDTH / 2}px, 0, 0)`,
                     transition: `transform ${transition}`,
                     willChange: "transform",
-                    zIndex: -1,
                   }}
                 />
 
@@ -332,20 +412,23 @@ export function CandleChartStick({
                     boxShadow: TOOLTIP_SHADOW,
                   }}
                 >
-                  <div className="font-medium text-foreground">
+                  <div className="font-medium text-foreground whitespace-nowrap">
                     {active.time}
                   </div>
+
                   <div className="flex items-center gap-2">
                     <div
                       className="h-2.5 w-2.5 shrink-0 rounded-[2px]"
                       style={{ background: activeColor }}
                     />
+
                     {name && (
                       <span className="text-muted-foreground whitespace-nowrap">
                         {name}
                       </span>
                     )}
                   </div>
+
                   <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 font-mono text-foreground tabular-nums">
                     <span>O {formatValue(active.open)}</span>
                     <span>H {formatValue(active.high)}</span>
@@ -359,15 +442,23 @@ export function CandleChartStick({
       </div>
 
       {axisVisible && (
-        <div className="relative h-5 mt-2">
+        <div className="relative h-5 mt-2 overflow-hidden">
           {tickIndices.map((i) => {
             const c = candles[i];
-            const xPct = c.cx / VIEWBOX_W;
+            const xPct = (c.cx / VIEWBOX_W) * 100;
+
             return (
               <div
-                key={i}
-                className="absolute top-0 -translate-x-1/2 text-[11px] leading-none text-muted-foreground tabular-nums whitespace-nowrap"
-                style={{ left: `${xPct * 100}%` }}
+                key={`${rangeStart}-${visibleCount}-${i}`}
+                className="absolute top-0 -translate-x-1/2 text-[11px] leading-none text-muted-foreground tabular-nums whitespace-nowrap antialiased"
+                style={{
+                  left: `${xPct}%`,
+                  transition: `left ${transition}, opacity ${transition}`,
+                  willChange: "left",
+                  fontVariantNumeric: "tabular-nums",
+                  WebkitFontSmoothing: "antialiased",
+                  MozOsxFontSmoothing: "grayscale",
+                }}
               >
                 {c.time}
               </div>

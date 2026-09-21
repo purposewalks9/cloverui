@@ -1,4 +1,3 @@
-// soft-button.tsx
 import * as React from "react";
 import { Slot, Slottable } from "@radix-ui/react-slot";
 
@@ -22,58 +21,60 @@ interface SoftButtonProps
   color?: SoftColor;
   size?: SizeVariant;
   asChild?: boolean;
+  className?: string;
 }
 
-const colorMap: Record<SoftColor, string> = {
-  red: [
-    "bg-[radial-gradient(ellipse_at_center,#ff1515_0%,#ff1b1b_35%,#ff4b4b_68%,#ff7777_100%)]",
-    "text-black",
-  ].join(" "),
-
-  darkRed: [
-    "bg-[radial-gradient(ellipse_at_center,#ff1717_0%,#f00000_38%,#b90000_72%,#9f0000_100%)]",
-    "text-black",
-  ].join(" "),
-
-  green: [
-    "bg-[radial-gradient(ellipse_at_center,#4a9500_0%,#579f0b_35%,#86b744_68%,#a9c978_100%)]",
-    "text-white",
-  ].join(" "),
-
-  lime: [
-    "bg-[radial-gradient(ellipse_at_center,#7dff00_0%,#73ed00_38%,#58b900_70%,#4b9700_100%)]",
-    "text-black",
-  ].join(" "),
-
-  blue: [
-    "bg-[radial-gradient(ellipse_at_center,#1e9bff_0%,#0f8cf5_35%,#1a6fd1_68%,#2a56a8_100%)]",
-    "text-white",
-  ].join(" "),
-
-  purple: [
-    "bg-[radial-gradient(ellipse_at_center,#b15aff_0%,#a33ff5_35%,#8226cc_68%,#631d9f_100%)]",
-    "text-white",
-  ].join(" "),
-
-  orange: [
-    "bg-[radial-gradient(ellipse_at_center,#ff9d15_0%,#ff8c1b_35%,#f5701f_68%,#d9591a_100%)]",
-    "text-black",
-  ].join(" "),
-
-  yellow: [
-    "bg-[radial-gradient(ellipse_at_center,#fff015_0%,#ffe01b_35%,#f5c31f_68%,#d9a11a_100%)]",
-    "text-black",
-  ].join(" "),
-
-  pink: [
-    "bg-[radial-gradient(ellipse_at_center,#ff5ec4_0%,#ff3fb3_35%,#e0269a_68%,#b81d7c_100%)]",
-    "text-black",
-  ].join(" "),
-
-  cyan: [
-    "bg-[radial-gradient(ellipse_at_center,#15f0ff_0%,#1be0ed_35%,#1fb7c3_68%,#1a949e_100%)]",
-    "text-black",
-  ].join(" "),
+const colorMap: Record<SoftColor, { background: string; foreground: string; glow: string }> = {
+  red: {
+    background: "radial-gradient(120% 140% at 50% 0%, #ff6b6b 0%, #ff2d2d 42%, #c91515 100%)",
+    foreground: "#fff",
+    glow: "rgba(255, 45, 45, .34)",
+  },
+  darkRed: {
+    background: "radial-gradient(120% 140% at 50% 0%, #ff4545 0%, #e31212 42%, #850808 100%)",
+    foreground: "#fff",
+    glow: "rgba(227, 18, 18, .34)",
+  },
+  green: {
+    background: "radial-gradient(120% 140% at 50% 0%, #a8d96a 0%, #63a928 42%, #347012 100%)",
+    foreground: "#fff",
+    glow: "rgba(99, 169, 40, .28)",
+  },
+  lime: {
+    background: "radial-gradient(120% 140% at 50% 0%, #efff78 0%, #b8ed20 40%, #63ae00 100%)",
+    foreground: "#101500",
+    glow: "rgba(184, 237, 32, .32)",
+  },
+  blue: {
+    background: "radial-gradient(120% 140% at 50% 0%, #72c7ff 0%, #278ff0 42%, #1554aa 100%)",
+    foreground: "#fff",
+    glow: "rgba(39, 143, 240, .3)",
+  },
+  purple: {
+    background: "radial-gradient(120% 140% at 50% 0%, #d08cff 0%, #9c4cff 42%, #5a229e 100%)",
+    foreground: "#fff",
+    glow: "rgba(156, 76, 255, .3)",
+  },
+  orange: {
+    background: "radial-gradient(120% 140% at 50% 0%, #ffd080 0%, #ff922e 42%, #c95008 100%)",
+    foreground: "#241100",
+    glow: "rgba(255, 146, 46, .3)",
+  },
+  yellow: {
+    background: "radial-gradient(120% 140% at 50% 0%, #fff99a 0%, #ffdc32 42%, #c89100 100%)",
+    foreground: "#241b00",
+    glow: "rgba(255, 220, 50, .28)",
+  },
+  pink: {
+    background: "radial-gradient(120% 140% at 50% 0%, #ff9bdf 0%, #f04fbd 42%, #a81778 100%)",
+    foreground: "#fff",
+    glow: "rgba(240, 79, 189, .3)",
+  },
+  cyan: {
+    background: "radial-gradient(120% 140% at 50% 0%, #9dffff 0%, #28dce7 42%, #14828c 100%)",
+    foreground: "#062022",
+    glow: "rgba(40, 220, 231, .3)",
+  },
 };
 
 const sizeMap: Record<SizeVariant, string> = {
@@ -83,30 +84,42 @@ const sizeMap: Record<SizeVariant, string> = {
 };
 
 const SoftButton = React.forwardRef<HTMLButtonElement, SoftButtonProps>(
-  ({ children, color = "red", size = "default", asChild = false, ...props }, ref) => {
+  ({ children, color = "red", size = "default", asChild = false, className, style, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
+    const palette = colorMap[color];
 
     return (
       <Comp
         ref={ref}
         className={[
           "group relative inline-flex cursor-pointer items-center justify-center",
-          "gap-2 overflow-hidden whitespace-nowrap rounded-full",
-          "font-semibold",
-          "transition-[filter,transform,box-shadow] duration-200",
+          "gap-2 overflow-hidden whitespace-nowrap rounded-full font-semibold",
+          "transition-[filter,transform,box-shadow] duration-300 ease-out",
+          "hover:-translate-y-0.5 hover:brightness-[1.04] hover:shadow-[0_11px_26px_-9px_var(--soft-glow)]",
           "active:translate-y-0 active:scale-[0.98] active:brightness-95",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--soft-focus)] focus-visible:ring-offset-2 focus-visible:ring-offset-background",
           "disabled:pointer-events-none disabled:opacity-50",
           "[&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
-          colorMap[color],
           sizeMap[size],
+          className,
         ].join(" ")}
+        style={{
+          ...style,
+          background: palette.background,
+          color: palette.foreground,
+          ["--soft-glow" as string]: palette.glow,
+          ["--soft-focus" as string]: palette.glow,
+        }}
         {...props}
       >
         <span
           aria-hidden
-          className="pointer-events-none absolute inset-[1px] rounded-[inherit] shadow-[inset_0_1px_2px_rgba(255,255,255,0.35),inset_0_-2px_3px_rgba(0,0,0,0.12)]"
+          className="pointer-events-none absolute inset-[1px] rounded-[inherit] bg-[linear-gradient(180deg,rgba(255,255,255,.28),transparent_42%)] opacity-80 transition-opacity duration-300 group-hover:opacity-100"
         />
-
+        <span
+          aria-hidden
+          className="pointer-events-none absolute -inset-x-1/3 top-0 h-px bg-white/70 blur-sm transition-transform duration-500 group-hover:translate-x-1/3"
+        />
         {asChild ? (
           <Slottable>{children}</Slottable>
         ) : (

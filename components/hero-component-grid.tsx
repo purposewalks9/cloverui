@@ -5,41 +5,30 @@ import Link from "next/link";
 import { BookOpen } from "lucide-react";
 
 const ROTATION_MS = 2800;
+const TILE_CLASS = "lg:col-span-3 lg:row-span-1";
 
-type ComponentTile = {
+export type ComponentTile = {
   name: string;
   slug: string;
-  className: string;
+  singleDemo?: boolean;
 };
-
-const componentTiles: ComponentTile[] = [
-  { name: "Slide Text", slug: "slide-text", className: "lg:col-span-3 lg:row-span-1" },
-  { name: "Gauge Text", slug: "gauge-text", className: "lg:col-span-3 lg:row-span-1" },
-  { name: "Grid Reveal", slug: "grid-reveal", className: "lg:col-span-3 lg:row-span-1" },
-  { name: "Text Gif", slug: "text-gif", className: "lg:col-span-3 lg:row-span-1" },
-  { name: "Cycle List", slug: "cycle-list", className: "lg:col-span-3 lg:row-span-1" },
-  { name: "Soft Button", slug: "soft-button", className: "lg:col-span-3 lg:row-span-1" },
-  { name: "Token Fall", slug: "token-fall", className: "lg:col-span-3 lg:row-span-1" },
-  { name: "Drop Text", slug: "drop-text", className: "lg:col-span-3 lg:row-span-1" },
-  { name: "Status Tag", slug: "status-tag", className: "lg:col-span-3 lg:row-span-1" },
-  { name: "Candlestick Chart", slug: "candlestick-chart", className: "lg:col-span-3 lg:row-span-1" },
-  { name: "Pulse Loader", slug: "pulse-loader", className: "lg:col-span-3 lg:row-span-1" },
-];
 
 function ComponentTileView({
   tile,
   demos,
   hasDoc,
+  singleDemo,
 }: {
   tile: ComponentTile;
   demos: React.ReactNode[];
   hasDoc: boolean;
+  singleDemo?: boolean;
 }) {
   const [index, setIndex] = React.useState(0);
   const [visible, setVisible] = React.useState(true);
 
   React.useEffect(() => {
-    if (demos.length <= 1) return;
+    if (singleDemo || demos.length <= 1) return;
 
     const timer = window.setInterval(() => {
       setVisible(false);
@@ -51,16 +40,16 @@ function ComponentTileView({
     }, ROTATION_MS);
 
     return () => window.clearInterval(timer);
-  }, [demos.length]);
+  }, [demos.length, singleDemo]);
 
   return (
     <div
       className={[
         "group relative min-h-0 overflow-hidden rounded-2xl",
         "border border-border/60 bg-background/80",
-        "shadow-sm transition-all duration-200 ease-out",
-        "hover:-translate-y-0.5 hover:border-border hover:shadow-md",
-        tile.className,
+        "shadow-sm transition-[transform,border-color,box-shadow] duration-300 ease-out",
+        "hover:-translate-y-1 hover:border-border hover:shadow-lg",
+        TILE_CLASS,
       ].join(" ")}
     >
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex justify-end p-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
@@ -90,7 +79,7 @@ function ComponentTileView({
             key={index}
             className={[
               "flex w-full items-center justify-center",
-              "transition-[opacity,transform] duration-300 ease-out",
+              "transition-[opacity,transform] duration-400 ease-[cubic-bezier(.22,1,.36,1)]",
               visible ? "translate-x-0 opacity-100" : "-translate-x-5 opacity-0",
             ].join(" ")}
           >
@@ -111,22 +100,26 @@ export type DocBundle = {
   toc: { title?: string; url: string; depth: number }[];
   demos: React.ReactNode[];
   rawContent: string;
+  singleDemo?: boolean;
 };
 
 export function HeroComponentGrid({
+  tiles,
   docs = {},
 }: {
+  tiles: ComponentTile[];
   docs?: Record<string, DocBundle>;
 }) {
   return (
     <main className="w-full flex-1 px-2">
-      <div className="grid min-h-[calc(100dvh-3.5rem)] w-full grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-12 lg:grid-rows-3 lg:auto-rows-fr">
-        {componentTiles.map((tile) => (
+      <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-12 lg:grid-rows-3 lg:min-h-[720px] lg:auto-rows-fr">
+        {tiles.map((tile) => (
           <ComponentTileView
             key={tile.name}
             tile={tile}
             demos={docs[tile.slug]?.demos ?? []}
             hasDoc={!!docs[tile.slug]}
+            singleDemo={docs[tile.slug]?.singleDemo}
           />
         ))}
       </div>

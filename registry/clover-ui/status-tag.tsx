@@ -12,7 +12,6 @@ type Status = "draft" | "in-progress" | "in-review" | "completed";
 
 interface StatusTagProps extends React.HTMLAttributes<HTMLSpanElement> {
   status: Status;
-  /** Overrides the default label for this status (e.g. "Shipped" instead of "Completed"). */
   label?: string;
 }
 
@@ -21,7 +20,6 @@ type StatusConfig = {
   icon: LucideIcon;
   bg: string;
   text: string;
-  /** completed uses a filled circle + white check instead of an outline icon */
   solid?: boolean;
 };
 
@@ -53,12 +51,6 @@ const statusMap: Record<Status, StatusConfig> = {
   },
 };
 
-/**
- * A compact status pill: shows just an icon at rest, and expands on hover
- * to reveal its label. Drop it anywhere — it's self-contained and doesn't
- * rely on a parent `group`, so it works standalone or nested inside cards
- * that already use their own hover groups.
- */
 const StatusTag = React.forwardRef<HTMLSpanElement, StatusTagProps>(
   ({ status, label, className, ...props }, ref) => {
     const config = statusMap[status];

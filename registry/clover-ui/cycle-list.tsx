@@ -113,7 +113,6 @@ const CycleList = forwardRef<CycleListRef, CycleListProps>(
       play();
     }, [once, running, play]);
 
-    // Measure the list so the arc's height always matches it exactly.
     useLayoutEffect(() => {
       const el = contentRef.current;
       if (!el) return;
@@ -126,8 +125,7 @@ const CycleList = forwardRef<CycleListRef, CycleListProps>(
       return () => ro.disconnect();
     }, [items.length]);
 
-    // Position the dot before paint so it never animates in from (0,0)
-    // on first mount — it's already sitting at the start of the curve.
+ 
     useLayoutEffect(() => {
       const path = pathRef.current;
       if (!path || trackHeight === 0) return;

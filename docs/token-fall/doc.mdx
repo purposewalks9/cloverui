@@ -10,6 +10,21 @@ import { Demo, DenseDemo } from './demo'
   </DemoCode>
 </DemoCanvas>
 
+## Examples
+
+### Denser fall
+
+Raise `count`, shrink the token range, and lower `spawnInterval` for a thicker, faster-spawning fall.
+
+<DemoCanvas>
+  <DemoPreview><DenseDemo /></DemoPreview>
+  <DemoCode>
+```tsx
+    <TokenFall count={90} minSize={8} maxSize={16} spawnInterval={60} />
+```
+  </DemoCode>
+</DemoCanvas>
+
 ## Installation
 
 <InstallationTabs item="token-fall">

@@ -1,0 +1,190 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "clover-ui",
+  "homepage": "https://cloverui.dev",
+  "author": "purposewalks9 (https://github.com/purposewalks9)",
+  "items": [
+    {
+      "name": "grid-reveal",
+      "type": "registry:component",
+      "title": "Grid Reveal",
+      "description": "A configurable grid of blocks that dissolves away to reveal content underneath, with random, wave, diagonal, and center patterns.",
+      "files": [
+        {
+          "path": "registry/clover-ui/grid-reveal.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [],
+      "category": "animation"
+    },
+    {
+      "name": "gauge-text",
+      "type": "registry:component",
+      "title": "Gauge Text",
+      "description": "An animated stat that counts up to a number next to a fixed gauge icon, e.g. \"89x faster\".",
+      "files": [
+        {
+          "path": "registry/clover-ui/gauge-text.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "category": "display"
+    },
+    {
+      "name": "pulse-loader",
+      "type": "registry:component",
+      "title": "Pulse Loader",
+      "description": "A breathing concentric-ring loader that pulses in and out on a loop, with a customizable base color, ring count, size, and speed.",
+      "files": [
+        {
+          "path": "registry/clover-ui/pulse-loader.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [],
+      "category": "feedback"
+    },
+    {
+      "name": "slide-text",
+      "type": "registry:component",
+      "title": "Slide Text",
+      "description": "Text that slides into or out of place, word by word or character by character.",
+      "files": [
+        {
+          "path": "registry/clover-ui/slide-text.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [],
+      "category": "animation"
+    },
+    {
+      "name": "cycle-list",
+      "type": "registry:component",
+      "title": "Cycle List",
+      "description": "A list that cycles focus through its items on an interval, with a dot marker that follows a curved track to the active item.",
+      "files": [
+        {
+          "path": "registry/clover-ui/cycle-list.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [],
+      "category": "display"
+    },
+    {
+      "name": "soft-button",
+      "type": "registry:component",
+      "title": "Soft Button",
+      "description": "A locked glossy pill button with a small set of hand-tuned color styles and sizes.",
+      "files": [
+        {
+          "path": "registry/clover-ui/soft-button.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "@radix-ui/react-slot"
+      ],
+      "registryDependencies": [],
+      "category": "button"
+    },
+    {
+      "name": "status-tag",
+      "type": "registry:component",
+      "title": "Status Tag",
+      "description": "A compact status pill that expands on hover to reveal the status label.",
+      "files": [
+        {
+          "path": "registry/clover-ui/status-tag.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "category": "feedback"
+    },
+    {
+      "name": "token-fall",
+      "type": "registry:component",
+      "title": "Token Fall",
+      "description": "Physics-based tokens that fall with gravity, bounce, and scatter away from the cursor, with a customizable spawn rate, palette, and per-token render.",
+      "files": [
+        {
+          "path": "registry/clover-ui/token-fall.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "matter-js",
+        "@types/matter-js"
+      ],
+      "registryDependencies": [],
+      "category": "animation"
+    },
+    {
+      "name": "candlestick-chart",
+      "type": "registry:component",
+      "title": "Candlestick Chart",
+      "description": "A responsive candlestick chart with drag-to-pan, wheel-to-zoom, an animated cursor, and an OHLC tooltip.",
+      "files": [
+        {
+          "path": "registry/clover-ui/candle-chart-stick.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "category": "display"
+    },
+    {
+      "name": "drop-text",
+      "type": "registry:component",
+      "title": "Drop Text",
+      "description": "Text that drops into place under gravity and settles with a bounce, word by word or character by character.",
+      "files": [
+        {
+          "path": "registry/clover-ui/drop-text.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [],
+      "category": "animation"
+    },
+    {
+      "name": "text-gif",
+      "type": "registry:component",
+      "title": "Text GIF",
+      "description": "Animated text filled with a GIF, creating a moving visual effect inside the letter shapes.",
+      "files": [
+        {
+          "path": "registry/clover-ui/text-gif.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "category": "text"
+    }
+  ]
+}

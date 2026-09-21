@@ -39,11 +39,11 @@ export function SiteHeader({ docSchema }: { docSchema: DocSchema }) {
       <div className="flex min-w-0 items-center gap-2">
         <SidebarTrigger className="-ml-1" />
         <Separator orientation="vertical" className="h-4" />
-        <h1 className="shrink-0 text-sm font-medium">{title}</h1>
+        <h1 className="shrink-0 text-[16px] font-semibold">{title}</h1>
         {description && (
           <>
             <Separator orientation="vertical" className="h-4" />
-            <p className="min-w-0 truncate text-sm text-muted-foreground">
+            <p className="min-w-0 truncate text-[14px] font-medium text-muted-foreground">
               {description}
             </p>
           </>

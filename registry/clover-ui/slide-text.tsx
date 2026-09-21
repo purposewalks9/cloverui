@@ -17,34 +17,24 @@ import { cn } from "@/lib/utils";
 export interface SlideTextProps {
   children: string;
 
-  /** Split text into words or individual characters. */
   splitBy?: "words" | "characters";
 
-  /** Direction the pieces enter/exit from. */
   direction?: "left" | "right";
 
-  /** Whether pieces slide in or out. */
   mode?: "in" | "out";
 
-  /** Distance each piece travels in pixels. */
   distance?: number;
 
-  /** Color used while a piece is moving. */
   color?: string;
 
-  /** Class applied after a piece lands. */
   landedClassName?: string;
 
-  /** Initial delay before animation starts. */
   delay?: number;
 
-  /** Delay between each word/character. */
   stagger?: number;
 
-  /** Order pieces animate. */
   from?: "first" | "last" | "center";
 
-  /** Motion transition. */
   transition?: AnimationOptions;
 
   className?: string;
@@ -105,8 +95,6 @@ function SlidePiece({
   const [landed, setLanded] = useState(false);
 
   useEffect(() => {
-    // Every piece starts in the sliding color.
-    // It only becomes the normal color after its own animation finishes.
     setLanded(false);
   }, [target]);
 
@@ -275,12 +263,12 @@ const SlideText = forwardRef<SlideTextRef, SlideTextProps>(
         onViewportEnter={inView ? play : undefined}
         {...props}
       >
-        {/* Accessibility */}
+        {}
         <span className="sr-only">
           {text}
         </span>
 
-        {/* Animated text */}
+        {}
         <span
           aria-hidden="true"
           className="inline-flex flex-wrap"

@@ -20,7 +20,7 @@ export function BlueDemo() {
 export function FastDemo() {
   return (
     <CycleList
-      items={["Distractions", "Context switching", "Multitasking","walker","Tom"]}
+      items={["Distractions", "Context switching", "Multitasking"]}
       activeColor="#8B5CF6"
       interval={900}
     />

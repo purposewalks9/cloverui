@@ -14,28 +14,20 @@ import { cn } from "@/lib/utils";
 export interface DropTextProps {
   children: string;
 
-  /** Split the animation by whole words or individual characters. */
   splitBy?: "words" | "characters";
 
-  /** How far above its landing spot each unit starts, in pixels. */
   dropDistance?: number;
 
-  /** Multiplier on drop speed — higher drops faster. 1 is the default pace. */
   speed?: number;
 
-  /** Base time for one unit to fall, in seconds, before `speed` is applied. */
   duration?: number;
 
-  /** Base delay between each unit starting to fall, in seconds, before `speed` is applied. */
   stagger?: number;
 
-  /** Delay before the first unit starts, in seconds (not affected by `speed`). */
   delay?: number;
 
-  /** How much a unit overshoots and settles on landing. 0 disables the bounce. */
   bounce?: number;
 
-  /** Class applied to a unit once it has landed. */
   landedClassName?: string;
 
   className?: string;
@@ -87,9 +79,6 @@ const DropText = forwardRef<DropTextRef, DropTextProps>(
       }
       return children.split(" ");
     }, [children, splitBy]);
-
-    // speed scales the pace of the fall and the gap between units —
-    // it never touches `delay`, so the overall start stays predictable.
     const effectiveDuration = duration / Math.max(speed, 0.01);
     const effectiveStagger = stagger / Math.max(speed, 0.01);
 

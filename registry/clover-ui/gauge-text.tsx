@@ -17,31 +17,22 @@ import { cn } from "@/lib/utils";
 export type GaugeSpeed = "slow" | "normal" | "fast";
 
 export interface GaugeTextProps {
-  /** The number to count up to, e.g. 89 for "89x faster". */
   value: number;
 
-  /** Appended directly to the number, no space (e.g. "x", "%"). */
   suffix?: string;
 
-  /** Text shown after the gauge icon, e.g. "faster". */
   label: string;
 
-  /** How fast the number counts up. */
   speed?: GaugeSpeed;
 
-  /** Color used for the number and icon while counting. */
   color?: string;
 
-  /** Class applied to the number + label once the count-up lands. */
   landedClassName?: string;
 
-  /** Decimal places kept on the counted number. */
   decimals?: number;
 
-  /** Overrides the count-up duration in seconds (derived from `speed` otherwise). */
   duration?: number;
 
-  /** Hide the gauge icon and just count the number. */
   showIcon?: boolean;
 
   className?: string;
@@ -157,7 +148,6 @@ const GaugeText = forwardRef<GaugeTextRef, GaugeTextProps>(
           cancelAnimationFrame(frame.current);
         }
       };
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [autoStart, inView]);
 
     const handleViewportEnter = useCallback(() => {

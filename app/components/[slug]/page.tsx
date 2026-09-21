@@ -3,25 +3,12 @@ import { existsSync } from "fs";
 import { readFile } from "fs/promises";
 import { join } from "path";
 import { getTableOfContents } from "@/lib/toc";
+import { getPublishedSlugs } from "@/lib/slugs";
 import { ComponentPage } from "@/components/component-page";
 
-const SLUGS = [
-  "slide-text",
-  "gauge-text",
-  "grid-reveal",
-  "cycle-list",
-  "text-gif",
-  "candlestick-chart",
-  "drop-text",
-  "gamepad-nav",
-  "token-fall",
-  "pulse-loader",
-  "soft-button",
-  "status-tag",
-] as const;
-
-export function generateStaticParams() {
-  return SLUGS.map((slug) => ({ slug }));
+export async function generateStaticParams() {
+  const slugs = await getPublishedSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export default async function Page({
@@ -31,7 +18,8 @@ export default async function Page({
 }) {
   const { slug } = await params;
 
-  if (!SLUGS.includes(slug as (typeof SLUGS)[number])) {
+  const slugs = await getPublishedSlugs();
+  if (!slugs.includes(slug)) {
     notFound();
   }
 

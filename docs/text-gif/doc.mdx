@@ -1,4 +1,4 @@
-import { Demo, SmallDemo, CustomDemo } from "./demo";
+import { Demo, SealDemo, PrismDemo } from "./demo";
 
 ## Preview
 
@@ -22,15 +22,15 @@ The effect also works with smaller text and different font sizes.
 
 <DemoCanvas>
   <DemoPreview>
-    <SmallDemo />
+    <SealDemo />
   </DemoPreview>
   <DemoCode>
 ```tsx
 <TextGif
-  src="/demos/text-gif.gif"
-  className="text-4xl font-bold"
+  src="/seal.gif"
+  className="text-4xl font-black tracking-tight"
 >
-  Moving Text
+  Animated type
 </TextGif>
 ```
   </DemoCode>
@@ -42,15 +42,15 @@ Use your own typography classes to control the appearance of the masked text.
 
 <DemoCanvas>
   <DemoPreview>
-    <CustomDemo />
+    <PrismDemo />
   </DemoPreview>
   <DemoCode>
 ```tsx
 <TextGif
-  src="/demos/text-gif.gif"
-  className="text-5xl font-black uppercase tracking-[-0.04em]"
+  src="/prism.gif"
+  className="text-center text-5xl font-black uppercase tracking-[-0.04em]"
 >
-  Creative Type
+  Make it move.
 </TextGif>
 ```
   </DemoCode>
@@ -68,7 +68,7 @@ Use your own typography classes to control the appearance of the masked text.
 ```tsx
 import { TextGif } from "@/components/text-gif";
 
-<TextGif src="/demos/text-gif.gif">
+<TextGif src="/seal.gif">
   CLOVER UI
 </TextGif>
 ```

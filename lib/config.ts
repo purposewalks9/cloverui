@@ -5,12 +5,12 @@ export const siteConfig = {
   description:
     "Beautiful, sophisticated UI components designed for modern React and Tailwind CSS applications.",
   carbon: {
-    // Setting serve to "" disables ads entirely.
     serve: "",
     placement: "cloverui",
   },
   links: {
     github: "https://github.com/purposewalks9/clover-ui",
+    sponsor: "https://github.com/sponsors/purposewalks9", 
   },
   keywords: [
     "React",

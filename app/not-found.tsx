@@ -67,9 +67,8 @@ export default function NotFound() {
             </div>
           </div>
           <p className="font-medium font-lg text-muted-foreground">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iure
-            ratione sit numquam temporibus beatae explicabo eius quos quia
-            voluptatum quae.
+            We couldn&apos;t find the page you&apos;re looking for. It may
+            have been moved, renamed, or never existed.
           </p>
         </div>
         <SoftButton color="red" size="default" asChild>

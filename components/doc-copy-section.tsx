@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Copy } from "lucide-react";
+import { Bot, Check, Copy } from "lucide-react";
 import { trackEvent } from "@/lib/events";
 import { cn } from "@/lib/utils";
-import { SiClaude, SiOpenai, SiV0 } from "@icons-pack/react-simple-icons";
+import { SiClaude, SiV0 } from "@icons-pack/react-simple-icons";
 
 interface DocCopySectionProps {
   content: string;
@@ -104,7 +104,7 @@ export function DocCopySection({ content, url }: DocCopySectionProps) {
         className={itemClass}
         onClick={() => trackEvent("open_in_chatgpt", { url })}
       >
-        <SiOpenai />
+        <Bot />
         Open in ChatGPT
       </a>
 

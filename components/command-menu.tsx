@@ -94,7 +94,7 @@ export function SearchForm({ docSchema }: { docSchema: DocSchema }) {
       if (item.isComponent) {
         const componentName = item.url.split("/").pop();
         setSelectedType("component");
-        const componentArg = `@clover/${componentName}`;
+        const componentArg = `@clover-ui/${componentName}`;
         let cmd: string;
         switch (packageManager) {
           case "pnpm":

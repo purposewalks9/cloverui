@@ -20,43 +20,20 @@ export type GridRevealPattern =
   | "center";
 
 export interface GridRevealProps {
-  /** Content revealed underneath the grid once it clears. */
   children?: React.ReactNode;
-
-  /** Number of rows in the block grid. */
   rows?: number;
-
-  /** Number of columns in the block grid. */
   cols?: number;
-
-  /** Color of the reveal blocks. */
   color?: string;
-
-  /** How long a single block takes to fade/scale away. */
   blockDuration?: number;
-
-  /** Delay between each block, in seconds. */
   stagger?: number;
-
-  /** Total time for the grid to clear. Overrides `stagger`. */
   duration?: number;
-
-  /** Order the blocks reveal in. */
   pattern?: GridRevealPattern;
-
-  /** Continuously reveal and cover the content. */
   loop?: boolean;
-
-  /** Pause between reveal cycles, in seconds. */
   loopDelay?: number;
-
-  /** Gap between grid blocks. */
   gap?: number;
-
   className?: string;
   gridClassName?: string;
   blockClassName?: string;
-
   autoStart?: boolean;
   inView?: boolean;
   once?: boolean;
@@ -66,19 +43,12 @@ export interface GridRevealProps {
 }
 
 export interface GridRevealRef {
-  /** Reveal the content underneath the grid. */
   play: () => void;
-
-  /** Cover the content with the grid. */
   cover: () => void;
-
-  /** Reset the component back to its covered state. */
   reset: () => void;
 }
 
 function shuffledIndexes(count: number) {
-  // Seeded PRNG keeps the order identical between server and client,
-  // preventing hydration mismatches.
   let seed = 0x9e3779b9 ^ count;
 
   const random = () => {
@@ -331,7 +301,6 @@ const GridReveal = forwardRef<
       }
 
       return clearTimers;
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [autoStart, inView]);
 
     const handleViewportEnter =

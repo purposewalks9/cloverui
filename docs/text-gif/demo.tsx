@@ -1,11 +1,19 @@
 import { TextGif } from "@/registry/clover-ui/text-gif";
 
+const gifs = {
+  seal: "/seal.gif",
+  fire: "/fire.gif",
+  aurora: "/aurora.gif",
+  ocean: "/ocean.gif",
+  prism: "/prism.gif",
+};
+
 export function Demo() {
   return (
     <div className="flex min-h-[260px] items-center justify-center px-6">
       <TextGif
-        src="/seal.gif"
-        className="text-center text-6xl font-black tracking-tight sm:text-7xl"
+        src={gifs.fire}
+        className="text-center text-6xl font-black tracking-[-0.05em] sm:text-7xl"
       >
         CLOVER
       </TextGif>
@@ -13,27 +21,66 @@ export function Demo() {
   );
 }
 
-export function SmallDemo() {
+export function FireDemo() {
   return (
-    <div className="flex min-h-[180px] items-center justify-center px-6">
+    <div className="flex min-h-[220px] items-center justify-center px-6">
       <TextGif
-        src="/seal.gif"
-        className="text-4xl font-bold tracking-tight"
+        src={gifs.fire}
+        className="text-5xl font-black uppercase tracking-[-0.04em] sm:text-6xl"
       >
-        Moving Text
+        Ship Fast
       </TextGif>
     </div>
   );
 }
 
-export function CustomDemo() {
+export function AuroraDemo() {
   return (
     <div className="flex min-h-[220px] items-center justify-center px-6">
       <TextGif
-        src="/seal.gif"
-        className="text-5xl font-black uppercase tracking-[-0.04em]"
+        src={gifs.aurora}
+        className="text-center text-5xl font-black tracking-tight"
       >
-        Creative Type
+        Soft motion.
+      </TextGif>
+    </div>
+  );
+}
+
+export function OceanDemo() {
+  return (
+    <div className="flex min-h-[200px] items-center justify-center px-6">
+      <TextGif
+        src={gifs.ocean}
+        className="text-4xl font-bold tracking-tight sm:text-5xl"
+      >
+        Deep blue.
+      </TextGif>
+    </div>
+  );
+}
+
+export function PrismDemo() {
+  return (
+    <div className="flex min-h-[220px] items-center justify-center px-6">
+      <TextGif
+        src={gifs.prism}
+        className="text-center text-5xl font-black uppercase tracking-[-0.04em]"
+      >
+        Make it move.
+      </TextGif>
+    </div>
+  );
+}
+
+export function SealDemo() {
+  return (
+    <div className="flex min-h-[200px] items-center justify-center px-6">
+      <TextGif
+        src={gifs.seal}
+        className="text-4xl font-black tracking-tight"
+      >
+        Animated type
       </TextGif>
     </div>
   );
@@ -43,12 +90,10 @@ export function ParagraphDemo() {
   return (
     <div className="flex min-h-[260px] items-center justify-center px-6">
       <TextGif
-        src="/seal.gif"
+        src={gifs.aurora}
         className="max-w-2xl text-center text-lg font-semibold leading-relaxed tracking-tight sm:text-xl"
       >
-        This is a longer paragraph of text rendered with the animated gif
-        clipped behind every character, wrapping naturally across multiple
-        lines just like normal body copy would.
+        Motion can live inside normal text too, wrapping naturally across multiple lines.
       </TextGif>
     </div>
   );

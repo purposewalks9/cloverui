@@ -49,7 +49,7 @@ function Input({
           className={inputClassName}
           data-slot="input"
           size={typeof size === "number" ? size : undefined}
-          {...props}
+          {...(props as React.InputHTMLAttributes<HTMLInputElement>)}
         />
       ) : (
         <InputPrimitive

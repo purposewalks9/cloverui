@@ -1,35 +1,27 @@
 import { getTableOfContents } from "@/lib/toc";
 import { readFile } from "fs/promises";
 import { join } from "path";
-import { existsSync } from "fs";
-import { HeroComponentGrid, type DocBundle } from "./hero-component-grid";
-
-const SLUGS = [
-  "slide-text",
-  "gauge-text",
-  "grid-reveal",
-  "cycle-list",
-  "text-gif",
-  "candlestick-chart",
-  "drop-text",
-  "gamepad-nav",
-  "token-fall",
-  "pulse-loader",
-  "soft-button",
-  "status-tag",
-] as const;
+import { getPublishedSlugs } from "@/lib/slugs";
+import { getRegistry } from "@/lib/registry";
+import {
+  HeroComponentGrid,
+  type ComponentTile,
+  type DocBundle,
+} from "./hero-component-grid";
 
 export async function HeroComponentGridLoader() {
+  const [slugs, { items }] = await Promise.all([
+    getPublishedSlugs(),
+    getRegistry(),
+  ]);
+
+  const titleBySlug = new Map(items.map((item) => [item.name, item.title]));
+
   const docs: Record<string, DocBundle> = {};
+  const tiles: ComponentTile[] = [];
 
-  for (const slug of SLUGS) {
+  for (const slug of slugs) {
     const docPath = join(process.cwd(), "docs", slug, "doc.mdx");
-    const demoPath = join(process.cwd(), "docs", slug, "demo.tsx");
-
-    if (!existsSync(docPath) || !existsSync(demoPath)) {
-      console.warn(`[component-book] missing doc.mdx or demo.tsx for "${slug}" — skipping.`);
-      continue;
-    }
 
     try {
       const Doc = (await import(`@/docs/${slug}/doc.mdx`)).default;
@@ -44,11 +36,13 @@ export async function HeroComponentGridLoader() {
           return <Comp key={key} />;
         });
 
-      docs[slug] = { content: <Doc />, toc, demos, rawContent }; // ← added rawContent
+      const singleDemo = slug === "token-fall" || slug === "chat";
+      docs[slug] = { content: <Doc />, toc, demos, rawContent, singleDemo };
+      tiles.push({ name: titleBySlug.get(slug) ?? slug, slug });
     } catch (err) {
       console.warn(`[component-book] failed to load "${slug}":`, err);
     }
   }
 
-  return <HeroComponentGrid docs={docs} />;
+  return <HeroComponentGrid tiles={tiles} docs={docs} />;
 }

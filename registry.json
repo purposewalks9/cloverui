@@ -34,7 +34,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [],
-      "category": "display"
+      "category": "text"
     },
     {
       "name": "pulse-loader",
@@ -68,7 +68,7 @@
         "motion"
       ],
       "registryDependencies": [],
-      "category": "animation"
+      "category": "text"
     },
     {
       "name": "cycle-list",
@@ -153,6 +153,23 @@
       "dependencies": [],
       "registryDependencies": [],
       "category": "display"
+    },
+    {
+      "name": "drop-text",
+      "type": "registry:component",
+      "title": "Drop Text",
+      "description": "Text that drops into place under gravity and settles with a bounce, word by word or character by character.",
+      "files": [
+        {
+          "path": "registry/clover-ui/drop-text.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [],
+      "category": "text"
     },
     {
       "name": "text-gif",

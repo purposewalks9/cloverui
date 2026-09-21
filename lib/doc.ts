@@ -2,20 +2,19 @@ import { basicDoc } from "@/basic-doc";
 import { getRegistry } from "./registry";
 import { DocItem, DocSchema, RegistryItem } from "./types";
 
-const COMPONENTS_CATEGORIES = ["components", "other", "display"] as const;
-
 const CATEGORY_LABELS: Record<string, string> = {
-  animation: "Text Animations",
-  input: "Inputs",
+  text: "Text",
+  animation: "Animation",
   button: "Buttons",
+  input: "Inputs",
   feedback: "Feedback",
   background: "Backgrounds",
   interactive: "Interactive",
   display: "Display",
-  "candlestick-chart": "Charts",
 };
 
 const CATEGORY_ORDER = [
+  "text",
   "animation",
   "button",
   "input",
@@ -23,7 +22,6 @@ const CATEGORY_ORDER = [
   "background",
   "interactive",
   "display",
-  "candlestick-chart",
 ];
 
 function toDocItem(item: RegistryItem): DocItem {
@@ -38,9 +36,8 @@ function toDocItem(item: RegistryItem): DocItem {
 function groupByCategory(items: RegistryItem[]) {
   const groups = new Map<string, DocItem[]>();
   for (const item of items) {
-    const key = item.category ?? "other";
-    const doc = toDocItem(item);
-    groups.set(key, [...(groups.get(key) ?? []), doc]);
+    const key = item.category ?? "display";
+    groups.set(key, [...(groups.get(key) ?? []), toDocItem(item)]);
   }
   return groups;
 }
@@ -50,26 +47,17 @@ export const getDocSchema = async () => {
   const components = items.filter((i) => i.type === "registry:component");
   const byCategory = groupByCategory(components);
 
-  const componentsItems = COMPONENTS_CATEGORIES.flatMap(
-    (key) => byCategory.get(key) ?? []
-  );
   const orderedKeys = CATEGORY_ORDER.filter((k) => byCategory.has(k));
-  const extraKeys = [...byCategory.keys()].filter(
-    (k) =>
-      !(COMPONENTS_CATEGORIES as readonly string[]).includes(k) &&
-      !CATEGORY_ORDER.includes(k)
-  );
+  const extraKeys = [...byCategory.keys()]
+    .filter((k) => !CATEGORY_ORDER.includes(k))
+    .sort((a, b) => a.localeCompare(b));
 
-  const componentGroups: DocSchema = [
-    { title: "Components", items: componentsItems },
-    ...orderedKeys
-      .concat(extraKeys)
-      .map((key) => ({
-        title: CATEGORY_LABELS[key] ?? key,
-        items: byCategory.get(key) ?? [],
-      }))
-      .filter((g) => g.items.length > 0),
-  ];
+  const componentGroups: DocSchema = [...orderedKeys, ...extraKeys]
+    .map((key) => ({
+      title: CATEGORY_LABELS[key] ?? key,
+      items: byCategory.get(key) ?? [],
+    }))
+    .filter((g) => g.items.length > 0);
 
   return [...basicDoc, ...componentGroups];
 };

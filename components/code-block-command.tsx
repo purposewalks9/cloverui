@@ -31,10 +31,10 @@ export function CodeBlockCommand(
       };
     }
     return {
-      pnpm: `pnpm dlx shadcn@latest add @clover/${item}`,
-      npm: `npx shadcn@latest add @clover/${item}`,
-      yarn: `yarn dlx shadcn@latest add @clover/${item}`,
-      bun: `bunx --bun shadcn@latest add @clover/${item}`,
+      pnpm: `pnpm dlx shadcn@latest add @clover-ui/${item}`,
+      npm: `npx shadcn@latest add @clover-ui/${item}`,
+      yarn: `yarn dlx shadcn@latest add @clover-ui/${item}`,
+      bun: `bunx --bun shadcn@latest add @clover-ui/${item}`,
     };
   }, [item, mcp]);
 
