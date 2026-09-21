@@ -55,24 +55,24 @@ export function PlaygroundShell({
   }
 
   return (
-    <div className="not-prose my-6 flex overflow-hidden rounded-lg border border-border">
+    <div className="not-prose my-6 flex flex-col overflow-hidden rounded-lg border border-border lg:flex-row">
       <div className="flex min-w-0 flex-1 flex-col">
         <div
           className={cn(
-            "relative flex min-h-[28rem] flex-1 items-center justify-center overflow-hidden p-6",
+            "relative flex min-h-[28rem] w-full flex-1 items-stretch justify-start overflow-auto p-6",
             "bg-[radial-gradient(currentColor_1px,transparent_1px)] bg-[size:16px_16px] text-border",
             stageClassName,
           )}
         >
           <div
             key={replayKey}
-            className="flex min-w-0 max-w-full items-center justify-center text-foreground"
+            className="w-full min-w-0 text-foreground"
           >
             {render(values)}
           </div>
         </div>
 
-        <div className="relative border-t border-border">
+        <div className="relative min-w-0 border-t border-border">
           <pre className="max-h-72 overflow-auto p-4 font-mono text-sm leading-relaxed">
             <code>{fullCode}</code>
           </pre>
@@ -134,3 +134,4 @@ export function PlaygroundShell({
     </div>
   );
 }
+

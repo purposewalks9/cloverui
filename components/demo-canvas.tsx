@@ -70,8 +70,10 @@ export function DemoPreview({
     <TabsContent value="preview">
       <div
         className={cn(
-          "relative flex w-full min-h-64 h-full overflow-hidden border rounded-sm not-prose preview p-10 justify-center items-center md:min-h-80",
-          center && "flex items-center justify-center",
+          "relative flex w-full min-h-[28rem] overflow-hidden border rounded-sm not-prose preview p-6 md:min-h-[32rem]",
+          center
+            ? "items-center justify-center"
+            : "items-stretch justify-start",
           className,
         )}
       >
@@ -80,7 +82,15 @@ export function DemoPreview({
             <div className="text-sm text-muted-foreground">Loading…</div>
           }
         >
-            <React.Fragment key={key}>{children}</React.Fragment>
+            <div
+              key={key}
+              className={cn(
+                "w-full min-w-0 text-foreground",
+                center && "flex items-center justify-center",
+              )}
+            >
+              {children}
+            </div>
         </Suspense>
 
         <div className="absolute bottom-3 left-3 z-20 flex items-center gap-1 rounded-lg border bg-background/95 p-1 shadow-md backdrop-blur-sm">

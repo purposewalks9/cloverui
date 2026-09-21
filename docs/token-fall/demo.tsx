@@ -1,9 +1,11 @@
+"use client";
+
 import { TokenFall } from "@/registry/clover-ui/token-fall";
 
 export function Demo() {
   return (
-    <div className="relative h-72 w-full max-w-md overflow-hidden rounded-2xl">
-      <TokenFall count={34} minSize={12} maxSize={25} />
+    <div className="relative h-[32rem] w-full min-w-0 overflow-hidden rounded-xl">
+      <TokenFall count={55} minSize={12} maxSize={25} />
     </div>
   );
 }
