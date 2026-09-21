@@ -1,0 +1,108 @@
+import { Demo, SmallDemo, CustomDemo } from "./demo";
+
+## Preview
+
+`TextGif` fills text with an animated GIF, allowing the animation to play directly inside the letter shapes.
+
+<DemoCanvas>
+  <DemoPreview>
+    <Demo />
+  </DemoPreview>
+  <DemoCode>
+```tsx file=./demo.tsx
+```
+  </DemoCode>
+</DemoCanvas>
+
+## Examples
+
+### Small text
+
+The effect also works with smaller text and different font sizes.
+
+<DemoCanvas>
+  <DemoPreview>
+    <SmallDemo />
+  </DemoPreview>
+  <DemoCode>
+```tsx
+<TextGif
+  src="/demos/text-gif.gif"
+  className="text-4xl font-bold"
+>
+  Moving Text
+</TextGif>
+```
+  </DemoCode>
+</DemoCanvas>
+
+### Custom typography
+
+Use your own typography classes to control the appearance of the masked text.
+
+<DemoCanvas>
+  <DemoPreview>
+    <CustomDemo />
+  </DemoPreview>
+  <DemoCode>
+```tsx
+<TextGif
+  src="/demos/text-gif.gif"
+  className="text-5xl font-black uppercase tracking-[-0.04em]"
+>
+  Creative Type
+</TextGif>
+```
+  </DemoCode>
+</DemoCanvas>
+
+## Installation
+
+<InstallationTabs item="text-gif">
+```tsx file=../../registry/clover-ui/text-gif.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { TextGif } from "@/components/text-gif";
+
+<TextGif src="/demos/text-gif.gif">
+  CLOVER UI
+</TextGif>
+```
+
+## How it works
+
+`TextGif` uses the text itself as a visual mask. The GIF is rendered as the background of the text and clipped to the letter shapes using `background-clip: text`.
+
+This allows the animation to continuously play inside the text while keeping the surrounding area transparent.
+
+The component accepts normal text styling classes, so font size, weight, tracking, alignment, and other typography properties can be controlled with `className`.
+
+## Props
+
+<PropsTable data={[
+{
+name: "src",
+type: "string",
+description: "URL of the GIF used as the animated text fill."
+},
+{
+name: "children",
+type: "React.ReactNode",
+description: "Text or content used as the mask."
+},
+{
+name: "fallbackColor",
+type: "string",
+default: '"currentColor"',
+description: "Fallback text color used by the component."
+},
+{
+name: "className",
+type: "string",
+description: "Additional classes for typography and layout."
+}
+]} />

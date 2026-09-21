@@ -38,7 +38,7 @@
     ".next/types/**/*.ts",
     "components/signature.tsx",
     ".next/dev/types/**/*.ts"
-  ],
+, "docs/token-fall/doc.mdx"  ],
   "exclude": [
     "node_modules"
   ]

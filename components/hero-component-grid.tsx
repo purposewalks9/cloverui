@@ -28,6 +28,11 @@ const componentTiles: ComponentTile[] = [
     slug: "grid-reveal",
     className: "lg:col-span-3 lg:row-span-1",
   },
+   {
+    name: "Text Gif",
+    slug: "text-gif",
+    className: "lg:col-span-3 lg:row-span-1",
+  },
   {
     name: "Cycle List",
     slug: "cycle-list",
@@ -36,6 +41,11 @@ const componentTiles: ComponentTile[] = [
   {
     name: "Soft Button",
     slug: "soft-button",
+    className: "lg:col-span-3 lg:row-span-1",
+  },
+  {
+    name: "Token Fall",
+    slug: "token-fall",
     className: "lg:col-span-3 lg:row-span-1",
   },
   {

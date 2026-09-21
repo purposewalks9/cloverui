@@ -137,6 +137,39 @@
       ],
       "registryDependencies": [],
       "category": "feedback"
+    },
+    {
+      "name": "token-fall",
+      "type": "registry:component",
+      "title": "Token Fall",
+      "description": "Physics-based tokens that fall with gravity, bounce, and scatter away from the cursor, with a customizable spawn rate, palette, and per-token render.",
+      "files": [
+        {
+          "path": "registry/clover-ui/token-fall.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "matter-js",
+        "@types/matter-js"
+      ],
+      "registryDependencies": [],
+      "category": "animation"
+    },
+    {
+      "name": "text-gif",
+      "type": "registry:component",
+      "title": "Text GIF",
+      "description": "Animated text filled with a GIF, creating a moving visual effect inside the letter shapes.",
+      "files": [
+        {
+          "path": "registry/clover-ui/text-gif.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "category": "text"
     }
   ]
 }

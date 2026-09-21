@@ -1,0 +1,45 @@
+import { Demo, DenseDemo } from './demo'
+
+## Preview
+
+<DemoCanvas>
+  <DemoPreview><Demo /></DemoPreview>
+  <DemoCode>
+```tsx file=./demo.tsx
+```
+  </DemoCode>
+</DemoCanvas>
+
+## Installation
+
+<InstallationTabs item="token-fall">
+```tsx file=../../registry/clover-ui/token-fall.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { TokenFall } from "@/components/token-fall";
+
+<div className="relative h-72 w-full">
+  <TokenFall />
+</div>
+```
+
+## Props
+
+<PropsTable data={[
+  { name: "count", type: "number", default: "55" },
+  { name: "minSize", type: "number", default: "14" },
+  { name: "maxSize", type: "number", default: "28" },
+  { name: "palettes", type: "TokenPalette[]", description: "Array of { bg, fg } color pairs, randomly assigned per token." },
+  { name: "renderToken", type: "(token: TokenMeta) => ReactNode", description: "Overrides the built-in coin glyph with a custom visual per token." },
+  { name: "gravity", type: "number", default: "0.35" },
+  { name: "restitution", type: "number", default: "0.75" },
+  { name: "repelRadius", type: "number", default: "150" },
+  { name: "repelStrength", type: "number", default: "0.0015" },
+  { name: "spawnInterval", type: "number", default: "180" },
+  { name: "className", type: "string" },
+  { name: "tokenClassName", type: "string" },
+]} />
