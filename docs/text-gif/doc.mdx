@@ -1,60 +1,8 @@
-import { Demo, SealDemo, PrismDemo } from "./demo";
+import { TextGifPlayground } from './playground'
 
-## Preview
+Text filled with an animated GIF instead of a flat color, using a background-clip mask.
 
-`TextGif` fills text with an animated GIF, allowing the animation to play directly inside the letter shapes.
-
-<DemoCanvas>
-  <DemoPreview>
-    <Demo />
-  </DemoPreview>
-  <DemoCode>
-```tsx file=./demo.tsx
-```
-  </DemoCode>
-</DemoCanvas>
-
-## Examples
-
-### Small text
-
-The effect also works with smaller text and different font sizes.
-
-<DemoCanvas>
-  <DemoPreview>
-    <SealDemo />
-  </DemoPreview>
-  <DemoCode>
-```tsx
-<TextGif
-  src="/seal.gif"
-  className="text-4xl font-black tracking-tight"
->
-  Animated type
-</TextGif>
-```
-  </DemoCode>
-</DemoCanvas>
-
-### Custom typography
-
-Use your own typography classes to control the appearance of the masked text.
-
-<DemoCanvas>
-  <DemoPreview>
-    <PrismDemo />
-  </DemoPreview>
-  <DemoCode>
-```tsx
-<TextGif
-  src="/prism.gif"
-  className="text-center text-5xl font-black uppercase tracking-[-0.04em]"
->
-  Make it move.
-</TextGif>
-```
-  </DemoCode>
-</DemoCanvas>
+<TextGifPlayground />
 
 ## Installation
 
@@ -68,18 +16,10 @@ Use your own typography classes to control the appearance of the masked text.
 ```tsx
 import { TextGif } from "@/components/text-gif";
 
-<TextGif src="/seal.gif">
-  CLOVER UI
+<TextGif src="/fire.gif" className="text-6xl font-black">
+  CLOVER
 </TextGif>
 ```
-
-## How it works
-
-`TextGif` uses the text itself as a visual mask. The GIF is rendered as the background of the text and clipped to the letter shapes using `background-clip: text`.
-
-This allows the animation to continuously play inside the text while keeping the surrounding area transparent.
-
-The component accepts normal text styling classes, so font size, weight, tracking, alignment, and other typography properties can be controlled with `className`.
 
 ## Props
 

@@ -1,29 +1,8 @@
-import { Demo, DenseDemo } from './demo'
+import { TokenFallPlayground } from './playground'
 
-## Preview
+Physics-driven tokens that fall, bounce, and gently repel from the cursor.
 
-<DemoCanvas>
-  <DemoPreview><Demo /></DemoPreview>
-  <DemoCode>
-```tsx file=./demo.tsx
-```
-  </DemoCode>
-</DemoCanvas>
-
-## Examples
-
-### Denser fall
-
-Raise `count`, shrink the token range, and lower `spawnInterval` for a thicker, faster-spawning fall.
-
-<DemoCanvas>
-  <DemoPreview><DenseDemo /></DemoPreview>
-  <DemoCode>
-```tsx
-    <TokenFall count={90} minSize={8} maxSize={16} spawnInterval={60} />
-```
-  </DemoCode>
-</DemoCanvas>
+<TokenFallPlayground />
 
 ## Installation
 
@@ -37,8 +16,8 @@ Raise `count`, shrink the token range, and lower `spawnInterval` for a thicker, 
 ```tsx
 import { TokenFall } from "@/components/token-fall";
 
-<div className="relative h-72 w-full">
-  <TokenFall />
+<div className="relative h-72 w-full overflow-hidden rounded-2xl">
+  <TokenFall count={34} minSize={12} maxSize={25} />
 </div>
 ```
 

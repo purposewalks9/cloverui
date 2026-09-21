@@ -1,55 +1,8 @@
-import { CharacterDemo, CenterDemo, Demo, OutDemo } from './demo'
+import { SlideTextPlayground } from './playground'
 
-## Preview
+Text that slides into place, word by word or character by character, from either edge or the center.
 
-<DemoCanvas>
-  <DemoPreview><Demo /></DemoPreview>
-  <DemoCode>
-    ```tsx file=./demo.tsx
-    ```
-  </DemoCode>
-</DemoCanvas>
-
-## Examples
-
-### Characters
-
-<DemoCanvas>
-  <DemoPreview><CharacterDemo /></DemoPreview>
-  <DemoCode>
-    ```tsx
-    <SlideText splitBy="characters" color="#8B5CF6">
-      Every letter moves.
-    </SlideText>
-    ```
-  </DemoCode>
-</DemoCanvas>
-
-### Start from the center
-
-<DemoCanvas>
-  <DemoPreview><CenterDemo /></DemoPreview>
-  <DemoCode>
-    ```tsx
-    <SlideText from="center" direction="left" color="#60A5FA">
-      Start from the center.
-    </SlideText>
-    ```
-  </DemoCode>
-</DemoCanvas>
-
-### Slide out
-
-<DemoCanvas>
-  <DemoPreview><OutDemo /></DemoPreview>
-  <DemoCode>
-    ```tsx
-    <SlideText mode="out" direction="right" color="#F43F5E">
-      Slide text out.
-    </SlideText>
-    ```
-  </DemoCode>
-</DemoCanvas>
+<SlideTextPlayground />
 
 ## Installation
 
@@ -63,7 +16,9 @@ import { CharacterDemo, CenterDemo, Demo, OutDemo } from './demo'
 ```tsx
 import { SlideText } from "@/components/slide-text";
 
-<SlideText>Your text here</SlideText>
+<SlideText color="#E1E900" stagger={0.065}>
+  Clover UI, one word at a time.
+</SlideText>
 ```
 
 ## Props

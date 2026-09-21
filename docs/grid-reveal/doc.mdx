@@ -1,89 +1,8 @@
-import { Demo, WaveDemo, DiagonalDemo, CenterDemo, LoopDemo } from './demo'
+import { GridRevealPlayground } from './playground'
 
-## Preview
+A block grid that reveals its content in a configurable pattern — random, wave, diagonal, or from the center.
 
-<DemoCanvas>
-  <DemoPreview><Demo /></DemoPreview>
-  <DemoCode>
-```tsx file=./demo.tsx
-```
-  </DemoCode>
-</DemoCanvas>
-
-## Examples
-
-### Wave
-
-`pattern="wave"` reveals column by column.
-
-<DemoCanvas>
-  <DemoPreview><WaveDemo /></DemoPreview>
-  <DemoCode>
-```tsx
-    <GridReveal
-      rows={8}
-      cols={8}
-      color="#8B5CF6"
-      pattern="wave"
-      blockDuration={0.22}
-      stagger={0.03}
-    >
-      <YourContent />
-    </GridReveal>
-```
-  </DemoCode>
-</DemoCanvas>
-
-### Diagonal
-
-`pattern="diagonal"` sweeps corner to corner.
-
-<DemoCanvas>
-  <DemoPreview><DiagonalDemo /></DemoPreview>
-  <DemoCode>
-```tsx
-    <GridReveal rows={8} cols={8} color="#60A5FA" pattern="diagonal">
-      <YourContent />
-    </GridReveal>
-```
-  </DemoCode>
-</DemoCanvas>
-
-### Center out
-
-`pattern="center"` radiates outward from the middle of the grid.
-
-<DemoCanvas>
-  <DemoPreview><CenterDemo /></DemoPreview>
-  <DemoCode>
-```tsx
-    <GridReveal rows={8} cols={8} color="#F43F5E" pattern="center">
-      <YourContent />
-    </GridReveal>
-```
-  </DemoCode>
-</DemoCanvas>
-
-### Looping
-
-Set `loop` to continuously cover and reveal the content, with `loopDelay` controlling the pause between cycles.
-
-<DemoCanvas>
-  <DemoPreview><LoopDemo /></DemoPreview>
-  <DemoCode>
-```tsx
-    <GridReveal
-      rows={6}
-      cols={6}
-      color="#34D399"
-      loop
-      loopDelay={0.8}
-    >
-      <YourContent />
-    </GridReveal>
-```
-  </DemoCode>
-</DemoCanvas>
+<GridRevealPlayground />
 
 ## Installation
 
@@ -97,7 +16,7 @@ Set `loop` to continuously cover and reveal the content, with `loopDelay` contro
 ```tsx
 import { GridReveal } from "@/components/grid-reveal";
 
-<GridReveal rows={8} cols={8} color="#E1E900">
+<GridReveal rows={8} cols={8} pattern="random">
   <YourContent />
 </GridReveal>
 ```

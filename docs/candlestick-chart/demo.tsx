@@ -2,7 +2,6 @@
 
 import { CandleChartStick, type Candle } from "@/registry/clover-ui/candle-chart-stick";
 
-// Simple deterministic PRNG so the "random" data is stable across builds/SSR
 function mulberry32(seed: number) {
   return function () {
     seed |= 0;
@@ -25,7 +24,6 @@ function generateCandles(count: number, seed = 42): Candle[] {
     date.setDate(start.getDate() + i);
 
     const open = price;
-    // random walk drift with occasional bigger moves
     const drift = (rand() - 0.5) * 4 + Math.sin(i / 40) * 0.6;
     const close = Math.max(1, open + drift);
 
@@ -55,54 +53,13 @@ function generateCandles(count: number, seed = 42): Candle[] {
   return candles;
 }
 
-const data = generateCandles(1000);
+// Shared sample data — reused by the playground so both stay in sync.
+export const data = generateCandles(1000);
 
 export function Demo() {
   return (
     <div className="w-full px-6 py-10">
       <CandleChartStick data={data} name="AAPL" />
-    </div>
-  );
-}
-
-export function CustomColorDemo() {
-  return (
-    <div className="w-full px-6 py-10">
-      <CandleChartStick
-        data={data}
-        name="AAPL"
-        upColor="#60A5FA"
-        downColor="#F5A623"
-        defaultIndex={400}
-      />
-    </div>
-  );
-}
-
-export function CurrencyDemo() {
-  return (
-    <div className="w-full px-6 py-10">
-      <CandleChartStick
-        data={data}
-        name="AAPL"
-        formatValue={(v) => `$${v.toFixed(2)}`}
-      />
-    </div>
-  );
-}
-
-export function WithoutAnimationDemo() {
-  return (
-    <div className="w-full px-6 py-10">
-      <CandleChartStick data={data} name="AAPL" animated={false} />
-    </div>
-  );
-}
-
-export function WideBodiesDemo() {
-  return (
-    <div className="w-full px-6 py-10">
-      <CandleChartStick data={data} name="AAPL" bodyWidthRatio={0.8} />
     </div>
   );
 }

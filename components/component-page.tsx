@@ -26,7 +26,7 @@ export function ComponentPage({
   toc,
 }: ComponentPageProps) {
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-1 flex-row">
+    <div className="mx-auto flex w-full flex-1 flex-row">
       <div className="flex min-w-0 flex-1 flex-col md:pr-64">
         <div className="min-w-0 flex-1 p-6 sm:p-12">
           <article className="prose dark:prose-invert max-w-none">

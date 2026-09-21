@@ -1,47 +1,8 @@
-import { Demo, BlueDemo, FastDemo } from './demo'
+import { CycleListPlayground } from './playground'
 
-## Preview
+A stack of rotated cards that cycles through a list, one item forward at a time.
 
-<DemoCanvas>
-  <DemoPreview><Demo /></DemoPreview>
-  <DemoCode>
-```tsx file=./demo.tsx
-```
-  </DemoCode>
-</DemoCanvas>
-
-## Examples
-
-### Custom active color
-
-`activeColor` defaults to green, but takes any color — whichever item is currently active, plus the tracking dot, switch to it as the list cycles.
-
-<DemoCanvas>
-  <DemoPreview><BlueDemo /></DemoPreview>
-  <DemoCode>
-```tsx
-    <CycleList
-      items={["Slower reviews", "Scope creep", "Missed deadlines"]}
-      activeColor="#60A5FA"
-    />
-```
-  </DemoCode>
-</DemoCanvas>
-
-### Faster interval
-
-<DemoCanvas>
-  <DemoPreview><FastDemo /></DemoPreview>
-  <DemoCode>
-```tsx
-    <CycleList
-      items={["Distractions", "Context switching", "Multitasking"]}
-      activeColor="#8B5CF6"
-      interval={900}
-    />
-```
-  </DemoCode>
-</DemoCanvas>
+<CycleListPlayground />
 
 ## Installation
 
@@ -55,9 +16,7 @@ import { Demo, BlueDemo, FastDemo } from './demo'
 ```tsx
 import { CycleList } from "@/components/cycle-list";
 
-<CycleList
-  items={["Overconfidence", "Lack of reliability", "Missed deadlines"]}
-/>
+<CycleList items={["Overconfidence", "Lack of reliability", "Missed deadlines"]} />
 ```
 
 ## Props
@@ -79,7 +38,3 @@ import { CycleList } from "@/components/cycle-list";
   { name: "onStart", type: "() => void" },
   { name: "onChange", type: "(index: number) => void" },
 ]} />
-
-## Ref API
-
-`CycleList` exposes `play()`, `pause()`, and `reset()` through a ref.

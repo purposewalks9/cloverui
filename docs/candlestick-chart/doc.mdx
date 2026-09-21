@@ -1,78 +1,8 @@
-import { Demo, CustomColorDemo, CurrencyDemo, WithoutAnimationDemo, WideBodiesDemo } from './demo'
+import { CandlestickPlayground } from './playground'
 
-## Preview
+A draggable, zoomable OHLC candlestick chart with a live tooltip. Scroll to zoom, drag to pan.
 
-<DemoCanvas>
-  <DemoPreview><Demo /></DemoPreview>
-  <DemoCode>
-```tsx file=./demo.tsx
-```
-  </DemoCode>
-</DemoCanvas>
-
-## Examples
-
-### Custom colors
-
-Override `upColor` and `downColor` to match your palette instead of the default green/red.
-
-<DemoCanvas>
-  <DemoPreview><CustomColorDemo /></DemoPreview>
-  <DemoCode>
-```tsx
-    <CandleChartStick
-      data={data}
-      name="AAPL"
-      upColor="#60A5FA"
-      downColor="#F5A623"
-      defaultIndex={400}
-    />
-```
-  </DemoCode>
-</DemoCanvas>
-
-### Custom tooltip format
-
-Pass `formatValue` to control how O/H/L/C values render in the tooltip.
-
-<DemoCanvas>
-  <DemoPreview><CurrencyDemo /></DemoPreview>
-  <DemoCode>
-```tsx
-    <CandleChartStick
-      data={data}
-      name="AAPL"
-      formatValue={(v) => `$${v.toFixed(2)}`}
-    />
-```
-  </DemoCode>
-</DemoCanvas>
-
-### Without animation
-
-Set `animated={false}` to snap the cursor and tooltip instantly instead of transitioning.
-
-<DemoCanvas>
-  <DemoPreview><WithoutAnimationDemo /></DemoPreview>
-  <DemoCode>
-```tsx
-    <CandleChartStick data={data} name="AAPL" animated={false} />
-```
-  </DemoCode>
-</DemoCanvas>
-
-### Wider candle bodies
-
-Tune `bodyWidthRatio` (0–1) to control how much of each column the candle body fills.
-
-<DemoCanvas>
-  <DemoPreview><WideBodiesDemo /></DemoPreview>
-  <DemoCode>
-```tsx
-    <CandleChartStick data={data} name="AAPL" bodyWidthRatio={0.8} />
-```
-  </DemoCode>
-</DemoCanvas>
+<CandlestickPlayground />
 
 ## Installation
 
@@ -93,6 +23,8 @@ const data: Candle[] = [
 
 <CandleChartStick data={data} name="AAPL" />
 ```
+
+## Props
 
 <PropsTable data={[
   { name: "data", type: "Candle[]", description: "Array of `{ time, open, high, low, close }` objects — one candle per entry." },

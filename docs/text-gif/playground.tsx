@@ -1,0 +1,44 @@
+"use client";
+
+import { TextGif } from "@/registry/clover-ui/text-gif";
+import { PlaygroundShell } from "@/components/playground/playground-shell";
+import type { ControlDef } from "@/lib/playground";
+import { gifs } from "./demo";
+
+const controls: ControlDef[] = [
+  { type: "text", prop: "children", label: "Text" },
+  {
+    type: "select",
+    prop: "src",
+    label: "GIF",
+    options: Object.entries(gifs).map(([label, value]) => ({ label, value })),
+  },
+  { type: "color", prop: "fallbackColor", label: "Fallback color" },
+];
+
+const defaultProps = {
+  children: "CLOVER",
+  src: gifs.fire,
+  fallbackColor: "#888888",
+};
+
+export function TextGifPlayground() {
+  return (
+    <PlaygroundShell
+      componentName="TextGif"
+      controls={controls}
+      defaultProps={defaultProps}
+      render={(values) => (
+        <div className="flex min-h-[260px] items-center justify-center px-6">
+          <TextGif
+            src={values.src as string}
+            fallbackColor={values.fallbackColor as string}
+            className="text-center text-6xl font-black tracking-[-0.05em] sm:text-7xl"
+          >
+            {values.children as string}
+          </TextGif>
+        </div>
+      )}
+    />
+  );
+}

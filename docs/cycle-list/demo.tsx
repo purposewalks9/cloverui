@@ -7,22 +7,3 @@ export function Demo() {
     />
   );
 }
-
-export function BlueDemo() {
-  return (
-    <CycleList
-      items={["Slower reviews", "Scope creep", "Missed deadlines"]}
-      activeColor="#60A5FA"
-    />
-  );
-}
-
-export function FastDemo() {
-  return (
-    <CycleList
-      items={["Distractions", "Context switching", "Multitasking"]}
-      activeColor="#8B5CF6"
-      interval={900}
-    />
-  );
-}
