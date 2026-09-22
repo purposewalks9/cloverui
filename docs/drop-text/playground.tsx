@@ -37,6 +37,7 @@ export function DropTextPlayground() {
       controls={controls}
       defaultProps={defaultProps}
       render={(values) => (
+       <div className="flex w-full justify-center">
         <DropText
           key={JSON.stringify(values)}
           splitBy={values.splitBy as "words" | "characters"}
@@ -48,6 +49,7 @@ export function DropTextPlayground() {
         >
           {values.children as string}
         </DropText>
+        </div>
       )}
     />
   );

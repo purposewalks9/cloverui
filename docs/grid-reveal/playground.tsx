@@ -42,6 +42,7 @@ export function GridRevealPlayground() {
       defaultProps={defaultProps}
       codeNote="children omitted here — pass whatever content sits behind the grid"
       render={(values) => (
+      <div className="flex w-full justify-center">
         <GridReveal
           key={JSON.stringify(values)}
           pattern={values.pattern as "random" | "wave" | "diagonal" | "center"}
@@ -60,6 +61,7 @@ export function GridRevealPlayground() {
             </div>
           </div>
         </GridReveal>
+        </div>
       )}
     />
   );

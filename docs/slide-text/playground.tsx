@@ -54,6 +54,7 @@ export function SlideTextPlayground() {
       controls={controls}
       defaultProps={defaultProps}
       render={(values) => (
+      <div className="flex w-full justify-center">
         <SlideText
           key={JSON.stringify(values)}
           splitBy={values.splitBy as "words" | "characters"}
@@ -65,6 +66,7 @@ export function SlideTextPlayground() {
         >
           {values.children as string}
         </SlideText>
+        </div>
       )}
     />
   );

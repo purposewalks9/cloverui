@@ -31,10 +31,12 @@ export function StatusTagPlayground() {
       controls={controls}
       defaultProps={defaultProps}
       render={(values) => (
+      <div className="flex w-full justify-center">
         <StatusTag
           status={values.status as "draft" | "in-progress" | "in-review" | "completed"}
           label={(values.label as string) || undefined}
         />
+        </div>
       )}
     />
   );

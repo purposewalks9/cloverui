@@ -30,6 +30,7 @@ export function TokenFallPlayground() {
       defaultProps={defaultProps}
       stageClassName="w-full"
       render={(values) => (
+      <div className="flex w-full justify-center">
         <div
           key={JSON.stringify(values)}
           className="relative h-72 w-full max-w-md overflow-hidden rounded-2xl"
@@ -42,6 +43,7 @@ export function TokenFallPlayground() {
             restitution={values.restitution as number}
             spawnInterval={values.spawnInterval as number}
           />
+        </div>
         </div>
       )}
     />

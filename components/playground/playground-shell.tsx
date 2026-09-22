@@ -59,16 +59,17 @@ export function PlaygroundShell({
       <div className="flex min-w-0 flex-1 flex-col">
         <div
           className={cn(
-            "relative flex min-h-[28rem] w-full flex-1 items-stretch justify-start overflow-auto p-6",
-            "bg-[radial-gradient(currentColor_1px,transparent_1px)] bg-[size:16px_16px] text-border",
+            "flex min-h-[28rem] w-full items-center justify-center",
             stageClassName,
           )}
         >
-          <div
-            key={replayKey}
-            className="w-full min-w-0 text-foreground"
-          >
-            {render(values)}
+          <div className="w-full">
+            <div
+              key={replayKey}
+              className="w-full min-w-0 text-foreground"
+            >
+              {render(values)}
+            </div>
           </div>
         </div>
 

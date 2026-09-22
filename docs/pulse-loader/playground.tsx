@@ -27,6 +27,7 @@ export function PulseLoaderPlayground() {
       controls={controls}
       defaultProps={defaultProps}
       render={(values) => (
+      <div className="flex w-full justify-center">
         <PulseLoader
           color={values.color as string}
           rings={values.rings as number}
@@ -34,6 +35,7 @@ export function PulseLoaderPlayground() {
           duration={values.duration as number}
           stagger={values.stagger as number}
         />
+        </div>
       )}
     />
   );

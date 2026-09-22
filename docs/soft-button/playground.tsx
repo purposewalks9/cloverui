@@ -48,10 +48,11 @@ export function SoftButtonPlayground() {
       controls={controls}
       defaultProps={defaultProps}
       render={(values) => (
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      <div className="flex w-full justify-center">
         <SoftButton color={values.color as any} size={values.size as any}>
           {values.children as string}
         </SoftButton>
+        </div>
       )}
     />
   );

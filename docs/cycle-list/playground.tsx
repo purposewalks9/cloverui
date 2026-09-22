@@ -32,6 +32,7 @@ export function CycleListPlayground() {
       defaultProps={defaultProps}
       codeNote="items omitted here — see Usage below"
       render={(values) => (
+      <div className="flex w-full justify-center">
         <CycleList
           items={items}
           color={values.color as string}
@@ -41,6 +42,7 @@ export function CycleListPlayground() {
           itemRotation={values.itemRotation as number}
           curvature={values.curvature as number}
         />
+        </div>
       )}
     />
   );

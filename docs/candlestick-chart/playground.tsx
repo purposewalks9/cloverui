@@ -39,7 +39,7 @@ export function CandlestickPlayground() {
       codeNote="data omitted here — see Usage below for the Candle[] shape"
       stageClassName="w-full"
       render={(values) => (
-        <div className="w-full">
+        <div className="flex w-full justify-center">
           <CandleChartStick
             data={data}
             name="AAPL"

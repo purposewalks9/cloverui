@@ -29,6 +29,7 @@ export function TextGifPlayground() {
       controls={controls}
       defaultProps={defaultProps}
       render={(values) => (
+      <div className="flex w-full justify-center">
         <div className="flex min-h-[260px] items-center justify-center px-6">
           <TextGif
             src={values.src as string}
@@ -37,6 +38,7 @@ export function TextGifPlayground() {
           >
             {values.children as string}
           </TextGif>
+        </div>
         </div>
       )}
     />

@@ -40,6 +40,7 @@ export function GaugeTextPlayground() {
       controls={controls}
       defaultProps={defaultProps}
       render={(values) => (
+     <div className="flex w-full justify-center">
         <GaugeText
           key={JSON.stringify(values)}
           value={values.value as number}
@@ -51,6 +52,7 @@ export function GaugeTextPlayground() {
           showIcon={values.showIcon as boolean}
           className="text-2xl font-semibold"
         />
+        </div>
       )}
     />
   );
