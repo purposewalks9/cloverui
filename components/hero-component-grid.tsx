@@ -96,10 +96,7 @@ function ComponentTileView({
 }
 
 export type DocBundle = {
-  content: React.ReactNode;
-  toc: { title?: string; url: string; depth: number }[];
   demos: React.ReactNode[];
-  rawContent: string;
   singleDemo?: boolean;
 };
 

@@ -185,6 +185,23 @@
       "dependencies": [],
       "registryDependencies": [],
       "category": "text"
+    },
+    {
+      "name": "spinner",
+      "type": "registry:component",
+      "title": "Spinner",
+      "description": "A 12-dot circular loader where the dots stay fixed in place and only their color shade cycles around the ring, instead of the ring rotating.",
+      "files": [
+        {
+          "path": "registry/clover-ui/spinner.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [],
+      "category": "feedback"
     }
   ]
 }

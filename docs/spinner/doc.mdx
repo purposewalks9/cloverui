@@ -1,0 +1,32 @@
+import { SpinnerPlayground } from './playground'
+
+<SpinnerPlayground />
+
+## Installation
+
+<InstallationTabs item="spinner">
+```tsx file=../../registry/clover-ui/spinner.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { Spinner } from "@/components/spinner";
+
+<Spinner color="#0B87DA" size={60} />
+```
+
+## Props
+
+<PropsTable data={[
+  { name: "color", type: "string", default: '"#0B87DA"' },
+  { name: "trackColor", type: "string", default: '"rgba(11, 135, 218, 0.15)"' },
+  { name: "dots", type: "number", default: "12" },
+  { name: "size", type: "number", default: "60" },
+  { name: "dotSize", type: "number" },
+  { name: "duration", type: "number", default: "1.2" },
+  { name: "className", type: "string" },
+  { name: "dotClassName", type: "string" },
+  { name: "autoStart", type: "boolean", default: "true" },
+]} />
