@@ -202,6 +202,23 @@
       "dependencies": [],
       "registryDependencies": [],
       "category": "text"
+    },
+    {
+      "name": "rich-progress",
+      "type": "registry:component",
+      "title": "Rich Progress",
+      "description": "A glossy progress bar with spring-smoothed fill, a moving sheen, a knob riding the fill edge, and an optional rough synthesized loading sound.",
+      "files": [
+        {
+          "path": "registry/clover-ui/rich-progress.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [],
+      "category": "feedback"
     }
   ]
 }

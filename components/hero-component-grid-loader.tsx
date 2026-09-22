@@ -19,19 +19,11 @@ export async function HeroComponentGridLoader() {
 
   for (const slug of slugs) {
     try {
-      // The grid only ever renders `demos` and `singleDemo` for a tile — it
-      // never renders the full doc page. Importing `doc.mdx` (and its
-      // playground/install-tabs/code-block tree) here just to throw it away
-      // was forcing a huge, client-component-heavy RSC payload across the
-      // server -> client boundary on every homepage load, which is what was
-      // blowing up in production. Only load what's actually used.
       const demoModule = await import(`@/docs/${slug}/demo.tsx`);
-      const demos = Object.entries(demoModule)
-        .filter(([, value]) => typeof value === "function")
-        .map(([key, DemoComponent]) => {
-          const Comp = DemoComponent as React.ComponentType;
-          return <Comp key={key} />;
-        });
+      const { Demo: DemoComponent } = demoModule as {
+        Demo: React.ComponentType;
+      };
+      const demos = DemoComponent ? [<DemoComponent key="Demo" />] : [];
 
       const singleDemo = slug === "token-fall" || slug === "chat";
       docs[slug] = { demos, singleDemo };

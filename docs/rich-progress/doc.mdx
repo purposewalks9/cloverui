@@ -1,0 +1,75 @@
+import { RichProgressPlayground } from "./playground"
+
+<RichProgressPlayground />
+
+## Installation
+
+<InstallationTabs item="rich-progress">
+```tsx file=../../registry/clover-ui/rich-progress.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { RichProgress } from "@/components/rich-progress";
+
+<RichProgress value={65} color="red" />
+```
+
+### Interactive
+
+```tsx
+import { useState } from "react";
+import { RichProgress } from "@/components/rich-progress";
+
+export function Example() {
+  const [value, setValue] = useState(65);
+
+  return (
+    <RichProgress
+      value={value}
+      onChange={setValue}
+      color="red"
+    />
+  );
+}
+```
+
+### With sound
+
+```tsx
+<RichProgress
+  value={progress}
+  onChange={setProgress}
+  color="red"
+  sound
+/>
+```
+
+### Custom label
+
+```tsx
+<RichProgress
+  value={3}
+  valueLabel="3/10"
+  color="emerald"
+/>
+```
+
+## Props
+
+<PropsTable data={[
+  { name: "value", type: "number", description: "Current value from 0–100" },
+  { name: "onChange", type: "(value: number) => void", description: "Called when the user drags or clicks the track" },
+  { name: "color", type: "Color", default: '"red"' },
+  { name: "size", type: '"sm" | "default" | "lg"', default: '"default"' },
+  { name: "showValue", type: "boolean", default: "true" },
+  { name: "valueLabel", type: "string", description: 'Overrides the numeric value, e.g. "3/10"' },
+  { name: "knob", type: "boolean", default: "true" },
+  { name: "sound", type: "boolean", default: "false" },
+  { name: "soundVolume", type: "number", default: "0.15" },
+  { name: "className", type: "string" },
+  { name: "trackClassName", type: "string" },
+  { name: "fillClassName", type: "string" },
+]} />

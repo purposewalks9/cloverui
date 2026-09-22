@@ -14,18 +14,31 @@ import { SpinnerPlayground } from './playground'
 ```tsx
 import { Spinner } from "@/components/spinner";
 
+// single color
 <Spinner color="#0B87DA" size={60} />
+
+// rotating color flow
+<Spinner
+  colors={["#0B87DA", "#7C3AED", "#DB2777", "#F97316"]}
+  duration={1.4}
+  tailLength={0.35}
+/>
 ```
 
 ## Props
 
 <PropsTable data={[
-  { name: "color", type: "string", default: '"#0B87DA"' },
+  { name: "color", type: "string", default: '"#0B87DA"', description: "Used if colors isn't set" },
+  { name: "colors", type: "string[]", description: "Palette the comet cycles through — set 2+ for a rotating color flow" },
   { name: "trackColor", type: "string", default: '"rgba(11, 135, 218, 0.15)"' },
   { name: "dots", type: "number", default: "12" },
   { name: "size", type: "number", default: "60" },
   { name: "dotSize", type: "number" },
-  { name: "duration", type: "number", default: "1.2" },
+  { name: "duration", type: "number", default: "1.2", description: "Seconds per lap" },
+  { name: "colorSpeed", type: "number", description: "Seconds per full palette cycle — defaults to duration × colors.length" },
+  { name: "tailLength", type: "number", default: "0.4", description: "Comet tail length, 0–1" },
+  { name: "glow", type: "boolean", default: "true" },
+  { name: "interactive", type: "boolean", default: "true", description: "Click/space/enter toggles play-pause" },
   { name: "className", type: "string" },
   { name: "dotClassName", type: "string" },
   { name: "autoStart", type: "boolean", default: "true" },

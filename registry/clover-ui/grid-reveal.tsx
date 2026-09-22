@@ -252,7 +252,7 @@ const GridReveal = forwardRef<
             const nextCycle = setTimeout(
               revealPhase,
               cycleTime * 1000 +
-                loopDelay * 1000
+              loopDelay * 1000
             );
 
             timers.current.push(nextCycle);
@@ -330,7 +330,7 @@ const GridReveal = forwardRef<
         }
       >
         {children && (
-          <div className="relative">
+          <div className="relative h-full w-full">
             {children}
           </div>
         )}
@@ -359,22 +359,22 @@ const GridReveal = forwardRef<
               animate={
                 revealed
                   ? {
-                      opacity: 0,
-                      scale: 0.85,
-                    }
+                    opacity: 0,
+                    scale: 0.85,
+                  }
                   : {
-                      opacity: 1,
-                      scale: 1,
-                    }
+                    opacity: 1,
+                    scale: 1,
+                  }
               }
               transition={{
                 duration: blockDuration,
                 delay: revealed
                   ? block.factor *
-                    perStepDelay
+                  perStepDelay
                   : (maxFactor -
-                      block.factor) *
-                    perStepDelay,
+                    block.factor) *
+                  perStepDelay,
                 ease: "easeInOut",
               }}
             />
