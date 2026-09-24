@@ -1,0 +1,35 @@
+import { ParticleTextPlayground } from './playground'
+
+<ParticleTextPlayground />
+
+## Installation
+
+<InstallationTabs item="particle-text">
+```tsx file=../../registry/clover-ui/particle-text.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { ParticleText } from "@/components/particle-text";
+
+<ParticleText className="text-6xl font-semibold">
+  generates
+</ParticleText>
+```
+
+`ParticleText` keeps your text fully rendered in its chosen color. On page load, the text makes one quick shake while small particles rush inward from different angles, fade as they reach the text, and disappear. The effect plays once; it never assembles or recolors the letters.
+
+## Props
+
+<PropsTable data={[
+{ name: "children", type: "string", description: "Text displayed normally while the particle effect plays." },
+{ name: "color", type: "string", default: '"#b8ff8b"', description: "Color of the always-visible text." },
+{ name: "particleColor", type: "string", default: "color", description: "Color of the incoming particles; defaults to the text color." },
+{ name: "particleCount", type: "number", default: "1800", description: "Number of particles in the one-shot effect." },
+{ name: "particleSize", type: "number", default: "1.35", description: "Base particle radius in pixels." },
+{ name: "gatherSpeed", type: "number", default: "1", description: "Speed of the incoming particle animation." },
+{ name: "shake", type: "number", default: "1", description: "Intensity of the single entrance shake; set to 0 to disable." },
+{ name: "className", type: "string", description: "Classes for typography and layout." }
+]} />

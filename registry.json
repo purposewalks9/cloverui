@@ -236,6 +236,21 @@
       ],
       "registryDependencies": [],
       "category": "display"
+    },
+    {
+      "name": "particle-text",
+      "type": "registry:component",
+      "title": "Particle Text",
+      "description": "Text assembled from particles that fly inward, settle into the letterforms, and keep a subtle jitter.",
+      "files": [
+        {
+          "path": "registry/clover-ui/particle-text.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "category": "text"
     }
   ]
 }
