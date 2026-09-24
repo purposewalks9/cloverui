@@ -4,7 +4,6 @@ import * as React from "react";
 import { usePathname } from "next/navigation";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { GitHubStars } from "@/components/github-stars";
 import { SearchForm } from "@/components/command-menu";
 import type { DocSchema } from "@/lib/types";
@@ -35,7 +34,7 @@ export function SiteHeader({ docSchema }: { docSchema: DocSchema }) {
   }
 
   return (
-    <header className="sticky top-0 z-30 flex h-12 shrink-0 items-center justify-between gap-3 border-b border-border/60 bg-background/80 px-4 backdrop-blur">
+    <header className="sticky top-0 z-30 flex h-12 shrink-0 items-center justify-between gap-3 border-b border-white/[0.08] bg-[#0a0d14]/90 px-4 text-foreground">
       <div className="flex min-w-0 items-center gap-2">
         <SidebarTrigger className="-ml-1" />
         <Separator orientation="vertical" className="h-4" />
@@ -51,7 +50,7 @@ export function SiteHeader({ docSchema }: { docSchema: DocSchema }) {
       </div>
 
    
-        <div className="[&_button]:h-7 [&_button]:rounded-full [&_button]:border-none [&_button]:bg-transparent [&_button]:px-2.5 [&_button]:shadow-none [&_button]:hover:bg-background">
+        <div className="[&_button]:h-7 [&_button]:rounded-full [&_button]:border-none [&_button]:bg-transparent [&_button]:px-2.5 [&_button]:shadow-none [&_button]:hover:bg-white/10">
           <SearchForm docSchema={docSchema} />
         </div>
     </header>

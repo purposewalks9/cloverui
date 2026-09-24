@@ -10,8 +10,7 @@ export function Demo() {
     <RichProgress
       value={value}
       onChange={setValue}
-      color="red"
-      sound
+      label="Rainbow glow"
     />
   );
 }

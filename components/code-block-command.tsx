@@ -49,7 +49,7 @@ export function CodeBlockCommand(
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-md border bg-muted/30",
+        "relative overflow-hidden rounded-md border",
         className,
       )}
     >
@@ -64,7 +64,7 @@ export function CodeBlockCommand(
         }}
         className="gap-0"
       >
-        <div className="relative flex items-center gap-2 px-4 py-2.5 bg-[#E1E900]/10">
+        <div className="relative flex items-center gap-2 px-4 py-2.5 ">
           <TabsList className="h-auto bg-transparent p-0" translate="no">
             <TabsTrigger
               value="pnpm"
@@ -103,10 +103,10 @@ export function CodeBlockCommand(
               : <Copy className="size-3.5" strokeWidth={2} />}
           </Button>
         </div>
-        <div className="bg-background">
+        <div className="">
           {Object.entries(commands).map(([key, command]) => (
             <TabsContent key={key} value={key} className="m-0">
-              <pre className="px-4 py-3 overflow-x-auto dark:bg-[#0F0F0F] not-prose">
+              <pre className="px-4 py-3 overflow-x-auto bg-transparent not-prose">
                 <code className="font-mono text-sm text-[#032F62] dark:text-[#9ECBFF]">{command}</code>
               </pre>
             </TabsContent>

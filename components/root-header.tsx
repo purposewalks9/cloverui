@@ -6,7 +6,7 @@ import { siteConfig } from "@/lib/config";
 
 export function RootHeader() {
   return (
-    <header className="sticky top-0 z-40 w-full bg-background/80 backdrop-blur">
+    <header className="sticky top-0 z-40 w-full bg-[#0a0d14]/90 text-foreground border-b border-white/[0.08]">
       <div className="mx-auto flex h-16 w-full  items-center justify-between px-5 sm:px-8">
         <Link href="/" className="flex items-center gap-2">
           <CloverLogo className="h-6 w-6" />

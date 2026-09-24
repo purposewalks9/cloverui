@@ -208,33 +208,6 @@ export function SearchForm({ docSchema }: { docSchema: DocSchema }) {
                 )}
               </CommandList>
             </CommandPanel>
-            <CommandFooter>
-              <div className="flex items-center gap-1.5">
-                <span className="whitespace-nowrap">Go to Page</span>
-                <kbd className="font-mono place-content-center grid shadow-[0_0_0_1px_var(--border)] font-normal min-h-4 px-1 rounded text-xs">
-                  <CornerDownLeft className="size-2.5" />
-                </kbd>
-              </div>
-              {copyPayload ? (
-                <div className="flex min-w-0 items-center gap-2">
-                  <span className="truncate font-mono">
-                    {copyPayload}
-                  </span>
-                  <div className="flex items-center gap-1">
-                    <span className="inline-flex items-center shadow-[0_0_0_1px_var(--border)] font-normal min-h-4 px-1 rounded text-[10px]">
-                      {isMac ? "⌘" : "Ctrl"}
-                      <span>C</span>
-                    </span>
-                  </div>
-                </div>
-              ) : (
-                <div className="flex items-center gap-2">
-                  <span className="place-content-center grid shadow-[0_0_0_1px_var(--border)] font-normal min-h-4 px-1 rounded text-xs">
-                    Esc
-                  </span>
-                </div>
-              )}
-            </CommandFooter>
           </Command>
         </CommandDialogPopup>
       </CommandDialog>

@@ -1,16 +1,10 @@
 "use client";
 
-import { Check, ChevronDown } from "lucide-react";
+import type { ReactNode } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Toggle } from "@/components/ui/toggle";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { RichProgress } from "@/registry/clover-ui/rich-progress";
+import { cn } from "@/lib/utils";
 import type { ControlDef } from "@/lib/playground";
 import { ColorField } from "./color-field";
 
@@ -22,18 +16,9 @@ interface ControlPanelProps {
 
 export function ControlPanel({ controls, values, onChange }: ControlPanelProps) {
   return (
-    <div className="flex flex-col divide-y divide-border">
+    <div className="flex flex-col">
       {controls.map((control) => (
-        <div
-          key={control.prop}
-          className="flex items-center justify-between gap-3 px-4 py-3"
-        >
-          <Label
-            htmlFor={control.prop}
-            className="text-xs font-normal text-muted-foreground"
-          >
-            {control.label}
-          </Label>
+        <div key={control.prop} className="px-4 py-3.5">
           <Field
             control={control}
             value={values[control.prop]}
@@ -41,6 +26,74 @@ export function ControlPanel({ controls, values, onChange }: ControlPanelProps) 
           />
         </div>
       ))}
+    </div>
+  );
+}
+
+function FieldLabel({ children }: { children: ReactNode }) {
+  return (
+    <span className="text-sm font-normal text-muted-foreground">{children}</span>
+  );
+}
+
+/**
+ * Every option is listed up front (no dropdowns). Up to three options render as
+ * a joined On/Off-style toggle; longer lists wrap as chips.
+ */
+function OptionGroup({
+  id,
+  label,
+  options,
+  value,
+  onChange,
+}: {
+  id: string;
+  label: string;
+  options: { label: string; value: string }[];
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  const joined = options.length <= 3;
+
+  return (
+    <div
+      id={id}
+      role="radiogroup"
+      aria-label={label}
+      className={
+        joined
+          ? "grid w-full overflow-hidden rounded-md"
+          : "flex flex-wrap gap-1.5"
+      }
+      style={
+        joined
+          ? { gridTemplateColumns: `repeat(${options.length}, minmax(0, 1fr))` }
+          : undefined
+      }
+    >
+      {options.map((opt, i) => {
+        const active = opt.value === value;
+        return (
+          <button
+            key={opt.value}
+            type="button"
+            role="radio"
+            aria-checked={active}
+            onClick={() => onChange(opt.value)}
+            className={cn(
+              "truncate text-xs font-medium transition-colors",
+              joined
+                ? cn("px-2.5 py-1.5", i > 0 && "border-l border-input")
+                : "rounded-md border border-input px-2 py-1",
+              active
+                ? "bg-accent text-accent-foreground"
+                : "text-muted-foreground hover:bg-muted",
+            )}
+          >
+            {opt.label}
+          </button>
+        );
+      })}
     </div>
   );
 }
@@ -57,81 +110,112 @@ function Field({
   switch (control.type) {
     case "text":
       return (
-        <Input
-          id={control.prop}
-          value={(value as string) ?? ""}
-          onChange={(e) => onChange(e.target.value)}
-          className="w-32 text-xs"
-        />
+        <div className="flex flex-col gap-1.5">
+          <Label htmlFor={control.prop}>
+            <FieldLabel>{control.label}</FieldLabel>
+          </Label>
+          <Input
+            id={control.prop}
+            value={(value as string) ?? ""}
+            onChange={(e) => onChange(e.target.value)}
+            className="h-8 w-full text-xs"
+          />
+        </div>
       );
 
     case "boolean":
       return (
-        <Toggle
-          id={control.prop}
-          size="sm"
-          pressed={Boolean(value)}
-          onPressedChange={onChange}
-        >
-          {value ? "On" : "Off"}
-        </Toggle>
-      );
-
-    case "select": {
-      const selected = control.options.find((opt) => opt.value === value);
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              id={control.prop}
-              type="button"
-              variant="outline"
-              size="sm"
-              className="h-8 w-32 justify-between text-xs font-normal"
-            >
-              <span className="truncate">{selected?.label ?? "Select"}</span>
-              <ChevronDown className="size-3.5 shrink-0 text-muted-foreground" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-32">
-            {control.options.map((opt) => (
-              <DropdownMenuItem
-                key={opt.value}
-                onSelect={() => onChange(opt.value)}
-                className="justify-between text-xs"
-              >
-                {opt.label}
-                {opt.value === value && (
-                  <Check className="size-3.5 text-muted-foreground" />
-                )}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    }
-
-    case "number":
-      return (
-        <div className="flex w-32 items-center gap-2">
-          <input
+        <div className="flex items-center justify-between gap-3">
+          <Label htmlFor={control.prop}>
+            <FieldLabel>{control.label}</FieldLabel>
+          </Label>
+          <div
             id={control.prop}
-            type="range"
-            min={control.min ?? 0}
-            max={control.max ?? 100}
-            step={control.step ?? 1}
-            value={(value as number) ?? 0}
-            onChange={(e) => onChange(Number(e.target.value))}
-            className="w-full accent-foreground"
-          />
-          <span className="w-8 text-right font-mono text-[11px] text-muted-foreground">
-            {value as number}
-          </span>
+            role="group"
+            aria-label={control.label}
+            className="inline-flex overflow-hidden rounded-md "
+          >
+            <button
+              type="button"
+              onClick={() => onChange(false)}
+              aria-pressed={!value}
+              className={cn(
+                "px-2.5 py-1 text-xs font-medium transition-colors",
+                !value
+                  ? "bg-accent text-accent-foreground"
+                  : "text-muted-foreground hover:bg-muted"
+              )}
+            >
+              Off
+            </button>
+            <button
+              type="button"
+              onClick={() => onChange(true)}
+              aria-pressed={Boolean(value)}
+              className={cn(
+                "border-l border-input px-2.5 py-1 text-xs font-medium transition-colors",
+                value
+                  ? "bg-accent text-accent-foreground"
+                  : "text-muted-foreground hover:bg-muted"
+              )}
+            >
+              On
+            </button>
+          </div>
         </div>
       );
 
+    case "select":
+      return (
+        <div className="flex flex-col gap-2">
+          <FieldLabel>{control.label}</FieldLabel>
+          <OptionGroup
+            id={control.prop}
+            label={control.label}
+            options={control.options}
+            value={value as string}
+            onChange={onChange}
+          />
+        </div>
+      );
+
+    case "number": {
+      const min = control.min ?? 0;
+      const max = control.max ?? 100;
+      const step = control.step ?? 1;
+      const raw = typeof value === "number" ? value : min;
+      const percent = max === min ? 0 : ((raw - min) / (max - min)) * 100;
+      const decimals = step && step < 1 ? String(step).split(".")[1]?.length ?? 2 : 0;
+
+      return (
+        <RichProgress
+          value={percent}
+          onChange={(next) => {
+            const mapped = min + (next / 100) * (max - min);
+            const stepped = Math.round(mapped / step) * step;
+            const clamped = Math.min(max, Math.max(min, stepped));
+            onChange(Number(clamped.toFixed(decimals)));
+          }}
+          label={control.label}
+          valueLabel={raw.toFixed(decimals)}
+          size="sm"
+          knob
+        />
+      );
+    }
+
     case "color":
-      return <ColorField value={value as string} onChange={onChange} />;
+      return (
+        <div className="flex flex-col gap-1.5">
+          <div className="flex items-center justify-between">
+            <FieldLabel>{control.label}</FieldLabel>
+            <span className="font-mono text-[11px] text-muted-foreground">
+              {(value as string) ?? ""}
+            </span>
+          </div>
+          <ColorField value={value as string} onChange={onChange} bare />
+        </div>
+      );
 
     default:
       return null;

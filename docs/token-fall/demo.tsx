@@ -1,6 +1,12 @@
 "use client";
 
-import { TokenFall } from "@/registry/clover-ui/token-fall";
+import dynamic from "next/dynamic";
+
+// matter-js is heavy: load it only when the demo actually mounts.
+const TokenFall = dynamic(
+  () => import("@/registry/clover-ui/token-fall").then((m) => m.TokenFall),
+  { ssr: false, loading: () => <div className="h-full w-full animate-pulse bg-white/5" /> },
+);
 
 export function Demo() {
   return (

@@ -1,0 +1,33 @@
+import { AppleMusicCardPlayground } from './playground'
+
+<AppleMusicCardPlayground />
+
+A track card that only needs one thing from you: an Apple Music link. Paste
+a `music.apple.com` song or album URL and it resolves the title, artist,
+artwork, and a 30-second preview clip on its own via Apple's public iTunes
+Search API — no API key, no server route, no other props required.
+
+## Installation
+
+<InstallationTabs item="apple-music-card">
+```tsx file=../../registry/clover-ui/apple-music-card.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { AppleMusicCard } from "@/components/apple-music-card";
+
+<AppleMusicCard url="https://music.apple.com/us/album/drift-away/1234567890?i=1234567899" />
+```
+
+Click the cover to play or pause the preview clip, when Apple has one
+available for that track.
+
+## Props
+
+<PropsTable data={[
+  { name: "url", type: "string", description: "A music.apple.com song or album link — the only prop this needs" },
+  { name: "className", type: "string" },
+]} />

@@ -17,7 +17,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
-const ACCENT = "#E1E900";
+const ACCENT = "#A9BFFF";
 
 export function AppSidebar({ docSchema }: { docSchema: DocSchema }) {
   const pathname = usePathname();
@@ -25,7 +25,7 @@ export function AppSidebar({ docSchema }: { docSchema: DocSchema }) {
   const navGroups = docSchema.filter((group) => group.title !== "Getting Started");
 
   return (
-    <Sidebar collapsible="offcanvas" className="border-r border-border/60">
+    <Sidebar collapsible="offcanvas" className="border-r border-white/[0.08] bg-transparent">
       <SidebarHeader className="gap-0 px-3 pt-4 pb-3">
         <Link
           href="/"
@@ -63,8 +63,8 @@ export function AppSidebar({ docSchema }: { docSchema: DocSchema }) {
                         style={
                           isActive
                             ? {
-                                borderColor: ACCENT,
-                                backgroundColor: `${ACCENT}1f`,
+                                borderColor: "rgb(255 255 255 / 14%)",
+                                backgroundColor: "rgb(255 255 255 / 9%)",
                               }
                             : undefined
                         }

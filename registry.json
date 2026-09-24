@@ -219,6 +219,23 @@
       ],
       "registryDependencies": [],
       "category": "feedback"
+    },
+    {
+      "name": "apple-music-card",
+      "type": "registry:component",
+      "title": "Apple Music Card",
+      "description": "A track card that resolves title, artist, artwork, and a preview clip from a single Apple Music link, with no API key or server route required.",
+      "files": [
+        {
+          "path": "registry/clover-ui/apple-music-card.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "category": "display"
     }
   ]
 }

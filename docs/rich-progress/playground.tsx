@@ -6,48 +6,38 @@ import { PlaygroundShell } from "@/components/playground/playground-shell";
 import type { ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [
+  { type: "text", prop: "label", label: "Label" },
+  { type: "number", prop: "value", label: "Value", min: 0, max: 100, step: 1 },
   {
-    type: "number",
-    prop: "value",
-    label: "Value",
-    min: 0,
-    max: 100,
-    step: 1,
-  },
-  {
-    type: "color",
+    type: "select",
     prop: "color",
     label: "Color",
+    options: [
+      "default", "blue", "purple", "pink", "red", "orange", "yellow", "green",
+      "teal", "cyan", "indigo", "violet", "rose", "amber", "lime", "sky", "emerald",
+    ].map((v) => ({ label: v, value: v })),
   },
   {
-    type: "text",
+    type: "select",
     prop: "size",
-    label: "Size (sm | default | lg)",
+    label: "Size",
+    options: [
+      { label: "Small", value: "sm" },
+      { label: "Default", value: "default" },
+      { label: "Large", value: "lg" },
+    ],
   },
-  {
-    type: "boolean",
-    prop: "showValue",
-    label: "Show value",
-  },
-  {
-    type: "boolean",
-    prop: "knob",
-    label: "Knob",
-  },
-  {
-    type: "boolean",
-    prop: "sound",
-    label: "Sound",
-  },
+  { type: "boolean", prop: "showValue", label: "Show value" },
+  { type: "boolean", prop: "knob", label: "Knob" },
 ];
 
 const defaultProps = {
+  label: "Ambient light",
   value: 65,
-  color: "red",
+  color: "default",
   size: "default",
   showValue: true,
   knob: true,
-  sound: false,
 };
 
 export function RichProgressPlayground() {
@@ -63,11 +53,11 @@ export function RichProgressPlayground() {
           <RichProgress
             value={value}
             onChange={setValue}
+            label={values.label as string}
             color={values.color as any}
             size={values.size as any}
             showValue={values.showValue as boolean}
             knob={values.knob as boolean}
-            sound={values.sound as boolean}
           />
         </div>
       )}

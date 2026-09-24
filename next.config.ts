@@ -15,6 +15,16 @@ const nextConfig = {
       },
     ],
   },
+  experimental: {
+    optimizePackageImports: [
+      "lucide-react",
+      "motion",
+      "framer-motion",
+      "radix-ui",
+      "@base-ui/react",
+      "@icons-pack/react-simple-icons",
+    ],
+  },
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
   rewrites: async () => {
     return [

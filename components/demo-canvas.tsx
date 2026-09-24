@@ -6,6 +6,7 @@ import React from "react";
 import { Suspense } from "react";
 import RefreshAnticlockwise from "./icons/refresh";
 import { OpenInV0Button } from "./open-in-v0-button";
+import { LazyMount } from "./lazy-mount";
 import { usePathname } from "next/navigation";
 import { Code2, Monitor } from "lucide-react";
 export function DemoCanvas({
@@ -82,15 +83,22 @@ export function DemoPreview({
             <div className="text-sm text-muted-foreground">Loading…</div>
           }
         >
-            <div
-              key={key}
+            <LazyMount
               className={cn(
                 "w-full min-w-0 text-foreground",
                 center && "flex items-center justify-center",
               )}
             >
-              {children}
-            </div>
+              <div
+                key={key}
+                className={cn(
+                  "w-full min-w-0",
+                  center && "flex items-center justify-center",
+                )}
+              >
+                {children}
+              </div>
+            </LazyMount>
         </Suspense>
 
         <div className="absolute bottom-3 left-3 z-20 flex items-center gap-1 rounded-lg border bg-background/95 p-1 shadow-md backdrop-blur-sm">

@@ -2,6 +2,12 @@ import { RichProgressPlayground } from "./playground"
 
 <RichProgressPlayground />
 
+Every "tuning" panel on this site — the one docked to the right of each
+playground above — is built on top of this component. Its `onChange` and
+draggable track are what make each numeric control (and every "Prism IOR"
+/ "Rainbow glow" style slider you'll see across the docs) feel the way it
+does, not a plain `<input type="range">`.
+
 ## Installation
 
 <InstallationTabs item="rich-progress">
@@ -36,17 +42,6 @@ export function Example() {
 }
 ```
 
-### With sound
-
-```tsx
-<RichProgress
-  value={progress}
-  onChange={setProgress}
-  color="red"
-  sound
-/>
-```
-
 ### Custom label
 
 ```tsx
@@ -57,18 +52,35 @@ export function Example() {
 />
 ```
 
+### As a settings control
+
+`RichProgress` only speaks 0–100, so to drive an arbitrary range (say,
+Prism IOR from 1.0–3.0) map the value in and back out:
+
+```tsx
+const min = 1;
+const max = 3;
+const percent = ((ior - min) / (max - min)) * 100;
+
+<RichProgress
+  value={percent}
+  onChange={(next) => setIor(min + (next / 100) * (max - min))}
+  label="Prism IOR"
+  valueLabel={ior.toFixed(2)}
+  size="sm"
+/>
+```
+
 ## Props
 
 <PropsTable data={[
   { name: "value", type: "number", description: "Current value from 0–100" },
-  { name: "onChange", type: "(value: number) => void", description: "Called when the user drags or clicks the track" },
-  { name: "color", type: "Color", default: '"red"' },
+  { name: "onChange", type: "(value: number) => void", description: "Called when the user clicks or drags the track" },
+  { name: "color", type: "Color", default: '"default"' },
   { name: "size", type: '"sm" | "default" | "lg"', default: '"default"' },
   { name: "showValue", type: "boolean", default: "true" },
   { name: "valueLabel", type: "string", description: 'Overrides the numeric value, e.g. "3/10"' },
   { name: "knob", type: "boolean", default: "true" },
-  { name: "sound", type: "boolean", default: "false" },
-  { name: "soundVolume", type: "number", default: "0.15" },
   { name: "className", type: "string" },
   { name: "trackClassName", type: "string" },
   { name: "fillClassName", type: "string" },

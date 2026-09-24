@@ -126,6 +126,46 @@
   --rotating-border-color: var(--muted);
 }
 
+/* Dark ambient canvas + translucent glass shell. Component demos keep their own styles. */
+:root, .dark {
+  color-scheme: dark;
+  --background: #080a10;
+  --foreground: #f4f5f8;
+  --card: rgb(18 22 32 / 52%);
+  --card-foreground: #f4f5f8;
+  --popover: rgb(14 18 27 / 76%);
+  --popover-foreground: #f4f5f8;
+  --primary: #f4f5f8;
+  --primary-foreground: #090b11;
+  --secondary: rgb(255 255 255 / 7%);
+  --secondary-foreground: #f4f5f8;
+  --muted: rgb(255 255 255 / 6%);
+  --muted-foreground: rgb(226 231 241 / 64%);
+  --accent: rgb(255 255 255 / 9%);
+  --accent-foreground: #ffffff;
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: rgb(255 255 255 / 10%);
+  --input: rgb(255 255 255 / 12%);
+  --ring: rgb(190 205 255 / 38%);
+  --sidebar: rgb(10 13 21 / 48%);
+  --sidebar-foreground: #f4f5f8;
+  --sidebar-primary: #f4f5f8;
+  --sidebar-primary-foreground: #090b11;
+  --sidebar-accent: rgb(255 255 255 / 9%);
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgb(255 255 255 / 9%);
+  --sidebar-ring: rgb(190 205 255 / 35%);
+  --rotating-border-color: rgb(255 255 255 / 20%);
+}
+
+html, body {
+  background: #080a10;
+}
+
+
+
+
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -164,16 +204,28 @@ summary {
   scrollbar-width: none;
 }
 
+/* Code blocks: no black slab, let the page background show through. */
+.prose {
+  --tw-prose-pre-bg: transparent;
+  --tw-prose-invert-pre-bg: transparent;
+}
+
 .shiki,
 .shiki span {
   color: var(--shiki-light) !important;
-  background-color: var(--shiki-light-bg) !important;
+  background-color: transparent !important;
 }
 
 .dark .shiki,
 .dark .shiki span {
   color: var(--shiki-dark) !important;
-  background-color: #0f0f0f !important;
+  background-color: transparent !important;
+}
+
+.prose pre,
+.prose pre.shiki {
+  background-color: transparent !important;
+  border-color: rgb(255 255 255 / 10%);
 }
 
 .subheading-anchor {
@@ -195,23 +247,4 @@ summary {
 ::selection {
   background-color: var(--color-primary);
   color: var(--color-background);
-}
-
-/* Carbon Ads: the cover/responsive formats ship their own markup and styles,
-   themed via these custom properties. Tokens flip automatically in .dark. */
-#carbon-cover,
-#carbon-responsive {
-  --carbon-font-family: inherit;
-  --carbon-bg-primary: var(--card);
-  --carbon-bg-secondary: var(--border);
-  --carbon-text-color: var(--muted-foreground);
-  --carbon-shadow: none;
-}
-
-#carbon-responsive .carbon-responsive-wrap {
-  border-radius: calc(var(--radius) + 2px);
-}
-
-[data-carbon="toast"] .carbon-responsive-wrap {
-  box-shadow: 0 12px 32px -12px rgb(0 0 0 / 0.3);
 }

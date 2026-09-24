@@ -5,6 +5,7 @@ import { CheckIcon, Copy, RefreshCw, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { generateCode, type ControlDef } from "@/lib/playground";
+import { LazyMount } from "@/components/lazy-mount";
 import { ControlPanel } from "./control-panel";
 
 interface PlaygroundShellProps {
@@ -26,6 +27,7 @@ export function PlaygroundShell({
 }: PlaygroundShellProps) {
   const [values, setValues] = React.useState(defaultProps);
   const [copied, setCopied] = React.useState(false);
+  const [settingsCopied, setSettingsCopied] = React.useState(false);
   const [replayKey, setReplayKey] = React.useState(0);
 
   const code = React.useMemo(
@@ -54,83 +56,76 @@ export function PlaygroundShell({
     setTimeout(() => setCopied(false), 1500);
   }
 
+  function copySettings() {
+    navigator.clipboard.writeText(JSON.stringify(values, null, 2));
+    setSettingsCopied(true);
+    setTimeout(() => setSettingsCopied(false), 1500);
+  }
+
   return (
     <div className="not-prose my-6 flex flex-col overflow-hidden rounded-lg border border-border lg:flex-row">
-      <div className="flex min-w-0 flex-1 flex-col">
-        <div
-          className={cn(
-            "flex min-h-[28rem] w-full items-center justify-center",
-            stageClassName,
-          )}
-        >
-          <div className="w-full">
-            <div
-              key={replayKey}
-              className="w-full min-w-0 text-foreground"
-            >
-              {render(values)}
-            </div>
-          </div>
-        </div>
-
-        <div className="relative min-w-0 border-t border-border">
-          <pre className="max-h-72 overflow-auto p-4 font-mono text-sm leading-relaxed">
-            <code>{fullCode}</code>
-          </pre>
-
-          <Button
-            type="button"
-            variant="outline"
-            size="icon"
-            className="absolute right-2.5 top-2.5 size-7 dark:bg-[#191919] dark:hover:bg-[#212121]"
-            onClick={copy}
-            aria-label="Copy code"
+      {/* Stage: fills the full height next to the panel and centers the preview both ways. */}
+      <div
+        className={cn(
+          "relative flex min-h-[22rem] min-w-0 flex-1 items-center justify-center overflow-hidden p-4 sm:p-8 lg:min-h-[28rem]",
+          stageClassName,
+        )}
+      >
+        <LazyMount className="flex w-full max-w-full items-center justify-center text-foreground">
+          <div
+            key={replayKey}
+            className="flex w-full min-w-0 items-center justify-center"
           >
-            {copied ? (
-              <CheckIcon className="size-3.5 text-emerald-500" />
-            ) : (
-              <Copy className="size-3.5" />
-            )}
-          </Button>
-        </div>
+            {render(values)}
+          </div>
+        </LazyMount>
       </div>
 
-      <div className="w-full shrink-0 border-t border-border bg-muted/20 lg:w-64 lg:border-l lg:border-t-0">
-        <div className="flex items-center justify-between gap-2 border-b border-border px-3 py-2">
-          <span className="text-xs font-medium text-muted-foreground">
-            Props
-          </span>
+      <div className="w-full shrink-0 border-t border-border p-3 lg:w-72 lg:border-t-0 lg:border-l">
+        <div className="overflow-hidden">
+          <div className="flex items-center justify-between gap-2  px-3.5 py-2.5">
 
-          <div className="inline-flex -space-x-px rounded-md shadow-none">
+            <div className="flex items-center gap-1">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={reset}
+                 className="h-8 w-full gap-1.5 text-sm font-normal shadow-none"
+              >
+                Reset
+              </Button>
+            </div>
+          </div>
+
+          <ControlPanel controls={controls} values={values} onChange={setValue} />
+
+          <div className=" p-2.5 flex flex-row justify-between">
+           <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                onClick={replay}
+                aria-label="Replay"
+               className="h-8 w-[40%] gap-1.5 text-sm font-normal shadow-none"
+              >
+               Replay
+              </Button>
             <Button
               type="button"
               variant="outline"
               size="sm"
-              onClick={reset}
-              className="h-7 rounded-e-none border-r-0 px-2 text-xs font-normal shadow-none"
+              onClick={copySettings}
+              className="h-8 w-[40%] gap-1.5 text-sm font-normal shadow-none"
             >
-              <RotateCcw className="size-3" />
-              Reset
-            </Button>
-
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={replay}
-              className="h-7 rounded-s-none px-2 text-xs font-normal shadow-none"
-            >
-              <RefreshCw className="size-3" />
-              Replay
+              {settingsCopied ? (
+                "copied"
+              ) : (
+                <Copy className="size-3.5" />
+              )}
             </Button>
           </div>
         </div>
-
-        <ControlPanel
-          controls={controls}
-          values={values}
-          onChange={setValue}
-        />
       </div>
     </div>
   );
