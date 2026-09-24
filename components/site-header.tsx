@@ -34,7 +34,7 @@ export function SiteHeader({ docSchema }: { docSchema: DocSchema }) {
   }
 
   return (
-    <header className="sticky top-0 z-30 flex h-12 shrink-0 items-center justify-between gap-3 border-b border-white/[0.08] bg-[#0a0d14]/90 px-4 text-foreground">
+    <header className="sticky top-0 z-30 flex h-12 shrink-0 items-center justify-between gap-3 border-b border-white/[0.08] bg-transparent px-4 text-foreground">
       <div className="flex min-w-0 items-center gap-2">
         <SidebarTrigger className="-ml-1" />
         <Separator orientation="vertical" className="h-4" />
