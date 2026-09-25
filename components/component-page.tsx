@@ -27,14 +27,14 @@ export function ComponentPage({
 }: ComponentPageProps) {
   return (
     <div className="mx-auto flex w-full flex-1 flex-row">
-      <div className="flex min-w-0 flex-1 flex-col md:pr-64">
+      <div className="flex min-w-0 flex-1 flex-col xl:pr-64">
         <div className="min-w-0 flex-1 p-6 sm:p-12">
           <article className="prose dark:prose-invert max-w-none">{docContent}</article>
         </div>
       </div>
 
       {toc.length > 0 && (
-        <aside className="fixed right-0 top-12 z-20 hidden h-[calc(100svh-3rem)] w-64 overflow-y-auto md:block">
+        <aside className="fixed right-0 top-12 z-20 hidden h-[calc(100svh-3rem)] w-64 overflow-y-auto xl:block">
           <DocsTableOfContents toc={toc} docId={docId} content={rawContent} url={url} />
         </aside>
       )}

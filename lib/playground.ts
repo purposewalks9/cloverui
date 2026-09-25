@@ -18,7 +18,7 @@ export type ControlDef =
     };
 
 function serializeAttr(prop: string, value: unknown): string | null {
-  if (value === undefined || value === null) return null;
+  if (value === undefined || value === null || value === "") return null;
   if (typeof value === "boolean") return value ? prop : `${prop}={false}`;
   if (typeof value === "number") return `${prop}={${value}}`;
   if (typeof value === "string") return `${prop}="${value}"`;

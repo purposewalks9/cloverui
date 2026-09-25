@@ -1,0 +1,61 @@
+import { PuzzleBgPlayground } from './playground'
+
+<PuzzleBgPlayground />
+
+## Installation
+
+<InstallationTabs item="puzzle-bg">
+```tsx file=../../registry/clover-ui/puzzle-bg.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+A real jigsaw puzzle that assembles (or breaks apart) and can be filled with a color, an image, or any element.
+
+```tsx
+import { PuzzleBg } from "@/components/puzzle-bg";
+
+// color
+<PuzzleBg color="#E1E900" className="h-64 w-full" />
+
+// image
+<PuzzleBg image="/photo.jpg" className="aspect-video w-full" />
+
+// any div or element, cut into pieces
+<PuzzleBg rows={3} cols={4} className="aspect-video w-full">
+  <div className="grid h-full w-full place-items-center bg-neutral-900 text-white">
+    Hello
+  </div>
+</PuzzleBg>
+```
+
+Fill order is children, then `image`, then `color`. To use it as a page or card background, position it behind your content (`absolute inset-0`).
+
+Children are rendered once per piece, so keep them light (images, cards, text). For anything heavy, pass an `image` instead.
+
+## Props
+
+<PropsTable data={[
+  { name: "children", type: "React.ReactNode", description: "Any element. Gets cut into puzzle pieces." },
+  { name: "image", type: "string", description: "Image url cut into pieces. Used when there are no children." },
+  { name: "color", type: "string", default: '"#E1E900"', description: "Solid piece color. Used when there are no children and no image." },
+  { name: "rows", type: "number", default: "4" },
+  { name: "cols", type: "number", default: "5" },
+  { name: "direction", type: '"in" | "out"', default: '"in"', description: "in assembles the puzzle. out breaks it apart." },
+  { name: "seamColor", type: "string", default: '"rgba(0,0,0,0.35)"' },
+  { name: "pattern", type: '"random" | "wave" | "diagonal" | "center"', default: '"random"' },
+  { name: "pieceDuration", type: "number", default: "0.7" },
+  { name: "stagger", type: "number", default: "0.06" },
+  { name: "duration", type: "number", description: "Total stagger time for the full puzzle. Overrides stagger when set." },
+  { name: "knobSize", type: "number", default: "1.1" },
+  { name: "scatter", type: "number", default: "1", description: "How far pieces fly from home." },
+  { name: "loop", type: "boolean", default: "false" },
+  { name: "loopDelay", type: "number", default: "1" },
+  { name: "autoStart", type: "boolean", default: "true" },
+  { name: "className", type: "string" },
+  { name: "puzzleClassName", type: "string" },
+  { name: "pieceClassName", type: "string" },
+  { name: "onStart", type: "() => void" },
+  { name: "onComplete", type: "() => void" },
+]} />

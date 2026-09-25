@@ -5,6 +5,21 @@
   "author": "purposewalks9 (https://github.com/purposewalks9)",
   "items": [
     {
+      "name": "grain-cube",
+      "type": "registry:component",
+      "title": "Grain Cube",
+      "description": "A grainy, isometric 3D cube rendered on the GPU with a flowing gradient on each face. Drag to spin it.",
+      "files": [
+        {
+          "path": "registry/clover-ui/grain-cube.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "category": "animation"
+    },
+    {
       "name": "grid-reveal",
       "type": "registry:component",
       "title": "Grid Reveal",
@@ -18,6 +33,21 @@
       "dependencies": [
         "motion"
       ],
+      "registryDependencies": [],
+      "category": "animation"
+    },
+    {
+      "name": "thermal-flow",
+      "type": "registry:component",
+      "title": "Thermal Flow",
+      "description": "A smooth, rich thermal-gradient background rendered on the GPU. Seven themes or your own palette, no dependencies.",
+      "files": [
+        {
+          "path": "registry/clover-ui/thermal-flow.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [],
       "registryDependencies": [],
       "category": "animation"
     },

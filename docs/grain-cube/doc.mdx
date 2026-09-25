@@ -1,0 +1,49 @@
+import { GrainCubePlayground } from './playground'
+
+<GrainCubePlayground />
+
+## Installation
+
+<InstallationTabs item="grain-cube">
+```tsx file=../../registry/clover-ui/grain-cube.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+A grainy, isometric 3D cube rendered on the GPU, with a flowing gradient on each face. Drag to spin it.
+
+```tsx
+import { GrainCube } from "@/components/grain-cube";
+
+<div className="w-64">
+  <GrainCube theme="green" />
+</div>
+```
+
+It's a square canvas, so size it with a `w-*` class on a wrapping element (it fills the width at `aspect-square`).
+
+Themes: `green`, `ember`, `ice`, `violet`, `mono`. For your own palette pass 2 to 8 colors:
+
+```tsx
+<GrainCube colors={["#52c4dc", "#f2f6ea", "#25e15f", "#0b5a2b"]} />
+```
+
+Each face leans toward a different part of the palette, so faces read as distinct even with one color list. It pauses when off-screen or in a hidden tab, and falls back to a static gradient diamond if WebGL is unavailable.
+
+## Props
+
+<PropsTable data={[
+  { name: "theme", type: '"green" | "ember" | "ice" | "violet" | "mono"', default: '"green"' },
+  { name: "colors", type: "string[]", description: "Custom palette, 2 to 8 colors. Overrides theme." },
+  { name: "size", type: "number", default: "0.7", description: "Cube size as a fraction of the box, 0.2 to 1." },
+  { name: "scale", type: "number", default: "1", description: "Zoom of the pattern on each face." },
+  { name: "warp", type: "number", default: "1", description: "How much the pattern folds and swirls." },
+  { name: "grain", type: "number", default: "0.6" },
+  { name: "animate", type: "boolean", default: "true" },
+  { name: "speed", type: "number", default: "1" },
+  { name: "interactive", type: "boolean", default: "true", description: "Drag to spin the cube." },
+  { name: "resolution", type: "number", default: "1", description: "Render scale, 0.5 to 1." },
+  { name: "style", type: "React.CSSProperties" },
+  { name: "className", type: "string" },
+]} />
