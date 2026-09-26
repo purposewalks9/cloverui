@@ -1,0 +1,41 @@
+import { RichTextPlayground } from './playground'
+
+<RichTextPlayground />
+
+## Installation
+
+<InstallationTabs item="rich-text">
+```tsx file=../../registry/clover-ui/rich-text.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { RichText } from "@/components/rich-text";
+
+<p>
+  Build <RichText color="blue">rich interfaces</RichText> with a simple text primitive.
+</p>
+```
+
+## Props
+
+<PropsTable data={[
+  {
+    name: "children",
+    type: "React.ReactNode",
+    description: "Text or inline content rendered with the rich text treatment."
+  },
+  {
+    name: "color",
+    type: '"default" | "blue" | "purple" | "pink" | "red" | "orange" | "yellow" | "green" | "teal" | "cyan" | "indigo" | "violet" | "rose" | "amber" | "lime" | "sky" | "slate" | "gray" | "zinc" | "neutral" | "stone" | "fuchsia" | "emerald"',
+    default: '"default"',
+    description: "Gradient and text-shadow color treatment."
+  },
+  {
+    name: "className",
+    type: "string",
+    description: "Additional classes for typography and layout."
+  }
+]} />

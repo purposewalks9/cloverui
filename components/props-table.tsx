@@ -17,9 +17,31 @@ interface PropsTableProps {
   data: PropsTableItem[];
 }
 
+/** Splits a `"a" | "b" | "c"` style literal union into its individual members. */
+function splitUnion(type: string): string[] | null {
+  if (!type.includes(" | ")) return null;
+  const parts = type.split(" | ").map((p) => p.trim());
+  return parts.length > 1 ? parts : null;
+}
+
+const COLLAPSE_THRESHOLD = 4;
+
+function TypePill({ children }: { children: React.ReactNode }) {
+  return (
+    <code className="whitespace-nowrap rounded-sm bg-muted px-1.5 py-0.5 font-mono text-xs text-foreground">
+      {children}
+    </code>
+  );
+}
+
 function PropRow({ item }: { item: PropsTableItem }) {
-  const [open, setOpen] = useState(item.defaultOpen ?? true);
-  const hasDetails = Boolean(item.description || item.default);
+  const union = splitUnion(item.type);
+  const isLongUnion = Boolean(union && union.length > COLLAPSE_THRESHOLD);
+  const hasDetails = Boolean(item.description || item.default || isLongUnion);
+
+  const [open, setOpen] = useState(
+    isLongUnion ? false : item.defaultOpen ?? true,
+  );
 
   return (
     <div className="border-t border-border first:border-t-0">
@@ -27,22 +49,36 @@ function PropRow({ item }: { item: PropsTableItem }) {
         type="button"
         onClick={() => hasDetails && setOpen((o) => !o)}
         className={cn(
-          "flex w-full items-center justify-between px-4 py-3 text-left",
+          "flex w-full items-start justify-between gap-3 px-4 py-3 text-left",
           hasDetails && "cursor-pointer",
         )}
       >
-        <code className="font-mono text-sm text-primary">
+        <code className="shrink-0 font-mono text-sm text-primary">
           {item.name}
           {item.optional && "?"}
         </code>
-        <div className="flex items-center gap-3">
-          <code className="font-mono text-sm text-foreground">
-            {item.type}
-          </code>
+        <div className="flex min-w-0 items-center gap-3">
+          {union ? (
+            isLongUnion ? (
+              <span className="whitespace-nowrap text-xs text-muted-foreground">
+                {union.length} options
+              </span>
+            ) : (
+              <div className="flex flex-wrap justify-end gap-1">
+                {union.map((member) => (
+                  <TypePill key={member}>{member}</TypePill>
+                ))}
+              </div>
+            )
+          ) : (
+            <code className="whitespace-normal break-words text-right font-mono text-sm text-foreground">
+              {item.type}
+            </code>
+          )}
           {hasDetails && (
             <ChevronUp
               className={cn(
-                "size-4 text-muted-foreground transition-transform",
+                "size-4 shrink-0 text-muted-foreground transition-transform",
                 !open && "rotate-180",
               )}
             />
@@ -52,15 +88,22 @@ function PropRow({ item }: { item: PropsTableItem }) {
 
       {hasDetails && open && (
         <div className="px-4 pb-4 space-y-3">
+          {isLongUnion && union && (
+            <div className="flex flex-wrap gap-1">
+              {union.map((member) => (
+                <TypePill key={member}>{member}</TypePill>
+              ))}
+            </div>
+          )}
           {item.description && (
             <p className="text-sm text-muted-foreground">
               {item.description}
             </p>
           )}
           {item.default && (
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-3">
               <span className="text-sm text-muted-foreground">Default</span>
-              <code className="font-mono text-sm text-foreground">
+              <code className="whitespace-normal break-words text-right font-mono text-sm text-foreground">
                 {item.default}
               </code>
             </div>

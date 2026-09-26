@@ -5,7 +5,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Input } from "@/components/ui/input";
+import { ColorPicker } from "./color-picker";
 
 export function ColorField({
   value,
@@ -40,19 +40,8 @@ export function ColorField({
           </button>
         )}
       </PopoverTrigger>
-      <PopoverContent className="w-56 space-y-3" align="end">
-        <input
-          type="color"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          aria-label="Pick a color"
-          className="h-24 w-full cursor-pointer rounded-md border border-input bg-transparent p-1"
-        />
-        <Input
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className="font-mono text-xs"
-        />
+      <PopoverContent className="w-56" align="end">
+        <ColorPicker value={value} onChange={onChange} />
       </PopoverContent>
     </Popover>
   );

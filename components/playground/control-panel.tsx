@@ -22,7 +22,8 @@ export function ControlPanel({ controls, values, onChange }: ControlPanelProps) 
           <Field
             control={control}
             value={values[control.prop]}
-            onChange={(value) => onChange(control.prop, value)}
+            values={values}
+            onChange={(value, prop = control.prop) => onChange(prop, value)}
           />
         </div>
       ))}
@@ -98,14 +99,76 @@ function OptionGroup({
   );
 }
 
+/**
+ * A compact, wrapping grid of color swatches. Used instead of OptionGroup
+ * whenever every option in a select carries a `swatch` hex, so picking a
+ * color is a single tap on the color itself rather than reading a row of
+ * text chips.
+ */
+function ColorSwatchGroup({
+  id,
+  label,
+  options,
+  value,
+  onChange,
+}: {
+  id: string;
+  label: string;
+  options: { label: string; value: string; swatch: string }[];
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  return (
+    <div
+      id={id}
+      role="radiogroup"
+      aria-label={label}
+      className="flex flex-wrap gap-2"
+    >
+      {options.map((opt) => {
+        const active = opt.value === value;
+        return (
+          <button
+            key={opt.value}
+            type="button"
+            role="radio"
+            aria-checked={active}
+            aria-label={opt.label}
+            title={opt.label}
+            onClick={() => onChange(opt.value)}
+            className="group relative flex size-7 shrink-0 items-center justify-center rounded-full outline-none"
+          >
+            <span
+              className={cn(
+                "size-6 rounded-full border border-white/15 shadow-sm transition-transform duration-150",
+                "group-hover:scale-110 group-focus-visible:scale-110",
+                active && "scale-110",
+              )}
+              style={{ background: opt.swatch }}
+            />
+            {active && (
+              <span
+                className="pointer-events-none absolute inset-0 rounded-full ring-2 ring-offset-2 ring-offset-background"
+                style={{ ["--tw-ring-color" as string]: opt.swatch }}
+              />
+            )}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 function Field({
   control,
   value,
+  values,
   onChange,
 }: {
   control: ControlDef;
   value: unknown;
-  onChange: (value: unknown) => void;
+  values: Record<string, unknown>;
+  onChange: (value: unknown, prop?: string) => void;
 }) {
   switch (control.type) {
     case "text":
@@ -120,6 +183,26 @@ function Field({
             onChange={(e) => onChange(e.target.value)}
             className="h-8 w-full text-xs"
           />
+        </div>
+      );
+
+    case "text-list":
+      return (
+        <div className="flex flex-col gap-3">
+          <FieldLabel>{control.label}</FieldLabel>
+          {control.items.map((item) => (
+            <div key={item.prop} className="flex flex-col gap-1.5">
+              <Label htmlFor={item.prop}>
+                <FieldLabel>{item.label}</FieldLabel>
+              </Label>
+              <Input
+                id={item.prop}
+                value={(values[item.prop] as string) ?? ""}
+                onChange={(e) => onChange(item.prop, e.target.value)}
+                className="h-8 w-full text-xs"
+              />
+            </div>
+          ))}
         </div>
       );
 
@@ -165,7 +248,30 @@ function Field({
         </div>
       );
 
-    case "select":
+    case "select": {
+      const isPalette = control.options.every((opt) => Boolean(opt.swatch));
+
+      if (isPalette) {
+        const active = control.options.find((opt) => opt.value === value);
+        return (
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center justify-between">
+              <FieldLabel>{control.label}</FieldLabel>
+              <span className="text-[11px] text-muted-foreground">
+                {active?.label ?? ""}
+              </span>
+            </div>
+            <ColorSwatchGroup
+              id={control.prop}
+              label={control.label}
+              options={control.options as { label: string; value: string; swatch: string }[]}
+              value={value as string}
+              onChange={onChange}
+            />
+          </div>
+        );
+      }
+
       return (
         <div className="flex flex-col gap-2">
           <FieldLabel>{control.label}</FieldLabel>
@@ -178,6 +284,7 @@ function Field({
           />
         </div>
       );
+    }
 
     case "number": {
       const min = control.min ?? 0;

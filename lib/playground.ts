@@ -1,11 +1,18 @@
 export type ControlDef =
   | { type: "text"; prop: string; label: string }
+  | {
+      type: "text-list";
+      prop: string;
+      label: string;
+      items: { prop: string; label: string }[];
+    }
   | { type: "boolean"; prop: string; label: string }
   | {
       type: "select";
       prop: string;
       label: string;
-      options: { label: string; value: string }[];
+      /** Optional hex per option. When every option has one, the control renders as a color palette instead of text chips. */
+      options: { label: string; value: string; swatch?: string }[];
     }
   | { type: "color"; prop: string; label: string }
   | {
@@ -34,7 +41,16 @@ export function generateCode(
 
   const attrs = controls
     .filter((c) => c.prop !== "children")
-    .map((c) => serializeAttr(c.prop, values[c.prop]))
+    .map((c) => {
+      if (c.type === "text-list") {
+        const items = c.items
+          .map((item) => values[item.prop])
+          .filter((value): value is string => typeof value === "string" && value.trim().length > 0);
+        return items.length ? `${c.prop}={[${items.map((item) => JSON.stringify(item)).join(", ")}]}` : null;
+      }
+
+      return serializeAttr(c.prop, values[c.prop]);
+    })
     .filter((v): v is string => Boolean(v));
 
   const children = childrenControl ? values[childrenControl.prop] : undefined;

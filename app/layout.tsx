@@ -64,20 +64,22 @@ export default function RootLayout({
             <AnimatedGradient
               config={{
                 preset: "custom",
-                color1: "#1b1500",
-                color2: "#1b1500",
-                color3: "#3a2e01",
-                speed: 0,
+                color1: "#05060d",   // near-black void
+                color2: "#1a1044",   // deep violet nebula
+                color3: "#0a1a33",   // faint blue glow
+                speed: 0,            // slow drift, not static
                 rotation: -35,
-                proportion: 42,
-                scale: 3,
-                distortion: 20,
-                swirl: 38,
-                swirlIterations: 20,
-                softness: 500,
+                proportion: 38,
+                scale: 0.35,
+                distortion: 18,
+                swirl: 45,
+                swirlIterations: 14,
+                softness: 100,
+                offset: -300,
                 shape: "Checks",
-                shapeSize: 35,
+                shapeSize: 70,
               }}
+              noise={{ opacity: 0.06, scale: 0.6 }}
               style={{
                 position: "fixed",
                 inset: 0,

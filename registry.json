@@ -101,38 +101,38 @@
       "category": "feedback"
     },
     {
-      "name": "slide-text",
+      "name": "spotlight-text",
       "type": "registry:component",
-      "title": "Slide Text",
-      "description": "Text that slides into or out of place, word by word or character by character.",
+      "title": "Spotlight Text",
+      "description": "Inline text that automatically cycles through words with a sharp, rich spotlight transition and configurable color.",
       "files": [
         {
-          "path": "registry/clover-ui/slide-text.tsx",
+          "path": "registry/clover-ui/spotlight-text.tsx",
           "type": "registry:component"
         }
       ],
       "dependencies": [
         "motion"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "rich-text"
+      ],
       "category": "text"
     },
     {
-      "name": "cycle-list",
+      "name": "rich-text",
       "type": "registry:component",
-      "title": "Cycle List",
-      "description": "A list that cycles focus through its items on an interval, with a dot marker that follows a curved track to the active item.",
+      "title": "Rich Text",
+      "description": "An inline text primitive with a rich gradient surface and configurable color treatment.",
       "files": [
         {
-          "path": "registry/clover-ui/cycle-list.tsx",
+          "path": "registry/clover-ui/rich-text.tsx",
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": [],
       "registryDependencies": [],
-      "category": "display"
+      "category": "text"
     },
     {
       "name": "soft-button",
