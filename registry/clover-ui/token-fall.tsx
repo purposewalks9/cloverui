@@ -126,7 +126,7 @@ export function TokenFall({
       const size = minSize + Math.random() * (maxSize - minSize);
       const palette = palettes[Math.floor(Math.random() * palettes.length)];
       const x = Math.random() * width;
-      const y = -size - Math.random() * 80; // start slightly above the viewport
+      const y = -size - Math.random() * 80;
 
       const body = Matter.Bodies.circle(x, y, size / 2, {
         restitution,

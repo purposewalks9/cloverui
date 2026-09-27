@@ -3,7 +3,7 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
-export interface ParticleTextProps extends React.HTMLAttributes<HTMLSpanElement> {
+export interface NucleusTextProps extends React.HTMLAttributes<HTMLSpanElement> {
   children: string;
   color?: string;
   particleColor?: string;
@@ -24,7 +24,7 @@ type Particle = {
   drift: number;
 };
 
-const ParticleText = React.forwardRef<HTMLSpanElement, ParticleTextProps>(
+const NucleusText = React.forwardRef<HTMLSpanElement, NucleusTextProps>(
   (
     {
       children,
@@ -168,6 +168,6 @@ const ParticleText = React.forwardRef<HTMLSpanElement, ParticleTextProps>(
   },
 );
 
-ParticleText.displayName = "ParticleText";
+NucleusText.displayName = "NucleusText";
 
-export { ParticleText };
+export { NucleusText };

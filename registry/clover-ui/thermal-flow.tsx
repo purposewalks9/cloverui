@@ -13,7 +13,6 @@ export type ThermalFlowTheme =
   | "candy"
   | "mono";
 
-/** Dark to bright. The last stop is the hot ridge right before the palette wraps back to the first. */
 export const THERMAL_FLOW_THEMES: Record<ThermalFlowTheme, string[]> = {
   thermal: ["#04040c", "#0b1fd6", "#2a7cff", "#59b8f5", "#f6e04a", "#f79a20", "#f0401a"],
   aurora: ["#02030a", "#0b2a5b", "#0aa3a3", "#3df2a7", "#c5f56b", "#ff8bd0", "#b14dff"],
@@ -25,25 +24,15 @@ export const THERMAL_FLOW_THEMES: Record<ThermalFlowTheme, string[]> = {
 };
 
 export interface ThermalFlowProps {
-  /** Built-in palette. */
   theme?: ThermalFlowTheme;
-  /** Custom palette, 2 to 8 colors from dark to bright. Overrides `theme`. */
   colors?: string[];
-  /** How many times the palette repeats across the field. */
   bands?: number;
-  /** Zoom of the flow. Higher = bigger shapes. */
   scale?: number;
-  /** How much the flow folds and swirls. */
   warp?: number;
-  /** Blur on the sharp ridge lines. */
   softness?: number;
-  /** Film grain, also hides banding. */
   grain?: number;
-  /** Set false for a still frame. */
   animate?: boolean;
-  /** Animation speed multiplier. */
   speed?: number;
-  /** Render scale (0.25 to 1). Lower is lighter on the GPU. */
   resolution?: number;
   radius?: string;
   backgroundColor?: string;

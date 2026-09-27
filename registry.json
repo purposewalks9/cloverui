@@ -268,17 +268,34 @@
       "category": "display"
     },
     {
-      "name": "particle-text",
+      "name": "nucleus-text",
       "type": "registry:component",
-      "title": "Particle Text",
+      "title": "Nucleus Text",
       "description": "Text assembled from particles that fly inward, settle into the letterforms, and keep a subtle jitter.",
       "files": [
         {
-          "path": "registry/clover-ui/particle-text.tsx",
+          "path": "registry/clover-ui/nucleus-text.tsx",
           "type": "registry:component"
         }
       ],
       "dependencies": [],
+      "registryDependencies": [],
+      "category": "text"
+    },
+    {
+      "name": "pop-text",
+      "type": "registry:component",
+      "title": "Pop Text",
+      "description": "Chunky, outlined bubble-letter text in the site display face that pops into place letter by letter.",
+      "files": [
+        {
+          "path": "registry/clover-ui/pop-text.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [],
       "category": "text"
     }

@@ -1,6 +1,6 @@
 "use client";
 
-import { ParticleText } from "@/registry/clover-ui/particle-text";
+import { NucleusText } from "@/registry/clover-ui/nucleus-text";
 import { PlaygroundShell } from "@/components/playground/playground-shell";
 import type { ControlDef } from "@/lib/playground";
 
@@ -16,10 +16,10 @@ const controls: ControlDef[] = [
 
 const defaultProps = { children: "generates", color: "#b8ff8b", particleColor: "#b8ff8b", particleCount: 90, particleSize: 1.35, gatherSpeed: 1, shake: 1 };
 
-export function ParticleTextPlayground() {
-  return <PlaygroundShell componentName="ParticleText" controls={controls} defaultProps={defaultProps} render={(values) => (
+export function NucleusTextPlayground() {
+  return <PlaygroundShell componentName="NucleusText" controls={controls} defaultProps={defaultProps} render={(values) => (
     <div className="flex min-h-[280px] w-full items-center justify-center overflow-hidden px-4">
-      <ParticleText key={JSON.stringify(values)} color={values.color as string} particleColor={values.particleColor as string} particleCount={values.particleCount as number} particleSize={values.particleSize as number} gatherSpeed={values.gatherSpeed as number} shake={values.shake as number} className="text-center text-5xl font-semibold tracking-[-0.055em] sm:text-7xl">{values.children as string}</ParticleText>
+      <NucleusText key={JSON.stringify(values)} color={values.color as string} particleColor={values.particleColor as string} particleCount={values.particleCount as number} particleSize={values.particleSize as number} gatherSpeed={values.gatherSpeed as number} shake={values.shake as number} className="text-center text-5xl font-semibold tracking-[-0.055em] sm:text-7xl">{values.children as string}</NucleusText>
     </div>
   )} />;
 }

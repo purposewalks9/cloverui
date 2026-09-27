@@ -61,34 +61,6 @@ export default function RootLayout({
             enableSystem={false}
             disableTransitionOnChange
           >
-            <AnimatedGradient
-              config={{
-                preset: "custom",
-                color1: "#05060d",   // near-black void
-                color2: "#1a1044",   // deep violet nebula
-                color3: "#0a1a33",   // faint blue glow
-                speed: 0,            // slow drift, not static
-                rotation: -35,
-                proportion: 38,
-                scale: 0.35,
-                distortion: 18,
-                swirl: 45,
-                swirlIterations: 14,
-                softness: 100,
-                offset: -300,
-                shape: "Checks",
-                shapeSize: 70,
-              }}
-              noise={{ opacity: 0.06, scale: 0.6 }}
-              style={{
-                position: "fixed",
-                inset: 0,
-                zIndex: 0,
-                opacity: 1,
-                pointerEvents: "none",
-              }}
-            />
-
             <div className="pointer-events-none fixed inset-0 z-[1] bg-[#050505]/35" />
 
             <div className="relative z-10 min-h-dvh">
