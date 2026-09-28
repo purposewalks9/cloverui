@@ -454,7 +454,7 @@ const SignPad = React.forwardRef<HTMLDivElement, SignPadProps>(
       onCancel,
       onChange,
       defaultValue = null,
-      ink = "#f5f5f5",
+      ink,
       accent = "var(--brand)",
       strokeWidth = 3,
       minInk = 0.3,
@@ -474,6 +474,28 @@ const SignPad = React.forwardRef<HTMLDivElement, SignPadProps>(
     const [phase, setPhase] = React.useState<Phase>(
       defaultValue ? "done" : "idle",
     );
+
+    // Detect dark mode and set ink color automatically
+    const [resolvedInk, setResolvedInk] = React.useState<string>(
+      ink || "#111827"
+    );
+
+    React.useEffect(() => {
+      if (ink) {
+        setResolvedInk(ink);
+        return;
+      }
+
+      const darkModeQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      const updateInk = (e?: MediaQueryListEvent) => {
+        const isDark = e ? e.matches : darkModeQuery.matches;
+        setResolvedInk(isDark ? "#f5f5f5" : "#111827");
+      };
+
+      updateInk();
+      darkModeQuery.addEventListener("change", updateInk);
+      return () => darkModeQuery.removeEventListener("change", updateInk);
+    }, [ink]);
 
     const cancel = () => {
       setPhase(signature ? "done" : "idle");
@@ -506,7 +528,7 @@ const SignPad = React.forwardRef<HTMLDivElement, SignPadProps>(
         {phase === "signing" && (
           <SigningPanel
             initial={signature?.strokes ?? []}
-            ink={ink}
+            ink={resolvedInk}
             strokeWidth={strokeWidth}
             minInk={minInk}
             accent={accent}
