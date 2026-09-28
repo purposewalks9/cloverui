@@ -64,10 +64,11 @@ export function PlaygroundShell({
 
   return (
     <div className="not-prose my-6 flex flex-col overflow-hidden rounded-lg border border-border lg:flex-row">
-      {}
+      {/* Canvas/Demo Area */}
       <div
         className={cn(
           "relative flex min-h-[22rem] min-w-0 flex-1 items-center justify-center overflow-hidden p-4 sm:p-8 lg:min-h-[28rem]",
+          "border-b border-border dark:border-border lg:border-b-0 lg:border-r",
           stageClassName,
         )}
       >
@@ -81,47 +82,53 @@ export function PlaygroundShell({
         </LazyMount>
       </div>
 
-      <div className="w-full shrink-0 border-t border-border p-3 lg:w-72 lg:border-t-0 lg:border-l">
+      {/* Control Panel */}
+      <div className="w-full shrink-0 p-3 lg:w-72">
         <div className="overflow-hidden">
-          <div className="flex items-center justify-between gap-2  px-3.5 py-2.5">
-
-            <div className="flex items-center gap-1">
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={reset}
-                 className="h-8 w-full gap-1.5 text-sm font-normal shadow-none"
-              >
-                Reset
-              </Button>
-            </div>
+          <div className="flex items-center justify-between gap-2 px-3.5 py-2.5 border-b border-border">
+            <span className="text-xs font-semibold text-muted-foreground">CONTROLS</span>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={reset}
+              className="h-7 px-2 text-xs font-normal shadow-none"
+            >
+              <RotateCcw className="size-3" />
+            </Button>
           </div>
 
           <ControlPanel controls={controls} values={values} onChange={setValue} />
 
-          <div className=" p-2.5 flex flex-row justify-between">
-           <Button
-                type="button"
-                variant="outline"
-                size="icon"
-                onClick={replay}
-                aria-label="Replay"
-               className="h-8 w-[40%] gap-1.5 text-sm font-normal shadow-none"
-              >
-               Replay
-              </Button>
+          <div className="border-t border-border p-2.5 flex flex-row gap-2 justify-between">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={replay}
+              aria-label="Replay"
+              className="h-8 flex-1 gap-1.5 text-xs font-normal shadow-none"
+            >
+              <RefreshCw className="size-3.5" />
+              Replay
+            </Button>
             <Button
               type="button"
               variant="outline"
               size="sm"
               onClick={copySettings}
-              className="h-8 w-[40%] gap-1.5 text-sm font-normal shadow-none"
+              className="h-8 flex-1 gap-1.5 text-xs font-normal shadow-none"
             >
               {settingsCopied ? (
-                "copied"
+                <>
+                  <CheckIcon className="size-3.5" />
+                  Copied
+                </>
               ) : (
-                <Copy className="size-3.5" />
+                <>
+                  <Copy className="size-3.5" />
+                  Copy
+                </>
               )}
             </Button>
           </div>
@@ -130,4 +137,3 @@ export function PlaygroundShell({
     </div>
   );
 }
-

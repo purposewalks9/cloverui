@@ -30,11 +30,9 @@ export function AppSidebar({ docSchema }: { docSchema: DocSchema }) {
       <SidebarHeader className="gap-0 px-3 pt-4 pb-3">
         <Link
           href="/"
-          className="group/logo flex items-center gap- px-1"
+          className="group/logo flex items-center gap-2 px-1 transition-opacity duration-200"
         >
-          <span
-            className="flex size-7 shrink-0 items-center justify-center"
-          >
+          <span className="flex size-7 shrink-0 items-center justify-center">
             <CloverLogo size={20} />
           </span>
           <span className="text-[16px] tracking-tight">
@@ -46,7 +44,7 @@ export function AppSidebar({ docSchema }: { docSchema: DocSchema }) {
       <SidebarContent className="px-2">
         {navGroups.map((group) => (
           <SidebarGroup key={group.title} className="">
-            <SidebarGroupLabel className="mb-1 h-7  text-[14px] font-medium  text-foreground">
+            <SidebarGroupLabel className="mb-1 h-7 text-[14px] font-medium text-foreground">
               {group.title}
             </SidebarGroupLabel>
             <SidebarGroupContent>
@@ -59,7 +57,7 @@ export function AppSidebar({ docSchema }: { docSchema: DocSchema }) {
                       <SidebarMenuButton
                         asChild
                         isActive={isActive}
-                        className="h-8 rounded-md font-normal text-muted-foreground hover:bg-transparent hover:text-foreground data-[active=true]:border-[var(--brand)] data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-foreground"
+                        className="h-8 rounded-md font-normal text-muted-foreground hover:bg-transparent hover:text-foreground data-[active=true]:border-[var(--brand)] data-[active=true]:bg-sidebar-accent data-[active=true]:text-foreground transition-all duration-200"
                       >
                         <Link href={href}>
                           <span>{item.title}</span>
