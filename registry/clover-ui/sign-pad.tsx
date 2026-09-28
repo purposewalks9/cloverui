@@ -248,18 +248,6 @@ function SigningPanel({
     length: inkLength(initial),
   }));
 
-  const [isDark, setIsDark] = React.useState(false);
-
-  React.useEffect(() => {
-    // Detect dark mode
-    const darkModeQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    setIsDark(darkModeQuery.matches);
-
-    const handleChange = (e: MediaQueryListEvent) => setIsDark(e.matches);
-    darkModeQuery.addEventListener("change", handleChange);
-    return () => darkModeQuery.removeEventListener("change", handleChange);
-  }, []);
-
   const sync = React.useCallback(() => {
     setStats({
       count: strokesRef.current.length,
@@ -466,7 +454,7 @@ const SignPad = React.forwardRef<HTMLDivElement, SignPadProps>(
       onCancel,
       onChange,
       defaultValue = null,
-      ink = "#111827",
+      ink = "#f5f5f5",
       accent = "var(--brand)",
       strokeWidth = 3,
       minInk = 0.3,

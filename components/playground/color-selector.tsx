@@ -54,22 +54,22 @@ export function ColorSelector() {
           type="button"
           aria-label="Choose accent color"
           title="Accent color"
-          className="inline-flex size-8 items-center justify-center rounded-md border border-input bg-background text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:outline-n[...]"
+          className="inline-flex size-8 items-center justify-center rounded-md border border-input bg-background text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring transition-colors"
         >
           <span
-            className="size-3.5 rounded-full border border-black/10 shadow-sm"
+            className="size-3.5 rounded-full border border-black/10 shadow-sm transition-transform"
             style={{ backgroundColor: color }}
           />
           <span className="sr-only">Accent color</span>
         </button>
       </PopoverTrigger>
-      <PopoverContent align="end" sideOffset={8} className="w-64 p-3">
+      <PopoverContent align="end" sideOffset={8} className="w-56 p-3">
         <div className="mb-3 flex items-center gap-2">
           <Palette className="size-4 text-muted-foreground" />
           <span className="text-sm font-medium">Accent color</span>
         </div>
 
-        <div className="grid grid-cols-5 gap-2">
+        <div className="flex flex-col gap-3">
           {PRESETS.map((preset) => {
             const active = color.toLowerCase() === preset.value.toLowerCase();
             return (
@@ -80,12 +80,19 @@ export function ColorSelector() {
                 title={preset.name}
                 onClick={() => setColor(preset.value)}
                 className={cn(
-                  "relative flex size-9 items-center justify-center rounded-full border border-border outline-none",
+                  "flex items-center gap-3 rounded-lg border-2 p-2 outline-none transition-all",
+                  active
+                    ? "border-foreground bg-accent/10"
+                    : "border-transparent hover:bg-muted",
                   "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                 )}
-                style={{ backgroundColor: preset.value }}
               >
-                {active && <Check className="size-4" strokeWidth={2.5} style={{ color: foregroundFor(color) }} />}
+                <span
+                  className="size-6 rounded-md shadow-sm border border-black/10"
+                  style={{ backgroundColor: preset.value }}
+                />
+                <span className="text-sm font-medium">{preset.name}</span>
+                {active && <Check className="size-4 ml-auto" />}
               </button>
             );
           })}
