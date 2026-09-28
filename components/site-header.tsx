@@ -8,6 +8,7 @@ import { GitHubStars } from "@/components/github-stars";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { ColorSelector } from "@/components/playground/color-selector";
 import { SearchForm } from "@/components/command-menu";
+import { Toc } from "@/components/toc";
 import type { DocSchema } from "@/lib/types";
 
 function titleFromSlug(slug: string) {

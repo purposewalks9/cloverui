@@ -248,6 +248,18 @@ function SigningPanel({
     length: inkLength(initial),
   }));
 
+  const [isDark, setIsDark] = React.useState(false);
+
+  React.useEffect(() => {
+    // Detect dark mode
+    const darkModeQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    setIsDark(darkModeQuery.matches);
+
+    const handleChange = (e: MediaQueryListEvent) => setIsDark(e.matches);
+    darkModeQuery.addEventListener("change", handleChange);
+    return () => darkModeQuery.removeEventListener("change", handleChange);
+  }, []);
+
   const sync = React.useCallback(() => {
     setStats({
       count: strokesRef.current.length,
@@ -406,7 +418,7 @@ function SigningPanel({
       aria-label={labels.title}
       className="relative w-[17.5rem] max-w-[calc(100vw-2rem)] "
     >
-      <div className="relative mx-1.5 mt-1 h-32 overflow-hidden rounded-lg border bg-white dark:bg-zinc-100">
+      <div className="relative mx-1.5 mt-1 h-32 overflow-hidden rounded-lg border border-input bg-background dark:bg-zinc-950">
         <canvas
           ref={canvasRef}
           role="img"
