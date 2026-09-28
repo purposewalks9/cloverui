@@ -3,7 +3,6 @@
 import * as React from "react";
 import { Check, Palette } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { ColorPicker } from "@/components/playground/color-picker";
 import { cn } from "@/lib/utils";
 
 const PRESETS = [
@@ -11,7 +10,6 @@ const PRESETS = [
   { name: "Blue", value: "#3B82F6" },
   { name: "Violet", value: "#8B5CF6" },
   { name: "Cyan", value: "#06B6D4" },
-  { name: "Pink", value: "#EC4899" },
 ] as const;
 
 const STORAGE_KEY = "clover-ui-accent";
@@ -54,22 +52,22 @@ export function ColorSelector() {
           type="button"
           aria-label="Choose accent color"
           title="Accent color"
-          className="inline-flex size-8 items-center justify-center rounded-md border border-input bg-background text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="inline-flex size-8 items-center justify-center rounded-md border border-input bg-background text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring transition-colors"
         >
           <span
-            className="size-3.5 rounded-full border border-black/10 shadow-sm"
+            className="size-3.5 rounded-full border border-black/10 shadow-sm transition-transform"
             style={{ backgroundColor: color }}
           />
           <span className="sr-only">Accent color</span>
         </button>
       </PopoverTrigger>
-      <PopoverContent align="end" sideOffset={8} className="w-64 p-3">
+      <PopoverContent align="end" sideOffset={8} className="w-56 p-3">
         <div className="mb-3 flex items-center gap-2">
           <Palette className="size-4 text-muted-foreground" />
           <span className="text-sm font-medium">Accent color</span>
         </div>
 
-        <div className="grid grid-cols-5 gap-2">
+        <div className="grid grid-cols-4 gap-2">
           {PRESETS.map((preset) => {
             const active = color.toLowerCase() === preset.value.toLowerCase();
             return (
@@ -80,15 +78,30 @@ export function ColorSelector() {
                 title={preset.name}
                 onClick={() => setColor(preset.value)}
                 className={cn(
-                  "relative flex size-9 items-center justify-center rounded-full border border-border outline-none",
+                  "relative flex size-10 items-center justify-center rounded-lg border-2 outline-none transition-all duration-200",
+                  active
+                    ? "border-foreground scale-105"
+                    : "border-transparent hover:scale-110",
                   "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                 )}
                 style={{ backgroundColor: preset.value }}
               >
-                {active && <Check className="size-4" strokeWidth={2.5} style={{ color: foregroundFor(color) }} />}
+                {active && (
+                  <Check
+                    className="size-5 transition-colors"
+                    strokeWidth={3}
+                    style={{ color: foregroundFor(color) }}
+                  />
+                )}
               </button>
             );
           })}
+        </div>
+
+        <div className="mt-3 pt-3 border-t border-border">
+          <p className="text-xs text-muted-foreground">
+            Current: <span className="font-mono font-semibold">{color}</span>
+          </p>
         </div>
       </PopoverContent>
     </Popover>
