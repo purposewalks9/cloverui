@@ -225,7 +225,6 @@ interface PanelProps {
   labels: SignPadLabels;
   onCancel: () => void;
   onFinish: (value: SignPadValue) => void;
-  isSigned: boolean;
 }
 
 function SigningPanel({
@@ -237,7 +236,6 @@ function SigningPanel({
   labels,
   onCancel,
   onFinish,
-  isSigned,
 }: PanelProps) {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const strokesRef = React.useRef<SignStroke[]>(cloneStrokes(initial));
@@ -249,8 +247,6 @@ function SigningPanel({
     count: initial.length,
     length: inkLength(initial),
   }));
-
-  const [loadingProgress, setLoadingProgress] = React.useState(0);
 
   const sync = React.useCallback(() => {
     setStats({
@@ -361,8 +357,6 @@ function SigningPanel({
     if (!drawingRef.current || drawingRef.current.id !== e.pointerId) return;
     drawingRef.current = null;
     schedule();
-    // Simulate loading animation when stroke is added
-    setLoadingProgress((prev) => Math.min(prev + 15, 100));
   };
 
   const undo = () => {
@@ -374,7 +368,6 @@ function SigningPanel({
   const clear = () => {
     if (!strokesRef.current.length) return;
     strokesRef.current = [];
-    setLoadingProgress(0);
     redraw();
     sync();
   };
@@ -383,6 +376,9 @@ function SigningPanel({
     if (inkLength(strokesRef.current) < minInk) return;
     onFinish(exportSignature(strokesRef.current, sizeRef.current.w, ink));
   };
+
+  const canFinish = inkLength(strokesRef.current) >= minInk;
+  const fillPercent = Math.min(100, (stats.length / minInk) * 100);
 
   const latest = React.useRef({ undo, finish, onCancel });
   latest.current = { undo, finish, onCancel };
@@ -404,15 +400,13 @@ function SigningPanel({
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  const canFinish = inkLength(strokesRef.current) >= minInk;
-
   return (
     <div
       role="group"
       aria-label={labels.title}
-      className="relative w-[17.5rem] max-w-[calc(100vw-2rem)]"
+      className="relative w-[17.5rem] max-w-[calc(100vw-2rem)] "
     >
-      <div className="relative mx-1.5 mt-1 h-32 overflow-hidden rounded-lg border border-border bg-background dark:bg-zinc-900">
+      <div className="relative mx-1.5 mt-1 h-32 overflow-hidden rounded-lg border bg-white dark:bg-zinc-100">
         <canvas
           ref={canvasRef}
           role="img"
@@ -425,26 +419,15 @@ function SigningPanel({
         />
       </div>
 
-      {/* Loading bar */}
-      <div className="mx-1.5 mt-1.5 h-1 overflow-hidden rounded-full bg-muted">
-        <div
-          className="h-full transition-all duration-300 ease-out"
-          style={{
-            width: `${loadingProgress}%`,
-            backgroundColor: accent,
-          }}
-        />
-      </div>
-
       <div className="mx-1.5 mb-1.5 mt-2 flex gap-2">
         <button
           type="button"
           onClick={finish}
           disabled={!canFinish}
-          className="inline-flex h-9 flex-1 items-center justify-center gap-2 rounded-md border border-black/10 px-4 text-sm font-medium text-[var(--brand-foreground)] outline-none hover:brightness-110 active:brightness-95 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+          className="inline-flex h-9 flex-1 items-center justify-center gap-2 rounded-md border border-black/10 px-4 text-sm font-medium text-[var(--brand-foreground)] outline-none hover:brightness-110 active:brightness-95 disabled:opacity-40 disabled:cursor-not-allowed transition-all relative overflow-hidden"
           style={{
             backgroundColor: accent,
-            opacity: canFinish ? 1 : 0.4,
+            backgroundImage: `linear-gradient(90deg, transparent 0%, transparent ${fillPercent}%, rgba(0,0,0,0.05) ${fillPercent}%, rgba(0,0,0,0.05) 100%)`,
           }}
         >
           <Signature className="size-4" strokeWidth={2} />
@@ -513,7 +496,7 @@ const SignPad = React.forwardRef<HTMLDivElement, SignPadProps>(
           <button
             type="button"
             onClick={() => setPhase("signing")}
-            className="inline-flex h-9 items-center justify-center gap-2 rounded-md border border-input bg-background px-4 text-sm font-medium text-foreground outline-none hover:bg-accent focus-visible:ring-1 focus-visible:ring-ring transition-colors"
+            className="inline-flex h-9 items-center justify-center gap-2 rounded-md border border-input bg-background px-4 text-sm font-medium text-foreground outline-none hover:bg-accent focus-v[...]"
           >
             <Signature className="size-4" strokeWidth={2} />
             {labels.start}
@@ -530,7 +513,6 @@ const SignPad = React.forwardRef<HTMLDivElement, SignPadProps>(
             labels={labels}
             onCancel={cancel}
             onFinish={finish}
-            isSigned={Boolean(signature)}
           />
         )}
 
@@ -540,7 +522,7 @@ const SignPad = React.forwardRef<HTMLDivElement, SignPadProps>(
             aria-label={labels.edit}
             title={labels.edit}
             onClick={() => setPhase("signing")}
-            className="inline-flex h-9 items-center gap-2 rounded-md border border-input bg-background px-4 text-sm font-medium text-foreground outline-none hover:bg-accent focus-visible:ring-1 focus-visible:ring-ring transition-colors"
+            className="inline-flex h-9 items-center gap-2 rounded-md border border-input bg-background px-4 text-sm font-medium text-foreground outline-none hover:bg-accent focus-visible:ring-1 f[...]"
           >
             <Signature className="size-4" strokeWidth={2} />
             {labels.edit}

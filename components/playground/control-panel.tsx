@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import * as React from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { RichProgress } from "@/registry/clover-ui/rich-progress";
@@ -31,7 +31,7 @@ export function ControlPanel({ controls, values, onChange }: ControlPanelProps) 
   );
 }
 
-function FieldLabel({ children }: { children: ReactNode }) {
+function FieldLabel({ children }: { children: React.ReactNode }) {
   return (
     <span className="text-sm font-normal text-muted-foreground">{children}</span>
   );
