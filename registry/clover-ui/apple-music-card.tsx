@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { Spinner } from "@/registry/clover-ui/spinner";
 import { cn } from "@/lib/utils";
 
 export interface AppleMusicCardProps {
@@ -98,13 +99,8 @@ const NeutralBackdrop = () => (
 const AppleMusicCardSkeleton = ({ className }: { className?: string }) => (
   <CardFrame className={className}>
     <NeutralBackdrop />
-    <div className="relative p-4">
-      <div className="aspect-square w-full animate-pulse rounded-2xl bg-white/15" />
-      <div className="mt-4 flex flex-col gap-2">
-        <div className="h-5 w-3/4 animate-pulse rounded bg-white/20" />
-        <div className="h-4 w-1/2 animate-pulse rounded bg-white/15" />
-        <div className="h-4 w-16 animate-pulse rounded bg-white/15" />
-      </div>
+    <div className="relative flex aspect-square w-full items-center justify-center p-4" aria-busy="true">
+      <Spinner size={24} interactive={false} />
     </div>
   </CardFrame>
 );

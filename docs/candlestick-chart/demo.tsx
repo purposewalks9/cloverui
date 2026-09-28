@@ -1,6 +1,6 @@
 "use client";
 
-import { CandleChartStick, type Candle } from "@/registry/clover-ui/candle-chart-stick";
+import { CandleChartStick, type Candle } from "@/registry/clover-ui/candlestick-chart";
 
 function mulberry32(seed: number) {
   return function () {

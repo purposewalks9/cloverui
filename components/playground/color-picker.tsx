@@ -233,7 +233,7 @@ export function ColorPicker({
           onChange={(e) => commitHexDraft(e.target.value)}
           onBlur={() => setHexDraft(value)}
           className={cn(
-            "h-7 w-full min-w-0 rounded-md border border-input bg-transparent px-2",
+            "h-7 w-full min-w-0 rounded-md border border-input bg-background px-2",
             "font-mono text-xs text-foreground outline-none focus-visible:ring-1 focus-visible:ring-ring",
           )}
         />
@@ -248,7 +248,7 @@ export function ColorPicker({
               max={255}
               value={rgb[channel]}
               onChange={(e) => setChannel(channel, e.target.value)}
-              className="h-7 w-full rounded-md border border-input bg-transparent px-1.5 text-center font-mono text-xs text-foreground outline-none focus-visible:ring-1 focus-visible:ring-ring"
+              className="h-7 w-full rounded-md border border-input bg-background px-1.5 text-center font-mono text-xs text-foreground outline-none focus-visible:ring-1 focus-visible:ring-ring"
             />
             <span className="text-center text-[10px] uppercase text-muted-foreground">
               {channel}

@@ -32,7 +32,7 @@ export function ColorField({
             className="flex h-8 items-center gap-2 rounded-md border border-input px-2 text-xs transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[state=open]:ring-2 data-[state=open]:ring-ring data-[state=open]:ring-offset-2"
           >
             <span
-              className="size-4 shrink-0 rounded-full border border-black/10"
+              className="size-4 shrink-0 rounded-full border border-border"
               style={{ background: value }}
             />
             <span className="font-mono">{value}</span>

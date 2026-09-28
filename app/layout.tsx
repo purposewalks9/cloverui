@@ -12,7 +12,6 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { JotaiProvider } from "@/components/providers";
-import AnimatedGradient from "@/components/animated-gradient";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -49,19 +48,17 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} ${dynaPuff.variable} relative isolate min-h-dvh overflow-x-hidden bg-[#050505] text-foreground antialiased font-sans`}
+        className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} ${dynaPuff.variable} relative isolate min-h-dvh overflow-x-hidden bg-background text-foreground antialiased font-sans`}
         suppressHydrationWarning
       >
         <JotaiProvider>
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
-            forcedTheme="dark"
-            enableSystem={false}
+            enableSystem
+            enableColorScheme
             disableTransitionOnChange
           >
-            <div className="pointer-events-none fixed inset-0 z-[1] bg-[#050505]/35" />
-
             <div className="relative z-10 min-h-dvh">
               {children}
             </div>

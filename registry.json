@@ -193,7 +193,7 @@
       "description": "A responsive candlestick chart with drag-to-pan, wheel-to-zoom, an animated cursor, and an OHLC tooltip.",
       "files": [
         {
-          "path": "registry/clover-ui/candle-chart-stick.tsx",
+          "path": "registry/clover-ui/candlestick-chart.tsx",
           "type": "registry:component"
         }
       ],
@@ -249,6 +249,24 @@
       ],
       "registryDependencies": [],
       "category": "feedback"
+    },
+    {
+      "name": "sign-pad",
+      "type": "registry:component",
+      "title": "Sign Pad",
+      "description": "A compact signature surface with pressure-aware ink, smooth drawing, undo and clear controls, animated completion, and cropped PNG/SVG exports.",
+      "files": [
+        {
+          "path": "registry/clover-ui/sign-pad.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "category": "input"
     },
     {
       "name": "apple-music-card",

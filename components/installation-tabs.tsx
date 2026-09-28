@@ -12,7 +12,7 @@ interface InstallationTabsProps {
 export function InstallationTabs({ item, children }: InstallationTabsProps) {
   return (
     <Tabs defaultValue="cli" className="w-full">
-      <TabsList className="not-prose bg-transparent">
+      <TabsList className="not-prose">
         <TabsTrigger
           value="cli"
           className="rounded-md text-center"
@@ -31,7 +31,7 @@ export function InstallationTabs({ item, children }: InstallationTabsProps) {
         <CodeBlockCommand item={item} />
       </TabsContent>
 
-      <TabsContent value="manual" className="bg-transparent">
+      <TabsContent value="manual">
         {children}
       </TabsContent>
     </Tabs>

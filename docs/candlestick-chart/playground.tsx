@@ -1,6 +1,6 @@
 "use client";
 
-import { CandleChartStick } from "@/registry/clover-ui/candle-chart-stick";
+import { CandleChartStick } from "@/registry/clover-ui/candlestick-chart";
 import { PlaygroundShell } from "@/components/playground/playground-shell";
 import type { ControlDef } from "@/lib/playground";
 import { data } from "./demo";

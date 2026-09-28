@@ -193,7 +193,7 @@
       "description": "A responsive candlestick chart with drag-to-pan, wheel-to-zoom, an animated cursor, and an OHLC tooltip.",
       "files": [
         {
-          "path": "registry/clover-ui/candle-chart-stick.tsx",
+          "path": "registry/clover-ui/candlestick-chart.tsx",
           "type": "registry:component"
         }
       ],

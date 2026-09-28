@@ -100,10 +100,10 @@ Do it everywhere in one pass: the source file, the `docs/<name>/` folder, the `r
 We follow [Conventional Commits](https://www.conventionalcommits.org):
 
 ```
-feat(pop-text): add bubble letter text component
+feat(nucleus-text): add particle count control
 fix(sidebar): cover full screen on mobile
 docs: add contributing guide
-refactor(registry): finish nucleus-text rename
+refactor(registry): rename candlestick chart file
 chore: rebuild registry output
 ```
 

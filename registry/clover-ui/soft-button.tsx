@@ -24,57 +24,17 @@ interface SoftButtonProps
   className?: string;
 }
 
-const colorMap: Record<SoftColor, { background: string; foreground: string; glow: string }> = {
-  red: {
-    background: "radial-gradient(120% 140% at 50% 0%, #ff6b6b 0%, #ff2d2d 42%, #c91515 100%)",
-    foreground: "#fff",
-    glow: "rgba(255, 45, 45, .34)",
-  },
-  darkRed: {
-    background: "radial-gradient(120% 140% at 50% 0%, #ff4545 0%, #e31212 42%, #850808 100%)",
-    foreground: "#fff",
-    glow: "rgba(227, 18, 18, .34)",
-  },
-  green: {
-    background: "radial-gradient(120% 140% at 50% 0%, #a8d96a 0%, #63a928 42%, #347012 100%)",
-    foreground: "#fff",
-    glow: "rgba(99, 169, 40, .28)",
-  },
-  lime: {
-    background: "radial-gradient(120% 140% at 50% 0%, #efff78 0%, #b8ed20 40%, #63ae00 100%)",
-    foreground: "#101500",
-    glow: "rgba(184, 237, 32, .32)",
-  },
-  blue: {
-    background: "radial-gradient(120% 140% at 50% 0%, #72c7ff 0%, #278ff0 42%, #1554aa 100%)",
-    foreground: "#fff",
-    glow: "rgba(39, 143, 240, .3)",
-  },
-  purple: {
-    background: "radial-gradient(120% 140% at 50% 0%, #d08cff 0%, #9c4cff 42%, #5a229e 100%)",
-    foreground: "#fff",
-    glow: "rgba(156, 76, 255, .3)",
-  },
-  orange: {
-    background: "radial-gradient(120% 140% at 50% 0%, #ffd080 0%, #ff922e 42%, #c95008 100%)",
-    foreground: "#241100",
-    glow: "rgba(255, 146, 46, .3)",
-  },
-  yellow: {
-    background: "radial-gradient(120% 140% at 50% 0%, #fff99a 0%, #ffdc32 42%, #c89100 100%)",
-    foreground: "#241b00",
-    glow: "rgba(255, 220, 50, .28)",
-  },
-  pink: {
-    background: "radial-gradient(120% 140% at 50% 0%, #ff9bdf 0%, #f04fbd 42%, #a81778 100%)",
-    foreground: "#fff",
-    glow: "rgba(240, 79, 189, .3)",
-  },
-  cyan: {
-    background: "radial-gradient(120% 140% at 50% 0%, #9dffff 0%, #28dce7 42%, #14828c 100%)",
-    foreground: "#062022",
-    glow: "rgba(40, 220, 231, .3)",
-  },
+const colorMap: Record<SoftColor, { background: string; foreground: string }> = {
+  red: { background: "#ff3b3b", foreground: "#fff" },
+  darkRed: { background: "#df1f1f", foreground: "#fff" },
+  green: { background: "#63a928", foreground: "#fff" },
+  lime: { background: "#b8ed20", foreground: "#101500" },
+  blue: { background: "#278ff0", foreground: "#fff" },
+  purple: { background: "#8b5cf6", foreground: "#fff" },
+  orange: { background: "#ff922e", foreground: "#241100" },
+  yellow: { background: "#ffdc32", foreground: "#241b00" },
+  pink: { background: "#f04fbd", foreground: "#fff" },
+  cyan: { background: "#28dce7", foreground: "#062022" },
 };
 
 const sizeMap: Record<SizeVariant, string> = {
@@ -94,8 +54,9 @@ const SoftButton = React.forwardRef<HTMLButtonElement, SoftButtonProps>(
         className={[
           "group relative inline-flex cursor-pointer items-center justify-center",
           "gap-2 overflow-hidden whitespace-nowrap rounded-full font-semibold",
-          "transition-[filter,transform,box-shadow] duration-300 ease-out",
-          "active:translate-y-0 active:scale-[0.98] active:brightness-95",
+          "border border-black/10 shadow-sm",
+          "transition-colors duration-150",
+          "active:brightness-95",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--soft-focus)] focus-visible:ring-offset-2 focus-visible:ring-offset-background",
           "disabled:pointer-events-none disabled:opacity-50",
           "[&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
@@ -106,19 +67,10 @@ const SoftButton = React.forwardRef<HTMLButtonElement, SoftButtonProps>(
           ...style,
           background: palette.background,
           color: palette.foreground,
-          ["--soft-glow" as string]: palette.glow,
-          ["--soft-focus" as string]: palette.glow,
+          ["--soft-focus" as string]: palette.background,
         }}
         {...props}
       >
-        <span
-          aria-hidden
-          className="pointer-events-none absolute inset-[1px] rounded-[inherit] bg-[linear-gradient(180deg,rgba(255,255,255,.28),transparent_42%)] opacity-80 transition-opacity duration-300 group-hover:opacity-100"
-        />
-        <span
-          aria-hidden
-          className="pointer-events-none absolute -inset-x-1/3 top-0 h-px bg-white/70 blur-sm transition-transform duration-500 group-hover:translate-x-1/3"
-        />
         {asChild ? (
           <Slottable>{children}</Slottable>
         ) : (

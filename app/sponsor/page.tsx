@@ -42,7 +42,7 @@ export default function SponsorPage() {
       <RootHeader />
       <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col items-center px-5 py-16 sm:px-8 sm:py-24">
         <div className="flex flex-col items-center gap-6 text-center">
-          <div className="flex size-16 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04]">
+          <div className="flex size-16 items-center justify-center rounded-2xl border border-border bg-card">
             <CloverLogo size={36} />
           </div>
           <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
@@ -83,9 +83,9 @@ export default function SponsorPage() {
             {perks.map(({ icon: Icon, title, body }) => (
               <div
                 key={title}
-                className="flex flex-col gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition-colors duration-200 hover:bg-white/[0.06]"
+                className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-6 transition-colors duration-200 hover:bg-secondary"
               >
-                <div className="flex size-10 items-center justify-center rounded-xl border border-white/10 bg-white/[0.05]">
+                <div className="flex size-10 items-center justify-center rounded-xl border border-border bg-secondary">
                   <Icon className="size-5" />
                 </div>
                 <h3 className="text-base font-semibold">{title}</h3>

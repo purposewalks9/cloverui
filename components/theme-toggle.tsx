@@ -1,21 +1,30 @@
 "use client";
 
+import * as React from "react";
 import { Moon, Sun } from "lucide-react";
-import { Button } from "./ui/button";
 import { useTheme } from "next-themes";
 
 export function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => setMounted(true), []);
+
+  if (!mounted) {
+    return <span className="inline-flex size-8" aria-hidden />;
+  }
+
+  const dark = resolvedTheme === "dark";
+
   return (
-    <Button
-      variant="outline"
-      size="icon"
-      className="relative size-8 cursor-pointer rounded-full shadow-none"
-      onClick={() => setTheme(theme === "dark" ? "dark" : "dark")}
+    <button
+      type="button"
+      aria-label={dark ? "Switch to light theme" : "Switch to dark theme"}
+      title={dark ? "Light theme" : "Dark theme"}
+      onClick={() => setTheme(dark ? "light" : "dark")}
+      className="inline-flex size-8 items-center justify-center rounded-md border border-input bg-background text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
     >
-      <Sun className="size-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-      <Moon className="absolute size-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-      <span className="sr-only">Switch Theme</span>
-    </Button>
+      {dark ? <Sun className="size-4" /> : <Moon className="size-4" />}
+    </button>
   );
 }

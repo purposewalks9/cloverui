@@ -34,7 +34,7 @@ export function ComponentPage({
       </div>
 
       {toc.length > 0 && (
-        <aside className="fixed right-0 top-12 z-20 hidden h-[calc(100svh-3rem)] w-64 overflow-y-auto xl:block">
+        <aside className="fixed right-0 top-12 z-20 hidden h-[calc(100svh-3rem)] w-64 overflow-y-auto border-l border-border xl:block">
           <DocsTableOfContents toc={toc} docId={docId} content={rawContent} url={url} />
         </aside>
       )}

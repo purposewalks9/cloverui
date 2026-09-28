@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
+import { Spinner } from "@/registry/clover-ui/spinner";
 
 interface LazyMountProps {
   children: React.ReactNode;
@@ -54,10 +55,7 @@ export function LazyMount({
       {visible
         ? children
         : (fallback ?? (
-            <div
-              aria-hidden
-              className="h-24 w-40 animate-pulse rounded-lg bg-white/5"
-            />
+            <Spinner size={24} interactive={false} aria-label="Loading" />
           ))}
     </div>
   );

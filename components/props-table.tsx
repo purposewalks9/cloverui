@@ -116,7 +116,7 @@ function PropRow({ item }: { item: PropsTableItem }) {
 export function PropsTable({ data }: PropsTableProps) {
   if (data.length === 0) {
     return (
-      <div className="mt-6 flex h-[42px] w-full items-center justify-center overflow-hidden rounded-lg border border-border bg-muted/30">
+      <div className="mt-6 flex h-[42px] w-full items-center justify-center overflow-hidden rounded-lg border border-border bg-muted">
         <div className="text-center text-sm text-muted-foreground">
           No Additional Props
         </div>
@@ -126,7 +126,7 @@ export function PropsTable({ data }: PropsTableProps) {
 
   return (
     <div className="mt-6 w-full overflow-hidden rounded-lg border border-border not-prose">
-      <div className="flex items-center justify-between bg-muted/30 px-4 py-3">
+      <div className="flex items-center justify-between bg-muted px-4 py-3">
         <span className="text-sm font-medium text-muted-foreground">
           Prop
         </span>

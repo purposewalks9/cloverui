@@ -130,7 +130,7 @@ function ColorSwatchGroup({
           >
             <span
               className={cn(
-                "size-6 rounded-full border border-white/15 shadow-sm transition-transform duration-150",
+                "size-6 rounded-full border border-border shadow-sm transition-transform duration-150",
                 "group-hover:scale-110 group-focus-visible:scale-110",
                 active && "scale-110",
               )}

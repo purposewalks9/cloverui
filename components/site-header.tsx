@@ -5,6 +5,8 @@ import { usePathname } from "next/navigation";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { GitHubStars } from "@/components/github-stars";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { ColorSelector } from "@/components/playground/color-selector";
 import { SearchForm } from "@/components/command-menu";
 import type { DocSchema } from "@/lib/types";
 
@@ -34,7 +36,7 @@ export function SiteHeader({ docSchema }: { docSchema: DocSchema }) {
   }
 
   return (
-    <header className="sticky top-0 z-30 flex h-12 shrink-0 items-center justify-between gap-3 border-b border-white/[0.08] bg-background/70 px-4 text-foreground backdrop-blur-xl supports-[backdrop-filter]:bg-background/55">
+    <header className="sticky top-0 z-30 flex h-12 shrink-0 items-center justify-between gap-3 border-b border-border bg-background px-4 text-foreground">
       <div className="flex min-w-0 items-center gap-2">
         <SidebarTrigger className="-ml-1" />
         <Separator orientation="vertical" className="h-4" />
@@ -50,9 +52,13 @@ export function SiteHeader({ docSchema }: { docSchema: DocSchema }) {
       </div>
 
 
-        <div className="[&_button]:h-7 [&_button]:rounded-full [&_button]:border-none [&_button]:bg-transparent [&_button]:px-2.5 [&_button]:shadow-none [&_button]:hover:bg-white/10">
+        <div className="flex items-center gap-1.5">
+        <div className="[&_button]:h-8 [&_button]:rounded-md [&_button]:border-input [&_button]:bg-background [&_button]:px-2.5 [&_button]:shadow-none [&_button]:hover:bg-accent">
           <SearchForm docSchema={docSchema} />
         </div>
+        <ColorSelector />
+        <ThemeToggle />
+      </div>
     </header>
   );
 }

@@ -1,10 +1,11 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { Spinner } from "@/registry/clover-ui/spinner";
 
 const TokenFall = dynamic(
   () => import("@/registry/clover-ui/token-fall").then((m) => m.TokenFall),
-  { ssr: false, loading: () => <div className="h-full w-full animate-pulse bg-white/5" /> },
+  { ssr: false, loading: () => <div className="flex h-full w-full items-center justify-center"><Spinner size={24} interactive={false} /></div> },
 );
 import { PlaygroundShell } from "@/components/playground/playground-shell";
 import type { ControlDef } from "@/lib/playground";

@@ -9,6 +9,7 @@ import { OpenInV0Button } from "./open-in-v0-button";
 import { LazyMount } from "./lazy-mount";
 import { usePathname } from "next/navigation";
 import { Code2, Monitor } from "lucide-react";
+import { Spinner } from "@/registry/clover-ui/spinner";
 export function DemoCanvas({
   children,
 }: {
@@ -21,10 +22,10 @@ export function DemoCanvas({
   return (
     <Tabs defaultValue="preview">
       <div className="flex items-end justify-end not-prose">
-        <TabsList className="h-9 gap-1 bg-transparent p-0">
+        <TabsList className="h-9 gap-1 p-0">
           <TabsTrigger
             value="preview"
-            className="cursor-pointer rounded-md px-2.5 text-center transition-all data-[state=active]:bg-white data-[state=active]:shadow-[0_0_0_1px_rgba(0,0,0,.08),0px_2px_2px_rgba(0,0,0,.04)] data-[state=active]:dark:bg-[#0B0B09]"
+            className="cursor-pointer rounded-md px-2.5 text-center transition-all data-[state=active]:bg-background"
           >
             <Monitor className="h-4 w-4" />
             <span className="sr-only">Preview</span>
@@ -32,7 +33,7 @@ export function DemoCanvas({
 
           <TabsTrigger
             value="code"
-            className="cursor-pointer rounded-md px-2.5 text-center transition-all data-[state=active]:bg-white data-[state=active]:shadow-[0_0_0_1px_rgba(0,0,0,.08),0px_2px_2px_rgba(0,0,0,.04)] data-[state=active]:dark:bg-[#0B0B09]"
+            className="cursor-pointer rounded-md px-2.5 text-center transition-all data-[state=active]:bg-background"
           >
             <Code2 className="h-4 w-4" />
             <span className="sr-only">Code</span>
@@ -80,7 +81,7 @@ export function DemoPreview({
       >
         <Suspense
           fallback={
-            <div className="text-sm text-muted-foreground">Loading…</div>
+            <Spinner size={24} interactive={false} />
           }
         >
             <LazyMount
@@ -101,7 +102,7 @@ export function DemoPreview({
             </LazyMount>
         </Suspense>
 
-        <div className="absolute bottom-3 left-3 z-20 flex items-center gap-1 rounded-lg border bg-background/95 p-1 shadow-md backdrop-blur-sm">
+        <div className="absolute bottom-3 left-3 z-20 flex items-center gap-1 rounded-lg border bg-background p-1 shadow-md">
           {v0Id && <OpenInV0Button id={v0Id} />}
 
           <button

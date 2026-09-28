@@ -8,38 +8,45 @@ import { ArrowUp, SquarePen } from "lucide-react";
 import { Separator } from "./ui/separator";
 import Link from "next/link";
 import { siteConfig } from "@/lib/config";
-import MenuLeft from "./icons/menu-left";
 import { DocCopySection } from "./doc-copy-section";
 
+const ACTIVE_OFFSET = 112;
+
 function useActiveItem(itemIds: string[]) {
-  const [activeId, setActiveId] = React.useState<string | null>(null);
+  const [activeId, setActiveId] = React.useState<string | null>(itemIds[0] ?? null);
 
   React.useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id);
-          }
-        }
-      },
-      { rootMargin: "0% 0% -80% 0%" },
-    );
+    let frame = 0;
 
-    for (const id of itemIds ?? []) {
-      const element = document.getElementById(id);
-      if (element) {
-        observer.observe(element);
+    const update = () => {
+      frame = 0;
+      const nearBottom =
+        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+      if (nearBottom) {
+        setActiveId(itemIds[itemIds.length - 1] ?? null);
+        return;
       }
-    }
-
-    return () => {
-      for (const id of itemIds ?? []) {
+      let current = itemIds[0] ?? null;
+      for (const id of itemIds) {
         const element = document.getElementById(id);
-        if (element) {
-          observer.unobserve(element);
-        }
+        if (!element) continue;
+        if (element.getBoundingClientRect().top - ACTIVE_OFFSET <= 0) current = id;
+        else break;
       }
+      setActiveId(current);
+    };
+
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      if (frame) cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
     };
   }, [itemIds]);
 
@@ -87,24 +94,39 @@ export function DocsTableOfContents({
           className,
         )}
       >
-        <p className="text-primary h-6 mb-2 text-[0.85rem] flex gap-1.5 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 items-center">
-          <MenuLeft />
-          On This Page
-        </p>
-        {toc.map((item) => (
-          <a
-            key={item.url}
-            href={item.url}
-            className={cn(
-              "text-muted-foreground hover:text-foreground data-[active=true]:text-foreground text-[0.9rem] no-underline transition-colors data-[depth=3]:pl-4 data-[depth=4]:pl-6",
-              boldActive && "data-[active=true]:font-medium",
-            )}
-            data-active={item.url === `#${activeHeading}`}
-            data-depth={item.depth}
-          >
-            {item.title}
-          </a>
-        ))}
+        <nav aria-label="On this page">
+          <p className="mb-3 text-xs font-medium text-muted-foreground">On this page</p>
+          <ul className="flex flex-col border-l border-border">
+            {toc.map((item) => {
+              const isActive = item.url === `#${activeHeading}`;
+              return (
+                <li key={item.url}>
+                  <a
+                    href={item.url}
+                    onClick={(event) => {
+                      const target = document.getElementById(item.url.replace("#", ""));
+                      if (!target) return;
+                      event.preventDefault();
+                      target.scrollIntoView({ behavior: "smooth", block: "start" });
+                      history.replaceState(null, "", item.url);
+                    }}
+                    data-active={isActive}
+                    data-depth={item.depth}
+                    aria-current={isActive ? "location" : undefined}
+                    className={cn(
+                      "relative -ml-px block border-l-2 border-transparent py-1.5 pl-4 text-[0.9rem] leading-snug text-muted-foreground no-underline transition-colors duration-150 hover:text-foreground",
+                      "data-[active=true]:border-primary data-[active=true]:text-foreground",
+                      "data-[depth=3]:pl-8 data-[depth=3]:before:absolute data-[depth=3]:before:inset-y-0 data-[depth=3]:before:left-4 data-[depth=3]:before:w-px data-[depth=3]:before:bg-border data-[depth=4]:pl-12",
+                      boldActive && "data-[active=true]:font-medium",
+                    )}
+                  >
+                    {item.title}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
 
         <Separator orientation="horizontal" className="my-2" />
         <DocCopySection content={content} url={url} />

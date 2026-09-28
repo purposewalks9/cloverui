@@ -156,7 +156,7 @@ export function SearchForm({ docSchema }: { docSchema: DocSchema }) {
       >
         <Search className="size-4" />
         <span className="pr-6 lg:hidden">Search...</span>
-        <span className="pr-8 hidden lg:inline">Search documentation...</span>
+        <span className="pr-8 hidden lg:inline"> Search</span>
         <kbd className="-me-1 font-mono place-content-center grid dark:shadow-[0_0_0_1px_var(--input)] shadow-[0_0_0_1px_var(--input)]font-normal min-h-5 min-w-5 rounded-full px-1 text-xs">
           ?
         </kbd>

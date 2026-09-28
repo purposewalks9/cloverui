@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { Star } from "lucide-react";
 import { siteConfig } from "@/lib/config";
+import { Spinner } from "@/registry/clover-ui/spinner";
 
 function formatStars(count: number) {
   if (count >= 1_000_000) return `${(count / 1_000_000).toFixed(1).replace(/\.0$/, "")}m`;
@@ -47,7 +48,7 @@ export function GitHubStars() {
         ) : failed ? (
           "Star"
         ) : (
-          <span className="inline-block h-3 w-5 animate-pulse rounded bg-current/20 align-middle" />
+          <Spinner size={12} interactive={false} />
         )}
       </span>
     </Link>

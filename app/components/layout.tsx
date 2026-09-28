@@ -11,7 +11,7 @@ export default async function ComponentsLayout({
   const docSchema = await getDocSchema();
 
   return (
-    <div className="min-h-screen bg-transparent">
+    <div className="min-h-screen bg-background">
 
     <SidebarProvider>
       <AppSidebar docSchema={docSchema} />
