@@ -3,7 +3,6 @@ import { CloverLogo } from "@/components/clover-logo";
 import { SoftButton } from "@/registry/clover-ui/soft-button";
 import { GitHubStars } from "@/components/github-stars";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { ColorSelector } from "@/components/playground/color-selector";
 
 export function RootHeader() {
   return (
@@ -24,8 +23,7 @@ export function RootHeader() {
               </Link>
             </SoftButton>
           </div>
-
-          <ColorSelector />
+          
           <ThemeToggle />
           <GitHubStars />
         </div>

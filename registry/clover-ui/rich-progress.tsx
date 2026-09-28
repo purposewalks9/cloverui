@@ -40,7 +40,7 @@ export interface RichProgressProps {
 }
 
 const fillColorMap: Record<Color, string> = {
-  default: "bg-white dark:bg-zinc-100",
+  default: "bg-black dark:bg-zinc-100",
   blue: "bg-blue-500",
   purple: "bg-purple-500",
   pink: "bg-pink-500",

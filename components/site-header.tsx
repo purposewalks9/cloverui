@@ -4,11 +4,8 @@ import * as React from "react";
 import { usePathname } from "next/navigation";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
-import { GitHubStars } from "@/components/github-stars";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { ColorSelector } from "@/components/playground/color-selector";
 import { SearchForm } from "@/components/command-menu";
-import { Toc } from "@/components/toc";
 import type { DocSchema } from "@/lib/types";
 
 function titleFromSlug(slug: string) {
@@ -57,7 +54,7 @@ export function SiteHeader({ docSchema }: { docSchema: DocSchema }) {
         <div className="[&_button]:h-8 [&_button]:rounded-md [&_button]:border-input [&_button]:bg-background [&_button]:px-2.5 [&_button]:shadow-none [&_button]:hover:bg-accent">
           <SearchForm docSchema={docSchema} />
         </div>
-        <ColorSelector />
+
         <ThemeToggle />
       </div>
     </header>
