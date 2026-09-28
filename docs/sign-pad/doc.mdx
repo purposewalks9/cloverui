@@ -14,94 +14,69 @@ import { SignPadPlayground } from "./playground"
 ```tsx
 import { SignPad } from "@/components/sign-pad";
 
-<SignPad
-  onComplete={(signature) => {
-    console.log(signature.svg);
-  }}
-/>
+<SignPad />
 ```
 
-### Save the signature
+### Interactive
 
-`onComplete` receives a `SignPadValue` containing both ready-to-use exports and the original strokes.
+```tsx
+import { useState } from "react";
+import { SignPad, type SignPadValue } from "@/components/sign-pad";
+
+export function Example() {
+  const [signature, setSignature] = useState<SignPadValue | null>(null);
+
+  return (
+    <SignPad
+      onChange={setSignature}
+    />
+  );
+}
+```
+
+### Customize the stroke
+
+The ink automatically follows the current theme. It uses dark ink in light mode and light ink in dark mode.
 
 ```tsx
 <SignPad
-  onComplete={(signature) => {
-    form.setValue("signature", signature.dataUrl);
-  }}
-/>
-```
-
-### Restore an existing signature
-
-Pass the previous value to `defaultValue` when the signature should open in its completed state.
-
-```tsx
-<SignPad defaultValue={savedSignature} />
-```
-
-### Customize the ink
-
-```tsx
-<SignPad
-  ink="#7c3aed"
   strokeWidth={3.5}
   minInk={0.24}
 />
 ```
 
-### Custom labels
+### Existing signature
 
-The labels object is useful for product-specific copy or localization.
+You can provide an existing completed signature through `defaultValue`.
 
 ```tsx
 <SignPad
-  labels={{
-    start: "Add signature",
-    finish: "Save signature",
-    done: "Signature saved",
-    title: "Approval",
-  }}
+  defaultValue={signature}
 />
 ```
 
 ## Behavior
 
-- Draws with mouse, touch, or a pressure-sensitive pen.
-- Uses coalesced pointer events when available for smoother strokes.
-- Adjusts stroke width from pointer speed and pen pressure.
-- Supports undo, clear, edit, and cancel actions.
-- `Ctrl/Cmd + Z` undoes, `Ctrl/Cmd + Enter` finishes, and `Escape` cancels.
-- Emits a cropped transparent PNG, cropped SVG, dimensions, and raw strokes.
-- Uses `ResizeObserver` and device-pixel-ratio scaling so the canvas stays sharp.
-- Uses `prefers-reduced-motion` to disable decorative transitions.
+* Ink automatically follows the current `.dark` theme.
+* Light mode uses dark ink.
+* Dark mode uses light ink.
+* The stroke width can be adjusted with `strokeWidth`.
+* `minInk` controls the minimum amount of drawing required to finish.
+* `accent` controls the finish action accent color.
+* `onChange` receives the current saved signature.
+* `onComplete` fires when a valid signature is finished.
+* `onCancel` fires when signing is closed without finishing.
 
 ## Props
 
 <PropsTable data={[
-  { name: "onComplete", type: "(value: SignPadValue) => void", description: "Called after a valid signature is finished." },
-  { name: "onCancel", type: "() => void", description: "Called when signing is closed without finishing." },
-  { name: "onChange", type: "(value: SignPadValue | null) => void", description: "Called when the saved signature changes." },
-  { name: "defaultValue", type: "SignPadValue | null", default: "null", description: "Starts the component with an existing completed signature." },
-  { name: "ink", type: "string", default: '"#111827"', description: "Ink color used for drawing and exports." },
-  { name: "strokeWidth", type: "number", default: "3", description: "Base pen width in pixels." },
-  { name: "minInk", type: "number", default: "0.3", description: "Minimum normalized ink length required to finish." },
-  { name: "haptics", type: "boolean", default: "true", description: "Uses device vibration feedback when supported." },
-  { name: "labels", type: "Partial<SignPadLabels>", description: "Overrides the built-in interface labels." },
-  { name: "className", type: "string", description: "Additional classes for the outer wrapper." },
+{ name: "onComplete", type: "(value: SignPadValue) => void", description: "Called after a valid signature is finished." },
+{ name: "onCancel", type: "() => void", description: "Called when signing is closed without finishing." },
+{ name: "onChange", type: "(value: SignPadValue | null) => void", description: "Called when the saved signature changes." },
+{ name: "defaultValue", type: "SignPadValue | null", default: "null", description: "Starts the component with an existing completed signature." },
+{ name: "accent", type: "string", default: '"var(--brand)"', description: "Accent color used by the finish action." },
+{ name: "strokeWidth", type: "number", default: "3", description: "Base pen width in pixels." },
+{ name: "minInk", type: "number", default: "0.3", description: "Minimum normalized ink length required to finish." },
+{ name: "labels", type: "Partial<SignPadLabels>", description: "Overrides the built-in interface labels." },
+{ name: "className", type: "string", description: "Additional classes for the outer wrapper." },
 ]} />
-
-## SignPadValue
-
-```tsx
-interface SignPadValue {
-  dataUrl: string;
-  svg: string;
-  width: number;
-  height: number;
-  strokes: SignStroke[];
-}
-```
-
-The PNG is transparent and tightly cropped to the ink. The SVG is useful when the signature needs to remain scalable, while `strokes` lets you restore or process the original drawing data.
