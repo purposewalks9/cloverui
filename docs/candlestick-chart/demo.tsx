@@ -53,7 +53,6 @@ function generateCandles(count: number, seed = 42): Candle[] {
   return candles;
 }
 
-// Shared sample data — reused by the playground so both stay in sync.
 export const data = generateCandles(1000);
 
 export function Demo() {

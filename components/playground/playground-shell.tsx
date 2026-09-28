@@ -64,7 +64,7 @@ export function PlaygroundShell({
 
   return (
     <div className="not-prose my-6 flex flex-col overflow-hidden rounded-lg border border-border lg:flex-row">
-      {/* Stage: fills the full height next to the panel and centers the preview both ways. */}
+      {}
       <div
         className={cn(
           "relative flex min-h-[22rem] min-w-0 flex-1 items-center justify-center overflow-hidden p-4 sm:p-8 lg:min-h-[28rem]",

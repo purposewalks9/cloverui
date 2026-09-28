@@ -1,4 +1,3 @@
-
 import type { Metadata } from "next";
 import { constructMetadata } from "@/lib/utils";
 import Script from "next/script";

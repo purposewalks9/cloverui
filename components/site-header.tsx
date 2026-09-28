@@ -49,7 +49,7 @@ export function SiteHeader({ docSchema }: { docSchema: DocSchema }) {
         )}
       </div>
 
-   
+
         <div className="[&_button]:h-7 [&_button]:rounded-full [&_button]:border-none [&_button]:bg-transparent [&_button]:px-2.5 [&_button]:shadow-none [&_button]:hover:bg-white/10">
           <SearchForm docSchema={docSchema} />
         </div>

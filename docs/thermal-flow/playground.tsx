@@ -49,7 +49,7 @@ export function ThermalFlowPlayground() {
       controls={controls}
       defaultProps={defaultProps}
       codeNote="fills its relative parent. Pass colors={[...]} for a custom palette"
-      // no wrapper: ThermalFlow is absolute inset-0, so it fills the whole stage
+
       render={(values) => (
         <ThermalFlow
           theme={values.theme as ThermalFlowTheme}

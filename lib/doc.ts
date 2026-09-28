@@ -1,4 +1,4 @@
-import { basicDoc } from "@/basic-doc";
+import { basicDoc } from "@/lib/basic-doc";
 import { getRegistry } from "./registry";
 import { DocItem, DocSchema, RegistryItem } from "./types";
 

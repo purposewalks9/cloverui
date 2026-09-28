@@ -165,7 +165,6 @@ void main() {
   float fw = 0.004;
 #endif
 
-  // the palette is a sawtooth: dark -> hot, then snaps back. blur that snap just enough to anti-alias it
   float w = u_soft + fw * 1.5;
   float d = min(fr, 1.0 - fr);
   vec3 c = pal(fr);

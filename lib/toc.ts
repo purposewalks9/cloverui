@@ -67,7 +67,7 @@ function extractItems(node: ListNode, depth: number): TocItem[] {
         if (item) {
           items.push(item);
 
-          // Extract nested items
+
           for (const child of listItem.children) {
             if (child.type === "list") {
               const nestedItems = extractItems(child as ListNode, depth + 1);

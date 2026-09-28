@@ -1,6 +1,5 @@
 name: Apply schema migrations
 
-# 👉 Only run this workflow when a change is made to the main branch
 on:
   push:
     branches:

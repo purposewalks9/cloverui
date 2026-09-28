@@ -6,7 +6,6 @@ import { cn } from "@/lib/utils";
 
 export type GrainCubeTheme = "green" | "ember" | "ice" | "violet" | "mono";
 
-/** 8 stops. The flow walks this list, so neighbors in the list are what blend together on a face. */
 export const GRAIN_CUBE_THEMES: Record<GrainCubeTheme, string[]> = {
   green: ["#52c4dc", "#f2f6ea", "#25e15f", "#0b5a2b", "#020604", "#5a410c", "#e6b92c", "#25e15f"],
   ember: ["#ffe9c2", "#ffb02e", "#ff5a1f", "#7a1408", "#050101", "#3a0f3a", "#e0459b", "#ff5a1f"],
@@ -16,32 +15,22 @@ export const GRAIN_CUBE_THEMES: Record<GrainCubeTheme, string[]> = {
 };
 
 export interface GrainCubeProps {
-  /** Built-in palette. */
-  theme?: GrainCubeTheme;
-  /** Custom palette, 2 to 8 colors. Overrides `theme`. */
-  colors?: string[];
-  /** Cube size as a fraction of the box (0.2 to 1). */
-  size?: number;
-  /** Zoom of the pattern on each face. Higher = bigger blobs. */
-  scale?: number;
-  /** How much the pattern folds and swirls. */
-  warp?: number;
-  /** Grain amount. */
-  grain?: number;
-  /** Set false for a still cube (drag still works). */
-  animate?: boolean;
-  /** Spin and flow speed multiplier. */
-  speed?: number;
-  /** Drag to spin the cube. */
-  interactive?: boolean;
-  /** Render scale (0.5 to 1). Keep 1 for crisp grain. */
-  resolution?: number;
+    theme?: GrainCubeTheme;
+    colors?: string[];
+    size?: number;
+    scale?: number;
+    warp?: number;
+    grain?: number;
+    animate?: boolean;
+    speed?: number;
+    interactive?: boolean;
+    resolution?: number;
   style?: React.CSSProperties;
   className?: string;
 }
 
 const MAX_STOPS = 8;
-const DEFAULT_PITCH = 0.6155; // true isometric tilt
+const DEFAULT_PITCH = 0.6155;
 const DEFAULT_YAW = Math.PI / 4;
 
 function parseColor(input: string): [number, number, number] {
@@ -72,7 +61,6 @@ function buildPalette(colors: string[]) {
   return { data, count: rgb.length };
 }
 
-/** R = Rx(pitch) * Ry(yaw), row-major. Uploaded as-is it becomes R^-1 in the shader. */
 function rotation(yaw: number, pitch: number) {
   const cy = Math.cos(yaw);
   const sy = Math.sin(yaw);
@@ -182,7 +170,6 @@ void main() {
   float px = 2.0 * (1.732 / u_size) / u_res.y;
   vec3 rd = u_rinv * vec3(0.0, 0.0, -1.0) + vec3(1e-5);
 
-  // 4 rotated-grid samples for a clean silhouette, shade once from the first hit
   float cov = 0.0;
   bool any = false;
   vec3 hitP = vec3(0.0);
@@ -226,7 +213,6 @@ void main() {
   float f = fbm(p + u_warp * 0.9 * q);
 
   float g = hash(gl_FragCoord.xy);
-  // each face leans toward a different part of the palette
   float lean = 0.24 + 0.4 * fract(sin(seed * 91.7) * 437.5);
   float v = f * 1.0 + lean + (g - 0.5) * u_grain * 0.25;
   vec3 c = pal(v);
@@ -396,7 +382,7 @@ function GrainCube({
       }
       if (!rot.dragging) {
         rot.yaw += rot.vel * dt;
-        rot.vel *= Math.pow(0.05, dt); // inertia
+        rot.vel *= Math.pow(0.05, dt);
         rot.pitch += (DEFAULT_PITCH - rot.pitch) * Math.min(1, dt * 2.5);
       }
       draw();
@@ -435,7 +421,7 @@ function GrainCube({
       rot.y = e.clientY;
       rot.yaw += dx * 0.012;
       rot.pitch = Math.min(1.2, Math.max(-1.2, rot.pitch + dy * 0.008));
-      rot.vel = dx * 0.012 * 60; // rad/s for the throw
+      rot.vel = dx * 0.012 * 60;
       schedule();
     };
     const onUp = (e: PointerEvent) => {

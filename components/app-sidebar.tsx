@@ -45,12 +45,12 @@ export function AppSidebar({ docSchema }: { docSchema: DocSchema }) {
 
       <SidebarContent className="px-2">
         {navGroups.map((group) => (
-          <SidebarGroup key={group.title}>
-            <SidebarGroupLabel className="text-[15px] font-medium text-muted-foreground/70">
+          <SidebarGroup key={group.title} className="mb-2">
+            <SidebarGroupLabel className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/70">
               {group.title}
             </SidebarGroupLabel>
             <SidebarGroupContent>
-              <SidebarMenu>
+              <SidebarMenu className="gap-0.5">
                 {group.items.map((item) => {
                   const href = `/components/${item.id}`;
                   const isActive = pathname === href;
@@ -59,7 +59,7 @@ export function AppSidebar({ docSchema }: { docSchema: DocSchema }) {
                       <SidebarMenuButton
                         asChild
                         isActive={isActive}
-                        className="rounded-md border-transparent  transition-colors data-[active=true]:font-medium data-[active=true]:text-foreground"
+                        className="rounded-md border-transparent font-medium text-foreground/80 transition-all duration-150 ease-out hover:translate-x-0.5 hover:bg-white/[0.06] hover:text-foreground data-[active=true]:font-semibold data-[active=true]:text-foreground"
                         style={
                           isActive
                             ? {

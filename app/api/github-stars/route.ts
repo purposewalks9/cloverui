@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { siteConfig } from "@/lib/config";
 
-export const revalidate = 1800; // 30 min, shared across ALL visitors
+export const revalidate = 1800;
 
 function repoPathFromUrl(url: string) {
   try {
@@ -18,7 +18,7 @@ export async function GET() {
   const res = await fetch(`https://api.github.com/repos/${repoPath}`, {
     headers: {
       Accept: "application/vnd.github+json",
-      // optional: add a GITHUB_TOKEN env var to go from 60/hr -> 5000/hr
+
       ...(process.env.GITHUB_TOKEN
         ? { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` }
         : {}),

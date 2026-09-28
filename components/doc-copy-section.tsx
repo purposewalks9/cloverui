@@ -14,7 +14,7 @@ interface DocCopySectionProps {
 function getPromptUrl(baseURL: string, url: string) {
   return `${baseURL}?q=${
     encodeURIComponent(
-      `I'm looking at this clover ui documentation: https://cloverui.dev${url}.
+      `I'm looking at this clover ui documentation: https:
 Help me understand how to use it. Be ready to explain concepts, give examples, or help debug based on it.`,
     )
   }`;

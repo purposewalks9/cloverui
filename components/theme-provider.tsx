@@ -10,7 +10,7 @@ export function ThemeProvider({
   return (
     <NextThemesProvider
       {...props}
-      // Always dark, no matter what the OS or any parent says.
+
       forcedTheme="dark"
       enableSystem={false}
     >

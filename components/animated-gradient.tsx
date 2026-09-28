@@ -312,7 +312,7 @@ export default function AnimatedGradient({
       u_swirlIterations: gl.getUniformLocation(program, "u_swirlIterations"),
     };
 
-    // Soft gradient: rendering above 1x DPR is pure GPU waste.
+
     const pixelRatio = Math.min(window.devicePixelRatio || 1, 1);
     const isStatic = params.speed === 0;
 
@@ -355,7 +355,7 @@ export default function AnimatedGradient({
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
       gl.viewport(0, 0, canvas.width, canvas.height);
-      // Resizing clears the canvas, so a static gradient must repaint here.
+
       if (isStatic) draw(startTimeRef.current);
     };
 
@@ -364,7 +364,7 @@ export default function AnimatedGradient({
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(container);
 
-    // Static gradient (speed 0): painted once above, never loops.
+
     const animate = (time: number) => {
       draw(time);
       frameIdRef.current = requestAnimationFrame(animate);

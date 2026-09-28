@@ -63,7 +63,7 @@ export function RichTextPlayground() {
       defaultProps={defaultProps}
       render={(values) => (
         <p className="text-center text-4xl font-semibold tracking-tight">
-          <RichText color={values.color as (typeof colors)[number]}>{values.children as string}</RichText> 
+          <RichText color={values.color as (typeof colors)[number]}>{values.children as string}</RichText>
         </p>
       )}
     />

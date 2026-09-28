@@ -11,8 +11,7 @@ export type ControlDef =
       type: "select";
       prop: string;
       label: string;
-      /** Optional hex per option. When every option has one, the control renders as a color palette instead of text chips. */
-      options: { label: string; value: string; swatch?: string }[];
+            options: { label: string; value: string; swatch?: string }[];
     }
   | { type: "color"; prop: string; label: string }
   | {

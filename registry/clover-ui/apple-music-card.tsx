@@ -172,7 +172,6 @@ const AppleMusicCard = ({ url, className }: AppleMusicCardProps) => {
         <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/25 to-black/75" />
       </div>
 
-
       <div
         className="pointer-events-none absolute inset-0 opacity-30 mix-blend-overlay"
         style={{

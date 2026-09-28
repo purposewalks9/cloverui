@@ -2,7 +2,6 @@ import Link from "next/link";
 import { CloverLogo } from "@/components/clover-logo";
 import { SoftButton } from "@/registry/clover-ui/soft-button";
 import { GitHubStars } from "@/components/github-stars";
-import { siteConfig } from "@/lib/config";
 
 export function RootHeader() {
   return (
@@ -18,7 +17,7 @@ export function RootHeader() {
         <div className="flex items-center gap-3">
           <div className="hidden sm:block">
             <SoftButton asChild size="sm" color="yellow">
-              <Link href={siteConfig.links.sponsor} target="_blank" rel="noreferrer">             
+              <Link href="/sponsor">
                 Sponsor
               </Link>
             </SoftButton>

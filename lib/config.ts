@@ -10,7 +10,7 @@ export const siteConfig = {
   },
   links: {
     github: "https://github.com/purposewalks9/clover-ui",
-    sponsor: "https://github.com/sponsors/purposewalks9", 
+    sponsor: "https://github.com/sponsors/purposewalks9",
   },
   keywords: [
     "React",

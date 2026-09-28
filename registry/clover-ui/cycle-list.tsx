@@ -125,7 +125,7 @@ const CycleList = forwardRef<CycleListRef, CycleListProps>(
       return () => ro.disconnect();
     }, [items.length]);
 
- 
+
     useLayoutEffect(() => {
       const path = pathRef.current;
       if (!path || trackHeight === 0) return;

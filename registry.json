@@ -281,23 +281,6 @@
       "dependencies": [],
       "registryDependencies": [],
       "category": "text"
-    },
-    {
-      "name": "pop-text",
-      "type": "registry:component",
-      "title": "Pop Text",
-      "description": "Chunky, outlined bubble-letter text in the site display face that pops into place letter by letter.",
-      "files": [
-        {
-          "path": "registry/clover-ui/pop-text.tsx",
-          "type": "registry:component"
-        }
-      ],
-      "dependencies": [
-        "motion"
-      ],
-      "registryDependencies": [],
-      "category": "text"
     }
   ]
 }

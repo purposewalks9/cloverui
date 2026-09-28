@@ -17,7 +17,6 @@ interface PropsTableProps {
   data: PropsTableItem[];
 }
 
-/** Splits a `"a" | "b" | "c"` style literal union into its individual members. */
 function splitUnion(type: string): string[] | null {
   if (!type.includes(" | ")) return null;
   const parts = type.split(" | ").map((p) => p.trim());

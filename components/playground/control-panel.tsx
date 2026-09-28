@@ -37,10 +37,6 @@ function FieldLabel({ children }: { children: ReactNode }) {
   );
 }
 
-/**
- * Every option is listed up front (no dropdowns). Up to three options render as
- * a joined On/Off-style toggle; longer lists wrap as chips.
- */
 function OptionGroup({
   id,
   label,
@@ -99,12 +95,6 @@ function OptionGroup({
   );
 }
 
-/**
- * A compact, wrapping grid of color swatches. Used instead of OptionGroup
- * whenever every option in a select carries a `swatch` hex, so picking a
- * color is a single tap on the color itself rather than reading a row of
- * text chips.
- */
 function ColorSwatchGroup({
   id,
   label,

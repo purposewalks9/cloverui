@@ -107,9 +107,9 @@ export function ColorPicker({
 }) {
   const rgb = React.useMemo(() => hexToRgb(value || "#000000"), [value]);
   const hsv = React.useMemo(() => rgbToHsv(rgb.r, rgb.g, rgb.b), [rgb]);
-  // Hue is kept in its own bit of state so dragging through fully
-  // desaturated / black points (where hue can't be derived from RGB)
-  // doesn't snap the hue slider back to 0.
+
+
+
   const [hue, setHue] = React.useState(hsv.h);
   const lastValue = React.useRef(value);
   if (lastValue.current !== value) {
@@ -161,12 +161,11 @@ export function ColorPicker({
   async function pickFromScreen() {
     if (!canEyedrop) return;
     try {
-      // @ts-expect-error -- EyeDropper isn't in the DOM lib typings yet.
-      const dropper = new window.EyeDropper();
+      const dropper = new (window as unknown as { EyeDropper: new () => { open: () => Promise<{ sRGBHex: string }> } }).EyeDropper();
       const result = await dropper.open();
       if (result?.sRGBHex) onChange(normalizeHex(result.sRGBHex));
     } catch {
-      // User cancelled the pick — nothing to do.
+
     }
   }
 

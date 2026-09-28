@@ -6,7 +6,6 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 export type PuzzleBgPattern = "random" | "wave" | "diagonal" | "center";
-/** in: pieces fly in and lock together. out: the finished puzzle breaks apart. */
 export type PuzzleBgDirection = "in" | "out";
 
 export interface PuzzleBgProps {
@@ -14,10 +13,8 @@ export interface PuzzleBgProps {
   rows?: number;
   cols?: number;
   direction?: PuzzleBgDirection;
-  /** Solid piece color. Used when there are no children and no image. */
-  color?: string;
-  /** Image url that gets cut into pieces. Used when there are no children. */
-  image?: string;
+    color?: string;
+    image?: string;
   seamColor?: string;
   pattern?: PuzzleBgPattern;
   pieceDuration?: number;
@@ -64,7 +61,6 @@ function seededRandom(seed: number) {
   };
 }
 
-/** Shared knob directions: +1 pokes out of the piece above / left of the edge, -1 the other way. */
 function createEdgeMap(rows: number, cols: number, seed: number) {
   const random = seededRandom(seed);
   const horizontal = Array.from({ length: Math.max(0, rows - 1) }, () =>
@@ -78,17 +74,12 @@ function createEdgeMap(rows: number, cols: number, seed: number) {
 
 const n = (v: number) => Math.round(v * 100) / 100;
 
-/**
- * One jigsaw edge from A to B with a round-headed knob in the middle.
- * `s` = 0 flat, +1 knob outward (clockwise winding, screen coords), -1 knob inward.
- * `k` is the knob unit in px so knobs stay circular on any aspect ratio.
- */
 function edge(ax: number, ay: number, bx: number, by: number, s: number, k: number) {
   if (!s) return `L ${n(bx)} ${n(by)}`;
   const len = Math.hypot(bx - ax, by - ay);
   const ux = (bx - ax) / len;
   const uy = (by - ay) / len;
-  const nx = uy * s; // outward normal for clockwise traversal
+  const nx = uy * s;
   const ny = -ux * s;
   const mid = len / 2;
   const p = (a: number, b: number) =>
@@ -290,7 +281,7 @@ const PuzzleBg = React.forwardRef<PuzzleBgRef, PuzzleBgProps>(
           return;
         }
 
-        // loop: hold the finished state, run it back, then go again
+
         timerRef.current = setTimeout(() => {
           onComplete?.();
           timerRef.current = setTimeout(() => {
@@ -328,7 +319,7 @@ const PuzzleBg = React.forwardRef<PuzzleBgRef, PuzzleBgProps>(
 
     const hasChildren = React.Children.count(children) > 0;
     const ready = layout.length > 0;
-    // children fill the pieces: the real copy only sizes the box, the pieces draw it
+
     const sizerHidden = hasChildren && (ready || (direction === "in" && autoStart));
     const toHome = state.phase === "home";
 
@@ -374,7 +365,7 @@ const PuzzleBg = React.forwardRef<PuzzleBgRef, PuzzleBgProps>(
                       : {
                           delay,
                           duration: pieceDuration,
-                          // snap in with a tiny overshoot, break away with a slow lift
+
                           ease: toHome ? [0.34, 1.3, 0.64, 1] : [0.55, 0, 0.8, 0.3],
                           opacity: {
                             delay: delay + (toHome ? 0 : pieceDuration * 0.45),
