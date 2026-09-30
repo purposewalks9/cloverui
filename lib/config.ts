@@ -11,8 +11,8 @@ export const siteConfig = {
   links: {
     github: "https://github.com/purposewalks9/clover-ui",
     sponsor: "https://github.com/sponsors/purposewalks9",
-    discord: "",
-    x: "",
+    discord: "https://discord.com/users/zzxx__x",
+    x: "https://x.com/purpose_walker",
   },
   keywords: ["React", "Tailwind CSS", "Motion", "Landing Page", "Components", "Next.js"],
 };
