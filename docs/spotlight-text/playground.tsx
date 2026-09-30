@@ -78,16 +78,14 @@ export function SpotlightTextPlayground() {
           .filter(Boolean);
 
         return (
-          <p className="text-center text-2xl font-semibold tracking-tight">
-            I create{" "}
+          <p className="text-center text-3xl font-semibold tracking-tight">
             <SpotlightText
               key={JSON.stringify(values)}
               items={items}
               color={values.color as (typeof colors)[number]}
               interval={values.interval as number}
               duration={values.duration as number}
-            />{" "}
-            that feel alive.
+            />
           </p>
         );
       }}

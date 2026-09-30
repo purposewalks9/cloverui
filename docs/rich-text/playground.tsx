@@ -28,6 +28,7 @@ const colors = [
   "stone",
   "fuchsia",
   "emerald",
+  "accent",
 ] as const;
 
 const swatches: Record<(typeof colors)[number], string> = {
@@ -54,6 +55,7 @@ const swatches: Record<(typeof colors)[number], string> = {
   stone: "#78716c",
   fuchsia: "#d946ef",
   emerald: "#10b981",
+  accent: "#e1e900",
 };
 
 const controls: ControlDef[] = [

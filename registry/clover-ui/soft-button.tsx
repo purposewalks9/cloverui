@@ -11,7 +11,9 @@ type SoftColor =
   | "orange"
   | "yellow"
   | "pink"
-  | "cyan";
+  | "cyan"
+  | "white"
+  | "black";
 
 type SizeVariant = "sm" | "default" | "lg";
 
@@ -74,6 +76,16 @@ const colorMap: Record<SoftColor, { background: string; foreground: string; glow
     background: "radial-gradient(120% 140% at 50% 0%, #9dffff 0%, #28dce7 42%, #14828c 100%)",
     foreground: "#062022",
     glow: "rgba(40, 220, 231, .3)",
+  },
+  white: {
+    background: "radial-gradient(120% 140% at 50% 0%, #ffffff 0%, #f2f2f2 42%, #cdcdcd 100%)",
+    foreground: "#111111",
+    glow: "rgba(255, 255, 255, .3)",
+  },
+  black: {
+    background: "radial-gradient(120% 140% at 50% 0%, #555555 0%, #222222 42%, #000000 100%)",
+    foreground: "#fff",
+    glow: "rgba(0, 0, 0, .3)",
   },
 };
 
