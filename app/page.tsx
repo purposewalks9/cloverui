@@ -9,20 +9,7 @@ import { Demo as SoftButtonDemo } from "@/docs/soft-button/demo";
 import { Demo as SpotlightTextDemo } from "@/docs/spotlight-text/demo";
 import { Demo as ThermalFlowDemo } from "@/docs/thermal-flow/demo";
 import { Demo as GaugeTextDemo } from "@/docs/gauge-text/demo";
-import { CandleChartStick } from "@/registry/clover-ui/candlestick-chart";
-import { data as candles } from "@/docs/candlestick-chart/demo";
-
-function CandlestickPreview() {
-  return (
-    <CandleChartStick
-      data={candles.slice(-60)}
-      name="CLVR"
-      zoomable={false}
-      showXAxis={false}
-      formatValue={(v) => `$${v.toFixed(2)}`}
-    />
-  );
-}
+import { CandlestickPreview } from "@/components/leaves/candlestick-preview";
 
 const pill =
   "bg-secondary text-secondary-foreground hover:bg-accent focus-visible:ring-ring inline-flex h-11 items-center justify-center rounded-full px-6 text-base font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none";
