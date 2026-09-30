@@ -11,7 +11,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https" as const,
-         hostname: "pbs.twimg.com"
+        hostname: "pbs.twimg.com",
       },
     ],
   },
@@ -41,20 +41,26 @@ const withMDX = createMDX({
     remarkPlugins: [[codeImport, { cache: false }], remarkGfm],
     rehypePlugins: [
       rehypeSlug,
-      [rehypeAutolinkHeadings, {
-        behavior: "wrap",
-        properties: {
-          className: ["subheading-anchor"],
-          ariaLabel: "Link to section",
+      [
+        rehypeAutolinkHeadings,
+        {
+          behavior: "wrap",
+          properties: {
+            className: ["subheading-anchor"],
+            ariaLabel: "Link to section",
+          },
         },
-      }],
-      [rehypeShiki, {
-        themes: {
-          light: "github-light",
-          dark: "github-dark",
+      ],
+      [
+        rehypeShiki,
+        {
+          themes: {
+            light: "github-light",
+            dark: "github-dark",
+          },
+          defaultColor: false,
         },
-        defaultColor: false,
-      }],
+      ],
     ],
   },
 });

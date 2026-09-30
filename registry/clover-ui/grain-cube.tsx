@@ -15,16 +15,16 @@ export const GRAIN_CUBE_THEMES: Record<GrainCubeTheme, string[]> = {
 };
 
 export interface GrainCubeProps {
-    theme?: GrainCubeTheme;
-    colors?: string[];
-    size?: number;
-    scale?: number;
-    warp?: number;
-    grain?: number;
-    animate?: boolean;
-    speed?: number;
-    interactive?: boolean;
-    resolution?: number;
+  theme?: GrainCubeTheme;
+  colors?: string[];
+  size?: number;
+  scale?: number;
+  warp?: number;
+  grain?: number;
+  animate?: boolean;
+  speed?: number;
+  interactive?: boolean;
+  resolution?: number;
   style?: React.CSSProperties;
   className?: string;
 }
@@ -37,7 +37,11 @@ function parseColor(input: string): [number, number, number] {
   const s = input.trim();
   if (s.startsWith("#")) {
     let c = s.slice(1);
-    if (c.length === 3 || c.length === 4) c = c.split("").map((x) => x + x).join("");
+    if (c.length === 3 || c.length === 4)
+      c = c
+        .split("")
+        .map((x) => x + x)
+        .join("");
     if (c.length >= 6) {
       return [
         parseInt(c.slice(0, 2), 16) / 255,
@@ -66,11 +70,7 @@ function rotation(yaw: number, pitch: number) {
   const sy = Math.sin(yaw);
   const cp = Math.cos(pitch);
   const sp = Math.sin(pitch);
-  return new Float32Array([
-    cy, 0, sy,
-    sp * sy, cp, -sp * cy,
-    -cp * sy, sp, cp * cy,
-  ]);
+  return new Float32Array([cy, 0, sy, sp * sy, cp, -sp * cy, -cp * sy, sp, cp * cy]);
 }
 
 type Live = {
@@ -494,7 +494,7 @@ function GrainCube({
       {failed ? (
         <div
           aria-hidden="true"
-          className="absolute left-1/2 top-1/2 aspect-square -translate-x-1/2 -translate-y-1/2 rotate-45 rounded-md"
+          className="absolute top-1/2 left-1/2 aspect-square -translate-x-1/2 -translate-y-1/2 rotate-45 rounded-md"
           style={{
             width: `${size * 55}%`,
             backgroundImage: `linear-gradient(135deg, ${list.join(", ")})`,

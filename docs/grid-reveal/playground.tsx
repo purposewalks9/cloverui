@@ -1,7 +1,7 @@
 "use client";
 
 import { GridReveal } from "@/registry/clover-ui/grid-reveal";
-import { PlaygroundShell } from "@/components/playground/playground-shell";
+import { PlaygroundShell } from "@/components/garden/playground-shell";
 import type { ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [
@@ -19,7 +19,14 @@ const controls: ControlDef[] = [
   { type: "color", prop: "color", label: "Color" },
   { type: "number", prop: "rows", label: "Rows", min: 2, max: 14, step: 1 },
   { type: "number", prop: "cols", label: "Cols", min: 2, max: 14, step: 1 },
-  { type: "number", prop: "blockDuration", label: "Block duration", min: 0.05, max: 0.6, step: 0.01 },
+  {
+    type: "number",
+    prop: "blockDuration",
+    label: "Block duration",
+    min: 0.05,
+    max: 0.6,
+    step: 0.01,
+  },
   { type: "number", prop: "stagger", label: "Stagger", min: 0.005, max: 0.08, step: 0.005 },
   { type: "boolean", prop: "loop", label: "Loop" },
 ];
@@ -42,25 +49,25 @@ export function GridRevealPlayground() {
       defaultProps={defaultProps}
       codeNote="children omitted here — pass whatever content sits behind the grid"
       render={(values) => (
-      <div className="flex w-full justify-center">
-        <GridReveal
-          key={JSON.stringify(values)}
-          pattern={values.pattern as "random" | "wave" | "diagonal" | "center"}
-          color={values.color as string}
-          rows={values.rows as number}
-          cols={values.cols as number}
-          blockDuration={values.blockDuration as number}
-          stagger={values.stagger as number}
-          loop={values.loop as boolean}
-          className="aspect-square w-full max-w-[220px]"
-        >
-          <div className="flex aspect-square w-full items-center justify-center">
-            <div className="text-center">
-              <p className="text-base font-medium tracking-tight">Grid Reveal</p>
-              <p className="mt-1 text-xs text-muted-foreground">Scattered motion.</p>
+        <div className="flex w-full justify-center">
+          <GridReveal
+            key={JSON.stringify(values)}
+            pattern={values.pattern as "random" | "wave" | "diagonal" | "center"}
+            color={values.color as string}
+            rows={values.rows as number}
+            cols={values.cols as number}
+            blockDuration={values.blockDuration as number}
+            stagger={values.stagger as number}
+            loop={values.loop as boolean}
+            className="aspect-square w-full max-w-[220px]"
+          >
+            <div className="flex aspect-square w-full items-center justify-center">
+              <div className="text-center">
+                <p className="text-base font-medium tracking-tight">Grid Reveal</p>
+                <p className="text-muted-foreground mt-1 text-xs">Scattered motion.</p>
+              </div>
             </div>
-          </div>
-        </GridReveal>
+          </GridReveal>
         </div>
       )}
     />

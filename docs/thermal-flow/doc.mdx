@@ -1,4 +1,4 @@
-import { ThermalFlowPlayground } from './playground'
+import { ThermalFlowPlayground } from "./playground"
 
 <ThermalFlowPlayground />
 
@@ -11,8 +11,6 @@ import { ThermalFlowPlayground } from './playground'
 
 ## Usage
 
-A smooth, animated thermal-gradient background rendered on the GPU. No dependencies.
-
 ```tsx
 import { ThermalFlow } from "@/components/thermal-flow";
 
@@ -22,33 +20,31 @@ import { ThermalFlow } from "@/components/thermal-flow";
 </div>
 ```
 
-It is `absolute inset-0`, so put it in a `relative` parent and layer your content above it.
+It fills its parent, so give the parent `relative` and put your content above it.
 
-Themes: `thermal`, `aurora`, `sunset`, `ocean`, `ember`, `candy`, `mono`. For your own palette pass 2 to 8 colors from dark to bright:
+For your own palette, pass 2 to 8 colors from dark to bright.
 
 ```tsx
 <ThermalFlow colors={["#05060f", "#1d4ed8", "#38bdf8", "#fde047", "#f97316"]} />
 ```
 
-The last color is the hot ridge line right before the palette wraps back to the first, so the edge shows where the palette snaps around.
-
-It pauses when off screen or in a hidden tab, holds a still frame with `prefers-reduced-motion`, and falls back to a plain CSS gradient if WebGL is unavailable. Lower `resolution` to go lighter on the GPU.
+It pauses when off screen, holds still when reduced motion is on, and shows a plain gradient if WebGL is not available. Lower `resolution` to use less GPU.
 
 ## Props
 
 <PropsTable data={[
   { name: "theme", type: '"thermal" | "aurora" | "sunset" | "ocean" | "ember" | "candy" | "mono"', default: '"thermal"' },
-  { name: "colors", type: "string[]", description: "Custom palette, 2 to 8 colors from dark to bright. Overrides theme." },
-  { name: "bands", type: "number", default: "1", description: "How many times the palette repeats across the field." },
-  { name: "scale", type: "number", default: "1", description: "Zoom of the flow. Higher means bigger shapes." },
-  { name: "warp", type: "number", default: "1", description: "How much the flow folds and swirls." },
-  { name: "softness", type: "number", default: "0.005", description: "Blur on the sharp ridge lines." },
-  { name: "grain", type: "number", default: "0.35", description: "Film grain. Also hides banding." },
+  { name: "colors", type: "string[]", description: "Your own palette of 2 to 8 colors. Overrides theme." },
+  { name: "bands", type: "number", default: "1", description: "How many times the palette repeats." },
+  { name: "scale", type: "number", default: "1", description: "Higher means bigger shapes." },
+  { name: "warp", type: "number", default: "1", description: "How much the flow swirls." },
+  { name: "softness", type: "number", default: "0.005", description: "Blur on the sharp edges." },
+  { name: "grain", type: "number", default: "0.35" },
   { name: "animate", type: "boolean", default: "true" },
   { name: "speed", type: "number", default: "1" },
-  { name: "resolution", type: "number", default: "0.75", description: "Render scale from 0.25 to 1." },
-  { name: "radius", type: "string" },
-  { name: "backgroundColor", type: "string", description: "Shown until the first frame. Defaults to the first palette color." },
+  { name: "resolution", type: "number", default: "0.75", description: "Render scale, from 0.25 to 1." },
+  { name: "radius", type: "string", description: "Corner radius, any CSS value." },
+  { name: "backgroundColor", type: "string", description: "Shown before the first frame. Defaults to the first palette color." },
   { name: "style", type: "React.CSSProperties" },
   { name: "className", type: "string" },
 ]} />

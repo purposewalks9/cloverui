@@ -13,11 +13,7 @@ import {
 
 import { cn } from "@/lib/utils";
 
-export type GridRevealPattern =
-  | "random"
-  | "wave"
-  | "diagonal"
-  | "center";
+export type GridRevealPattern = "random" | "wave" | "diagonal" | "center";
 
 export interface GridRevealProps {
   children?: React.ReactNode;
@@ -57,17 +53,12 @@ function shuffledIndexes(count: number) {
 
     let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
 
-    t =
-      (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^
-      t;
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
 
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
 
-  const arr = Array.from(
-    { length: count },
-    (_, index) => index
-  );
+  const arr = Array.from({ length: count }, (_, index) => index);
 
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(random() * (i + 1));
@@ -84,7 +75,7 @@ function getDelayFactor(
   rows: number,
   cols: number,
   shuffled: number[],
-  index: number
+  index: number,
 ) {
   switch (pattern) {
     case "wave":
@@ -97,10 +88,7 @@ function getDelayFactor(
       const midRow = (rows - 1) / 2;
       const midCol = (cols - 1) / 2;
 
-      return Math.hypot(
-        row - midRow,
-        col - midCol
-      );
+      return Math.hypot(row - midRow, col - midCol);
     }
 
     case "random":
@@ -109,10 +97,7 @@ function getDelayFactor(
   }
 }
 
-const GridReveal = forwardRef<
-  GridRevealRef,
-  GridRevealProps
->(
+const GridReveal = forwardRef<GridRevealRef, GridRevealProps>(
   (
     {
       children,
@@ -135,21 +120,16 @@ const GridReveal = forwardRef<
       onStart,
       onComplete,
     },
-    ref
+    ref,
   ) => {
     const [revealed, setRevealed] = useState(false);
 
     const hasPlayedRef = useRef(false);
-    const timers = useRef<
-      ReturnType<typeof setTimeout>[]
-    >([]);
+    const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
     const count = rows * cols;
 
-    const shuffled = useMemo(
-      () => shuffledIndexes(count),
-      [count]
-    );
+    const shuffled = useMemo(() => shuffledIndexes(count), [count]);
 
     const maxFactor = useMemo(() => {
       let max = 0;
@@ -158,15 +138,7 @@ const GridReveal = forwardRef<
         for (let col = 0; col < cols; col++) {
           const index = row * cols + col;
 
-          const factor = getDelayFactor(
-            pattern,
-            row,
-            col,
-            rows,
-            cols,
-            shuffled,
-            index
-          );
+          const factor = getDelayFactor(pattern, row, col, rows, cols, shuffled, index);
 
           if (factor > max) {
             max = factor;
@@ -175,19 +147,11 @@ const GridReveal = forwardRef<
       }
 
       return max || 1;
-    }, [
-      pattern,
-      rows,
-      cols,
-      shuffled,
-    ]);
+    }, [pattern, rows, cols, shuffled]);
 
     const perStepDelay = useMemo(
-      () =>
-        duration
-          ? duration / (maxFactor + 1)
-          : stagger,
-      [duration, maxFactor, stagger]
+      () => (duration ? duration / (maxFactor + 1) : stagger),
+      [duration, maxFactor, stagger],
     );
 
     const blocks = useMemo(() => {
@@ -200,15 +164,7 @@ const GridReveal = forwardRef<
         for (let col = 0; col < cols; col++) {
           const index = row * cols + col;
 
-          const factor = getDelayFactor(
-            pattern,
-            row,
-            col,
-            rows,
-            cols,
-            shuffled,
-            index
-          );
+          const factor = getDelayFactor(pattern, row, col, rows, cols, shuffled, index);
 
           items.push({
             key: `${row}-${col}`,
@@ -218,21 +174,14 @@ const GridReveal = forwardRef<
       }
 
       return items;
-    }, [
-      rows,
-      cols,
-      pattern,
-      shuffled,
-    ]);
+    }, [rows, cols, pattern, shuffled]);
 
     const clearTimers = useCallback(() => {
       timers.current.forEach(clearTimeout);
       timers.current = [];
     }, []);
 
-    const cycleTime =
-      maxFactor * perStepDelay +
-      blockDuration;
+    const cycleTime = maxFactor * perStepDelay + blockDuration;
 
     const play = useCallback(() => {
       clearTimers();
@@ -249,11 +198,7 @@ const GridReveal = forwardRef<
           const afterPause = setTimeout(() => {
             setRevealed(false);
 
-            const nextCycle = setTimeout(
-              revealPhase,
-              cycleTime * 1000 +
-              loopDelay * 1000
-            );
+            const nextCycle = setTimeout(revealPhase, cycleTime * 1000 + loopDelay * 1000);
 
             timers.current.push(nextCycle);
           }, loopDelay * 1000);
@@ -265,14 +210,7 @@ const GridReveal = forwardRef<
       };
 
       revealPhase();
-    }, [
-      clearTimers,
-      loop,
-      loopDelay,
-      onComplete,
-      onStart,
-      cycleTime,
-    ]);
+    }, [clearTimers, loop, loopDelay, onComplete, onStart, cycleTime]);
 
     const cover = useCallback(() => {
       clearTimers();
@@ -291,7 +229,7 @@ const GridReveal = forwardRef<
         cover,
         reset,
       }),
-      [play, cover, reset]
+      [play, cover, reset],
     );
 
     useEffect(() => {
@@ -303,44 +241,28 @@ const GridReveal = forwardRef<
       return clearTimers;
     }, [autoStart, inView]);
 
-    const handleViewportEnter =
-      useCallback(() => {
-        if (once && hasPlayedRef.current) {
-          return;
-        }
+    const handleViewportEnter = useCallback(() => {
+      if (once && hasPlayedRef.current) {
+        return;
+      }
 
-        hasPlayedRef.current = true;
-        play();
-      }, [once, play]);
+      hasPlayedRef.current = true;
+      play();
+    }, [once, play]);
 
     return (
       <motion.div
-        className={cn(
-          "relative cursor-pointer overflow-hidden",
-          className
-        )}
+        className={cn("relative cursor-pointer overflow-hidden", className)}
         viewport={{
           once,
           margin: "-10% 0px -10% 0px",
         }}
-        onViewportEnter={
-          inView
-            ? handleViewportEnter
-            : undefined
-        }
+        onViewportEnter={inView ? handleViewportEnter : undefined}
       >
-        {children && (
-          <div className="relative h-full w-full">
-            {children}
-          </div>
-        )}
+        {children && <div className="relative h-full w-full">{children}</div>}
 
         <div
-          className={cn(
-            "absolute inset-0 grid",
-            children && "pointer-events-none",
-            gridClassName
-          )}
+          className={cn("absolute inset-0 grid", children && "pointer-events-none", gridClassName)}
           style={{
             gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`,
             gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))`,
@@ -359,22 +281,19 @@ const GridReveal = forwardRef<
               animate={
                 revealed
                   ? {
-                    opacity: 0,
-                    scale: 0.85,
-                  }
+                      opacity: 0,
+                      scale: 0.85,
+                    }
                   : {
-                    opacity: 1,
-                    scale: 1,
-                  }
+                      opacity: 1,
+                      scale: 1,
+                    }
               }
               transition={{
                 duration: blockDuration,
                 delay: revealed
-                  ? block.factor *
-                  perStepDelay
-                  : (maxFactor -
-                    block.factor) *
-                  perStepDelay,
+                  ? block.factor * perStepDelay
+                  : (maxFactor - block.factor) * perStepDelay,
                 ease: "easeInOut",
               }}
             />
@@ -382,7 +301,7 @@ const GridReveal = forwardRef<
         </div>
       </motion.div>
     );
-  }
+  },
 );
 
 GridReveal.displayName = "GridReveal";

@@ -1,4 +1,4 @@
-import { TokenFallPlayground } from './playground'
+import { TokenFallPlayground } from "./playground"
 
 <TokenFallPlayground />
 
@@ -19,19 +19,21 @@ import { TokenFall } from "@/components/token-fall";
 </div>
 ```
 
+It fills its parent, so give the parent a position and a height. Move your cursor near the tokens to push them away.
+
 ## Props
 
 <PropsTable data={[
   { name: "count", type: "number", default: "55" },
   { name: "minSize", type: "number", default: "14" },
   { name: "maxSize", type: "number", default: "28" },
-  { name: "palettes", type: "TokenPalette[]", description: "Array of { bg, fg } color pairs, randomly assigned per token." },
-  { name: "renderToken", type: "(token: TokenMeta) => ReactNode", description: "Overrides the built-in coin glyph with a custom visual per token." },
+  { name: "palettes", type: "TokenPalette[]", description: "Color pairs picked at random for each token." },
+  { name: "renderToken", type: "(token: TokenMeta) => ReactNode", description: "Draw your own token instead of the coin." },
   { name: "gravity", type: "number", default: "0.35" },
-  { name: "restitution", type: "number", default: "0.75" },
+  { name: "restitution", type: "number", default: "0.75", description: "Bounciness, from 0 to 1." },
   { name: "repelRadius", type: "number", default: "150" },
   { name: "repelStrength", type: "number", default: "0.0015" },
-  { name: "spawnInterval", type: "number", default: "180" },
+  { name: "spawnInterval", type: "number", default: "180", description: "Milliseconds between new tokens." },
   { name: "className", type: "string" },
   { name: "tokenClassName", type: "string" },
 ]} />

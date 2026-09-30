@@ -2,7 +2,7 @@
 
 import { GrainCube } from "@/registry/clover-ui/grain-cube";
 import type { GrainCubeTheme } from "@/registry/clover-ui/grain-cube";
-import { PlaygroundShell } from "@/components/playground/playground-shell";
+import { PlaygroundShell } from "@/components/garden/playground-shell";
 import type { ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Github, Heart } from "lucide-react";
 import { siteConfig } from "@/lib/config";
-import { CloverLogo } from "@/components/clover-logo";
+import { CloverLogo } from "@/components/seed/clover-logo";
 import type { DocSchema } from "@/lib/types";
 import {
   Sidebar,
@@ -18,21 +18,23 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 
 export function AppSidebar({ docSchema }: { docSchema: DocSchema }) {
   const pathname = usePathname();
+  const { isMobile, setOpenMobile } = useSidebar();
 
   const navGroups = docSchema.filter((group) => group.title !== "Getting Started");
 
   return (
-    <Sidebar collapsible="offcanvas" className="border-r border-sidebar-border bg-sidebar">
+    <Sidebar collapsible="offcanvas" className="border-sidebar-border bg-sidebar border-r">
       <SidebarHeader className="gap-0 px-3 pt-4 pb-3">
         <Link
           href="/"
-          className="group/logo flex items-center gap-2 px-1 transition-opacity duration-200"
+          className="group/logo flex items-center px-1 transition-opacity duration-200"
         >
-          <span className="flex size-7 shrink-0 items-center justify-center">
+          <span className="mb-1 flex size-7 shrink-0 items-center justify-center">
             <CloverLogo size={20} />
           </span>
           <span className="text-[16px] tracking-tight">
@@ -44,7 +46,7 @@ export function AppSidebar({ docSchema }: { docSchema: DocSchema }) {
       <SidebarContent className="px-2">
         {navGroups.map((group) => (
           <SidebarGroup key={group.title} className="">
-            <SidebarGroupLabel className="mb-1 h-7 text-[14px] font-medium text-foreground">
+            <SidebarGroupLabel className="text-foreground mb-1 h-7 text-[14px] font-medium">
               {group.title}
             </SidebarGroupLabel>
             <SidebarGroupContent>
@@ -57,9 +59,9 @@ export function AppSidebar({ docSchema }: { docSchema: DocSchema }) {
                       <SidebarMenuButton
                         asChild
                         isActive={isActive}
-                        className="h-8 rounded-md font-normal text-muted-foreground hover:bg-transparent hover:text-foreground data-[active=true]:border-[var(--brand)] data-[active=true]:bg-sidebar-accent data-[active=true]:text-foreground transition-all duration-200"
+                        className="text-muted-foreground hover:text-foreground data-[active=true]:bg-sidebar-accent data-[active=true]:text-foreground h-8 rounded-md font-normal transition-all duration-200 hover:bg-transparent data-[active=true]:border-[var(--brand)]"
                       >
-                        <Link href={href}>
+                        <Link href={href} onClick={() => isMobile && setOpenMobile(false)}>
                           <span>{item.title}</span>
                         </Link>
                       </SidebarMenuButton>

@@ -27,7 +27,7 @@ const COLLAPSE_THRESHOLD = 4;
 
 function TypePill({ children }: { children: React.ReactNode }) {
   return (
-    <code className="whitespace-nowrap rounded-sm bg-muted px-1.5 py-0.5 font-mono text-xs text-foreground">
+    <code className="bg-muted text-foreground rounded-sm px-1.5 py-0.5 font-mono text-xs whitespace-nowrap">
       {children}
     </code>
   );
@@ -38,12 +38,10 @@ function PropRow({ item }: { item: PropsTableItem }) {
   const isLongUnion = Boolean(union && union.length > COLLAPSE_THRESHOLD);
   const hasDetails = Boolean(item.description || item.default || isLongUnion);
 
-  const [open, setOpen] = useState(
-    isLongUnion ? false : item.defaultOpen ?? true,
-  );
+  const [open, setOpen] = useState(isLongUnion ? false : (item.defaultOpen ?? true));
 
   return (
-    <div className="border-t border-border first:border-t-0">
+    <div className="border-border border-t first:border-t-0">
       <button
         type="button"
         onClick={() => hasDetails && setOpen((o) => !o)}
@@ -52,14 +50,14 @@ function PropRow({ item }: { item: PropsTableItem }) {
           hasDetails && "cursor-pointer",
         )}
       >
-        <code className="shrink-0 font-mono text-sm text-primary">
+        <code className="text-primary shrink-0 font-mono text-sm">
           {item.name}
           {item.optional && "?"}
         </code>
         <div className="flex min-w-0 items-center gap-3">
           {union ? (
             isLongUnion ? (
-              <span className="whitespace-nowrap text-xs text-muted-foreground">
+              <span className="text-muted-foreground text-xs whitespace-nowrap">
                 {union.length} options
               </span>
             ) : (
@@ -70,14 +68,14 @@ function PropRow({ item }: { item: PropsTableItem }) {
               </div>
             )
           ) : (
-            <code className="whitespace-normal break-words text-right font-mono text-sm text-foreground">
+            <code className="text-foreground text-right font-mono text-sm break-words whitespace-normal">
               {item.type}
             </code>
           )}
           {hasDetails && (
             <ChevronUp
               className={cn(
-                "size-4 shrink-0 text-muted-foreground transition-transform",
+                "text-muted-foreground size-4 shrink-0 transition-transform",
                 !open && "rotate-180",
               )}
             />
@@ -86,7 +84,7 @@ function PropRow({ item }: { item: PropsTableItem }) {
       </button>
 
       {hasDetails && open && (
-        <div className="px-4 pb-4 space-y-3">
+        <div className="space-y-3 px-4 pb-4">
           {isLongUnion && union && (
             <div className="flex flex-wrap gap-1">
               {union.map((member) => (
@@ -94,15 +92,11 @@ function PropRow({ item }: { item: PropsTableItem }) {
               ))}
             </div>
           )}
-          {item.description && (
-            <p className="text-sm text-muted-foreground">
-              {item.description}
-            </p>
-          )}
+          {item.description && <p className="text-muted-foreground text-sm">{item.description}</p>}
           {item.default && (
             <div className="flex items-center justify-between gap-3">
-              <span className="text-sm text-muted-foreground">Default</span>
-              <code className="whitespace-normal break-words text-right font-mono text-sm text-foreground">
+              <span className="text-muted-foreground text-sm">Default</span>
+              <code className="text-foreground text-right font-mono text-sm break-words whitespace-normal">
                 {item.default}
               </code>
             </div>
@@ -116,23 +110,17 @@ function PropRow({ item }: { item: PropsTableItem }) {
 export function PropsTable({ data }: PropsTableProps) {
   if (data.length === 0) {
     return (
-      <div className="mt-6 flex h-[42px] w-full items-center justify-center overflow-hidden rounded-lg border border-border bg-muted">
-        <div className="text-center text-sm text-muted-foreground">
-          No Additional Props
-        </div>
+      <div className="border-border bg-muted mt-6 flex h-[42px] w-full items-center justify-center overflow-hidden rounded-lg border">
+        <div className="text-muted-foreground text-center text-sm">No Additional Props</div>
       </div>
     );
   }
 
   return (
-    <div className="mt-6 w-full overflow-hidden rounded-lg border border-border not-prose">
-      <div className="flex items-center justify-between bg-muted px-4 py-3">
-        <span className="text-sm font-medium text-muted-foreground">
-          Prop
-        </span>
-        <span className="text-sm font-medium text-muted-foreground">
-          Type
-        </span>
+    <div className="border-border not-prose mt-6 w-full overflow-hidden rounded-lg border">
+      <div className="bg-muted flex items-center justify-between px-4 py-3">
+        <span className="text-muted-foreground text-sm font-medium">Prop</span>
+        <span className="text-muted-foreground text-sm font-medium">Type</span>
       </div>
       {data.map((item) => (
         <PropRow key={item.name} item={item} />

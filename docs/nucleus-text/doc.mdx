@@ -1,4 +1,4 @@
-import { NucleusTextPlayground } from './playground'
+import { NucleusTextPlayground } from "./playground"
 
 <NucleusTextPlayground />
 
@@ -14,22 +14,20 @@ import { NucleusTextPlayground } from './playground'
 ```tsx
 import { NucleusText } from "@/components/nucleus-text";
 
-<NucleusText className="text-6xl font-semibold">
-  generates
-</NucleusText>
+<NucleusText className="text-6xl font-semibold">generates</NucleusText>
 ```
 
-`NucleusText` keeps your text fully rendered in its chosen color. On page load, the text makes one quick shake while small particles rush inward from different angles, fade as they reach the text, and disappear. The effect plays once; it never assembles or recolors the letters.
+The text stays visible while particles rush in once on load. The effect is skipped when reduced motion is on.
 
 ## Props
 
 <PropsTable data={[
-{ name: "children", type: "string", description: "Text displayed normally while the particle effect plays." },
-{ name: "color", type: "string", default: '"#b8ff8b"', description: "Color of the always-visible text." },
-{ name: "particleColor", type: "string", default: "color", description: "Color of the incoming particles; defaults to the text color." },
-{ name: "particleCount", type: "number", default: "1800", description: "Number of particles in the one-shot effect." },
-{ name: "particleSize", type: "number", default: "1.35", description: "Base particle radius in pixels." },
-{ name: "gatherSpeed", type: "number", default: "1", description: "Speed of the incoming particle animation." },
-{ name: "shake", type: "number", default: "1", description: "Intensity of the single entrance shake; set to 0 to disable." },
-{ name: "className", type: "string", description: "Classes for typography and layout." }
+  { name: "children", type: "string" },
+  { name: "color", type: "string", default: '"#b8ff8b"', description: "Text color." },
+  { name: "particleColor", type: "string", description: "Particle color. Defaults to the text color." },
+  { name: "particleCount", type: "number", default: "90", description: "Number of particles, from 12 to 320." },
+  { name: "particleSize", type: "number", default: "1.6", description: "Particle size in pixels." },
+  { name: "gatherSpeed", type: "number", default: "1" },
+  { name: "shake", type: "number", default: "1", description: "Shake strength. Set 0 to turn it off." },
+  { name: "className", type: "string" },
 ]} />

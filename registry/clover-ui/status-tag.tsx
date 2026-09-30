@@ -1,11 +1,5 @@
 import * as React from "react";
-import {
-  CircleDashed,
-  Contrast,
-  Clock,
-  Check,
-  type LucideIcon,
-} from "lucide-react";
+import { CircleDashed, Contrast, Clock, Check, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type Status = "draft" | "in-progress" | "in-review" | "completed";
@@ -78,7 +72,7 @@ const StatusTag = React.forwardRef<HTMLSpanElement, StatusTagProps>(
 
         <span
           className={cn(
-            "max-w-0 overflow-hidden whitespace-nowrap text-sm font-medium opacity-0 transition-[max-width,opacity,padding-right] duration-300 ease-out group-hover/tag:max-w-[10rem] group-hover/tag:pr-3.5 group-hover/tag:opacity-100",
+            "max-w-0 overflow-hidden text-sm font-medium whitespace-nowrap opacity-0 transition-[max-width,opacity,padding-right] duration-300 ease-out group-hover/tag:max-w-[10rem] group-hover/tag:pr-3.5 group-hover/tag:opacity-100",
             config.text,
           )}
         >

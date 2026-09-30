@@ -26,20 +26,24 @@ The docs site runs at `http://localhost:3000`. Each component lives at `/compone
 
 Useful commands:
 
-| Command | What it does |
-| --- | --- |
-| `pnpm dev` | Start the docs site in dev mode |
-| `pnpm build` | Production build of the docs site |
-| `pnpm lint` | Run ESLint |
+| Command               | What it does                                                                |
+| --------------------- | --------------------------------------------------------------------------- |
+| `pnpm dev`            | Start the docs site in dev mode                                             |
+| `pnpm build`          | Production build of the docs site                                           |
+| `pnpm lint`           | Run ESLint                                                                  |
 | `pnpm registry:build` | Regenerate `public/r/*.json` from `registry.json` and the component sources |
 
 ## Project structure
 
 ```
 app/                     Next.js app: routes, layout, global styles
-components/              Docs site components (sidebar, header, playground, props table)
-  playground/            Live prop editor: control panel, color picker, shell
-  ui/                    Base primitives (sidebar, popover, sheet, etc.)
+components/              Docs site components
+  stem/                  Layout: sidebar, headers, table of contents, search, theme toggle
+  leaves/                Docs page pieces: install tabs, code blocks, props table, demo canvas
+  garden/                Live prop editor: control panel, color picker, playground shell
+  seed/                  Brand: Clover logo, GitHub stars, icons
+  roots/                 App providers: theme, Jotai
+  ui/                    Base shadcn primitives (sidebar, popover, sheet, etc.)
 docs/<name>/             Docs for one component
   doc.mdx                Page content: playground, install, usage, props table
   demo.tsx               Static demo
@@ -72,9 +76,7 @@ The docs sidebar builds itself from `registry.json` and the `docs/` folders, so 
      "type": "registry:component",
      "title": "Your Component",
      "description": "One sentence on what it does.",
-     "files": [
-       { "path": "registry/clover-ui/your-component.tsx", "type": "registry:component" }
-     ],
+     "files": [{ "path": "registry/clover-ui/your-component.tsx", "type": "registry:component" }],
      "dependencies": ["motion"],
      "registryDependencies": [],
      "category": "text"

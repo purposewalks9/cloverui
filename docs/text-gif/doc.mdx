@@ -1,4 +1,4 @@
-import { TextGifPlayground } from './playground'
+import { TextGifPlayground } from "./playground"
 
 <TextGifPlayground />
 
@@ -22,25 +22,8 @@ import { TextGif } from "@/components/text-gif";
 ## Props
 
 <PropsTable data={[
-{
-name: "src",
-type: "string",
-description: "URL of the GIF used as the animated text fill."
-},
-{
-name: "children",
-type: "React.ReactNode",
-description: "Text or content used as the mask."
-},
-{
-name: "fallbackColor",
-type: "string",
-default: '"currentColor"',
-description: "Fallback text color used by the component."
-},
-{
-name: "className",
-type: "string",
-description: "Additional classes for typography and layout."
-}
+  { name: "src", type: "string", description: "The GIF used to fill the text." },
+  { name: "children", type: "React.ReactNode", description: "The text to fill." },
+  { name: "fallbackColor", type: "string", default: '"currentColor"', description: "Text color shown before the GIF loads." },
+  { name: "className", type: "string" },
 ]} />

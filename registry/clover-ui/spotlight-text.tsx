@@ -27,10 +27,7 @@ function SpotlightText({
   itemClassName,
   pauseOnHover = true,
 }: SpotlightTextProps) {
-  const validItems = React.useMemo(
-    () => items.filter((item) => item.trim().length > 0),
-    [items],
-  );
+  const validItems = React.useMemo(() => items.filter((item) => item.trim().length > 0), [items]);
   const [activeIndex, setActiveIndex] = React.useState(0);
   const [paused, setPaused] = React.useState(false);
   const [width, setWidth] = React.useState<number | null>(null);
@@ -69,7 +66,10 @@ function SpotlightText({
 
   return (
     <motion.span
-      className={cn("relative inline-block align-baseline overflow-hidden leading-[inherit]", className)}
+      className={cn(
+        "relative inline-block overflow-hidden align-baseline leading-[inherit]",
+        className,
+      )}
       animate={{ width: width ?? "auto" }}
       transition={{ duration: Math.min(duration, 0.35), ease: [0.22, 1, 0.36, 1] }}
       onMouseEnter={pauseOnHover ? () => setPaused(true) : undefined}
@@ -78,7 +78,7 @@ function SpotlightText({
       <span
         ref={measureRef}
         aria-hidden="true"
-        className="invisible inline-block whitespace-nowrap font-semibold"
+        className="invisible inline-block font-semibold whitespace-nowrap"
       >
         {activeItem}
       </span>

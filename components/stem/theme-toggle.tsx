@@ -11,7 +11,7 @@ export function ThemeToggle() {
   React.useEffect(() => setMounted(true), []);
 
   if (!mounted) {
-    return <span className="inline-flex size-8" aria-hidden />;
+    return <span className="inline-flex size-8" aria-hidden="true" />;
   }
 
   const dark = resolvedTheme === "dark";
@@ -22,9 +22,9 @@ export function ThemeToggle() {
       aria-label={dark ? "Switch to light theme" : "Switch to dark theme"}
       title={dark ? "Light theme" : "Dark theme"}
       onClick={() => setTheme(dark ? "light" : "dark")}
-      className="inline-flex size-8 items-center justify-center rounded-md border border-input bg-background text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      className="text-muted-foreground hover:bg-sidebar-accent hover:text-foreground focus-visible:ring-ring inline-flex size-8 cursor-pointer items-center justify-center rounded-full transition-colors duration-200 focus-visible:ring-2 focus-visible:outline-none"
     >
-      {dark ? <Sun className="size-4" /> : <Moon className="size-4" />}
+      {dark ? <Sun className="size-3.5" /> : <Moon className="size-3.5" />}
     </button>
   );
 }

@@ -9,9 +9,7 @@ function Popover({ ...props }: PopoverPrimitive.PopoverProps) {
   return <PopoverPrimitive.Root data-slot="popover" {...props} />;
 }
 
-function PopoverTrigger({
-  ...props
-}: React.ComponentProps<typeof PopoverPrimitive.Trigger>) {
+function PopoverTrigger({ ...props }: React.ComponentProps<typeof PopoverPrimitive.Trigger>) {
   return <PopoverPrimitive.Trigger data-slot="popover-trigger" {...props} />;
 }
 
@@ -38,9 +36,7 @@ function PopoverContent({
         {...props}
       >
         {children}
-        {showArrow && (
-          <PopoverPrimitive.Arrow className="fill-popover stroke-border" />
-        )}
+        {showArrow && <PopoverPrimitive.Arrow className="fill-popover stroke-border" />}
       </PopoverPrimitive.Content>
     </PopoverPrimitive.Portal>
   );

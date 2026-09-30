@@ -11,7 +11,7 @@ export type ControlDef =
       type: "select";
       prop: string;
       label: string;
-            options: { label: string; value: string; swatch?: string }[];
+      options: { label: string; value: string; swatch?: string }[];
     }
   | { type: "color"; prop: string; label: string }
   | {
@@ -45,7 +45,9 @@ export function generateCode(
         const items = c.items
           .map((item) => values[item.prop])
           .filter((value): value is string => typeof value === "string" && value.trim().length > 0);
-        return items.length ? `${c.prop}={[${items.map((item) => JSON.stringify(item)).join(", ")}]}` : null;
+        return items.length
+          ? `${c.prop}={[${items.map((item) => JSON.stringify(item)).join(", ")}]}`
+          : null;
       }
 
       return serializeAttr(c.prop, values[c.prop]);
@@ -56,9 +58,7 @@ export function generateCode(
   const attrBlock = attrs.length ? `\n  ${attrs.join("\n  ")}\n` : "";
 
   if (children === undefined || children === "") {
-    return attrs.length
-      ? `<${componentName}${attrBlock}/>`
-      : `<${componentName} />`;
+    return attrs.length ? `<${componentName}${attrBlock}/>` : `<${componentName} />`;
   }
 
   return `<${componentName}${attrBlock}>\n  ${children}\n</${componentName}>`;

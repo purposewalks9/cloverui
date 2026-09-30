@@ -5,13 +5,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 export type ThermalFlowTheme =
-  | "thermal"
-  | "aurora"
-  | "sunset"
-  | "ocean"
-  | "ember"
-  | "candy"
-  | "mono";
+  "thermal" | "aurora" | "sunset" | "ocean" | "ember" | "candy" | "mono";
 
 export const THERMAL_FLOW_THEMES: Record<ThermalFlowTheme, string[]> = {
   thermal: ["#04040c", "#0b1fd6", "#2a7cff", "#59b8f5", "#f6e04a", "#f79a20", "#f0401a"],
@@ -46,7 +40,11 @@ function parseColor(input: string): [number, number, number] {
   const s = input.trim();
   if (s.startsWith("#")) {
     let c = s.slice(1);
-    if (c.length === 3 || c.length === 4) c = c.split("").map((x) => x + x).join("");
+    if (c.length === 3 || c.length === 4)
+      c = c
+        .split("")
+        .map((x) => x + x)
+        .join("");
     if (c.length >= 6) {
       return [
         parseInt(c.slice(0, 2), 16) / 255,

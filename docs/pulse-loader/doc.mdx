@@ -1,4 +1,4 @@
-import { PulseLoaderPlayground } from './playground'
+import { PulseLoaderPlayground } from "./playground"
 
 <PulseLoaderPlayground />
 
@@ -21,14 +21,14 @@ import { PulseLoader } from "@/components/pulse-loader";
 
 <PropsTable data={[
   { name: "color", type: "string", default: '"#0B87DA"' },
+  { name: "size", type: "number", default: "60", description: "Width and height in pixels." },
   { name: "rings", type: "number", default: "4" },
   { name: "minOpacity", type: "number", default: "0.2" },
   { name: "maxOpacity", type: "number", default: "1" },
-  { name: "size", type: "number", default: "60" },
-  { name: "duration", type: "number", default: "1.8" },
-  { name: "contraction", type: "number", default: "0.55" },
-  { name: "stagger", type: "number", default: "0.15" },
+  { name: "duration", type: "number", default: "1.8", description: "Seconds per pulse." },
+  { name: "contraction", type: "number", default: "0.55", description: "How small the rings shrink, from 0 to 1." },
+  { name: "stagger", type: "number", default: "0.15", description: "Delay between rings in seconds." },
+  { name: "autoStart", type: "boolean", default: "true" },
   { name: "className", type: "string" },
   { name: "ringClassName", type: "string" },
-  { name: "autoStart", type: "boolean", default: "true" },
 ]} />

@@ -10,6 +10,25 @@ interface HSV {
   v: number;
 }
 
+const PRESETS = [
+  "#e1e900",
+  "#ff3b3b",
+  "#ff922e",
+  "#ffdc32",
+  "#63a928",
+  "#28dce7",
+  "#278ff0",
+  "#8b5cf6",
+  "#f04fbd",
+  "#14b8a6",
+  "#f43f5e",
+  "#6366f1",
+  "#a3a3a3",
+  "#525252",
+  "#171717",
+  "#ffffff",
+];
+
 function clamp(n: number, min: number, max: number) {
   return Math.min(max, Math.max(min, n));
 }
@@ -33,8 +52,7 @@ function hexToRgb(hex: string) {
 }
 
 function rgbToHex(r: number, g: number, b: number) {
-  const toHex = (n: number) =>
-    clamp(Math.round(n), 0, 255).toString(16).padStart(2, "0");
+  const toHex = (n: number) => clamp(Math.round(n), 0, 255).toString(16).padStart(2, "0");
   return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 }
 
@@ -108,13 +126,11 @@ export function ColorPicker({
   const rgb = React.useMemo(() => hexToRgb(value || "#000000"), [value]);
   const hsv = React.useMemo(() => rgbToHsv(rgb.r, rgb.g, rgb.b), [rgb]);
 
-
-
   const [hue, setHue] = React.useState(hsv.h);
   const lastValue = React.useRef(value);
   if (lastValue.current !== value) {
     lastValue.current = value;
-    if (Math.abs(hsv.h - hue) > 0.5 && (hsv.s > 0.02 && hsv.v > 0.02)) {
+    if (Math.abs(hsv.h - hue) > 0.5 && hsv.s > 0.02 && hsv.v > 0.02) {
       setHue(hsv.h);
     }
   }
@@ -139,122 +155,112 @@ export function ColorPicker({
     commit({ h, s: hsv.s, v: hsv.v });
   });
 
-  const [hexDraft, setHexDraft] = React.useState(value);
-  React.useEffect(() => setHexDraft(value), [value]);
+  const [hexDraft, setHexDraft] = React.useState(value.replace("#", ""));
+  React.useEffect(() => setHexDraft(value.replace("#", "")), [value]);
 
   function commitHexDraft(next: string) {
-    setHexDraft(next);
-    if (/^#?[0-9a-fA-F]{6}$/.test(next) || /^#?[0-9a-fA-F]{3}$/.test(next)) {
-      onChange(normalizeHex(next));
-    }
+    const clean = next.replace(/[^0-9a-fA-F]/g, "").slice(0, 6);
+    setHexDraft(clean);
+    if (clean.length === 6 || clean.length === 3) onChange(normalizeHex(clean));
   }
 
-  function setChannel(channel: "r" | "g" | "b", raw: string) {
-    const n = clamp(Number(raw) || 0, 0, 255);
-    const next = { ...rgb, [channel]: n };
-    onChange(rgbToHex(next.r, next.g, next.b));
-  }
-
-  const canEyedrop =
-    typeof window !== "undefined" && "EyeDropper" in window;
+  const canEyedrop = typeof window !== "undefined" && "EyeDropper" in window;
 
   async function pickFromScreen() {
     if (!canEyedrop) return;
     try {
-      const dropper = new (window as unknown as { EyeDropper: new () => { open: () => Promise<{ sRGBHex: string }> } }).EyeDropper();
+      const dropper = new (
+        window as unknown as { EyeDropper: new () => { open: () => Promise<{ sRGBHex: string }> } }
+      ).EyeDropper();
       const result = await dropper.open();
       if (result?.sRGBHex) onChange(normalizeHex(result.sRGBHex));
-    } catch {
-
-    }
+    } catch {}
   }
 
-  const thumbColor = rgbToHex(rgb.r, rgb.g, rgb.b);
+  const current = rgbToHex(rgb.r, rgb.g, rgb.b);
 
   return (
-    <div className="flex w-full flex-col gap-3">
+    <div className="flex w-full flex-col gap-3.5">
       <div
         ref={sv.ref}
         onPointerDown={sv.handlePointer}
-        className="relative h-36 w-full touch-none rounded-md"
+        className="relative h-40 w-full cursor-crosshair touch-none overflow-hidden rounded-xl"
         style={{
           background: `linear-gradient(to top, #000, transparent), linear-gradient(to right, #fff, hsl(${hue}, 100%, 50%))`,
         }}
       >
         <span
-          className="pointer-events-none absolute size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white shadow-[0_0_0_1px_rgba(0,0,0,0.35)]"
+          className="pointer-events-none absolute size-4 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.35)] ring-[3px] ring-white"
           style={{
             left: `${hsv.s * 100}%`,
             top: `${(1 - hsv.v) * 100}%`,
-            background: thumbColor,
+            background: current,
           }}
         />
       </div>
 
-      <div className="flex items-center gap-2">
-        <div
-          ref={hueDrag.ref}
-          onPointerDown={hueDrag.handlePointer}
-          className="relative h-3 w-full touch-none rounded-full"
+      <div
+        ref={hueDrag.ref}
+        onPointerDown={hueDrag.handlePointer}
+        className="relative h-3.5 w-full cursor-pointer touch-none rounded-full"
+        style={{
+          background: "linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00)",
+        }}
+      >
+        <span
+          className="pointer-events-none absolute top-1/2 size-4 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.35)] ring-[3px] ring-white"
           style={{
-            background:
-              "linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00)",
+            left: `${(hue / 360) * 100}%`,
+            background: `hsl(${hue}, 100%, 50%)`,
           }}
-        >
-          <span
-            className="pointer-events-none absolute top-1/2 size-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white shadow-[0_0_0_1px_rgba(0,0,0,0.35)]"
-            style={{
-              left: `${(hue / 360) * 100}%`,
-              background: `hsl(${hue}, 100%, 50%)`,
-            }}
-          />
-        </div>
+        />
+      </div>
 
+      <div className="bg-muted flex h-9 items-center gap-2 rounded-lg pr-1 pl-1.5">
+        <span
+          className="size-6 shrink-0 rounded-md shadow-[inset_0_0_0_1px_rgba(0,0,0,0.08)]"
+          style={{ background: current }}
+        />
+        <span className="text-muted-foreground font-mono text-xs">#</span>
+        <input
+          value={hexDraft}
+          onChange={(e) => commitHexDraft(e.target.value)}
+          onBlur={() => setHexDraft(value.replace("#", ""))}
+          aria-label="Hex color"
+          spellCheck={false}
+          className="text-foreground w-full min-w-0 bg-transparent font-mono text-xs uppercase outline-none"
+        />
         {canEyedrop && (
           <button
             type="button"
             onClick={pickFromScreen}
             aria-label="Pick color from screen"
             title="Pick color from screen"
-            className="flex size-7 shrink-0 items-center justify-center rounded-md border border-input text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            className="text-muted-foreground hover:text-foreground hover:bg-background/60 focus-visible:ring-ring flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md transition-colors focus-visible:ring-2 focus-visible:outline-none"
           >
             <Pipette className="size-3.5" />
           </button>
         )}
       </div>
 
-      <div className="flex items-center gap-2">
-        <span
-          className="size-7 shrink-0 rounded-md border border-input"
-          style={{ background: thumbColor }}
-        />
-        <input
-          value={hexDraft}
-          onChange={(e) => commitHexDraft(e.target.value)}
-          onBlur={() => setHexDraft(value)}
-          className={cn(
-            "h-7 w-full min-w-0 rounded-md border border-input bg-background px-2",
-            "font-mono text-xs text-foreground outline-none focus-visible:ring-1 focus-visible:ring-ring",
-          )}
-        />
-      </div>
-
-      <div className="grid grid-cols-3 gap-1.5">
-        {(["r", "g", "b"] as const).map((channel) => (
-          <label key={channel} className="flex flex-col gap-1">
-            <input
-              type="number"
-              min={0}
-              max={255}
-              value={rgb[channel]}
-              onChange={(e) => setChannel(channel, e.target.value)}
-              className="h-7 w-full rounded-md border border-input bg-background px-1.5 text-center font-mono text-xs text-foreground outline-none focus-visible:ring-1 focus-visible:ring-ring"
+      <div className="grid grid-cols-8 gap-1.5">
+        {PRESETS.map((preset) => {
+          const active = preset === current;
+          return (
+            <button
+              key={preset}
+              type="button"
+              onClick={() => onChange(preset)}
+              aria-label={preset}
+              title={preset}
+              className={cn(
+                "focus-visible:ring-ring aspect-square w-full cursor-pointer rounded-full shadow-[inset_0_0_0_1px_rgba(0,0,0,0.1)] transition-transform duration-150 hover:scale-110 focus-visible:ring-2 focus-visible:outline-none",
+                active && "ring-foreground ring-offset-popover ring-2 ring-offset-2",
+              )}
+              style={{ background: preset }}
             />
-            <span className="text-center text-[10px] uppercase text-muted-foreground">
-              {channel}
-            </span>
-          </label>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

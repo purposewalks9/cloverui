@@ -1,4 +1,3 @@
-
 "use client";
 
 import {
@@ -70,7 +69,7 @@ const GaugeText = forwardRef<GaugeTextRef, GaugeTextProps>(
       suffix = "x",
       label,
       speed = "normal",
-      color = "hsl(var(--primary))",
+      color = "var(--primary)",
       landedClassName = "text-foreground",
       decimals = 0,
       duration,
@@ -86,7 +85,7 @@ const GaugeText = forwardRef<GaugeTextRef, GaugeTextProps>(
       onComplete,
       ...props
     },
-    ref
+    ref,
   ) => {
     const [display, setDisplay] = useState(0);
     const [landed, setLanded] = useState(false);
@@ -157,24 +156,14 @@ const GaugeText = forwardRef<GaugeTextRef, GaugeTextProps>(
       play();
     }, [once, play]);
 
-    const formatted = useMemo(
-      () => display.toFixed(decimals),
-      [display, decimals]
-    );
+    const formatted = useMemo(() => display.toFixed(decimals), [display, decimals]);
 
     return (
       <span
-        className={cn(
-          "inline-flex cursor-pointer items-center gap-2 font-medium",
-          className
-        )}
+        className={cn("inline-flex cursor-pointer items-center gap-2 font-medium", className)}
         {...props}
       >
-        <GaugeTrigger
-          inView={inView}
-          once={once}
-          onEnter={handleViewportEnter}
-        />
+        <GaugeTrigger inView={inView} once={once} onEnter={handleViewportEnter} />
 
         <span
           className={cn("tabular-nums", numberClassName)}
@@ -197,10 +186,7 @@ const GaugeText = forwardRef<GaugeTextRef, GaugeTextProps>(
         )}
 
         <span
-          className={cn(
-            landed ? landedClassName : undefined,
-            labelClassName
-          )}
+          className={cn(landed ? landedClassName : undefined, labelClassName)}
           style={{
             color: landed ? undefined : color,
           }}
@@ -209,7 +195,7 @@ const GaugeText = forwardRef<GaugeTextRef, GaugeTextProps>(
         </span>
       </span>
     );
-  }
+  },
 );
 
 GaugeText.displayName = "GaugeText";
@@ -241,7 +227,7 @@ function GaugeTrigger({
       },
       {
         rootMargin: "-10% 0px -10% 0px",
-      }
+      },
     );
 
     observer.observe(node);
@@ -251,13 +237,7 @@ function GaugeTrigger({
 
   if (!inView) return null;
 
-  return (
-    <span
-      ref={ref}
-      className="sr-only"
-      aria-hidden="true"
-    />
-  );
+  return <span ref={ref} className="sr-only" aria-hidden="true" />;
 }
 
 export { GaugeText };

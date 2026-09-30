@@ -1,4 +1,3 @@
-
 "use client";
 
 import * as React from "react";
@@ -6,10 +5,10 @@ import { cn } from "@/lib/utils";
 
 const VIEWBOX_W = 640;
 const VIEWBOX_H = 220;
-const PAD_X = 8;
+const PAD_X = 0;
 const PAD_Y_TOP = 24;
 const PAD_Y_BOTTOM = 12;
-const LINE_WIDTH = 1;
+const LINE_WIDTH = 2;
 const TRANSITION = "160ms cubic-bezier(0.22, 1, 0.36, 1)";
 const MIN_VISIBLE = 8;
 
@@ -19,6 +18,7 @@ const TOOLTIP_SHADOW = [
   "0 4px 16px -4px rgba(0, 0, 0, 0.12)",
   "0 12px 32px -8px rgba(0, 0, 0, 0.08)",
 ].join(", ");
+const DOT_SHADOW = "0 0 0 2px var(--background), 0 0 8px 2px rgba(0, 0, 0, 0.12)";
 
 export interface Candle {
   time: string;
@@ -66,14 +66,9 @@ export function CandleChartStick({
   const transition = animated ? TRANSITION : "0ms";
   const root = React.useRef<HTMLDivElement>(null);
 
-  const initialVisible = Math.min(
-    defaultVisibleCount ?? Math.min(100, data.length),
-    data.length,
-  );
+  const initialVisible = Math.min(defaultVisibleCount ?? Math.min(100, data.length), data.length);
 
-  const [rangeStart, setRangeStart] = React.useState(
-    Math.max(0, data.length - initialVisible),
-  );
+  const [rangeStart, setRangeStart] = React.useState(Math.max(0, data.length - initialVisible));
 
   const [visibleCount, setVisibleCount] = React.useState(initialVisible);
   const [containerWidth, setContainerWidth] = React.useState(width);
@@ -156,8 +151,7 @@ export function CandleChartStick({
     const innerH = VIEWBOX_H - PAD_Y_TOP - PAD_Y_BOTTOM;
     const col = innerW / n;
 
-    const toY = (v: number) =>
-      PAD_Y_TOP + (1 - (v - minV) / range) * innerH;
+    const toY = (v: number) => PAD_Y_TOP + (1 - (v - minV) / range) * innerH;
 
     const mapped = visibleData.map((d, i) => {
       const cx = PAD_X + (i + 0.5) * col;
@@ -172,6 +166,7 @@ export function CandleChartStick({
         isUp,
         yHigh: toY(d.high),
         yLow: toY(d.low),
+        yClose,
         bodyTop: Math.min(yOpen, yClose),
         bodyHeight: Math.max(1, Math.abs(yClose - yOpen)),
       };
@@ -180,10 +175,10 @@ export function CandleChartStick({
     return { candles: mapped, colWidth: col };
   }, [visibleData]);
 
-  const active =
-    candles[Math.min(activeLocalIndex, candles.length - 1)] ?? candles[0];
+  const active = candles[Math.min(activeLocalIndex, candles.length - 1)] ?? candles[0];
 
   const activeXPct = active ? active.cx / VIEWBOX_W : 0;
+  const activeYPct = active ? active.yClose / VIEWBOX_H : 0;
 
   const handleHover = React.useCallback(
     (clientX: number) => {
@@ -202,9 +197,7 @@ export function CandleChartStick({
 
         const idx = Math.floor((relSvgX - PAD_X) / colWidth);
 
-        setActiveLocalIndex(
-          Math.max(0, Math.min(candles.length - 1, idx)),
-        );
+        setActiveLocalIndex(Math.max(0, Math.min(candles.length - 1, idx)));
       });
     },
     [candles.length, colWidth],
@@ -228,10 +221,7 @@ export function CandleChartStick({
       const dxSvg = (dxPx / root.current.getBoundingClientRect().width) * VIEWBOX_W;
       const dCandles = -(dxSvg / colWidth);
 
-      const { start } = clampRange(
-        dragState.current.startRange + dCandles,
-        visibleCount,
-      );
+      const { start } = clampRange(dragState.current.startRange + dCandles, visibleCount);
 
       if (dragRafRef.current !== null) {
         cancelAnimationFrame(dragRafRef.current);
@@ -272,10 +262,7 @@ export function CandleChartStick({
     const cursorIndexInWindow = relPx * visibleCount;
     const cursorAbsIndex = rangeStart + cursorIndexInWindow;
 
-    const { start, count } = clampRange(
-      cursorAbsIndex - relPx * newCount,
-      newCount,
-    );
+    const { start, count } = clampRange(cursorAbsIndex - relPx * newCount, newCount);
 
     setVisibleCount(count);
     setRangeStart(start);
@@ -292,21 +279,15 @@ export function CandleChartStick({
 
     if (count <= 1) return [0];
 
-    return Array.from({ length: count }, (_, i) =>
-      Math.round((i * (n - 1)) / (count - 1)),
-    );
+    return Array.from({ length: count }, (_, i) => Math.round((i * (n - 1)) / (count - 1)));
   }, [axisVisible, candles.length, tickCount, containerWidth]);
 
   React.useEffect(() => {
-    setActiveLocalIndex((i) =>
-      Math.max(0, Math.min(i, candles.length - 1)),
-    );
+    setActiveLocalIndex((i) => Math.max(0, Math.min(i, candles.length - 1)));
   }, [candles.length]);
 
   React.useEffect(() => {
-    setRangeStart((start) =>
-      Math.max(0, Math.min(start, data.length - visibleCount)),
-    );
+    setRangeStart((start) => Math.max(0, Math.min(start, data.length - visibleCount)));
   }, [data.length, visibleCount]);
 
   if (candles.length === 0 || !active) return null;
@@ -339,7 +320,7 @@ export function CandleChartStick({
         onPointerLeave={onPointerUp}
         onWheel={onWheel}
         className={cn(
-          "relative w-full aspect-[640/220] touch-none",
+          "relative aspect-[640/220] w-full touch-none",
           zoomable && (isDragging ? "cursor-grabbing" : "cursor-grab"),
         )}
       >
@@ -385,12 +366,14 @@ export function CandleChartStick({
         {!isDragging &&
           (() => {
             const cursorPx = activeXPct * containerWidth;
+            const containerHeight = (containerWidth * VIEWBOX_H) / VIEWBOX_W;
+            const cursorYpx = activeYPct * containerHeight;
             const tooltipOnLeft = activeXPct > 0.5;
 
             return (
               <>
                 <div
-                  className="absolute pointer-events-none rounded-full bg-[var(--spell-line)] left-0"
+                  className="pointer-events-none absolute left-0 rounded-full bg-[var(--spell-line)]"
                   style={{
                     width: LINE_WIDTH,
                     top: `${(PAD_Y_TOP / VIEWBOX_H) * 100}%`,
@@ -402,19 +385,28 @@ export function CandleChartStick({
                 />
 
                 <div
-                  className="absolute pointer-events-none z-20 grid min-w-36 items-start gap-1 rounded-lg bg-background px-2.5 py-1.5 text-xs left-0 top-0"
+                  className="pointer-events-none absolute top-0 left-0 z-10 size-3 rounded-full"
+                  style={{
+                    background: activeColor,
+                    transform: `translate3d(${cursorPx - 6}px, ${cursorYpx - 6}px, 0)`,
+                    boxShadow: DOT_SHADOW,
+                    transition: `transform ${transition}`,
+                    willChange: "transform",
+                  }}
+                />
+
+                <div
+                  className="bg-background pointer-events-none absolute top-0 left-0 z-20 grid min-w-36 items-start gap-1 rounded-lg px-2.5 py-1.5 text-xs"
                   style={{
                     transform: tooltipOnLeft
-                      ? `translate3d(calc(${cursorPx}px - 100% - 12px), 0, 0)`
-                      : `translate3d(${cursorPx + 12}px, 0, 0)`,
+                      ? `translate3d(calc(${cursorPx}px - 100% - 12px), calc(${cursorYpx}px - 50%), 0)`
+                      : `translate3d(${cursorPx + 12}px, calc(${cursorYpx}px - 50%), 0)`,
                     transition: `transform ${transition}`,
                     willChange: "transform",
                     boxShadow: TOOLTIP_SHADOW,
                   }}
                 >
-                  <div className="font-medium text-foreground whitespace-nowrap">
-                    {active.time}
-                  </div>
+                  <div className="text-foreground font-medium whitespace-nowrap">{active.time}</div>
 
                   <div className="flex items-center gap-2">
                     <div
@@ -423,13 +415,11 @@ export function CandleChartStick({
                     />
 
                     {name && (
-                      <span className="text-muted-foreground whitespace-nowrap">
-                        {name}
-                      </span>
+                      <span className="text-muted-foreground whitespace-nowrap">{name}</span>
                     )}
                   </div>
 
-                  <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 font-mono text-foreground tabular-nums">
+                  <div className="text-foreground grid grid-cols-2 gap-x-3 gap-y-0.5 font-mono tabular-nums">
                     <span>O {formatValue(active.open)}</span>
                     <span>H {formatValue(active.high)}</span>
                     <span>L {formatValue(active.low)}</span>
@@ -442,17 +432,19 @@ export function CandleChartStick({
       </div>
 
       {axisVisible && (
-        <div className="relative h-5 mt-2 overflow-hidden">
-          {tickIndices.map((i) => {
+        <div className="relative mt-2 h-5">
+          {tickIndices.map((i, tick) => {
             const c = candles[i];
             const xPct = (c.cx / VIEWBOX_W) * 100;
+            const align = tick === 0 ? "0%" : tick === tickIndices.length - 1 ? "-100%" : "-50%";
 
             return (
               <div
                 key={`${rangeStart}-${visibleCount}-${i}`}
-                className="absolute top-0 -translate-x-1/2 text-[11px] leading-none text-muted-foreground tabular-nums whitespace-nowrap antialiased"
+                className="text-muted-foreground absolute top-0 text-[11px] leading-none whitespace-nowrap tabular-nums antialiased"
                 style={{
                   left: `${xPct}%`,
+                  transform: `translateX(${align})`,
                   transition: `left ${transition}, opacity ${transition}`,
                   willChange: "left",
                   fontVariantNumeric: "tabular-nums",

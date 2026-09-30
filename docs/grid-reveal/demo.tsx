@@ -14,7 +14,7 @@ export function Demo() {
       <div className="flex aspect-square w-full items-center justify-center">
         <div className="text-center">
           <p className="text-base font-medium tracking-tight">Grid Reveal</p>
-          <p className="mt-1 text-xs text-muted-foreground">Scattered motion.</p>
+          <p className="text-muted-foreground mt-1 text-xs">Scattered motion.</p>
         </div>
       </div>
     </GridReveal>

@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { trackEvent } from "@/lib/events";
-import { CheckIcon, Copy } from "lucide-react";
+import { Copy, ThumbsUp } from "lucide-react";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 
@@ -12,8 +12,9 @@ export function CopyCodeButton() {
 
   return (
     <Button
-      variant="outline"
+      variant="ghost"
       size="icon"
+      aria-label={isCopied ? "Copied" : "Copy code"}
       className="size-7 dark:bg-[#191919] dark:hover:bg-[#212121]"
       onClick={(e) => {
         const container = e.currentTarget.closest("[data-code-container]");
@@ -29,9 +30,11 @@ export function CopyCodeButton() {
         }, 1500);
       }}
     >
-      {isCopied
-        ? <CheckIcon className="size-3.5 text-emerald-500" />
-        : <Copy className="size-3.5" />}
+      {isCopied ? (
+        <ThumbsUp className="size-3.5" />
+      ) : (
+        <Copy className="size-3.5" />
+      )}
     </Button>
   );
 }

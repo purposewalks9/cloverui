@@ -1,4 +1,4 @@
-import { GridRevealPlayground } from './playground'
+import { GridRevealPlayground } from "./playground"
 
 <GridRevealPlayground />
 
@@ -22,23 +22,23 @@ import { GridReveal } from "@/components/grid-reveal";
 ## Props
 
 <PropsTable data={[
-  { name: "children", type: "React.ReactNode" },
+  { name: "children", type: "React.ReactNode", description: "Content revealed under the grid." },
   { name: "rows", type: "number", default: "6" },
   { name: "cols", type: "number", default: "10" },
-  { name: "color", type: "string", default: '"#000000"' },
-  { name: "blockDuration", type: "number", default: "0.45" },
-  { name: "stagger", type: "number", default: "0.03" },
-  { name: "duration", type: "number", description: "Total time for the grid to clear. Overrides stagger when set." },
+  { name: "color", type: "string", default: '"#000000"', description: "Block color." },
   { name: "pattern", type: '"random" | "wave" | "diagonal" | "center"', default: '"random"' },
+  { name: "blockDuration", type: "number", default: "0.45", description: "Fade time for each block in seconds." },
+  { name: "stagger", type: "number", default: "0.03" },
+  { name: "duration", type: "number", description: "Total reveal time in seconds. Overrides stagger." },
+  { name: "gap", type: "number", default: "0", description: "Space between blocks in pixels." },
   { name: "loop", type: "boolean", default: "false" },
   { name: "loopDelay", type: "number", default: "0.6" },
-  { name: "gap", type: "number", default: "0" },
-  { name: "className", type: "string" },
-  { name: "gridClassName", type: "string" },
-  { name: "blockClassName", type: "string" },
   { name: "autoStart", type: "boolean", default: "true" },
-  { name: "inView", type: "boolean", default: "false" },
+  { name: "inView", type: "boolean", default: "false", description: "Waits until it scrolls into view." },
   { name: "once", type: "boolean", default: "true" },
   { name: "onStart", type: "() => void" },
   { name: "onComplete", type: "() => void" },
+  { name: "className", type: "string" },
+  { name: "gridClassName", type: "string" },
+  { name: "blockClassName", type: "string" },
 ]} />

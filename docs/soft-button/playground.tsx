@@ -1,7 +1,7 @@
 "use client";
 
 import { SoftButton } from "@/registry/clover-ui/soft-button";
-import { PlaygroundShell } from "@/components/playground/playground-shell";
+import { PlaygroundShell } from "@/components/garden/playground-shell";
 import type { ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [

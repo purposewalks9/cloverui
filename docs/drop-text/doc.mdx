@@ -1,4 +1,4 @@
-import { DropTextPlayground } from './playground'
+import { DropTextPlayground } from "./playground"
 
 <DropTextPlayground />
 
@@ -22,19 +22,19 @@ import { DropText } from "@/components/drop-text";
 <PropsTable data={[
   { name: "children", type: "string" },
   { name: "splitBy", type: '"words" | "characters"', default: '"words"' },
-  { name: "dropDistance", type: "number", default: "40" },
+  { name: "dropDistance", type: "number", default: "40", description: "How far each piece falls, in pixels." },
   { name: "speed", type: "number", default: "1" },
   { name: "duration", type: "number", default: "0.5" },
   { name: "stagger", type: "number", default: "0.05" },
   { name: "delay", type: "number", default: "0" },
-  { name: "bounce", type: "number", default: "0.35" },
-  { name: "landedClassName", type: "string" },
-  { name: "className", type: "string" },
-  { name: "wordClassName", type: "string" },
-  { name: "charClassName", type: "string" },
+  { name: "bounce", type: "number", default: "0.35", description: "Set 0 for no bounce." },
+  { name: "landedClassName", type: "string", description: "Classes added once the text lands." },
   { name: "autoStart", type: "boolean", default: "true" },
-  { name: "inView", type: "boolean", default: "false" },
+  { name: "inView", type: "boolean", default: "false", description: "Waits until the text scrolls into view." },
   { name: "once", type: "boolean", default: "true" },
   { name: "onStart", type: "() => void" },
   { name: "onComplete", type: "() => void" },
+  { name: "className", type: "string" },
+  { name: "wordClassName", type: "string" },
+  { name: "charClassName", type: "string" },
 ]} />

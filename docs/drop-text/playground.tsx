@@ -1,7 +1,7 @@
 "use client";
 
 import { DropText } from "@/registry/clover-ui/drop-text";
-import { PlaygroundShell } from "@/components/playground/playground-shell";
+import { PlaygroundShell } from "@/components/garden/playground-shell";
 import type { ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [
@@ -37,18 +37,18 @@ export function DropTextPlayground() {
       controls={controls}
       defaultProps={defaultProps}
       render={(values) => (
-       <div className="flex w-full justify-center">
-        <DropText
-          key={JSON.stringify(values)}
-          splitBy={values.splitBy as "words" | "characters"}
-          speed={values.speed as number}
-          stagger={values.stagger as number}
-          bounce={values.bounce as number}
-          dropDistance={values.dropDistance as number}
-          className="text-center text-3xl font-semibold tracking-tight"
-        >
-          {values.children as string}
-        </DropText>
+        <div className="flex w-full justify-center">
+          <DropText
+            key={JSON.stringify(values)}
+            splitBy={values.splitBy as "words" | "characters"}
+            speed={values.speed as number}
+            stagger={values.stagger as number}
+            bounce={values.bounce as number}
+            dropDistance={values.dropDistance as number}
+            className="text-center text-3xl font-semibold tracking-tight"
+          >
+            {values.children as string}
+          </DropText>
         </div>
       )}
     />

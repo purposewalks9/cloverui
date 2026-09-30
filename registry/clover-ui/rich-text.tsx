@@ -27,8 +27,7 @@ export type RichTextColor =
   | "fuchsia"
   | "emerald";
 
-export interface RichTextProps
-  extends React.HTMLAttributes<HTMLSpanElement> {
+export interface RichTextProps extends React.HTMLAttributes<HTMLSpanElement> {
   children: React.ReactNode;
   color?: RichTextColor;
 }

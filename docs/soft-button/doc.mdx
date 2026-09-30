@@ -1,4 +1,4 @@
-import { SoftButtonPlayground } from './playground'
+import { SoftButtonPlayground } from "./playground"
 
 <SoftButtonPlayground />
 
@@ -17,7 +17,15 @@ import { SoftButton } from "@/components/soft-button";
 <SoftButton color="green">Get started</SoftButton>
 ```
 
-The component deliberately does not expose `className`. Its gradients, text treatment, radius, glow, and interaction states remain part of the Clover UI design system.
+Use `asChild` to give a link the button styles.
+
+```tsx
+<SoftButton asChild color="yellow">
+  <a href="/sponsor">Sponsor</a>
+</SoftButton>
+```
+
+It also accepts every native button prop, like `disabled` and `onClick`.
 
 ## Props
 
@@ -25,5 +33,6 @@ The component deliberately does not expose `className`. Its gradients, text trea
   { name: "children", type: "React.ReactNode" },
   { name: "color", type: '"red" | "darkRed" | "green" | "lime" | "blue" | "purple" | "orange" | "yellow" | "pink" | "cyan"', default: '"red"' },
   { name: "size", type: '"sm" | "default" | "lg"', default: '"default"' },
-  { name: "asChild", type: "boolean", default: "false" },
+  { name: "asChild", type: "boolean", default: "false", description: "Renders your own element with the button styles." },
+  { name: "className", type: "string" },
 ]} />

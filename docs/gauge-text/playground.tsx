@@ -1,7 +1,7 @@
 "use client";
 
 import { GaugeText } from "@/registry/clover-ui/gauge-text";
-import { PlaygroundShell } from "@/components/playground/playground-shell";
+import { PlaygroundShell } from "@/components/garden/playground-shell";
 import type { ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [
@@ -40,18 +40,18 @@ export function GaugeTextPlayground() {
       controls={controls}
       defaultProps={defaultProps}
       render={(values) => (
-     <div className="flex w-full justify-center">
-        <GaugeText
-          key={JSON.stringify(values)}
-          value={values.value as number}
-          suffix={values.suffix as string}
-          label={values.label as string}
-          speed={values.speed as "slow" | "normal" | "fast"}
-          color={values.color as string}
-          decimals={values.decimals as number}
-          showIcon={values.showIcon as boolean}
-          className="text-2xl font-semibold"
-        />
+        <div className="flex w-full justify-center">
+          <GaugeText
+            key={JSON.stringify(values)}
+            value={values.value as number}
+            suffix={values.suffix as string}
+            label={values.label as string}
+            speed={values.speed as "slow" | "normal" | "fast"}
+            color={values.color as string}
+            decimals={values.decimals as number}
+            showIcon={values.showIcon as boolean}
+            className="text-2xl font-semibold"
+          />
         </div>
       )}
     />

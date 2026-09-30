@@ -78,10 +78,19 @@ const NucleusText = React.forwardRef<HTMLSpanElement, NucleusTextProps>(
         const side = Math.floor(Math.random() * 4);
         let sx = 0;
         let sy = 0;
-        if (side === 0) { sx = random(0, canvasWidth); sy = random(0, padding * 0.8); }
-        else if (side === 1) { sx = random(0, canvasWidth); sy = random(canvasHeight - padding * 0.8, canvasHeight); }
-        else if (side === 2) { sx = random(0, padding * 0.8); sy = random(0, canvasHeight); }
-        else { sx = random(canvasWidth - padding * 0.8, canvasWidth); sy = random(0, canvasHeight); }
+        if (side === 0) {
+          sx = random(0, canvasWidth);
+          sy = random(0, padding * 0.8);
+        } else if (side === 1) {
+          sx = random(0, canvasWidth);
+          sy = random(canvasHeight - padding * 0.8, canvasHeight);
+        } else if (side === 2) {
+          sx = random(0, padding * 0.8);
+          sy = random(0, canvasHeight);
+        } else {
+          sx = random(canvasWidth - padding * 0.8, canvasWidth);
+          sy = random(0, canvasHeight);
+        }
 
         return {
           sx,

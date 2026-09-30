@@ -11,15 +11,10 @@ export const siteConfig = {
   links: {
     github: "https://github.com/purposewalks9/clover-ui",
     sponsor: "https://github.com/sponsors/purposewalks9",
+    discord: "",
+    x: "",
   },
-  keywords: [
-    "React",
-    "Tailwind CSS",
-    "Motion",
-    "Landing Page",
-    "Components",
-    "Next.js",
-  ],
+  keywords: ["React", "Tailwind CSS", "Motion", "Landing Page", "Components", "Next.js"],
 };
 
 export type SiteConfig = typeof siteConfig;

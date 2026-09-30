@@ -2,7 +2,7 @@
 
 import { ThermalFlow } from "@/registry/clover-ui/thermal-flow";
 import type { ThermalFlowTheme } from "@/registry/clover-ui/thermal-flow";
-import { PlaygroundShell } from "@/components/playground/playground-shell";
+import { PlaygroundShell } from "@/components/garden/playground-shell";
 import type { ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [

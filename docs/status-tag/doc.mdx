@@ -1,4 +1,4 @@
-import { StatusTagPlayground } from './playground'
+import { StatusTagPlayground } from "./playground"
 
 <StatusTagPlayground />
 
@@ -17,10 +17,12 @@ import { StatusTag } from "@/components/status-tag";
 <StatusTag status="completed" />
 ```
 
+The label slides out when you hover the tag.
+
 ## Props
 
 <PropsTable data={[
-  { name: "status", type: '"draft" | "in-progress" | "in-review" | "completed"' },
-  { name: "label", type: "string" },
+  { name: "status", type: '"draft" | "in-progress" | "in-review" | "completed"', description: "Which status the tag shows." },
+  { name: "label", type: "string", description: "Replaces the default label text." },
   { name: "className", type: "string" },
 ]} />

@@ -7,19 +7,11 @@ import {
   useTransform,
   type MotionValue,
 } from "motion/react";
-import {
-  forwardRef,
-  useCallback,
-  useImperativeHandle,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { forwardRef, useCallback, useImperativeHandle, useMemo, useRef, useState } from "react";
 
 import { cn } from "@/lib/utils";
 
 export interface SpinnerProps {
-
   color?: string;
   trackColor?: string;
   dots?: number;
@@ -43,7 +35,11 @@ export interface SpinnerRef {
 function parseColor(input: string): [number, number, number, number] {
   if (input.startsWith("#")) {
     let hex = input.slice(1);
-    if (hex.length === 3) hex = hex.split("").map((c) => c + c).join("");
+    if (hex.length === 3)
+      hex = hex
+        .split("")
+        .map((c) => c + c)
+        .join("");
     const r = parseInt(hex.slice(0, 2), 16);
     const g = parseInt(hex.slice(2, 4), 16);
     const b = parseInt(hex.slice(4, 6), 16);
@@ -51,7 +47,7 @@ function parseColor(input: string): [number, number, number, number] {
     return [r, g, b, a];
   }
   const m = input.match(
-    /rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)\s*(?:,\s*([\d.]+)\s*)?\)/
+    /rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)\s*(?:,\s*([\d.]+)\s*)?\)/,
   );
   if (m) {
     return [Number(m[1]), Number(m[2]), Number(m[3]), m[4] !== undefined ? Number(m[4]) : 1];
@@ -65,7 +61,7 @@ function mixColors(c1: string, c2: string, t: number) {
   const a = parseColor(c1);
   const b = parseColor(c2);
   return `rgba(${Math.round(lerp(a[0], b[0], t))}, ${Math.round(lerp(a[1], b[1], t))}, ${Math.round(
-    lerp(a[2], b[2], t)
+    lerp(a[2], b[2], t),
   )}, ${Number(lerp(a[3], b[3], t).toFixed(3))})`;
 }
 
@@ -88,7 +84,7 @@ const Spinner = forwardRef<SpinnerRef, SpinnerProps>(
       dotClassName,
       autoStart = true,
     },
-    ref
+    ref,
   ) => {
     const [running, setRunning] = useState(autoStart);
     const elapsed = useRef(0);
@@ -127,7 +123,7 @@ const Spinner = forwardRef<SpinnerRef, SpinnerProps>(
         className={cn(
           "relative inline-flex items-center justify-center select-none",
           interactive && "cursor-pointer",
-          className
+          className,
         )}
         style={{ width: size, height: size }}
         role={interactive ? "button" : "status"}
@@ -164,7 +160,7 @@ const Spinner = forwardRef<SpinnerRef, SpinnerProps>(
         ))}
       </div>
     );
-  }
+  },
 );
 
 Spinner.displayName = "Spinner";
@@ -204,7 +200,7 @@ function SpinnerDot({
 
   return (
     <motion.span
-      className={cn("absolute rounded-full top-1/2 left-1/2", className)}
+      className={cn("absolute top-1/2 left-1/2 rounded-full", className)}
       style={{
         width: size,
         height: size,
