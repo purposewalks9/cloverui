@@ -1,13 +1,33 @@
 "use client";
 
 import { SpotlightText } from "@/registry/clover-ui/spotlight-text";
-import { PlaygroundShell } from "@/components/playground/playground-shell";
+import { PlaygroundShell } from "@/components/garden/playground-shell";
 import type { ControlDef } from "@/lib/playground";
 
 const colors = [
-  "default", "blue", "purple", "pink", "red", "orange", "yellow", "green",
-  "teal", "cyan", "indigo", "violet", "rose", "amber", "lime", "sky",
-  "slate", "gray", "zinc", "neutral", "stone", "fuchsia", "emerald",
+  "default",
+  "blue",
+  "purple",
+  "pink",
+  "red",
+  "orange",
+  "yellow",
+  "green",
+  "teal",
+  "cyan",
+  "indigo",
+  "violet",
+  "rose",
+  "amber",
+  "lime",
+  "sky",
+  "slate",
+  "gray",
+  "zinc",
+  "neutral",
+  "stone",
+  "fuchsia",
+  "emerald",
 ] as const;
 
 const controls: ControlDef[] = [
@@ -53,24 +73,21 @@ export function SpotlightTextPlayground() {
       controls={controls}
       defaultProps={defaultProps}
       render={(values) => {
-        const items = [
-          values.item1,
-          values.item2,
-          values.item3,
-          values.item4,
-        ]
+        const items = [values.item1, values.item2, values.item3, values.item4]
           .map((item) => String(item ?? "").trim())
           .filter(Boolean);
 
         return (
           <p className="text-center text-2xl font-semibold tracking-tight">
-            I create <SpotlightText
+            I create{" "}
+            <SpotlightText
               key={JSON.stringify(values)}
               items={items}
               color={values.color as (typeof colors)[number]}
               interval={values.interval as number}
               duration={values.duration as number}
-            /> that feel alive.
+            />{" "}
+            that feel alive.
           </p>
         );
       }}

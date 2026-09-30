@@ -30,9 +30,7 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "registryDependencies": [],
       "category": "animation"
     },
@@ -77,9 +75,7 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "registryDependencies": [],
       "category": "feedback"
     },
@@ -94,9 +90,7 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "registryDependencies": [],
       "category": "feedback"
     },
@@ -111,12 +105,8 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion"
-      ],
-      "registryDependencies": [
-        "rich-text"
-      ],
+      "dependencies": ["motion"],
+      "registryDependencies": ["rich-text"],
       "category": "text"
     },
     {
@@ -145,9 +135,7 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "@radix-ui/react-slot"
-      ],
+      "dependencies": ["@radix-ui/react-slot"],
       "registryDependencies": [],
       "category": "button"
     },
@@ -162,9 +150,7 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": ["lucide-react"],
       "registryDependencies": [],
       "category": "feedback"
     },
@@ -179,10 +165,7 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "matter-js",
-        "@types/matter-js"
-      ],
+      "dependencies": ["matter-js", "@types/matter-js"],
       "registryDependencies": [],
       "category": "animation"
     },
@@ -212,9 +195,7 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "registryDependencies": [],
       "category": "text"
     },
@@ -244,9 +225,7 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "registryDependencies": [],
       "category": "feedback"
     },
@@ -261,10 +240,7 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion",
-        "lucide-react"
-      ],
+      "dependencies": ["motion", "lucide-react"],
       "registryDependencies": [],
       "category": "input"
     },
@@ -279,9 +255,7 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": ["lucide-react"],
       "registryDependencies": [],
       "category": "display"
     },

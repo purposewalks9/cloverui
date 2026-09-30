@@ -1,13 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import {
-  forwardRef,
-  useCallback,
-  useImperativeHandle,
-  useMemo,
-  useState,
-} from "react";
+import { forwardRef, useCallback, useImperativeHandle, useMemo, useState } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -47,7 +41,7 @@ const PulseLoader = forwardRef<PulseLoaderRef, PulseLoaderProps>(
       ringClassName,
       autoStart = true,
     },
-    ref
+    ref,
   ) => {
     const [running, setRunning] = useState(autoStart);
 
@@ -86,11 +80,7 @@ const PulseLoader = forwardRef<PulseLoaderRef, PulseLoaderProps>(
               backgroundColor: color,
               opacity: ring.opacity,
             }}
-            animate={
-              running
-                ? { scale: [1, contraction, 1] }
-                : { scale: 1 }
-            }
+            animate={running ? { scale: [1, contraction, 1] } : { scale: 1 }}
             transition={{
               duration,
               delay: ring.delay,
@@ -101,7 +91,7 @@ const PulseLoader = forwardRef<PulseLoaderRef, PulseLoaderProps>(
         ))}
       </div>
     );
-  }
+  },
 );
 
 PulseLoader.displayName = "PulseLoader";

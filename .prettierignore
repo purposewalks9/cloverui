@@ -1,0 +1,9 @@
+.next
+node_modules
+public/r
+pnpm-lock.yaml
+next-env.d.ts
+*.tsbuildinfo
+registry/clover-ui/soft-button.tsx
+docs/soft-button
+*.mdx

@@ -1,8 +1,8 @@
 import type { MDXComponents } from "mdx/types";
-import { DemoCanvas, DemoCode, DemoPreview } from "./components/demo-canvas";
-import { CopyCodeButton } from "./components/copy-code-button";
-import { InstallationTabs } from "./components/installation-tabs";
-import { PropsTable } from "./components/props-table";
+import { DemoCanvas, DemoCode, DemoPreview } from "@/components/leaves/demo-canvas";
+import { CopyCodeButton } from "@/components/leaves/copy-code-button";
+import { InstallationTabs } from "@/components/leaves/installation-tabs";
+import { PropsTable } from "@/components/leaves/props-table";
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
@@ -46,9 +46,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         <div className="relative" data-code-container="true">
           <pre
             style={props.style}
-            className={`max-h-80 overflow-x-auto font-mono border ${
-              props.className ?? ""
-            }`}
+            className={`max-h-80 overflow-x-auto border font-mono ${props.className ?? ""}`}
           >
             {children}
           </pre>

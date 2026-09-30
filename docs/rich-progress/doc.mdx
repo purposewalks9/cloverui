@@ -2,12 +2,6 @@ import { RichProgressPlayground } from "./playground"
 
 <RichProgressPlayground />
 
-Every "tuning" panel on this site — the one docked to the right of each
-playground above — is built on top of this component. Its `onChange` and
-draggable track are what make each numeric control (and every "Prism IOR"
-/ "Rainbow glow" style slider you'll see across the docs) feel the way it
-does, not a plain `<input type="range">`.
-
 ## Installation
 
 <InstallationTabs item="rich-progress">
@@ -23,7 +17,9 @@ import { RichProgress } from "@/components/rich-progress";
 <RichProgress value={65} color="red" />
 ```
 
-### Interactive
+### Make it draggable
+
+Pass `onChange` and it becomes a slider you can drag or move with the arrow keys.
 
 ```tsx
 import { useState } from "react";
@@ -32,54 +28,42 @@ import { RichProgress } from "@/components/rich-progress";
 export function Example() {
   const [value, setValue] = useState(65);
 
-  return (
-    <RichProgress
-      value={value}
-      onChange={setValue}
-      color="red"
-    />
-  );
+  return <RichProgress value={value} onChange={setValue} label="Volume" />;
 }
 ```
 
-### Custom label
+### Custom value label
 
 ```tsx
-<RichProgress
-  value={3}
-  valueLabel="3/10"
-  color="emerald"
-/>
+<RichProgress value={30} valueLabel="3/10" color="emerald" />
 ```
 
-### As a settings control
+### Other ranges
 
-`RichProgress` only speaks 0–100, so to drive an arbitrary range (say,
-Prism IOR from 1.0–3.0) map the value in and back out:
+The value always goes from 0 to 100. To use another range, convert it in and out.
 
 ```tsx
 const min = 1;
 const max = 3;
-const percent = ((ior - min) / (max - min)) * 100;
 
 <RichProgress
-  value={percent}
-  onChange={(next) => setIor(min + (next / 100) * (max - min))}
-  label="Prism IOR"
-  valueLabel={ior.toFixed(2)}
-  size="sm"
+  value={((zoom - min) / (max - min)) * 100}
+  onChange={(next) => setZoom(min + (next / 100) * (max - min))}
+  label="Zoom"
+  valueLabel={zoom.toFixed(2)}
 />
 ```
 
 ## Props
 
 <PropsTable data={[
-  { name: "value", type: "number", description: "Current value from 0–100" },
-  { name: "onChange", type: "(value: number) => void", description: "Called when the user clicks or drags the track" },
-  { name: "color", type: "Color", default: '"default"' },
+  { name: "value", type: "number", description: "Current value from 0 to 100." },
+  { name: "onChange", type: "(value: number) => void", description: "Makes the bar draggable." },
+  { name: "label", type: "string" },
+  { name: "color", type: '"default" | "blue" | "purple" | "pink" | "red" | "orange" | "yellow" | "green" | "teal" | "cyan" | "indigo" | "violet" | "rose" | "amber" | "lime" | "sky" | "emerald"', default: '"default"' },
   { name: "size", type: '"sm" | "default" | "lg"', default: '"default"' },
   { name: "showValue", type: "boolean", default: "true" },
-  { name: "valueLabel", type: "string", description: 'Overrides the numeric value, e.g. "3/10"' },
+  { name: "valueLabel", type: "string", description: "Shown instead of the number." },
   { name: "knob", type: "boolean", default: "true" },
   { name: "className", type: "string" },
   { name: "trackClassName", type: "string" },

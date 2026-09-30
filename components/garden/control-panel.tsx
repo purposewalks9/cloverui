@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { RichProgress } from "@/registry/clover-ui/rich-progress";
 import { cn } from "@/lib/utils";
 import type { ControlDef } from "@/lib/playground";
-import { ColorField } from "./color-field";
+import { ColorField } from "@/components/garden/color-field";
 
 interface ControlPanelProps {
   controls: ControlDef[];
@@ -32,9 +32,7 @@ export function ControlPanel({ controls, values, onChange }: ControlPanelProps) 
 }
 
 function FieldLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="text-sm font-normal text-muted-foreground">{children}</span>
-  );
+  return <span className="text-muted-foreground text-sm font-normal">{children}</span>;
 }
 
 function OptionGroup({
@@ -57,15 +55,9 @@ function OptionGroup({
       id={id}
       role="radiogroup"
       aria-label={label}
-      className={
-        joined
-          ? "grid w-full overflow-hidden rounded-md"
-          : "flex flex-wrap gap-1.5"
-      }
+      className={joined ? "grid w-full overflow-hidden rounded-md" : "flex flex-wrap gap-1.5"}
       style={
-        joined
-          ? { gridTemplateColumns: `repeat(${options.length}, minmax(0, 1fr))` }
-          : undefined
+        joined ? { gridTemplateColumns: `repeat(${options.length}, minmax(0, 1fr))` } : undefined
       }
     >
       {options.map((opt, i) => {
@@ -80,11 +72,9 @@ function OptionGroup({
             className={cn(
               "truncate text-xs font-medium transition-colors",
               joined
-                ? cn("px-2.5 py-1.5", i > 0 && "border-l border-input")
-                : "rounded-md border border-input px-2 py-1",
-              active
-                ? "bg-accent text-accent-foreground"
-                : "text-muted-foreground hover:bg-muted",
+                ? cn("px-2.5 py-1.5", i > 0 && "border-input border-l")
+                : "border-input rounded-md border px-2 py-1",
+              active ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:bg-muted",
             )}
           >
             {opt.label}
@@ -109,12 +99,7 @@ function ColorSwatchGroup({
   onChange: (value: string) => void;
 }) {
   return (
-    <div
-      id={id}
-      role="radiogroup"
-      aria-label={label}
-      className="flex flex-wrap gap-2"
-    >
+    <div id={id} role="radiogroup" aria-label={label} className="flex flex-wrap gap-2">
       {options.map((opt) => {
         const active = opt.value === value;
         return (
@@ -130,7 +115,7 @@ function ColorSwatchGroup({
           >
             <span
               className={cn(
-                "size-6 rounded-full border border-border shadow-sm transition-transform duration-150",
+                "border-border size-6 rounded-full border shadow-sm transition-transform duration-150",
                 "group-hover:scale-110 group-focus-visible:scale-110",
                 active && "scale-110",
               )}
@@ -138,7 +123,7 @@ function ColorSwatchGroup({
             />
             {active && (
               <span
-                className="pointer-events-none absolute inset-0 rounded-full ring-2 ring-offset-2 ring-offset-background"
+                className="ring-offset-background pointer-events-none absolute inset-0 rounded-full ring-2 ring-offset-2"
                 style={{ ["--tw-ring-color" as string]: opt.swatch }}
               />
             )}
@@ -206,7 +191,7 @@ function Field({
             id={control.prop}
             role="group"
             aria-label={control.label}
-            className="inline-flex overflow-hidden rounded-md "
+            className="inline-flex overflow-hidden rounded-md"
           >
             <button
               type="button"
@@ -216,7 +201,7 @@ function Field({
                 "px-2.5 py-1 text-xs font-medium transition-colors",
                 !value
                   ? "bg-accent text-accent-foreground"
-                  : "text-muted-foreground hover:bg-muted"
+                  : "text-muted-foreground hover:bg-muted",
               )}
             >
               Off
@@ -226,10 +211,8 @@ function Field({
               onClick={() => onChange(true)}
               aria-pressed={Boolean(value)}
               className={cn(
-                "border-l border-input px-2.5 py-1 text-xs font-medium transition-colors",
-                value
-                  ? "bg-accent text-accent-foreground"
-                  : "text-muted-foreground hover:bg-muted"
+                "border-input border-l px-2.5 py-1 text-xs font-medium transition-colors",
+                value ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:bg-muted",
               )}
             >
               On
@@ -247,9 +230,7 @@ function Field({
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between">
               <FieldLabel>{control.label}</FieldLabel>
-              <span className="text-[11px] text-muted-foreground">
-                {active?.label ?? ""}
-              </span>
+              <span className="text-muted-foreground text-[11px]">{active?.label ?? ""}</span>
             </div>
             <ColorSwatchGroup
               id={control.prop}
@@ -282,7 +263,7 @@ function Field({
       const step = control.step ?? 1;
       const raw = typeof value === "number" ? value : min;
       const percent = max === min ? 0 : ((raw - min) / (max - min)) * 100;
-      const decimals = step && step < 1 ? String(step).split(".")[1]?.length ?? 2 : 0;
+      const decimals = step && step < 1 ? (String(step).split(".")[1]?.length ?? 2) : 0;
 
       return (
         <RichProgress
@@ -306,9 +287,6 @@ function Field({
         <div className="flex flex-col gap-1.5">
           <div className="flex items-center justify-between">
             <FieldLabel>{control.label}</FieldLabel>
-            <span className="font-mono text-[11px] text-muted-foreground">
-              {(value as string) ?? ""}
-            </span>
           </div>
           <ColorField value={value as string} onChange={onChange} bare />
         </div>

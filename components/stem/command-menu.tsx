@@ -2,7 +2,6 @@
 
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CornerDownLeft, Search } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandCollection,
@@ -39,9 +38,7 @@ interface PageGroup {
 
 export function SearchForm({ docSchema }: { docSchema: DocSchema }) {
   const [open, setOpen] = useState(false);
-  const [selectedType, setSelectedType] = useState<"page" | "component" | null>(
-    null,
-  );
+  const [selectedType, setSelectedType] = useState<"page" | "component" | null>(null);
   const [copyPayload, setCopyPayload] = useState("");
   const router = useRouter();
   const isMac = useIsMac();
@@ -148,19 +145,17 @@ export function SearchForm({ docSchema }: { docSchema: DocSchema }) {
 
   return (
     <>
-      <Button
+      <button
+        type="button"
         onClick={() => setOpen(true)}
-        variant="outline"
-        size="sm"
-        className="hidden sm:inline-flex cursor-text items-center rounded-full gap-2 text-sm"
+        className="text-muted-foreground hover:bg-sidebar-accent hover:text-foreground focus-visible:ring-ring bg-sidebar-accent/60 hidden h-8 cursor-pointer items-center gap-2 rounded-full pr-1.5 pl-3 text-sm transition-colors duration-200 focus-visible:ring-2 focus-visible:outline-none sm:inline-flex"
       >
-        <Search className="size-4" />
-        <span className="pr-6 lg:hidden">Search...</span>
-        <span className="pr-8 hidden lg:inline"> Search</span>
-        <kbd className="-me-1 font-mono place-content-center grid dark:shadow-[0_0_0_1px_var(--input)] shadow-[0_0_0_1px_var(--input)]font-normal min-h-5 min-w-5 rounded-full px-1 text-xs">
-          ?
+        <Search className="size-3.5" />
+        <span className="pr-6 lg:pr-10">Search</span>
+        <kbd className="bg-sidebar-accent text-muted-foreground rounded-full px-2 py-0.5 font-sans text-[11px] font-medium">
+          {isMac ? "⌘K" : "Ctrl K"}
         </kbd>
-      </Button>
+      </button>
       <CommandDialog onOpenChange={setOpen} open={open}>
         <CommandDialogPopup>
           <Command

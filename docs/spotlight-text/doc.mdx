@@ -1,4 +1,4 @@
-import { SpotlightTextPlayground } from './playground'
+import { SpotlightTextPlayground } from "./playground"
 
 <SpotlightTextPlayground />
 
@@ -15,21 +15,18 @@ import { SpotlightTextPlayground } from './playground'
 import { SpotlightText } from "@/components/spotlight-text";
 
 <p>
-  I create <SpotlightText
-    items={["brands", "interfaces", "experiences", "products"]}
-    color="blue"
-  /> that feel alive.
+  I create <SpotlightText items={["brands", "interfaces", "products"]} color="blue" /> that feel alive.
 </p>
 ```
 
 ## Props
 
 <PropsTable data={[
-  { name: "items", type: "string[]", description: "Inline words or phrases to cycle through." },
+  { name: "items", type: "string[]", description: "Words to cycle through." },
   { name: "color", type: '"default" | "blue" | "purple" | "pink" | "red" | "orange" | "yellow" | "green" | "teal" | "cyan" | "indigo" | "violet" | "rose" | "amber" | "lime" | "sky" | "slate" | "gray" | "zinc" | "neutral" | "stone" | "fuchsia" | "emerald"', default: '"default"' },
-  { name: "interval", type: "number", default: "2200", description: "Time in milliseconds between changes." },
-  { name: "duration", type: "number", default: "0.45", description: "Animation duration in seconds." },
+  { name: "interval", type: "number", default: "2200", description: "Time between words in milliseconds." },
+  { name: "duration", type: "number", default: "0.45", description: "Transition time in seconds." },
+  { name: "pauseOnHover", type: "boolean", default: "true" },
   { name: "className", type: "string" },
   { name: "itemClassName", type: "string" },
-  { name: "pauseOnHover", type: "boolean", default: "true" },
 ]} />

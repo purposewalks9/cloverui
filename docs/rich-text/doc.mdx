@@ -1,4 +1,4 @@
-import { RichTextPlayground } from './playground'
+import { RichTextPlayground } from "./playground"
 
 <RichTextPlayground />
 
@@ -15,27 +15,14 @@ import { RichTextPlayground } from './playground'
 import { RichText } from "@/components/rich-text";
 
 <p>
-  Build <RichText color="blue">rich interfaces</RichText> with a simple text primitive.
+  Build <RichText color="blue">rich interfaces</RichText> with simple text.
 </p>
 ```
 
 ## Props
 
 <PropsTable data={[
-  {
-    name: "children",
-    type: "React.ReactNode",
-    description: "Text or inline content rendered with the rich text treatment."
-  },
-  {
-    name: "color",
-    type: '"default" | "blue" | "purple" | "pink" | "red" | "orange" | "yellow" | "green" | "teal" | "cyan" | "indigo" | "violet" | "rose" | "amber" | "lime" | "sky" | "slate" | "gray" | "zinc" | "neutral" | "stone" | "fuchsia" | "emerald"',
-    default: '"default"',
-    description: "Gradient and text-shadow color treatment."
-  },
-  {
-    name: "className",
-    type: "string",
-    description: "Additional classes for typography and layout."
-  }
+  { name: "children", type: "React.ReactNode" },
+  { name: "color", type: '"default" | "blue" | "purple" | "pink" | "red" | "orange" | "yellow" | "green" | "teal" | "cyan" | "indigo" | "violet" | "rose" | "amber" | "lime" | "sky" | "slate" | "gray" | "zinc" | "neutral" | "stone" | "fuchsia" | "emerald"', default: '"default"', description: "Gradient color of the text." },
+  { name: "className", type: "string" },
 ]} />

@@ -107,7 +107,7 @@ const RichProgress = ({
 
       onChange?.(next);
     },
-    [onChange]
+    [onChange],
   );
 
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
@@ -130,16 +130,12 @@ const RichProgress = ({
   };
 
   return (
-    <div className={cn("w-full max-w-xl flex flex-col gap-2", className)}>
+    <div className={cn("flex w-full max-w-xl flex-col gap-2", className)}>
       {(label || showValue) && (
         <div className="flex items-center justify-between">
-          {label && (
-            <span className="text-sm font-medium text-foreground">
-              {label}
-            </span>
-          )}
+          {label && <span className="text-foreground text-sm font-medium">{label}</span>}
           {showValue && (
-            <span className={cn("tabular-nums text-muted-foreground", text)}>
+            <span className={cn("text-muted-foreground tabular-nums", text)}>
               {valueLabel ?? formattedValue}
             </span>
           )}
@@ -148,12 +144,12 @@ const RichProgress = ({
 
       <div
         ref={trackRef}
-        role="slider"
+        role={onChange ? "slider" : "progressbar"}
         aria-valuemin={0}
         aria-valuemax={100}
         aria-valuenow={Math.round(clamped)}
         aria-label={label}
-        tabIndex={0}
+        tabIndex={onChange ? 0 : undefined}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
@@ -181,18 +177,16 @@ const RichProgress = ({
           }
         }}
         className={cn(
-          "relative w-full cursor-pointer touch-none select-none",
+          "relative w-full touch-none select-none",
+          onChange && "cursor-pointer",
+          "focus-visible:ring-ring focus-visible:ring-offset-background outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
           "rounded-full bg-zinc-700/70 dark:bg-zinc-700",
           h,
-          trackClassName
+          trackClassName,
         )}
       >
         <motion.div
-          className={cn(
-            "h-full rounded-full",
-            fillColorMap[color],
-            fillClassName
-          )}
+          className={cn("h-full rounded-full", fillColorMap[color], fillClassName)}
           style={{ width }}
         />
 
@@ -207,7 +201,7 @@ const RichProgress = ({
               "ring-1 ring-black/10",
               "transition-transform",
               dragging.current && "scale-110",
-              knobSize
+              knobSize,
             )}
             style={{ left: width }}
           />

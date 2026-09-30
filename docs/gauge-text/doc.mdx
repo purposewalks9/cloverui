@@ -1,4 +1,4 @@
-import { GaugeTextPlayground } from './playground'
+import { GaugeTextPlayground } from "./playground"
 
 <GaugeTextPlayground />
 
@@ -20,22 +20,22 @@ import { GaugeText } from "@/components/gauge-text";
 ## Props
 
 <PropsTable data={[
-  { name: "value", type: "number", description: "The final numeric value to count up to." },
-  { name: "label", type: "string", description: "Text shown beneath the number." },
+  { name: "value", type: "number", description: "The number to count up to." },
+  { name: "label", type: "string", description: "Text shown after the number." },
   { name: "suffix", type: "string", default: '"x"' },
-  { name: "speed", type: '"slow" | "normal" | "fast"', default: '"normal"', description: "Controls how fast the number counts up. Doesn't affect the icon." },
-  { name: "color", type: "string", default: '"hsl(var(--primary))"' },
-  { name: "landedClassName", type: "string", default: '"text-foreground"' },
+  { name: "speed", type: '"slow" | "normal" | "fast"', default: '"normal"' },
+  { name: "duration", type: "number", description: "Count time in seconds. Overrides speed." },
   { name: "decimals", type: "number", default: "0" },
-  { name: "duration", type: "number" },
+  { name: "color", type: "string", default: '"var(--primary)"', description: "Color while counting." },
+  { name: "landedClassName", type: "string", default: '"text-foreground"', description: "Classes for the label once counting ends." },
   { name: "showIcon", type: "boolean", default: "true" },
+  { name: "autoStart", type: "boolean", default: "true" },
+  { name: "inView", type: "boolean", default: "false", description: "Waits until the text scrolls into view." },
+  { name: "once", type: "boolean", default: "true" },
+  { name: "onStart", type: "() => void" },
+  { name: "onComplete", type: "() => void" },
   { name: "className", type: "string" },
   { name: "numberClassName", type: "string" },
   { name: "labelClassName", type: "string" },
   { name: "iconClassName", type: "string" },
-  { name: "autoStart", type: "boolean", default: "true" },
-  { name: "inView", type: "boolean", default: "false" },
-  { name: "once", type: "boolean", default: "true" },
-  { name: "onStart", type: "() => void" },
-  { name: "onComplete", type: "() => void" },
 ]} />

@@ -16,7 +16,7 @@ const TextGif = React.forwardRef<HTMLSpanElement, TextGifProps>(
         ref={ref}
         className={cn(
           "inline-block bg-clip-text text-transparent",
-          "bg-center bg-no-repeat bg-cover",
+          "bg-cover bg-center bg-no-repeat",
           "selection:bg-foreground/10",
           className,
         )}

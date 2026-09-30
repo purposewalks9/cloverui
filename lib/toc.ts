@@ -34,9 +34,7 @@ interface ParagraphNode extends Node {
   children: Node[];
 }
 
-export async function getTableOfContents(
-  content: string,
-): Promise<TocItem[]> {
+export async function getTableOfContents(content: string): Promise<TocItem[]> {
   const processor = remark().use(() => (tree) => {
     return tree;
   });
@@ -67,7 +65,6 @@ function extractItems(node: ListNode, depth: number): TocItem[] {
         if (item) {
           items.push(item);
 
-
           for (const child of listItem.children) {
             if (child.type === "list") {
               const nestedItems = extractItems(child as ListNode, depth + 1);
@@ -82,10 +79,7 @@ function extractItems(node: ListNode, depth: number): TocItem[] {
   return items;
 }
 
-function extractItemFromListItem(
-  listItem: ListItemNode,
-  depth: number,
-): TocItem | null {
+function extractItemFromListItem(listItem: ListItemNode, depth: number): TocItem | null {
   if (!listItem.children || listItem.children.length === 0) return null;
 
   let title = "";

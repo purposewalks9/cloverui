@@ -139,10 +139,7 @@ function inkLength(strokes: SignStroke[]) {
 
   for (const s of strokes) {
     for (let i = 1; i < s.length; i++) {
-      total += Math.hypot(
-        s[i].x - s[i - 1].x,
-        s[i].y - s[i - 1].y,
-      );
+      total += Math.hypot(s[i].x - s[i - 1].x, s[i].y - s[i - 1].y);
     }
   }
 
@@ -153,11 +150,7 @@ function cloneStrokes(strokes: SignStroke[]) {
   return strokes.map((s) => s.map((p) => ({ ...p })));
 }
 
-function exportSignature(
-  strokes: SignStroke[],
-  s: number,
-  ink: string,
-): SignPadValue {
+function exportSignature(strokes: SignStroke[], s: number, ink: string): SignPadValue {
   let x0 = Infinity;
   let y0 = Infinity;
   let x1 = -Infinity;
@@ -228,9 +221,9 @@ function IconButton({
       aria-label={label}
       title={label}
       className={cn(
-        "inline-flex size-8 items-center justify-center rounded-md border border-input bg-background text-muted-foreground outline-none",
+        "border-input bg-background text-muted-foreground inline-flex size-8 items-center justify-center rounded-md border outline-none",
         "hover:bg-accent hover:text-foreground active:bg-muted",
-        "focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
+        "focus-visible:ring-ring focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50",
         className,
       )}
       {...props}
@@ -339,10 +332,7 @@ function SigningPanel({
     [],
   );
 
-  const toLocal = (e: {
-    clientX: number;
-    clientY: number;
-  }) => {
+  const toLocal = (e: { clientX: number; clientY: number }) => {
     const c = canvasRef.current!;
     const r = c.getBoundingClientRect();
 
@@ -365,10 +355,7 @@ function SigningPanel({
     const p = toLocal(ev);
     const last = stroke[stroke.length - 1];
 
-    const dist = Math.hypot(
-      p.x - last.x * w,
-      p.y - last.y * w,
-    );
+    const dist = Math.hypot(p.x - last.x * w, p.y - last.y * w);
 
     if (dist < 1.2) return;
 
@@ -381,11 +368,9 @@ function SigningPanel({
     const target =
       ev.pointerType === "pen" && ev.pressure > 0
         ? strokeWidth * (0.55 + ev.pressure)
-        : strokeWidth *
-          (1.45 - Math.min(1, speed / 2.4));
+        : strokeWidth * (1.45 - Math.min(1, speed / 2.4));
 
-    const width =
-      last.w * w * 0.72 + target * 0.28;
+    const width = last.w * w * 0.72 + target * 0.28;
 
     stroke.push({
       x: p.x / w,
@@ -394,9 +379,7 @@ function SigningPanel({
     });
   };
 
-  const onPointerDown = (
-    e: React.PointerEvent<HTMLCanvasElement>,
-  ) => {
+  const onPointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
     if (e.pointerType === "mouse" && e.button !== 0) return;
 
     e.currentTarget.setPointerCapture(e.pointerId);
@@ -420,33 +403,20 @@ function SigningPanel({
     schedule();
   };
 
-  const onPointerMove = (
-    e: React.PointerEvent<HTMLCanvasElement>,
-  ) => {
-    if (
-      !drawingRef.current ||
-      drawingRef.current.id !== e.pointerId
-    ) {
+  const onPointerMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (!drawingRef.current || drawingRef.current.id !== e.pointerId) {
       return;
     }
 
-    const events =
-      e.nativeEvent.getCoalescedEvents?.() ?? [];
+    const events = e.nativeEvent.getCoalescedEvents?.() ?? [];
 
-    (events.length ? events : [e.nativeEvent]).forEach(
-      addPoint,
-    );
+    (events.length ? events : [e.nativeEvent]).forEach(addPoint);
 
     schedule();
   };
 
-  const endStroke = (
-    e: React.PointerEvent<HTMLCanvasElement>,
-  ) => {
-    if (
-      !drawingRef.current ||
-      drawingRef.current.id !== e.pointerId
-    ) {
+  const endStroke = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (!drawingRef.current || drawingRef.current.id !== e.pointerId) {
       return;
     }
 
@@ -472,22 +442,12 @@ function SigningPanel({
   const finish = () => {
     if (inkLength(strokesRef.current) < minInk) return;
 
-    onFinish(
-      exportSignature(
-        strokesRef.current,
-        sizeRef.current.w,
-        ink,
-      ),
-    );
+    onFinish(exportSignature(strokesRef.current, sizeRef.current.w, ink));
   };
 
-  const canFinish =
-    inkLength(strokesRef.current) >= minInk;
+  const canFinish = inkLength(strokesRef.current) >= minInk;
 
-  const fillPercent = Math.min(
-    100,
-    (stats.length / minInk) * 100,
-  );
+  const fillPercent = Math.min(100, (stats.length / minInk) * 100);
 
   const latest = React.useRef({
     undo,
@@ -508,10 +468,7 @@ function SigningPanel({
       if (e.key === "Escape") {
         e.preventDefault();
         latest.current.onCancel();
-      } else if (
-        mod &&
-        e.key.toLowerCase() === "z"
-      ) {
+      } else if (mod && e.key.toLowerCase() === "z") {
         e.preventDefault();
         latest.current.undo();
       } else if (mod && e.key === "Enter") {
@@ -522,8 +479,7 @@ function SigningPanel({
 
     window.addEventListener("keydown", onKey);
 
-    return () =>
-      window.removeEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, []);
 
   return (
@@ -532,7 +488,7 @@ function SigningPanel({
       aria-label={labels.title}
       className="relative w-[17.5rem] max-w-[calc(100vw-2rem)]"
     >
-      <div className="relative mx-1.5 mt-1 h-32 overflow-hidden rounded-lg border border-input bg-background dark:bg-zinc-950">
+      <div className="border-input bg-background relative mx-1.5 mt-1 h-32 overflow-hidden rounded-lg border dark:bg-zinc-950">
         <canvas
           ref={canvasRef}
           role="img"
@@ -545,21 +501,18 @@ function SigningPanel({
         />
       </div>
 
-      <div className="mx-1.5 mb-1.5 mt-2 flex gap-2">
+      <div className="mx-1.5 mt-2 mb-1.5 flex gap-2">
         <button
           type="button"
           onClick={finish}
           disabled={!canFinish}
-          className="inline-flex h-9 flex-1 items-center justify-center gap-2 rounded-md border border-black/10 px-4 text-sm font-medium text-black dark:text-white outline-none hover:brightness-110 active:brightness-95 disabled:cursor-not-allowed disabled:opacity-40 transition-all relative overflow-hidden"
+          className="focus-visible:ring-ring focus-visible:ring-offset-background relative inline-flex h-9 flex-1 items-center justify-center gap-2 overflow-hidden rounded-md border border-black/10 px-4 text-sm font-medium text-black transition-all outline-none hover:brightness-110 focus-visible:ring-2 focus-visible:ring-offset-2 active:brightness-95 disabled:cursor-not-allowed disabled:opacity-40 dark:text-white"
           style={{
             backgroundColor: accent,
             backgroundImage: `linear-gradient(90deg, transparent 0%, transparent ${fillPercent}%, rgba(0,0,0,0.05) ${fillPercent}%, rgba(0,0,0,0.05) 100%)`,
           }}
         >
-          <Signature
-            className="size-4"
-            strokeWidth={2}
-          />
+          <Signature className="size-4" strokeWidth={2} />
           {labels.finish}
         </button>
 
@@ -569,20 +522,14 @@ function SigningPanel({
           disabled={stats.count === 0}
           className="size-9 shrink-0"
         >
-          <Eraser
-            className="size-4"
-            strokeWidth={2.1}
-          />
+          <Eraser className="size-4" strokeWidth={2.1} />
         </IconButton>
       </div>
     </div>
   );
 }
 
-const SignPad = React.forwardRef<
-  HTMLDivElement,
-  SignPadProps
->(
+const SignPad = React.forwardRef<HTMLDivElement, SignPadProps>(
   (
     {
       onComplete,
@@ -605,35 +552,22 @@ const SignPad = React.forwardRef<
       [labelOverrides],
     );
 
-    const [signature, setSignature] =
-      React.useState<SignPadValue | null>(
-        defaultValue,
-      );
+    const [signature, setSignature] = React.useState<SignPadValue | null>(defaultValue);
 
-    const [phase, setPhase] =
-      React.useState<Phase>(
-        defaultValue ? "done" : "idle",
-      );
+    const [phase, setPhase] = React.useState<Phase>(defaultValue ? "done" : "idle");
 
-    const [resolvedInk, setResolvedInk] =
-      React.useState("#111827");
+    const [resolvedInk, setResolvedInk] = React.useState("#111827");
 
     React.useEffect(() => {
       const root = document.documentElement;
 
       const updateInk = () => {
-        setResolvedInk(
-          root.classList.contains("dark")
-            ? "#f5f5f5"
-            : "#111827",
-        );
+        setResolvedInk(root.classList.contains("dark") ? "#f5f5f5" : "#111827");
       };
 
       updateInk();
 
-      const observer = new MutationObserver(
-        updateInk,
-      );
+      const observer = new MutationObserver(updateInk);
 
       observer.observe(root, {
         attributes: true,
@@ -656,23 +590,14 @@ const SignPad = React.forwardRef<
     };
 
     return (
-      <div
-        ref={ref}
-        className={cn(
-          "inline-flex items-center text-foreground",
-          className,
-        )}
-      >
+      <div ref={ref} className={cn("text-foreground inline-flex items-center", className)}>
         {phase === "idle" && (
           <button
             type="button"
             onClick={() => setPhase("signing")}
-            className="inline-flex h-9 items-center justify-center gap-2 rounded-md border border-input bg-background px-4 text-sm font-medium text-foreground outline-none hover:bg-accent focus-visible:ring-1 focus-visible:ring-ring"
+            className="border-input bg-background text-foreground hover:bg-accent focus-visible:ring-ring inline-flex h-9 items-center justify-center gap-2 rounded-md border px-4 text-sm font-medium outline-none focus-visible:ring-1"
           >
-            <Signature
-              className="size-4"
-              strokeWidth={2}
-            />
+            <Signature className="size-4" strokeWidth={2} />
             {labels.start}
           </button>
         )}
@@ -696,12 +621,9 @@ const SignPad = React.forwardRef<
             aria-label={labels.edit}
             title={labels.edit}
             onClick={() => setPhase("signing")}
-            className="inline-flex h-9 items-center gap-2 rounded-md border border-input bg-background px-4 text-sm font-medium text-foreground outline-none hover:bg-accent focus-visible:ring-1 focus-visible:ring-ring"
+            className="border-input bg-background text-foreground hover:bg-accent focus-visible:ring-ring inline-flex h-9 items-center gap-2 rounded-md border px-4 text-sm font-medium outline-none focus-visible:ring-1"
           >
-            <Signature
-              className="size-4"
-              strokeWidth={2}
-            />
+            <Signature className="size-4" strokeWidth={2} />
             {labels.edit}
           </button>
         )}

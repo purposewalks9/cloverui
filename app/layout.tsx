@@ -1,17 +1,12 @@
 import type { Metadata } from "next";
 import { constructMetadata } from "@/lib/utils";
 import Script from "next/script";
-import {
-  DynaPuff,
-  Geist,
-  Geist_Mono,
-  Instrument_Serif,
-} from "next/font/google";
+import { DynaPuff, Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
-import { JotaiProvider } from "@/components/providers";
+import { ThemeProvider } from "@/components/roots/theme-provider";
+import { JotaiProvider } from "@/components/roots/providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -48,7 +43,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} ${dynaPuff.variable} relative isolate min-h-dvh overflow-x-hidden bg-background text-foreground antialiased font-sans`}
+        className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} ${dynaPuff.variable} bg-background text-foreground relative isolate min-h-dvh overflow-x-hidden font-sans antialiased`}
         suppressHydrationWarning
       >
         <JotaiProvider>
@@ -59,9 +54,7 @@ export default function RootLayout({
             enableColorScheme
             disableTransitionOnChange
           >
-            <div className="relative z-10 min-h-dvh">
-              {children}
-            </div>
+            <div className="relative z-10 min-h-dvh">{children}</div>
           </ThemeProvider>
         </JotaiProvider>
 

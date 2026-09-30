@@ -1,4 +1,4 @@
-import va from "@vercel/analytics"
+import va from "@vercel/analytics";
 
 type EventName =
   | "copy_install_command"
@@ -10,13 +10,10 @@ type EventName =
   | "search_query"
   | "select_package_manager"
   | "click_edit_page"
-  | "view_markdown"
+  | "share_on_x";
 
-type EventProperties = Record<string, string | number | boolean | null>
+type EventProperties = Record<string, string | number | boolean | null>;
 
-export function trackEvent(
-  name: EventName,
-  properties?: EventProperties
-): void {
-  va.track(name, properties)
+export function trackEvent(name: EventName, properties?: EventProperties): void {
+  va.track(name, properties);
 }

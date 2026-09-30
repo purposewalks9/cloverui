@@ -1,13 +1,14 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { Spinner } from "@/registry/clover-ui/spinner";
 
 const TokenFall = dynamic(
   () => import("@/registry/clover-ui/token-fall").then((m) => m.TokenFall),
-  { ssr: false, loading: () => <div className="flex h-full w-full items-center justify-center"><Spinner size={24} interactive={false} /></div> },
+  {
+    ssr: false,
+  },
 );
-import { PlaygroundShell } from "@/components/playground/playground-shell";
+import { PlaygroundShell } from "@/components/garden/playground-shell";
 import type { ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [
@@ -36,20 +37,20 @@ export function TokenFallPlayground() {
       defaultProps={defaultProps}
       stageClassName="w-full"
       render={(values) => (
-      <div className="flex w-full justify-center">
-        <div
-          key={JSON.stringify(values)}
-          className="relative h-72 w-full max-w-md overflow-hidden rounded-2xl"
-        >
-          <TokenFall
-            count={values.count as number}
-            minSize={values.minSize as number}
-            maxSize={values.maxSize as number}
-            gravity={values.gravity as number}
-            restitution={values.restitution as number}
-            spawnInterval={values.spawnInterval as number}
-          />
-        </div>
+        <div className="flex w-full justify-center">
+          <div
+            key={JSON.stringify(values)}
+            className="relative h-72 w-full max-w-md overflow-hidden rounded-2xl"
+          >
+            <TokenFall
+              count={values.count as number}
+              minSize={values.minSize as number}
+              maxSize={values.maxSize as number}
+              gravity={values.gravity as number}
+              restitution={values.restitution as number}
+              spawnInterval={values.spawnInterval as number}
+            />
+          </div>
         </div>
       )}
     />

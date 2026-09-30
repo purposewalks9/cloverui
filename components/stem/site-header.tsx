@@ -4,8 +4,8 @@ import * as React from "react";
 import { usePathname } from "next/navigation";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
-import { ThemeToggle } from "@/components/theme-toggle";
-import { SearchForm } from "@/components/command-menu";
+import { ThemeToggle } from "@/components/stem/theme-toggle";
+import { SearchForm } from "@/components/stem/command-menu";
 import type { DocSchema } from "@/lib/types";
 
 function titleFromSlug(slug: string) {
@@ -23,9 +23,7 @@ export function SiteHeader({ docSchema }: { docSchema: DocSchema }) {
 
   if (pathname.startsWith("/components/")) {
     const slug = pathname.split("/").pop() ?? "";
-    const item = docSchema
-      .flatMap((group) => group.items)
-      .find((doc) => doc.id === slug);
+    const item = docSchema.flatMap((group) => group.items).find((doc) => doc.id === slug);
 
     title = item?.title ?? titleFromSlug(slug);
     description = item?.description;
@@ -34,7 +32,7 @@ export function SiteHeader({ docSchema }: { docSchema: DocSchema }) {
   }
 
   return (
-    <header className="sticky top-0 z-30 flex h-12 shrink-0 items-center justify-between gap-3 border-b border-border bg-background px-4 text-foreground">
+    <header className="border-border bg-sidebar text-foreground sticky top-0 z-30 flex h-12 shrink-0 items-center justify-between gap-3 border-b px-4">
       <div className="flex min-w-0 items-center gap-2">
         <SidebarTrigger className="-ml-1" />
         <Separator orientation="vertical" className="h-4" />
@@ -42,18 +40,15 @@ export function SiteHeader({ docSchema }: { docSchema: DocSchema }) {
         {description && (
           <>
             <Separator orientation="vertical" className="h-4" />
-            <p className="min-w-0 truncate text-[14px] font-medium text-muted-foreground">
+            <p className="text-muted-foreground min-w-0 truncate text-[14px] font-medium">
               {description}
             </p>
           </>
         )}
       </div>
 
-
-        <div className="flex items-center gap-1.5">
-        <div className="[&_button]:h-8 [&_button]:rounded-md [&_button]:border-input [&_button]:bg-background [&_button]:px-2.5 [&_button]:shadow-none [&_button]:hover:bg-accent">
-          <SearchForm docSchema={docSchema} />
-        </div>
+      <div className="flex items-center gap-1.5">
+        <SearchForm docSchema={docSchema} />
 
         <ThemeToggle />
       </div>

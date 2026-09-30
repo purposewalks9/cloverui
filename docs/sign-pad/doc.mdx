@@ -17,7 +17,7 @@ import { SignPad } from "@/components/sign-pad";
 <SignPad />
 ```
 
-### Interactive
+### Save the signature
 
 ```tsx
 import { useState } from "react";
@@ -26,57 +26,30 @@ import { SignPad, type SignPadValue } from "@/components/sign-pad";
 export function Example() {
   const [signature, setSignature] = useState<SignPadValue | null>(null);
 
-  return (
-    <SignPad
-      onChange={setSignature}
-    />
-  );
+  return <SignPad onChange={setSignature} />;
 }
 ```
 
-### Customize the stroke
+The value includes the signature as an image, an SVG and the raw strokes.
 
-The ink automatically follows the current theme. It uses dark ink in light mode and light ink in dark mode.
-
-```tsx
-<SignPad
-  strokeWidth={3.5}
-  minInk={0.24}
-/>
-```
-
-### Existing signature
-
-You can provide an existing completed signature through `defaultValue`.
+### Start with a signature
 
 ```tsx
-<SignPad
-  defaultValue={signature}
-/>
+<SignPad defaultValue={signature} />
 ```
 
-## Behavior
-
-* Ink automatically follows the current `.dark` theme.
-* Light mode uses dark ink.
-* Dark mode uses light ink.
-* The stroke width can be adjusted with `strokeWidth`.
-* `minInk` controls the minimum amount of drawing required to finish.
-* `accent` controls the finish action accent color.
-* `onChange` receives the current saved signature.
-* `onComplete` fires when a valid signature is finished.
-* `onCancel` fires when signing is closed without finishing.
+The ink is dark in light mode and light in dark mode.
 
 ## Props
 
 <PropsTable data={[
-{ name: "onComplete", type: "(value: SignPadValue) => void", description: "Called after a valid signature is finished." },
-{ name: "onCancel", type: "() => void", description: "Called when signing is closed without finishing." },
-{ name: "onChange", type: "(value: SignPadValue | null) => void", description: "Called when the saved signature changes." },
-{ name: "defaultValue", type: "SignPadValue | null", default: "null", description: "Starts the component with an existing completed signature." },
-{ name: "accent", type: "string", default: '"var(--brand)"', description: "Accent color used by the finish action." },
-{ name: "strokeWidth", type: "number", default: "3", description: "Base pen width in pixels." },
-{ name: "minInk", type: "number", default: "0.3", description: "Minimum normalized ink length required to finish." },
-{ name: "labels", type: "Partial<SignPadLabels>", description: "Overrides the built-in interface labels." },
-{ name: "className", type: "string", description: "Additional classes for the outer wrapper." },
+  { name: "onChange", type: "(value: SignPadValue | null) => void", description: "Called when the saved signature changes." },
+  { name: "onComplete", type: "(value: SignPadValue) => void", description: "Called when a signature is finished." },
+  { name: "onCancel", type: "() => void", description: "Called when signing is closed without finishing." },
+  { name: "defaultValue", type: "SignPadValue | null", default: "null", description: "Starts with an existing signature." },
+  { name: "accent", type: "string", default: '"var(--brand)"', description: "Color of the Done button." },
+  { name: "strokeWidth", type: "number", default: "3", description: "Pen width in pixels." },
+  { name: "minInk", type: "number", default: "0.3", description: "How much drawing is needed before you can finish." },
+  { name: "labels", type: "Partial<SignPadLabels>", description: "Replaces the built in button and hint text." },
+  { name: "className", type: "string" },
 ]} />

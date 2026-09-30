@@ -1,12 +1,35 @@
 "use client";
 
 import * as React from "react";
-import { CheckIcon, Copy, RefreshCw, RotateCcw } from "lucide-react";
+import { Copy, RefreshCw, RotateCcw, ThumbsUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { generateCode, type ControlDef } from "@/lib/playground";
-import { LazyMount } from "@/components/lazy-mount";
-import { ControlPanel } from "./control-panel";
+import { ControlPanel } from "@/components/garden/control-panel";
+
+function ToolbarButton({
+  label,
+  onClick,
+  children,
+}: {
+  label: string;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <Button
+      type="button"
+      variant="ghost"
+      size="icon"
+      onClick={onClick}
+      aria-label={label}
+      title={label}
+      className="text-muted-foreground hover:text-foreground size-8 cursor-pointer [&_svg]:size-4"
+    >
+      {children}
+    </Button>
+  );
+}
 
 interface PlaygroundShellProps {
   componentName: string;
@@ -63,68 +86,41 @@ export function PlaygroundShell({
   }
 
   return (
-    <div className="not-prose my-6 flex flex-col overflow-hidden rounded-lg border border-border lg:flex-row">
-      {}
+    <div className="not-prose border-border my-6 flex flex-col overflow-hidden rounded-lg border lg:flex-row">
       <div
         className={cn(
           "relative flex min-h-[22rem] min-w-0 flex-1 items-center justify-center overflow-hidden p-4 sm:p-8 lg:min-h-[28rem]",
           stageClassName,
         )}
       >
-        <LazyMount className="flex w-full max-w-full items-center justify-center text-foreground">
-          <div
-            key={replayKey}
-            className="flex w-full min-w-0 items-center justify-center"
-          >
+        <div className="text-foreground flex w-full max-w-full items-center justify-center">
+          <div key={replayKey} className="flex w-full min-w-0 items-center justify-center">
             {render(values)}
           </div>
-        </LazyMount>
+        </div>
       </div>
 
-      <div className="w-full shrink-0 border-t border-border p-3 lg:w-72 lg:border-t-0 lg:border-l">
-        <div className="overflow-hidden">
-          <div className="flex items-center justify-between gap-2  px-3.5 py-2.5">
-
-            <div className="flex items-center gap-1">
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={reset}
-                 className="h-8 w-full gap-1.5 text-sm font-normal shadow-none"
-              >
-                Reset
-              </Button>
-            </div>
-          </div>
-
-          <ControlPanel controls={controls} values={values} onChange={setValue} />
-
-          <div className=" p-2.5 flex flex-row justify-between">
-           <Button
-                type="button"
-                variant="outline"
-                size="icon"
-                onClick={replay}
-                aria-label="Replay"
-               className="h-8 w-[40%] gap-1.5 text-sm font-normal shadow-none"
-              >
-               Replay
-              </Button>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
+      <div className="border-border w-full shrink-0 border-t lg:w-72 lg:border-t-0 lg:border-l">
+        <div className="border-border flex h-12 items-center justify-between border-b pr-2 pl-4">
+          <span className="text-foreground text-sm font-medium">Customize</span>
+          <div className="flex items-center gap-0.5">
+            <ToolbarButton label="Replay" onClick={replay}>
+              <RefreshCw />
+            </ToolbarButton>
+            <ToolbarButton label="Reset" onClick={reset}>
+              <RotateCcw />
+            </ToolbarButton>
+            <ToolbarButton
+              label={settingsCopied ? "Copied" : "Copy settings"}
               onClick={copySettings}
-              className="h-8 w-[40%] gap-1.5 text-sm font-normal shadow-none"
             >
-              {settingsCopied ? (
-                "copied"
-              ) : (
-                <Copy className="size-3.5" />
-              )}
-            </Button>
+              {settingsCopied ? <ThumbsUp /> : <Copy />}
+            </ToolbarButton>
           </div>
+        </div>
+
+        <div className="p-3">
+          <ControlPanel controls={controls} values={values} onChange={setValue} />
         </div>
       </div>
     </div>

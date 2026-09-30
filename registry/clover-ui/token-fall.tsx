@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import Matter from "matter-js";
 
+import { cn } from "@/lib/utils";
+
 export interface TokenPalette {
   bg: string;
   fg: string;
@@ -203,12 +205,23 @@ export function TokenFall({
       Matter.World.clear(engine.world, false);
       Matter.Engine.clear(engine);
     };
-  }, [count, minSize, maxSize, palettes, gravity, restitution, repelRadius, repelStrength, spawnInterval]);
+  }, [
+    count,
+    minSize,
+    maxSize,
+    palettes,
+    gravity,
+    restitution,
+    repelRadius,
+    repelStrength,
+    spawnInterval,
+  ]);
 
   return (
     <div
       ref={containerRef}
-      className={`pointer-events-none absolute inset-0 overflow-hidden ${className ?? ""}`}
+      aria-hidden="true"
+      className={cn("pointer-events-none absolute inset-0 overflow-hidden", className)}
     >
       {tokens.map((token) => (
         <div
@@ -216,10 +229,17 @@ export function TokenFall({
           ref={(el) => {
             domRefs.current[token.id] = el;
           }}
-          className={`pointer-events-auto absolute left-0 top-0 cursor-grab rounded-full will-change-transform active:cursor-grabbing ${tokenClassName ?? ""}`}
+          className={cn(
+            "pointer-events-auto absolute top-0 left-0 cursor-grab rounded-full will-change-transform active:cursor-grabbing",
+            tokenClassName,
+          )}
           style={{ width: token.size, height: token.size }}
         >
-          {renderToken ? renderToken(token) : <TokenGlyph size={token.size} palette={token.palette} />}
+          {renderToken ? (
+            renderToken(token)
+          ) : (
+            <TokenGlyph size={token.size} palette={token.palette} />
+          )}
         </div>
       ))}
     </div>

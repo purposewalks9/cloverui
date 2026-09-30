@@ -1,13 +1,33 @@
 "use client";
 
 import { RichText } from "@/registry/clover-ui/rich-text";
-import { PlaygroundShell } from "@/components/playground/playground-shell";
+import { PlaygroundShell } from "@/components/garden/playground-shell";
 import type { ControlDef } from "@/lib/playground";
 
 const colors = [
-  "default", "blue", "purple", "pink", "red", "orange", "yellow", "green",
-  "teal", "cyan", "indigo", "violet", "rose", "amber", "lime", "sky",
-  "slate", "gray", "zinc", "neutral", "stone", "fuchsia", "emerald",
+  "default",
+  "blue",
+  "purple",
+  "pink",
+  "red",
+  "orange",
+  "yellow",
+  "green",
+  "teal",
+  "cyan",
+  "indigo",
+  "violet",
+  "rose",
+  "amber",
+  "lime",
+  "sky",
+  "slate",
+  "gray",
+  "zinc",
+  "neutral",
+  "stone",
+  "fuchsia",
+  "emerald",
 ] as const;
 
 const swatches: Record<(typeof colors)[number], string> = {
@@ -63,7 +83,9 @@ export function RichTextPlayground() {
       defaultProps={defaultProps}
       render={(values) => (
         <p className="text-center text-4xl font-semibold tracking-tight">
-          <RichText color={values.color as (typeof colors)[number]}>{values.children as string}</RichText>
+          <RichText color={values.color as (typeof colors)[number]}>
+            {values.children as string}
+          </RichText>
         </p>
       )}
     />

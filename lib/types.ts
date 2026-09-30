@@ -42,4 +42,3 @@ export interface Registry {
   author?: string;
   items: RegistryItem[];
 }
-

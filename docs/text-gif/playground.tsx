@@ -1,7 +1,7 @@
 "use client";
 
 import { TextGif } from "@/registry/clover-ui/text-gif";
-import { PlaygroundShell } from "@/components/playground/playground-shell";
+import { PlaygroundShell } from "@/components/garden/playground-shell";
 import type { ControlDef } from "@/lib/playground";
 import { gifs } from "./demo";
 
@@ -29,16 +29,16 @@ export function TextGifPlayground() {
       controls={controls}
       defaultProps={defaultProps}
       render={(values) => (
-      <div className="flex w-full justify-center">
-        <div className="flex min-h-[260px] items-center justify-center px-6">
-          <TextGif
-            src={values.src as string}
-            fallbackColor={values.fallbackColor as string}
-            className="text-center text-6xl font-black tracking-[-0.05em] sm:text-7xl"
-          >
-            {values.children as string}
-          </TextGif>
-        </div>
+        <div className="flex w-full justify-center">
+          <div className="flex min-h-[260px] items-center justify-center px-6">
+            <TextGif
+              src={values.src as string}
+              fallbackColor={values.fallbackColor as string}
+              className="text-center text-6xl font-black tracking-[-0.05em] sm:text-7xl"
+            >
+              {values.children as string}
+            </TextGif>
+          </div>
         </div>
       )}
     />

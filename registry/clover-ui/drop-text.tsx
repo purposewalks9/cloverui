@@ -1,13 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import {
-  forwardRef,
-  useCallback,
-  useImperativeHandle,
-  useMemo,
-  useState,
-} from "react";
+import { forwardRef, useCallback, useImperativeHandle, useMemo, useState } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -68,7 +62,7 @@ const DropText = forwardRef<DropTextRef, DropTextProps>(
       onStart,
       onComplete,
     },
-    ref
+    ref,
   ) => {
     const [played, setPlayed] = useState(!inView && autoStart);
     const [landed, setLanded] = useState(false);
@@ -113,14 +107,10 @@ const DropText = forwardRef<DropTextRef, DropTextProps>(
             className={cn(
               "inline-block",
               splitBy === "words" ? wordClassName : charClassName,
-              landed && landedClassName
+              landed && landedClassName,
             )}
             initial={{ y: -dropDistance, opacity: 0 }}
-            animate={
-              played
-                ? { y: 0, opacity: 1 }
-                : { y: -dropDistance, opacity: 0 }
-            }
+            animate={played ? { y: 0, opacity: 1 } : { y: -dropDistance, opacity: 0 }}
             transition={{
               type: bounce > 0 ? "spring" : "tween",
               bounce,
@@ -129,7 +119,7 @@ const DropText = forwardRef<DropTextRef, DropTextProps>(
               delay: delay + index * effectiveStagger,
             }}
             onAnimationComplete={() => {
-              if (index === units.length - 1) {
+              if (played && index === units.length - 1) {
                 setLanded(true);
                 onComplete?.();
               }
@@ -141,7 +131,7 @@ const DropText = forwardRef<DropTextRef, DropTextProps>(
         ))}
       </motion.span>
     );
-  }
+  },
 );
 
 DropText.displayName = "DropText";

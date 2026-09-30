@@ -1,16 +1,15 @@
 import Link from "next/link";
 import { Code2, Rocket, Sparkles, Wrench, Heart } from "lucide-react";
 import type { Metadata } from "next";
-import { RootHeader } from "@/components/root-header";
-import { CloverLogo } from "@/components/clover-logo";
+import { RootHeader } from "@/components/stem/root-header";
+import { CloverLogo } from "@/components/seed/clover-logo";
 import { SoftButton } from "@/registry/clover-ui/soft-button";
 import { siteConfig } from "@/lib/config";
 import { constructMetadata } from "@/lib/utils";
 
 export const metadata: Metadata = constructMetadata({
   title: "Sponsor Clover UI",
-  description:
-    "Help keep Clover UI free, open source and actively maintained.",
+  description: "Help keep Clover UI free, open source and actively maintained.",
 });
 
 const perks = [
@@ -42,33 +41,23 @@ export default function SponsorPage() {
       <RootHeader />
       <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col items-center px-5 py-16 sm:px-8 sm:py-24">
         <div className="flex flex-col items-center gap-6 text-center">
-          <div className="flex size-16 items-center justify-center rounded-2xl border border-border bg-card">
+          <div className="border-border bg-card flex size-16 items-center justify-center rounded-2xl border">
             <CloverLogo size={36} />
           </div>
-          <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
-            Sponsor Clover UI
-          </h1>
-          <p className="max-w-xl text-base font-medium text-muted-foreground sm:text-lg">
-            Clover UI is free and open source under the MIT license. If it saves
-            you time, sponsoring keeps it that way and helps it grow.
+          <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">Sponsor Clover UI</h1>
+          <p className="text-muted-foreground max-w-xl text-base font-medium sm:text-lg">
+            Clover UI is free and open source under the MIT license. If it saves you time,
+            sponsoring keeps it that way and helps it grow.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <SoftButton asChild size="lg" color="yellow">
-              <Link
-                href={siteConfig.links.sponsor}
-                target="_blank"
-                rel="noreferrer"
-              >
+              <Link href={siteConfig.links.sponsor} target="_blank" rel="noreferrer">
                 <Heart />
                 Sponsor on GitHub
               </Link>
             </SoftButton>
             <SoftButton asChild size="lg" color="green">
-              <Link
-                href={siteConfig.links.github}
-                target="_blank"
-                rel="noreferrer"
-              >
+              <Link href={siteConfig.links.github} target="_blank" rel="noreferrer">
                 Star the repo
               </Link>
             </SoftButton>
@@ -83,23 +72,21 @@ export default function SponsorPage() {
             {perks.map(({ icon: Icon, title, body }) => (
               <div
                 key={title}
-                className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-6 transition-colors duration-200 hover:bg-secondary"
+                className="border-border bg-card hover:bg-secondary flex flex-col gap-3 rounded-2xl border p-6 transition-colors duration-200"
               >
-                <div className="flex size-10 items-center justify-center rounded-xl border border-border bg-secondary">
+                <div className="border-border bg-secondary flex size-10 items-center justify-center rounded-xl border">
                   <Icon className="size-5" />
                 </div>
                 <h3 className="text-base font-semibold">{title}</h3>
-                <p className="text-sm font-medium leading-relaxed text-muted-foreground">
-                  {body}
-                </p>
+                <p className="text-muted-foreground text-sm leading-relaxed font-medium">{body}</p>
               </div>
             ))}
           </div>
         </section>
 
-        <p className="mt-16 max-w-md text-center text-sm font-medium text-muted-foreground">
-          Can&apos;t sponsor? Starring the repo, sharing Clover UI or opening a
-          pull request helps just as much. See the{" "}
+        <p className="text-muted-foreground mt-16 max-w-md text-center text-sm font-medium">
+          Can&apos;t sponsor? Starring the repo, sharing Clover UI or opening a pull request helps
+          just as much. See the{" "}
           <Link
             href={`${siteConfig.links.github}/blob/main/CONTRIBUTING.md`}
             target="_blank"

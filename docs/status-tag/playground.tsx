@@ -1,7 +1,7 @@
 "use client";
 
 import { StatusTag } from "@/registry/clover-ui/status-tag";
-import { PlaygroundShell } from "@/components/playground/playground-shell";
+import { PlaygroundShell } from "@/components/garden/playground-shell";
 import type { ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [
@@ -31,11 +31,11 @@ export function StatusTagPlayground() {
       controls={controls}
       defaultProps={defaultProps}
       render={(values) => (
-      <div className="flex w-full justify-center">
-        <StatusTag
-          status={values.status as "draft" | "in-progress" | "in-review" | "completed"}
-          label={(values.label as string) || undefined}
-        />
+        <div className="flex w-full justify-center">
+          <StatusTag
+            status={values.status as "draft" | "in-progress" | "in-review" | "completed"}
+            label={(values.label as string) || undefined}
+          />
         </div>
       )}
     />

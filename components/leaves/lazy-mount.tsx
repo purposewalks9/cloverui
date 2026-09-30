@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { Spinner } from "@/registry/clover-ui/spinner";
 
 interface LazyMountProps {
   children: React.ReactNode;
@@ -14,29 +13,26 @@ interface LazyMountProps {
 export function LazyMount({
   children,
   className,
-  rootMargin = "240px",
-  fallback,
+  rootMargin = "600px",
+  fallback = null,
 }: LazyMountProps) {
   const ref = React.useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = React.useState(false);
-  const [height, setHeight] = React.useState<number | undefined>();
+  const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {
     const el = ref.current;
-    if (!el) return;
+    if (!el || mounted) return;
 
     if (typeof IntersectionObserver === "undefined") {
-      setVisible(true);
+      setMounted(true);
       return;
     }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setVisible(true);
-        } else {
-          setHeight(el.offsetHeight || undefined);
-          setVisible(false);
+          setMounted(true);
+          observer.disconnect();
         }
       },
       { rootMargin },
@@ -44,19 +40,11 @@ export function LazyMount({
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, [rootMargin]);
+  }, [mounted, rootMargin]);
 
   return (
-    <div
-      ref={ref}
-      className={cn("min-w-0", className)}
-      style={!visible && height ? { minHeight: height } : undefined}
-    >
-      {visible
-        ? children
-        : (fallback ?? (
-            <Spinner size={24} interactive={false} aria-label="Loading" />
-          ))}
+    <div ref={ref} className={cn("min-w-0", className)}>
+      {mounted ? children : fallback}
     </div>
   );
 }

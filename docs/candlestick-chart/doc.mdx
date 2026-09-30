@@ -1,4 +1,4 @@
-import { CandlestickPlayground } from './playground'
+import { CandlestickPlayground } from "./playground"
 
 <CandlestickPlayground />
 
@@ -22,19 +22,24 @@ const data: Candle[] = [
 <CandleChartStick data={data} name="AAPL" />
 ```
 
+Hover to see a candle's prices. Drag to pan and scroll to zoom.
+
 ## Props
 
 <PropsTable data={[
-  { name: "data", type: "Candle[]", description: "Array of `{ time, open, high, low, close }` objects — one candle per entry." },
-  { name: "name", type: "string", description: "Series name shown next to the indicator dot in the tooltip." },
-  { name: "upColor", type: "string", default: '"#22c55e"', description: "Wick + body color when close >= open." },
-  { name: "downColor", type: "string", default: '"#ef4444"', description: "Wick + body color when close < open." },
-  { name: "width", type: "number", default: "640", description: "Maximum chart width in px. Preserves a 640:220 aspect ratio." },
-  { name: "formatValue", type: "(value: number) => React.ReactNode", description: "Format each O/H/L/C value in the tooltip." },
-  { name: "defaultIndex", type: "number", description: "Index of the active candle on initial render. Defaults to the last candle." },
-  { name: "showXAxis", type: "boolean", default: "true", description: "Show X-axis tick labels at the bottom." },
-  { name: "animated", type: "boolean", default: "true", description: "Smoothly animate the cursor and tooltip when the active candle changes." },
-  { name: "tickCount", type: "number", default: "6", description: "Target number of X-axis ticks." },
-  { name: "bodyWidthRatio", type: "number", default: "0.6", description: "Fraction (0–1) of each column's width used by the candle body." },
+  { name: "data", type: "Candle[]", description: "One entry per candle with time, open, high, low and close." },
+  { name: "name", type: "string", description: "Series name shown in the tooltip." },
+  { name: "upColor", type: "string", default: '"#22c55e"', description: "Color when the close is at or above the open." },
+  { name: "downColor", type: "string", default: '"#ef4444"', description: "Color when the close is below the open." },
+  { name: "width", type: "number", default: "640", description: "Max width in pixels. The height follows." },
+  { name: "formatValue", type: "(value: number) => React.ReactNode", description: "Formats the prices in the tooltip." },
+  { name: "defaultIndex", type: "number", description: "Candle selected at first. Defaults to the last one." },
+  { name: "defaultVisibleCount", type: "number", default: "100", description: "How many candles show at once." },
+  { name: "zoomable", type: "boolean", default: "true", description: "Turns drag to pan and scroll to zoom on or off." },
+  { name: "showXAxis", type: "boolean", default: "true" },
+  { name: "tickCount", type: "number", default: "6", description: "Number of date labels." },
+  { name: "animated", type: "boolean", default: "true" },
+  { name: "bodyWidthRatio", type: "number", default: "0.6", description: "Body width as a share of each column, from 0 to 1." },
+  { name: "maxBodyWidth", type: "number", default: "14" },
   { name: "className", type: "string" },
 ]} />
