@@ -46,7 +46,7 @@ export function AppSidebar({ docSchema }: { docSchema: DocSchema }) {
       <SidebarContent className="px-2">
         {navGroups.map((group) => (
           <SidebarGroup key={group.title} className="">
-            <SidebarGroupLabel className="text-foreground mb-1 h-7 text-[14px] font-medium">
+            <SidebarGroupLabel className="text-foreground mb-1 h-8 text-[15px] font-medium">
               {group.title}
             </SidebarGroupLabel>
             <SidebarGroupContent>
@@ -59,7 +59,7 @@ export function AppSidebar({ docSchema }: { docSchema: DocSchema }) {
                       <SidebarMenuButton
                         asChild
                         isActive={isActive}
-                        className="text-muted-foreground hover:text-foreground data-[active=true]:bg-sidebar-accent data-[active=true]:text-foreground h-8 rounded-md font-normal transition-all duration-200 hover:bg-transparent data-[active=true]:border-[var(--brand)]"
+                        className="text-muted-foreground hover:text-foreground data-[active=true]:bg-sidebar-accent data-[active=true]:text-foreground h-9 rounded-md text-[15px] font-normal transition-all duration-200 hover:bg-transparent data-[active=true]:border-[var(--brand)]"
                       >
                         <Link href={href} onClick={() => isMobile && setOpenMobile(false)}>
                           <span>{item.title}</span>

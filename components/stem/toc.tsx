@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 
 const ACTIVE_OFFSET = 112;
 const ROW_CLASS =
-  "text-muted-foreground hover:text-foreground focus-visible:ring-ring flex items-center gap-2 rounded-sm text-[13px] transition-colors duration-200 focus-visible:ring-2 focus-visible:outline-none [&_svg]:size-3";
+  "text-muted-foreground hover:text-foreground focus-visible:ring-ring flex items-center gap-2 rounded-sm text-sm transition-colors duration-200 focus-visible:ring-2 focus-visible:outline-none [&_svg]:size-3.5";
 
 interface TocItem {
   title?: React.ReactNode;
@@ -179,7 +179,7 @@ export function DocsTableOfContents({
   return (
     <div className="flex h-full flex-col">
       <div className="border-border flex h-12 shrink-0 items-center justify-between px-4">
-        <p className="text-foreground text-sm font-medium">On this page</p>
+        <p className="text-foreground text-[15px] font-medium">On this page</p>
         <div className="text-muted-foreground flex items-center gap-2 text-xs tabular-nums">
           {Math.round(progress * 100)}%
           <ProgressRing progress={progress} />
@@ -206,8 +206,8 @@ export function DocsTableOfContents({
                       }}
                       aria-current={isActive ? "location" : undefined}
                       className={cn(
-                        "focus-visible:ring-ring block rounded-sm py-1 text-sm leading-snug no-underline transition-colors duration-200 focus-visible:ring-2 focus-visible:outline-none motion-reduce:transition-none",
-                        item.depth >= 3 && "pl-3",
+                        "focus-visible:ring-ring block rounded-sm py-1.5 text-[15px] leading-snug no-underline transition-colors duration-200 focus-visible:ring-2 focus-visible:outline-none motion-reduce:transition-none",
+                        item.depth >= 3 && "pl-3 text-sm",
                         isActive
                           ? "text-foreground font-medium"
                           : "text-muted-foreground hover:text-foreground",
