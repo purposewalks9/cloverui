@@ -30,9 +30,7 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "registryDependencies": [],
       "category": "animation"
     },
@@ -77,9 +75,7 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "registryDependencies": [],
       "category": "feedback"
     },
@@ -94,9 +90,7 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "registryDependencies": [],
       "category": "feedback"
     },
@@ -111,12 +105,8 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion"
-      ],
-      "registryDependencies": [
-        "rich-text"
-      ],
+      "dependencies": ["motion"],
+      "registryDependencies": ["rich-text"],
       "category": "text"
     },
     {
@@ -145,9 +135,7 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "@radix-ui/react-slot"
-      ],
+      "dependencies": ["@radix-ui/react-slot"],
       "registryDependencies": [],
       "category": "button"
     },
@@ -162,9 +150,7 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": ["lucide-react"],
       "registryDependencies": [],
       "category": "feedback"
     },
@@ -179,10 +165,7 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "matter-js",
-        "@types/matter-js"
-      ],
+      "dependencies": ["matter-js", "@types/matter-js"],
       "registryDependencies": [],
       "category": "animation"
     },
@@ -212,9 +195,7 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "registryDependencies": [],
       "category": "text"
     },
@@ -244,11 +225,24 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "registryDependencies": [],
       "category": "feedback"
+    },
+    {
+      "name": "sign-pad",
+      "type": "registry:component",
+      "title": "Sign Pad",
+      "description": "A compact signature surface with pressure-aware ink, smooth drawing, undo and clear controls, animated completion, and cropped PNG/SVG exports.",
+      "files": [
+        {
+          "path": "registry/clover-ui/sign-pad.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": ["motion", "lucide-react"],
+      "registryDependencies": [],
+      "category": "input"
     },
     {
       "name": "apple-music-card",
@@ -261,9 +255,7 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": ["lucide-react"],
       "registryDependencies": [],
       "category": "display"
     },

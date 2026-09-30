@@ -25,7 +25,8 @@ export type RichTextColor =
   | "neutral"
   | "stone"
   | "fuchsia"
-  | "emerald";
+  | "emerald"
+  | "accent";
 
 export interface RichTextProps extends React.HTMLAttributes<HTMLSpanElement> {
   children: React.ReactNode;
@@ -35,6 +36,7 @@ export interface RichTextProps extends React.HTMLAttributes<HTMLSpanElement> {
 const colorMap: Record<RichTextColor, string> = {
   default: "from-zinc-900 to-zinc-600 dark:from-zinc-100 dark:to-zinc-400",
   emerald: "from-emerald-500 to-emerald-700 dark:from-emerald-300 dark:to-emerald-500",
+  accent: "from-[#c4cb00] to-[#7f8400] dark:from-[#f4f98a] dark:to-[#e1e900]",
   blue: "from-blue-500 to-blue-700 dark:from-blue-300 dark:to-blue-500",
   purple: "from-purple-500 to-purple-700 dark:from-purple-300 dark:to-purple-500",
   pink: "from-pink-500 to-pink-700 dark:from-pink-300 dark:to-pink-500",
@@ -82,6 +84,7 @@ const textShadowMap: Record<RichTextColor, string> = {
   neutral: "[text-shadow:0_1px_0_var(--color-neutral-800)]",
   stone: "[text-shadow:0_1px_0_var(--color-stone-800)]",
   fuchsia: "[text-shadow:0_1px_0_var(--color-fuchsia-800)]",
+  accent: "[text-shadow:0_1px_0_#5c6000]",
 };
 
 function RichText({ children, color = "default", className, ...props }: RichTextProps) {

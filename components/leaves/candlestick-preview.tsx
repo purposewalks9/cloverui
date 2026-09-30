@@ -9,7 +9,6 @@ export function CandlestickPreview() {
   return (
     <CandleChartStick
       data={candles}
-      name="CLVR"
       zoomable={false}
       showXAxis={false}
       formatValue={(v) => `$${v.toFixed(2)}`}

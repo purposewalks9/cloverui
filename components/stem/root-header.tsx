@@ -1,49 +1,41 @@
 import Link from "next/link";
-import { SiDiscord, SiGithub, SiX } from "@icons-pack/react-simple-icons";
 import { CloverLogo } from "@/components/seed/clover-logo";
+import { GitHubStars } from "@/components/seed/github-stars";
+import { SearchForm } from "@/components/stem/command-menu";
 import { ThemeToggle } from "@/components/stem/theme-toggle";
-import { siteConfig } from "@/lib/config";
+import { getDocSchema } from "@/lib/doc";
+import { getPublishedSlugs } from "@/lib/slugs";
 
-const iconLink =
-  "text-foreground inline-flex items-center gap-2 rounded-md transition-opacity hover:opacity-70 focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none";
+const navLink =
+  "text-muted-foreground hover:text-foreground rounded-sm transition-colors focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none";
 
-export function RootHeader() {
-  const { github, discord, x } = siteConfig.links;
+export async function RootHeader() {
+  const [docSchema, [firstSlug]] = await Promise.all([getDocSchema(), getPublishedSlugs()]);
 
   return (
     <header className="bg-background/80 text-foreground sticky top-0 z-40 w-full backdrop-blur">
-      <div className="mx-auto flex h-20 w-full max-w-7xl items-center justify-between px-5 sm:px-8">
-        <Link href="/" className="flex items-center gap-2">
-          <CloverLogo size={28} />
-          <span className="text-xl font-semibold tracking-tight">Clover</span>
-        </Link>
-
-        <nav aria-label="Social" className="flex items-center gap-5 sm:gap-7">
-          <Link
-            href={github}
-            target="_blank"
-            rel="noreferrer"
-            aria-label="GitHub"
-            className={iconLink}
-          >
-            <SiGithub size={24} className="text-[#181717] dark:text-white" />
+      <div className="flex h-14 w-full items-center justify-between gap-4 px-4 sm:px-6">
+        <div className="flex items-center gap-6">
+          <Link href="/" className="flex items-center gap-1.5">
+            <CloverLogo size={22} />
+            <span className="font-medium tracking-tight">Clover UI</span>
           </Link>
 
-          {discord && (
-            <Link href={discord} target="_blank" rel="noreferrer" className={iconLink}>
-              <SiDiscord size={24} color="#5865F2" />
-              <span className="hidden text-sm underline underline-offset-4 sm:inline">discord</span>
+          <nav aria-label="Main" className="hidden items-center gap-5 text-sm md:flex">
+            <Link href={`/components/${firstSlug ?? ""}`} className={navLink}>
+              Components
             </Link>
-          )}
-
-          {x && (
-            <Link href={x} target="_blank" rel="noreferrer" aria-label="X" className={iconLink}>
-              <SiX size={20} className="text-black dark:text-white" />
+            <Link href="/sponsor" className={navLink}>
+              Sponsor
             </Link>
-          )}
+          </nav>
+        </div>
 
+        <div className="flex items-center gap-2">
+          <SearchForm docSchema={docSchema} />
+          <GitHubStars />
           <ThemeToggle />
-        </nav>
+        </div>
       </div>
     </header>
   );
