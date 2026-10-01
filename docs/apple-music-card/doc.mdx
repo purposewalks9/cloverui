@@ -14,32 +14,22 @@ import { AppleMusicCardPlayground } from "./playground"
 ```tsx
 import { AppleMusicCard } from "@/components/apple-music-card";
 
-<AppleMusicCard
-  urls={[
-    "https://music.apple.com/us/song/blinding-lights/1499378607",
-    "https://music.apple.com/us/song/levitating/1538003843",
-    "https://music.apple.com/us/song/as-it-was/1615585008",
-  ]}
-/>
+<AppleMusicCard url="https://music.apple.com/us/song/blinding-lights/1499378607" />
 ```
 
-Pass song or album links from music.apple.com. The title, artist and artwork load from the public iTunes API, so no API key is needed. With more than one link, numbered tabs appear at the bottom of the card. Click a number, or use the arrow keys, to switch songs in the same card. For a single song, pass `url` instead.
-
-To change songs from outside, for example on a timer, control the card with `index` and `onIndexChange`:
+Pass a song or album link from music.apple.com. The title, artist and artwork load from the public iTunes API, so no API key is needed. Each card shows one song. To show several songs, render one card per link:
 
 ```tsx
-const [index, setIndex] = React.useState(0);
-
-<AppleMusicCard urls={urls} index={index} onIndexChange={setIndex} />
+<div className="flex gap-4">
+  {urls.map((url) => (
+    <AppleMusicCard key={url} url={url} />
+  ))}
+</div>
 ```
 
 ## Props
 
 <PropsTable data={[
-  { name: "urls", type: "string[]", description: "Song or album links. Shows a numbered tab for each one." },
-  { name: "url", type: "string", description: "A single song or album link. Ignored when urls is set." },
-  { name: "defaultIndex", type: "number", default: "0", description: "Song shown first when the card is uncontrolled." },
-  { name: "index", type: "number", description: "Song to show, for a controlled card." },
-  { name: "onIndexChange", type: "(index: number) => void", description: "Called when a tab is picked." },
+  { name: "url", type: "string", description: "A song or album link from music.apple.com." },
   { name: "className", type: "string" },
 ]} />

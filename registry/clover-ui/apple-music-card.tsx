@@ -1,17 +1,11 @@
 "use client";
 
 import * as React from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 import { cn } from "@/lib/utils";
 
-export interface AppleMusicCardProps {
-  url?: string;
-  urls?: string[];
-  index?: number;
-  defaultIndex?: number;
-  onIndexChange?: (index: number) => void;
-  className?: string;
+export interface AppleMusicCardProps extends Omit<React.ComponentProps<"div">, "children"> {
+  url: string;
 }
 
 interface TrackData {
@@ -75,12 +69,13 @@ const AppleMusicGlyph = ({ className }: { className?: string }) => (
   </svg>
 );
 
-const CardFrame = ({ className, children }: { className?: string; children: React.ReactNode }) => (
+const CardFrame = ({ className, children, ...props }: React.ComponentProps<"div">) => (
   <div
     className={cn(
       "relative isolate w-full max-w-[240px] overflow-hidden rounded-[28px]",
       className,
     )}
+    {...props}
   >
     {children}
   </div>
@@ -109,141 +104,41 @@ const AppleMusicCardSkeleton = ({ className }: { className?: string }) => (
   </CardFrame>
 );
 
-const AppleMusicCardError = ({
-  className,
-  children,
-}: {
-  className?: string;
-  children?: React.ReactNode;
-}) => (
+const AppleMusicCardError = ({ className }: { className?: string }) => (
   <CardFrame className={className}>
     <NeutralBackdrop />
     <div className="relative flex aspect-square w-full items-center justify-center p-4">
       <p className="px-4 text-center text-sm text-white/60">Failed to load Apple Music data</p>
     </div>
-    {children && <div className="relative flex justify-end px-4 pb-4">{children}</div>}
   </CardFrame>
 );
 
-function useTracks(urls: string[]) {
-  const key = urls.join("\n");
-  const [tracks, setTracks] = React.useState<(TrackData | null)[] | null>(null);
+function useTrack(url: string) {
+  const [state, setState] = React.useState<{ url: string; data: TrackData | null } | null>(null);
 
   React.useEffect(() => {
     let cancelled = false;
-    setTracks(null);
-    Promise.allSettled(key.split("\n").map((url) => fetchTrackData(url))).then((results) => {
-      if (cancelled) return;
-      setTracks(results.map((result) => (result.status === "fulfilled" ? result.value : null)));
-    });
+    fetchTrackData(url).then(
+      (data) => !cancelled && setState({ url, data }),
+      () => !cancelled && setState({ url, data: null }),
+    );
     return () => {
       cancelled = true;
     };
-  }, [key]);
+  }, [url]);
 
-  return tracks;
+  if (!state || state.url !== url) return undefined;
+  return state.data;
 }
 
-function TrackTabs({
-  tracks,
-  active,
-  panelId,
-  onSelect,
-}: {
-  tracks: (TrackData | null)[];
-  active: number;
-  panelId: string;
-  onSelect: (index: number) => void;
-}) {
-  const refs = React.useRef<(HTMLButtonElement | null)[]>([]);
+function AppleMusicCard({ url, className, ...props }: AppleMusicCardProps) {
+  const data = useTrack(url);
 
-  const onKeyDown = (event: React.KeyboardEvent) => {
-    const last = tracks.length - 1;
-    const next =
-      event.key === "ArrowRight"
-        ? (active + 1) % tracks.length
-        : event.key === "ArrowLeft"
-          ? (active - 1 + tracks.length) % tracks.length
-          : event.key === "Home"
-            ? 0
-            : event.key === "End"
-              ? last
-              : null;
-    if (next === null) return;
-    event.preventDefault();
-    onSelect(next);
-    refs.current[next]?.focus();
-  };
+  if (data === undefined) return <AppleMusicCardSkeleton className={className} />;
+  if (!data) return <AppleMusicCardError className={className} />;
 
   return (
-    <div
-      role="tablist"
-      aria-label="Songs"
-      className="flex items-center gap-1"
-      onKeyDown={onKeyDown}
-    >
-      {tracks.map((track, i) => {
-        const selected = i === active;
-        return (
-          <button
-            key={i}
-            ref={(node) => {
-              refs.current[i] = node;
-            }}
-            type="button"
-            role="tab"
-            aria-selected={selected}
-            aria-controls={panelId}
-            aria-label={track ? `${track.title} by ${track.artist}` : `Song ${i + 1}`}
-            tabIndex={selected ? 0 : -1}
-            onClick={() => onSelect(i)}
-            className={cn(
-              "relative flex size-6 cursor-pointer items-center justify-center rounded-full text-xs font-semibold tabular-nums transition-colors after:absolute after:-inset-2 focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:outline-none",
-              selected
-                ? "bg-white/90 text-black"
-                : "text-white/60 hover:bg-white/15 hover:text-white",
-            )}
-          >
-            {i + 1}
-          </button>
-        );
-      })}
-    </div>
-  );
-}
-
-function AppleMusicCard({
-  url,
-  urls,
-  index,
-  defaultIndex = 0,
-  onIndexChange,
-  className,
-}: AppleMusicCardProps) {
-  const list = urls?.length ? urls : url ? [url] : [];
-  const tracks = useTracks(list);
-  const [ownIndex, setOwnIndex] = React.useState(defaultIndex);
-  const reduceMotion = useReducedMotion();
-  const panelId = React.useId();
-
-  const count = Math.max(list.length, 1);
-  const active = (((index ?? ownIndex) % count) + count) % count;
-  const select = (next: number) => {
-    if (index === undefined) setOwnIndex(next);
-    onIndexChange?.(next);
-  };
-
-  if (!tracks) return <AppleMusicCardSkeleton className={className} />;
-  const data = tracks[active];
-  const tabs = tracks.length > 1 && (
-    <TrackTabs tracks={tracks} active={active} panelId={panelId} onSelect={select} />
-  );
-  if (!data) return <AppleMusicCardError className={className}>{tabs}</AppleMusicCardError>;
-
-  const fade = { duration: reduceMotion ? 0 : 0.45, ease: "easeOut" } as const;
-
-  return (
-    <CardFrame className={className}>
+    <CardFrame className={className} {...props}>
       <style>{`
         @keyframes appleMusicDrift {
           0%   { transform: scale(1.28) translate(0%, 0%) rotate(0deg); }
@@ -258,23 +153,14 @@ function AppleMusicCard({
         }
       `}</style>
 
-      <AnimatePresence initial={false}>
-        <motion.div
-          key={data.image}
-          className="absolute inset-0"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={fade}
-        >
-          <img
-            src={data.image}
-            alt=""
-            className="h-full w-full object-cover blur-3xl brightness-125 saturate-[1.8] motion-safe:animate-[appleMusicDrift_22s_ease-in-out_infinite]"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/25 to-black/75" />
-        </motion.div>
-      </AnimatePresence>
+      <div className="absolute inset-0">
+        <img
+          src={data.image}
+          alt=""
+          className="h-full w-full object-cover blur-3xl brightness-125 saturate-[1.8] motion-safe:animate-[appleMusicDrift_22s_ease-in-out_infinite]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/25 to-black/75" />
+      </div>
 
       <div
         className="pointer-events-none absolute inset-0 opacity-30 mix-blend-overlay motion-safe:animate-[appleMusicSheenDrift_14s_ease-in-out_infinite]"
@@ -286,37 +172,23 @@ function AppleMusicCard({
       />
 
       <div className="relative p-4">
-        <div id={panelId} role={tracks.length > 1 ? "tabpanel" : undefined}>
-          <div className="relative aspect-square w-full overflow-hidden rounded-2xl shadow-[0_10px_24px_-8px_rgba(0,0,0,0.6)]">
-            <AnimatePresence initial={false}>
-              <motion.img
-                key={data.image}
-                src={data.image}
-                alt={`${data.title} artwork`}
-                className="absolute inset-0 h-full w-full object-cover select-none"
-                initial={{ opacity: 0, scale: reduceMotion ? 1 : 1.04 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                transition={fade}
-              />
-            </AnimatePresence>
-          </div>
+        <img
+          src={data.image}
+          alt={`${data.title} artwork`}
+          className="aspect-square w-full rounded-2xl object-cover shadow-[0_10px_24px_-8px_rgba(0,0,0,0.6)] select-none"
+        />
 
-          <div className="mt-4 px-0.5">
-            <h2 className="truncate text-base font-bold tracking-[-.01em] text-white/95">
-              {data.title}
-            </h2>
-            <h3 className="truncate text-sm font-medium text-white/60">{data.artist}</h3>
-          </div>
+        <div className="mt-4 px-0.5">
+          <h2 className="truncate text-base font-bold tracking-[-.01em] text-white/95">
+            {data.title}
+          </h2>
+          <h3 className="truncate text-sm font-medium text-white/60">{data.artist}</h3>
         </div>
 
-        <div className="mt-3 flex items-center justify-between gap-2 px-0.5">
-          <span className="flex items-center gap-0.5 text-white/60">
-            <AppleMusicGlyph className="h-3 w-3" />
-            <span className="text-sm font-medium">Music</span>
-          </span>
-          {tabs}
-        </div>
+        <span className="mt-3 flex items-center gap-0.5 px-0.5 text-white/60">
+          <AppleMusicGlyph className="h-3 w-3" />
+          <span className="text-sm font-medium">Music</span>
+        </span>
       </div>
     </CardFrame>
   );

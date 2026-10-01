@@ -5,7 +5,6 @@ export const gifs = {
   fire: "/fire.gif",
   aurora: "/aurora.gif",
   ocean: "/ocean.gif",
-  prism: "/prism.gif",
 };
 
 export function Demo() {

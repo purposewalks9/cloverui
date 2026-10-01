@@ -277,14 +277,14 @@
       "name": "apple-music-card",
       "type": "registry:component",
       "title": "Apple Music Card",
-      "description": "A track card that loads title, artist and artwork from Apple Music links, with numbered tabs to switch between songs. No API key needed.",
+      "description": "A track card that loads the title, artist and artwork from an Apple Music link. No API key needed.",
       "files": [
         {
           "path": "registry/clover-ui/apple-music-card.tsx",
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion"],
+      "dependencies": [],
       "registryDependencies": [],
       "category": "display"
     },
