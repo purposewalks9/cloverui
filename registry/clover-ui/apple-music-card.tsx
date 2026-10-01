@@ -185,9 +185,9 @@ function AppleMusicCard({ url, className, ...props }: AppleMusicCardProps) {
           <h3 className="truncate text-sm font-medium text-white/60">{data.artist}</h3>
         </div>
 
-        <span className="mt-3 flex items-center gap-0.5 px-0.5 text-white/60">
-          <AppleMusicGlyph className="h-3 w-3" />
-          <span className="text-sm font-medium">Music</span>
+        <span className="mt-3 flex items-center gap-[3px] px-0.5 text-[12px] leading-none font-medium whitespace-nowrap text-white/60">
+          <AppleMusicGlyph className="h-[1em] w-[0.84em] shrink-0 -translate-y-[0.5px] mb-0.6" />
+          <span>Music</span>
         </span>
       </div>
     </CardFrame>
