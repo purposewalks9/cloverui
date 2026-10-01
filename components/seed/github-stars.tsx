@@ -38,8 +38,7 @@ export async function GitHubStars() {
       target="_blank"
       rel="noreferrer"
       aria-label={label}
-      title={label}
-      className="text-foreground hover:text-foreground/70 focus-visible:ring-ring inline-flex h-8 shrink-0 items-center justify-center gap-1.5 rounded-md px-1.5 text-xs font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
+      className="text-foreground hover:text-foreground/70 focus-visible:ring-ring inline-flex h-8 shrink-0 items-center justify-center gap-1.5 rounded-md px-1.5 text-xs font-medium whitespace-nowrap transition-colors focus-visible:ring-2 focus-visible:outline-none"
     >
       <SiGithub size={14} className="shrink-0" />
       <span className="tabular-nums">{stars !== null ? formatStars(stars) : "Star"}</span>

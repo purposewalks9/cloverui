@@ -109,7 +109,6 @@ function ColorSwatchGroup({
             role="radio"
             aria-checked={active}
             aria-label={opt.label}
-            title={opt.label}
             onClick={() => onChange(opt.value)}
             className="group relative flex size-7 shrink-0 items-center justify-center rounded-full outline-none"
           >

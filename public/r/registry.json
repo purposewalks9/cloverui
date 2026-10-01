@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "clover-ui",
-  "homepage": "https://cloverui.dev",
+  "homepage": "https://cloverui.vercel.app",
   "author": "purposewalks9 (https://github.com/purposewalks9)",
   "items": [
     {
@@ -273,6 +273,51 @@
       "dependencies": [],
       "registryDependencies": [],
       "category": "text"
+    },
+    {
+      "name": "cursor-tag",
+      "type": "registry:component",
+      "title": "Cursor Tag",
+      "description": "A sharp multiplayer-style cursor with a name tag that can face left or right and gently drift like a live collaborator.",
+      "files": [
+        {
+          "path": "registry/clover-ui/cursor-tag.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": ["motion", "class-variance-authority"],
+      "registryDependencies": [],
+      "category": "display"
+    },
+    {
+      "name": "clicky",
+      "type": "registry:component",
+      "title": "Clicky",
+      "description": "A 3D hand cursor that glides in along a soft glowing arc, presses any element and keeps hovering to show people where to click.",
+      "files": [
+        {
+          "path": "registry/clover-ui/clicky.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": ["motion"],
+      "registryDependencies": [],
+      "category": "animation"
+    },
+    {
+      "name": "mic",
+      "type": "registry:component",
+      "title": "Mic",
+      "description": "A microphone button that shows a mute slash when off and a live input level from the real microphone when on.",
+      "files": [
+        {
+          "path": "registry/clover-ui/mic.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": ["motion", "class-variance-authority"],
+      "registryDependencies": [],
+      "category": "button"
     }
   ]
 }

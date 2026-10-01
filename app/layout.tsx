@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { constructMetadata } from "@/lib/utils";
-import Script from "next/script";
 import { DynaPuff, Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";

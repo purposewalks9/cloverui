@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "cursor-tag",
+  "title": "Cursor Tag",
+  "description": "A sharp multiplayer-style cursor with a name tag that can face left or right and gently drift like a live collaborator.",
+  "dependencies": [
+    "motion",
+    "class-variance-authority"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/clover-ui/cursor-tag.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { cva, type VariantProps } from \"class-variance-authority\";\nimport { motion, useReducedMotion } from \"motion/react\";\n\nimport { cn } from \"@/lib/utils\";\n\nconst cursorTagVariants = cva(\"relative inline-flex items-start select-none\", {\n  variants: {\n    side: {\n      right: \"flex-row\",\n      left: \"flex-row-reverse\",\n    },\n    size: {\n      sm: \"text-xs [--arrow:14px]\",\n      default: \"text-sm [--arrow:18px]\",\n      lg: \"text-base [--arrow:22px]\",\n    },\n  },\n  defaultVariants: { side: \"right\", size: \"default\" },\n});\n\nconst labelVariants = cva(\n  \"mt-[calc(var(--arrow)*0.85)] rounded-[5px] font-medium whitespace-nowrap shadow-sm\",\n  {\n    variants: {\n      side: {\n        right: \"-ml-[calc(var(--arrow)*0.15)]\",\n        left: \"-mr-[calc(var(--arrow)*0.15)]\",\n      },\n      size: {\n        sm: \"px-1.5 py-0.5\",\n        default: \"px-2 py-0.5\",\n        lg: \"px-2.5 py-1\",\n      },\n    },\n    defaultVariants: { side: \"right\", size: \"default\" },\n  },\n);\n\nexport type CursorTagSide = NonNullable<VariantProps<typeof cursorTagVariants>[\"side\"]>;\nexport type CursorTagSize = NonNullable<VariantProps<typeof cursorTagVariants>[\"size\"]>;\n\nexport interface CursorTagProps\n  extends\n    Omit<React.ComponentProps<\"span\">, \"color\" | \"children\">,\n    VariantProps<typeof cursorTagVariants> {\n  label: string;\n  color?: string;\n  textColor?: string;\n  float?: boolean;\n}\n\nfunction CursorTag({\n  label,\n  color,\n  textColor = \"#ffffff\",\n  side = \"right\",\n  size = \"default\",\n  float = true,\n  className,\n  ...props\n}: CursorTagProps) {\n  const reduceMotion = useReducedMotion();\n  const drift = float && !reduceMotion;\n\n  return (\n    <span className={cn(\"inline-block\", className)} {...props}>\n      <motion.span\n        className={cursorTagVariants({ side, size })}\n        animate={drift ? { x: [0, 3, -2, 0], y: [0, -2, 2, 0] } : undefined}\n        transition={drift ? { duration: 6, repeat: Infinity, ease: \"easeInOut\" } : undefined}\n      >\n        <svg\n          aria-hidden\n          viewBox=\"0 0 24 24\"\n          className={cn(\n            \"size-(--arrow) shrink-0 drop-shadow-sm\",\n            side === \"left\" && \"-scale-x-100\",\n            !color && \"fill-foreground stroke-background\",\n          )}\n          style={color ? { fill: color, stroke: textColor } : undefined}\n        >\n          <path d=\"M3.5 3 20.5 10.2 13 13 10.2 20.5Z\" strokeWidth={1.4} strokeLinejoin=\"miter\" />\n        </svg>\n\n        <span\n          className={cn(labelVariants({ side, size }), !color && \"bg-foreground text-background\")}\n          style={color ? { backgroundColor: color, color: textColor } : undefined}\n        >\n          {label}\n        </span>\n      </motion.span>\n    </span>\n  );\n}\n\nexport { CursorTag, cursorTagVariants };\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

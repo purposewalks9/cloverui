@@ -235,7 +235,6 @@ export function ColorPicker({
             type="button"
             onClick={pickFromScreen}
             aria-label="Pick color from screen"
-            title="Pick color from screen"
             className="text-muted-foreground hover:text-foreground hover:bg-background/60 focus-visible:ring-ring flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md transition-colors focus-visible:ring-2 focus-visible:outline-none"
           >
             <Pipette className="size-3.5" />
@@ -252,7 +251,6 @@ export function ColorPicker({
               type="button"
               onClick={() => onChange(preset)}
               aria-label={preset}
-              title={preset}
               className={cn(
                 "focus-visible:ring-ring aspect-square w-full cursor-pointer rounded-full shadow-[inset_0_0_0_1px_rgba(0,0,0,0.1)] transition-transform duration-150 hover:scale-110 focus-visible:ring-2 focus-visible:outline-none",
                 active && "ring-foreground ring-offset-popover ring-2 ring-offset-2",

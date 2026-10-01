@@ -28,8 +28,6 @@ type BentoItem = {
   className: string;
 };
 
-// Row 1: text components. Row 2: visual ones, ending with the loader.
-// Row 3: the chart across two columns, then two tall cards.
 const ROWS: { grid: string; items: BentoItem[] }[] = [
   {
     grid: "auto-rows-[13rem] lg:grid-cols-4",
@@ -47,7 +45,6 @@ const ROWS: { grid: string; items: BentoItem[] }[] = [
       { slug: "soft-button", title: "Soft Button", Demo: SoftButtonPreview, className: "" },
       { slug: "rich-progress", title: "Rich Progress", Demo: RichProgressPreview, className: "" },
       { slug: "grid-reveal", title: "Grid Reveal", Demo: GridRevealPreview, className: "" },
-      // Five cards leave one alone on the 2-column phone grid, so it takes the full row there.
       {
         slug: "pulse-loader",
         title: "Pulse Loader",
@@ -88,8 +85,6 @@ function BentoCard({ Demo, className, index }: BentoItem & { index: number }) {
   );
 }
 
-// Renders one soft button per theme so the color flips with the theme toggle,
-// without waiting for the client to know which theme is active.
 function ThemeSoftButton({
   href,
   light,
@@ -129,7 +124,9 @@ export default async function Home() {
         <section>
           <div className="flex max-w-2xl flex-col gap-6">
             <h1 className="text-3xl font-medium tracking-tight text-balance sm:text-4xl">
-              <RichText>Crafted components for thoughtful interfaces.</RichText>
+              <RichText className="drop-shadow-[0_1px_0_rgb(255,255,255)] [text-shadow:none] dark:drop-shadow-[0_1px_0_rgb(0,0,0)] dark:[text-shadow:none]">
+                Crafted components for thoughtful interfaces.
+              </RichText>
             </h1>
             <p className="text-muted-foreground max-w-xl text-base leading-relaxed text-pretty sm:text-lg">
               A growing library of shaders, physics and motion primitives for React and Tailwind
@@ -139,7 +136,7 @@ export default async function Home() {
               <ThemeSoftButton href={`/components/${firstSlug ?? ""}`} light="black" dark="white">
                 Components
               </ThemeSoftButton>
-              <span className="bg-secondary text-muted-foreground inline-flex h-9 items-center gap-2 rounded-full px-3.5 text-sm font-medium">
+              <span className="bg-secondary text-muted-foreground inline-flex h-9 items-center gap-2 rounded-full px-3.5 text-sm font-medium whitespace-nowrap">
                 <span aria-hidden className="size-1.5 rounded-full bg-[var(--brand)]" />
                 New component every week
               </span>

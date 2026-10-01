@@ -17,7 +17,6 @@ const TokenFall = dynamic(
   { ssr: false },
 );
 
-// Steps through `length` states every `ms`, so previews keep changing on their own.
 function useCycle(length: number, ms: number) {
   const [index, setIndex] = React.useState(0);
   React.useEffect(() => {
@@ -120,7 +119,6 @@ const PROGRESS = [18, 46, 72, 94, 60, 32];
 
 export function RichProgressPreview() {
   const auto = PROGRESS[useCycle(PROGRESS.length, 1200)];
-  // Once someone drags the bar, stop the auto cycle and keep their value.
   const [manual, setManual] = React.useState<number | null>(null);
   return (
     <div className="w-full max-w-[200px]">

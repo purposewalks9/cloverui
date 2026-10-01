@@ -219,7 +219,6 @@ function IconButton({
     <button
       type="button"
       aria-label={label}
-      title={label}
       className={cn(
         "border-input bg-background text-muted-foreground inline-flex size-8 items-center justify-center rounded-md border outline-none",
         "hover:bg-accent hover:text-foreground active:bg-muted",
@@ -619,7 +618,6 @@ const SignPad = React.forwardRef<HTMLDivElement, SignPadProps>(
           <button
             type="button"
             aria-label={labels.edit}
-            title={labels.edit}
             onClick={() => setPhase("signing")}
             className="border-input bg-background text-foreground hover:bg-accent focus-visible:ring-ring inline-flex h-9 items-center gap-2 rounded-md border px-4 text-sm font-medium outline-none focus-visible:ring-1"
           >

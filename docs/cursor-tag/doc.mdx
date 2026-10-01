@@ -1,0 +1,36 @@
+import { CursorTagPlayground } from "./playground"
+
+<CursorTagPlayground />
+
+## Installation
+
+<InstallationTabs item="cursor-tag">
+```tsx file=../../registry/clover-ui/cursor-tag.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { CursorTag } from "@/components/cursor-tag";
+
+<div className="relative">
+  <h1>Introducing</h1>
+  <CursorTag label="Admin" side="left" className="absolute -top-8 left-4" />
+  <CursorTag label="Content Reviewer" color="#7c3aed" className="absolute -bottom-10 right-0" />
+</div>
+```
+
+Place each tag with `absolute` positioning. Use `side="left"` when the label should sit on the left and the cursor should point to the right.
+
+## Props
+
+<PropsTable data={[
+  { name: "label", type: "string", description: "Name shown in the pill." },
+  { name: "side", type: '"right" | "left"', default: '"right"', description: "Which side the label sits on. The cursor faces the other way." },
+  { name: "size", type: '"sm" | "default" | "lg"', default: '"default"' },
+  { name: "color", type: "string", description: "Pill and arrow color. Defaults to the theme foreground." },
+  { name: "textColor", type: "string", default: '"#ffffff"', description: "Label color when color is set." },
+  { name: "float", type: "boolean", default: "true", description: "Gently drifts the tag. Turns off when reduced motion is on." },
+  { name: "className", type: "string" },
+]} />

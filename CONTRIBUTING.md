@@ -16,8 +16,8 @@ If you plan something big, open an issue first so we can agree on the direction 
 You need Node.js 20+ and [pnpm](https://pnpm.io).
 
 ```bash
-git clone https://github.com/purposewalks9/clover-ui.git
-cd clover-ui
+git clone https://github.com/purposewalks9/cloverui.git
+cd cloverui
 pnpm install
 pnpm dev
 ```

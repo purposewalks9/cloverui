@@ -15,13 +15,16 @@ export async function RootHeader() {
   return (
     <header className="bg-background/80 text-foreground sticky top-0 z-40 w-full backdrop-blur">
       <div className="flex h-14 w-full items-center justify-between gap-4 px-4 sm:px-6">
-        <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center gap-1.5">
+        <div className="flex min-w-0 items-center gap-6">
+          <Link href="/" className="flex shrink-0 items-center gap-1.5">
             <CloverLogo size={22} />
-            <span className="font-medium tracking-tight">Clover UI</span>
+            <span className="font-medium tracking-tight whitespace-nowrap">Clover UI</span>
           </Link>
 
-          <nav aria-label="Main" className="hidden items-center gap-5 text-sm md:flex">
+          <nav
+            aria-label="Main"
+            className="hidden items-center gap-5 text-sm whitespace-nowrap md:flex"
+          >
             <Link href={`/components/${firstSlug ?? ""}`} className={navLink}>
               Components
             </Link>
@@ -31,7 +34,7 @@ export async function RootHeader() {
           </nav>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-2">
           <SearchForm docSchema={docSchema} />
           <GitHubStars />
           <ThemeToggle />
