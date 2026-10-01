@@ -19,20 +19,18 @@ import { Clicky } from "@/components/clicky";
 </Clicky>
 ```
 
-The hand waits until the element scrolls into view, glides in along a soft arc with a glowing trail, presses it and then keeps hovering over it. It is only an effect by default. Pass `autoClick` if the press should also click the element. When reduced motion is on, the hand appears in place without gliding or pressing.
+When the element scrolls into view, the hand pops in on top of it and presses it with a soft glow, then keeps pressing every `interval` seconds. It is only an effect by default. Pass `autoClick` if the press should also click the element. When reduced motion is on, the hand appears without pressing.
 
 ## Props
 
 <PropsTable data={[
   { name: "children", type: "React.ReactNode", description: "The element to point at." },
-  { name: "color", type: '"purple" | "pink" | "blue" | "emerald" | "orange" | "default"', default: '"purple"', description: "Outline, edge and trail color of the hand." },
+  { name: "color", type: '"purple" | "pink" | "blue" | "emerald" | "orange" | "default"', default: '"purple"', description: "Outline, edge and glow color of the hand." },
   { name: "size", type: "number", default: "40", description: "Hand height in pixels." },
-  { name: "from", type: '"right" | "left" | "top" | "bottom"', default: '"right"', description: "Where the hand glides in from." },
   { name: "anchor", type: "{ x: number; y: number }", default: "{ x: 62, y: 58 }", description: "Where the fingertip lands, in percent of the element's box." },
-  { name: "delay", type: "number", default: "0.4", description: "Seconds to wait after the element scrolls into view." },
-  { name: "trail", type: "boolean", default: "true", description: "Soft glow trail that follows the hand in." },
+  { name: "delay", type: "number", default: "0.2", description: "Seconds to wait after the element scrolls into view." },
   { name: "loop", type: "boolean", default: "true", description: "Keep pressing after the first click." },
-  { name: "interval", type: "number", default: "2.8", description: "Seconds between presses when looping." },
+  { name: "interval", type: "number", default: "2.4", description: "Seconds between presses when looping." },
   { name: "autoClick", type: "boolean", default: "false", description: "Also fire a real click on the wrapped element." },
   { name: "className", type: "string" },
 ]} />

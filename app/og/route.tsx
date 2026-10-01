@@ -7,12 +7,10 @@ import { getRegistryItem } from "@/lib/registry";
 const size = { width: 1200, height: 630 };
 
 const colors = {
-  background: "#0a0a0a",
+  background: "#000000",
   foreground: "#fafafa",
   muted: "#a1a1aa",
   subtle: "#71717a",
-  line: "rgba(255, 255, 255, 0.08)",
-  brand: "#e1e900",
 };
 
 const CLOVER_PATH =
@@ -39,13 +37,11 @@ export async function GET(request: NextRequest) {
   const slug = request.nextUrl.searchParams.get("slug");
   const item = slug ? await getRegistryItem(slug) : undefined;
 
-  const eyebrow = item ? "Component" : "Open source";
   const title = item?.title ?? "Crafted components for thoughtful interfaces.";
   const description = clamp(item?.description ?? siteConfig.description, 150);
   const domain = new URL(siteConfig.url).host;
-  const stack = "React · Tailwind CSS · Motion";
 
-  const text = [siteConfig.name, eyebrow, title, description, domain, stack].join("");
+  const text = [siteConfig.name, title, description, domain].join("");
   const fonts = (await Promise.all([loadFont(400, text), loadFont(600, text)])).filter(
     (font) => font !== null,
   );
@@ -53,160 +49,53 @@ export async function GET(request: NextRequest) {
   return new ImageResponse(
     <div
       style={{
-        position: "relative",
         display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
         width: "100%",
         height: "100%",
+        padding: "88px 96px",
         backgroundColor: colors.background,
-        backgroundImage: `radial-gradient(ellipse 60% 70% at 100% 0%, rgba(225, 233, 0, 0.16), transparent 70%), radial-gradient(ellipse 50% 60% at 0% 100%, rgba(255, 255, 255, 0.05), transparent 70%)`,
         color: colors.foreground,
         fontFamily: fonts.length ? "Geist" : undefined,
       }}
     >
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          display: "flex",
-          backgroundImage: `linear-gradient(${colors.line} 1px, transparent 1px), linear-gradient(90deg, ${colors.line} 1px, transparent 1px)`,
-          backgroundSize: "60px 60px",
-          backgroundPosition: "-1px -1px",
-          opacity: 0.45,
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          top: 56,
-          left: 0,
-          right: 0,
-          height: 1,
-          background: colors.line,
-          display: "flex",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          bottom: 56,
-          left: 0,
-          right: 0,
-          height: 1,
-          background: colors.line,
-          display: "flex",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          left: 56,
-          top: 0,
-          bottom: 0,
-          width: 1,
-          background: colors.line,
-          display: "flex",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          right: 56,
-          top: 0,
-          bottom: 0,
-          width: 1,
-          background: colors.line,
-          display: "flex",
-        }}
-      />
+      <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+        <svg width="40" height="40" viewBox="0 0 16 16" fill="none">
+          <path d={CLOVER_PATH} fill={colors.foreground} />
+        </svg>
+        <span style={{ fontSize: 30, fontWeight: 600, letterSpacing: "-0.02em" }}>
+          {siteConfig.name}
+        </span>
+      </div>
 
-      <div
-        style={{
-          position: "absolute",
-          top: 56,
-          left: 56,
-          right: 56,
-          bottom: 56,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          padding: "40px 48px 36px",
-          backgroundColor: "rgba(10, 10, 10, 0.55)",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-            <svg width="44" height="44" viewBox="0 0 16 16" fill="none">
-              <path d={CLOVER_PATH} fill={colors.brand} />
-            </svg>
-            <span style={{ fontSize: 32, fontWeight: 600, letterSpacing: "-0.02em" }}>
-              {siteConfig.name}
-            </span>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-              padding: "8px 18px",
-              borderRadius: 999,
-              border: `1px solid rgba(255, 255, 255, 0.12)`,
-              backgroundColor: "rgba(255, 255, 255, 0.04)",
-              color: colors.muted,
-              fontSize: 20,
-            }}
-          >
-            <div
-              style={{ width: 8, height: 8, borderRadius: 999, backgroundColor: colors.brand }}
-            />
-            {eyebrow}
-          </div>
-        </div>
-
-        <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
-          <div
-            style={{
-              display: "flex",
-              fontSize: item ? 88 : 68,
-              fontWeight: 600,
-              letterSpacing: "-0.045em",
-              lineHeight: 1.02,
-              maxWidth: 900,
-              backgroundImage: `linear-gradient(180deg, ${colors.foreground} 30%, ${colors.muted})`,
-              backgroundClip: "text",
-              color: "transparent",
-            }}
-          >
-            {title}
-          </div>
-          <div
-            style={{
-              display: "flex",
-              fontSize: 28,
-              lineHeight: 1.4,
-              color: colors.muted,
-              maxWidth: 860,
-            }}
-          >
-            {description}
-          </div>
-        </div>
-
+      <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
         <div
           style={{
             display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            fontSize: 20,
-            color: colors.subtle,
+            fontSize: item ? 88 : 68,
+            fontWeight: 600,
+            letterSpacing: "-0.045em",
+            lineHeight: 1.02,
+            maxWidth: 940,
           }}
         >
-          <span>{domain}</span>
-          <span>{stack}</span>
+          {title}
+        </div>
+        <div
+          style={{
+            display: "flex",
+            fontSize: 28,
+            lineHeight: 1.4,
+            color: colors.muted,
+            maxWidth: 880,
+          }}
+        >
+          {description}
         </div>
       </div>
+
+      <div style={{ display: "flex", fontSize: 22, color: colors.subtle }}>{domain}</div>
     </div>,
     {
       ...size,

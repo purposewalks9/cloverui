@@ -99,29 +99,31 @@ export function PlaygroundShell({
         </div>
       </div>
 
-      <div className="border-border w-full shrink-0 border-t lg:w-72 lg:border-t-0 lg:border-l">
-        <div className="border-border flex h-12 items-center justify-between border-b pr-2 pl-4">
-          <span className="text-foreground text-sm font-medium">Customize</span>
-          <div className="flex items-center gap-0.5">
-            <ToolbarButton label="Replay" onClick={replay}>
-              <RefreshCw />
-            </ToolbarButton>
-            <ToolbarButton label="Reset" onClick={reset}>
-              <RotateCcw />
-            </ToolbarButton>
-            <ToolbarButton
-              label={settingsCopied ? "Copied" : "Copy settings"}
-              onClick={copySettings}
-            >
-              {settingsCopied ? <ThumbsUp /> : <Copy />}
-            </ToolbarButton>
+      {controls.length > 0 && (
+        <div className="border-border w-full shrink-0 border-t lg:w-72 lg:border-t-0 lg:border-l">
+          <div className="border-border flex h-12 items-center justify-between border-b pr-2 pl-4">
+            <span className="text-foreground text-sm font-medium">Customize</span>
+            <div className="flex items-center gap-0.5">
+              <ToolbarButton label="Replay" onClick={replay}>
+                <RefreshCw />
+              </ToolbarButton>
+              <ToolbarButton label="Reset" onClick={reset}>
+                <RotateCcw />
+              </ToolbarButton>
+              <ToolbarButton
+                label={settingsCopied ? "Copied" : "Copy settings"}
+                onClick={copySettings}
+              >
+                {settingsCopied ? <ThumbsUp /> : <Copy />}
+              </ToolbarButton>
+            </div>
+          </div>
+
+          <div className="p-3">
+            <ControlPanel controls={controls} values={values} onChange={setValue} />
           </div>
         </div>
-
-        <div className="p-3">
-          <ControlPanel controls={controls} values={values} onChange={setValue} />
-        </div>
-      </div>
+      )}
     </div>
   );
 }

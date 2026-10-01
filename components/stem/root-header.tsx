@@ -25,6 +25,9 @@ export async function RootHeader() {
             aria-label="Main"
             className="hidden items-center gap-5 text-sm whitespace-nowrap md:flex"
           >
+            <Link href="/docs/introduction" className={navLink}>
+              Docs
+            </Link>
             <Link href={`/components/${firstSlug ?? ""}`} className={navLink}>
               Components
             </Link>

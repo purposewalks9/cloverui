@@ -73,13 +73,23 @@ export function GaugePreview() {
   return <GaugeText key={gauge.label} {...gauge} className="text-3xl font-semibold" />;
 }
 
+const SONGS = [
+  "https://music.apple.com/us/song/blinding-lights/1499378607",
+  "https://music.apple.com/us/song/levitating/1538003843",
+  "https://music.apple.com/us/song/as-it-was/1615585008",
+];
+
 export function AppleMusicPreview() {
+  const [song, setSong] = React.useState(0);
+
+  React.useEffect(() => {
+    const id = setTimeout(() => setSong((i) => (i + 1) % SONGS.length), 3500);
+    return () => clearTimeout(id);
+  }, [song]);
+
   return (
     <div className="flex size-full items-center justify-center">
-      <AppleMusicCard
-        url="https://music.apple.com/us/song/blinding-lights/1499378108"
-        className="mx-auto"
-      />
+      <AppleMusicCard urls={SONGS} index={song} onIndexChange={setSong} className="mx-auto" />
     </div>
   );
 }
