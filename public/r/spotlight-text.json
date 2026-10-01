@@ -7,7 +7,7 @@
     "motion"
   ],
   "registryDependencies": [
-    "rich-text"
+    "https://cloverui.vercel.app/r/rich-text.json"
   ],
   "files": [
     {

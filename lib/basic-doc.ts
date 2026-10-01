@@ -4,12 +4,12 @@ export const guides = [
   {
     id: "introduction",
     title: "Introduction",
-    description: "What Clover UI is, how it works and who it thanks.",
+    description: "What Clover UI is, and the work it builds on.",
   },
   {
     id: "installation",
     title: "Installation",
-    description: "Add the Clover UI registry and install your first component.",
+    description: "Add the Clover UI registry and install one component or all of them.",
   },
   {
     id: "mcp",
