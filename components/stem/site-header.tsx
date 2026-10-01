@@ -21,14 +21,11 @@ export function SiteHeader({ docSchema }: { docSchema: DocSchema }) {
   let title = "Components";
   let description: string | undefined;
 
-  if (pathname.startsWith("/components/")) {
-    const slug = pathname.split("/").pop() ?? "";
-    const item = docSchema.flatMap((group) => group.items).find((doc) => doc.id === slug);
+  if (pathname.startsWith("/components/") || pathname.startsWith("/docs/")) {
+    const item = docSchema.flatMap((group) => group.items).find((doc) => doc.href === pathname);
 
-    title = item?.title ?? titleFromSlug(slug);
+    title = item?.title ?? titleFromSlug(pathname.split("/").pop() ?? "");
     description = item?.description;
-  } else if (pathname.startsWith("/mcp")) {
-    title = "MCP";
   }
 
   return (

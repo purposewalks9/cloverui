@@ -27,6 +27,7 @@ const CATEGORY_ORDER = [
 function toDocItem(item: RegistryItem): DocItem {
   return {
     id: item.name,
+    href: `/components/${item.name}`,
     title: item.title,
     description: item.description,
     meta: item.meta,

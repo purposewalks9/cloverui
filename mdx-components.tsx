@@ -2,6 +2,7 @@ import type { MDXComponents } from "mdx/types";
 import { DemoCanvas, DemoCode, DemoPreview } from "@/components/leaves/demo-canvas";
 import { CopyCodeButton } from "@/components/leaves/copy-code-button";
 import { InstallationTabs } from "@/components/leaves/installation-tabs";
+import { CodeBlockCommand } from "@/components/leaves/code-block-command";
 import { PropsTable } from "@/components/leaves/props-table";
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
@@ -11,6 +12,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     DemoPreview,
     DemoCode,
     InstallationTabs,
+    CodeBlockCommand,
     PropsTable,
     h2: ({ children, ...props }) => {
       return (

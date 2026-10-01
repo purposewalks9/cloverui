@@ -2,6 +2,7 @@ export interface DocItem {
   id: string;
   title: string;
   description: string;
+  href: string;
   meta?: {
     docs?: Array<{
       title: string;

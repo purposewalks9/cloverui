@@ -1,0 +1,43 @@
+Clover UI components install with the shadcn CLI. You need a React project with Tailwind CSS v4.
+
+## Set up shadcn
+
+Skip this if your project already has a `components.json`.
+
+```bash
+npx shadcn@latest init
+```
+
+## Add the registry
+
+Add Clover UI to the `registries` field in `components.json`:
+
+```json
+{
+  "registries": {
+    "@clover-ui": "https://cloverui.vercel.app/r/{name}.json"
+  }
+}
+```
+
+## Add a component
+
+Install any component by name:
+
+<CodeBlockCommand item="clicky" />
+
+The CLI copies the component into your project and installs what it needs, such as `motion`. Then import it like any other file:
+
+```tsx
+import { Clicky } from "@/components/clicky";
+```
+
+## Without the registry
+
+Every component is also published as a plain URL, so you can install one without touching `components.json`:
+
+```bash
+npx shadcn@latest add https://cloverui.vercel.app/r/clicky.json
+```
+
+Or open any component page, pick the **Manual** tab under Installation, and copy the source yourself.

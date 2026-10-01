@@ -72,7 +72,7 @@ export function SearchForm({ docSchema }: { docSchema: DocSchema }) {
         items: group.items.map((item) => ({
           value: item.id,
           label: item.title,
-          url: isComponentGroup ? `/components/${item.id}` : `/docs/${item.id}`,
+          url: item.href,
           isComponent: isComponentGroup,
         })),
       };

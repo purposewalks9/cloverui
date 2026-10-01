@@ -22,7 +22,7 @@ export function AppSidebar({ docSchema }: { docSchema: DocSchema }) {
   const pathname = usePathname();
   const { isMobile, setOpenMobile } = useSidebar();
 
-  const navGroups = docSchema.filter((group) => group.title !== "Getting Started");
+  const navGroups = docSchema.filter((group) => group.items.length > 0);
 
   return (
     <Sidebar collapsible="offcanvas" className="border-sidebar-border bg-sidebar border-r">
@@ -49,7 +49,7 @@ export function AppSidebar({ docSchema }: { docSchema: DocSchema }) {
             <SidebarGroupContent>
               <SidebarMenu className="gap-0">
                 {group.items.map((item) => {
-                  const href = `/components/${item.id}`;
+                  const href = item.href;
                   const isActive = pathname === href;
                   return (
                     <SidebarMenuItem key={item.id}>

@@ -248,14 +248,14 @@
       "name": "apple-music-card",
       "type": "registry:component",
       "title": "Apple Music Card",
-      "description": "A track card that resolves title, artist, artwork, and a preview clip from a single Apple Music link, with no API key or server route required.",
+      "description": "A track card that loads title, artist and artwork from Apple Music links, with numbered tabs to switch between songs. No API key needed.",
       "files": [
         {
           "path": "registry/clover-ui/apple-music-card.tsx",
           "type": "registry:component"
         }
       ],
-      "dependencies": ["lucide-react"],
+      "dependencies": ["motion"],
       "registryDependencies": [],
       "category": "display"
     },
@@ -293,7 +293,7 @@
       "name": "clicky",
       "type": "registry:component",
       "title": "Clicky",
-      "description": "A 3D hand cursor that glides in along a soft glowing arc, presses any element and keeps hovering to show people where to click.",
+      "description": "A 3D hand cursor that pops in on any element and presses it with a soft glow to show people where to click.",
       "files": [
         {
           "path": "registry/clover-ui/clicky.tsx",

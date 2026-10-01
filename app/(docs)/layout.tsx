@@ -3,7 +3,7 @@ import { SiteHeader } from "@/components/stem/site-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { getDocSchema } from "@/lib/doc";
 
-export default async function ComponentsLayout({
+export default async function DocsLayout({
   children,
   toc,
 }: Readonly<{
@@ -16,7 +16,7 @@ export default async function ComponentsLayout({
     <div className="bg-sidebar min-h-screen">
       <SidebarProvider>
         <AppSidebar docSchema={docSchema} />
-        <SidebarInset className="bg-sidebar">
+        <SidebarInset className="bg-sidebar min-w-0">
           <SiteHeader docSchema={docSchema} />
           {children}
         </SidebarInset>

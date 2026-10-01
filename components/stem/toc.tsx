@@ -125,12 +125,14 @@ export function DocsTableOfContents({
   title,
   content,
   url,
+  editPath = `docs/${docId}/doc.mdx`,
 }: {
   toc: TocItem[];
   docId: string;
   title: string;
   content: string;
   url: string;
+  editPath?: string;
 }) {
   const itemIds = React.useMemo(() => toc.map((item) => item.url.replace("#", "")), [toc]);
   const { activeId, progress } = useScrollState(itemIds);
@@ -245,7 +247,7 @@ export function DocsTableOfContents({
           ))}
           <ActionButton
             label="Edit this page"
-            href={`${siteConfig.links.github}/edit/main/docs/${docId}/doc.mdx`}
+            href={`${siteConfig.links.github}/edit/main/${editPath}`}
             onClick={() => trackEvent("click_edit_page", { doc: docId })}
           >
             <SquarePen />
