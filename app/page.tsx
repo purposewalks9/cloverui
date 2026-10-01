@@ -7,14 +7,18 @@ import { RichText } from "@/registry/clover-ui/rich-text";
 import { SoftButton, type SoftColor } from "@/registry/clover-ui/soft-button";
 import {
   AppleMusicPreview,
+  ClickyPreview,
+  CursorTagPreview,
   DropTextPreview,
   GaugePreview,
   GrainCubePreview,
   GridRevealPreview,
+  MicPreview,
   NucleusPreview,
   RichProgressPreview,
   SoftButtonPreview,
   SpotlightPreview,
+  TextGifPreview,
   TokenFallPreview,
 } from "@/components/leaves/bento-previews";
 import { BentoActiveCard, BentoActiveProvider } from "@/components/leaves/bento-active";
@@ -36,6 +40,10 @@ const ROWS: { grid: string; items: BentoItem[] }[] = [
       { slug: "gauge-text", title: "Gauge Text", Demo: GaugePreview, className: "" },
       { slug: "drop-text", title: "Drop Text", Demo: DropTextPreview, className: "" },
       { slug: "spotlight-text", title: "Spotlight Text", Demo: SpotlightPreview, className: "" },
+      { slug: "cursor-tag", title: "Cursor Tag", Demo: CursorTagPreview, className: "" },
+      { slug: "mic", title: "Mic", Demo: MicPreview, className: "" },
+      { slug: "clicky", title: "Clicky", Demo: ClickyPreview, className: "" },
+      { slug: "text-gif", title: "Text Gif", Demo: TextGifPreview, className: "" },
     ],
   },
   {
@@ -118,8 +126,6 @@ export default async function Home() {
 
   return (
     <div className="relative flex min-h-dvh flex-col">
-      <RootHeader />
-
       <main className="w-full flex-1 px-5 pt-12 pb-24 sm:px-8 sm:pt-16">
         <section>
           <div className="flex max-w-2xl flex-col gap-6">

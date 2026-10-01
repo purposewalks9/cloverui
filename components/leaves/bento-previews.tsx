@@ -11,6 +11,11 @@ import { SoftButton, type SoftColor } from "@/registry/clover-ui/soft-button";
 import { DropText } from "@/registry/clover-ui/drop-text";
 import { AppleMusicCard } from "@/registry/clover-ui/apple-music-card";
 import { SpotlightText } from "@/registry/clover-ui/spotlight-text";
+import { CursorTag } from "@/registry/clover-ui/cursor-tag";
+import { Mic } from "@/registry/clover-ui/mic";
+import { Clicky } from "@/registry/clover-ui/clicky";
+import { TextGif } from "@/registry/clover-ui/text-gif";
+import { cn } from "@/lib/utils";
 
 const TokenFall = dynamic(
   () => import("@/registry/clover-ui/token-fall").then((m) => m.TokenFall),
@@ -57,7 +62,7 @@ export function GridRevealPreview() {
       loopDelay={0.5}
       blockDuration={0.28}
       stagger={0.03}
-      className="aspect-square w-full max-w-[170px] rounded-xl"
+      className="aspect-square w-full max-w-[170px]"
     />
   );
 }
@@ -77,32 +82,63 @@ const SONGS = [
   "https://music.apple.com/us/song/blinding-lights/1499378607",
   "https://music.apple.com/us/song/levitating/1538003843",
   "https://music.apple.com/us/song/as-it-was/1615585008",
+  "https://music.apple.com/us/song/flowers/1674691586",
+  "https://music.apple.com/us/song/espresso/1744253558",
 ];
 
 export function AppleMusicPreview() {
-  const [song, setSong] = React.useState(0);
-
-  React.useEffect(() => {
-    const id = setTimeout(() => setSong((i) => (i + 1) % SONGS.length), 3500);
-    return () => clearTimeout(id);
-  }, [song]);
-
+  const active = useCycle(SONGS.length, 4000);
   return (
-    <div className="flex size-full items-center justify-center">
-      <AppleMusicCard urls={SONGS} index={song} onIndexChange={setSong} className="mx-auto" />
+    <div className="grid w-full max-w-[176px] *:col-start-1 *:row-start-1">
+      {SONGS.map((url, i) => (
+        <AppleMusicCard
+          key={url}
+          url={url}
+          aria-hidden={i !== active}
+          className={cn(
+            "rounded-3xl transition-opacity duration-700",
+            i === active ? "opacity-100" : "pointer-events-none opacity-0",
+          )}
+        />
+      ))}
     </div>
   );
 }
 
-const WORDS = ["generates", "gathers", "glows"];
+const NUCLEUS = [
+  { word: "generates", color: "#8b5cf6" },
+  { word: "gathers", color: "#0ea5e9" },
+  { word: "glows", color: "#f43f5e" },
+  { word: "glitters", color: "#f59e0b" },
+];
 
 export function NucleusPreview() {
-  const word = WORDS[useCycle(WORDS.length, 4000)];
+  const { word, color } = NUCLEUS[useCycle(NUCLEUS.length, 4000)];
   return (
-    <NucleusText key={word} className="text-center text-4xl font-semibold tracking-[-0.055em]">
+    <NucleusText
+      key={word}
+      color={color}
+      className="text-center text-4xl font-semibold tracking-[-0.055em]"
+    >
       {word}
     </NucleusText>
   );
+}
+
+export function CursorTagPreview() {
+  return <CursorTag label="Designer" color="#7c3aed" size="lg" />;
+}
+
+export function ClickyPreview() {
+  return (
+    <Clicky>
+      <span className="text-3xl font-semibold tracking-tight">Click here</span>
+    </Clicky>
+  );
+}
+
+export function MicPreview() {
+  return <Mic size="lg" />;
 }
 
 export function DropTextPreview() {
@@ -148,7 +184,15 @@ export function SpotlightPreview() {
 export function TokenFallPreview() {
   return (
     <div className="relative size-full">
-      <TokenFall count={24} minSize={14} maxSize={24} />
+      <TokenFall count={80} minSize={10} maxSize={18} spawnInterval={60} />
     </div>
+  );
+}
+
+export function TextGifPreview() {
+  return (
+    <TextGif src="/fire.gif" className="text-center text-5xl font-black tracking-[-0.05em]">
+      CLOVER
+    </TextGif>
   );
 }

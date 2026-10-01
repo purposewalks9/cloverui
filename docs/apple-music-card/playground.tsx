@@ -15,7 +15,13 @@ export function AppleMusicCardPlayground() {
       componentName="AppleMusicCard"
       controls={[]}
       defaultProps={{}}
-      render={() => <AppleMusicCard urls={songs} />}
+      render={() => (
+        <div className="flex flex-wrap items-start justify-center gap-4">
+          {songs.map((url) => (
+            <AppleMusicCard key={url} url={url} className="w-[200px]" />
+          ))}
+        </div>
+      )}
     />
   );
 }
