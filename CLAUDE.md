@@ -31,6 +31,8 @@ Stack: Next.js 16 (webpack), React 19, Tailwind CSS v4, `motion`, shadcn, pnpm.
 3. Run `pnpm registry:build`, then lint and type-check.
 4. Follow the `component-quality` skill checklist (`.claude/skills/component-quality`).
 
+`registry.json` also has an `all` item that installs every component through `registryDependencies`. Add each new component's URL to it, and remove it there when a component is deleted.
+
 When renaming or deleting a component, update every one of these: the component file, `docs/<slug>/`, `public/r/<slug>.json`, the `registry.json` entry, any assets it used and the home page cards.
 
 ## Code style

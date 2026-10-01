@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "all",
+  "title": "All components",
+  "description": "Every Clover UI component in one install.",
+  "registryDependencies": [
+    "https://cloverui.vercel.app/r/grain-cube.json",
+    "https://cloverui.vercel.app/r/grid-reveal.json",
+    "https://cloverui.vercel.app/r/thermal-flow.json",
+    "https://cloverui.vercel.app/r/gauge-text.json",
+    "https://cloverui.vercel.app/r/spinner.json",
+    "https://cloverui.vercel.app/r/pulse-loader.json",
+    "https://cloverui.vercel.app/r/spotlight-text.json",
+    "https://cloverui.vercel.app/r/rich-text.json",
+    "https://cloverui.vercel.app/r/soft-button.json",
+    "https://cloverui.vercel.app/r/status-tag.json",
+    "https://cloverui.vercel.app/r/token-fall.json",
+    "https://cloverui.vercel.app/r/candlestick-chart.json",
+    "https://cloverui.vercel.app/r/drop-text.json",
+    "https://cloverui.vercel.app/r/text-gif.json",
+    "https://cloverui.vercel.app/r/rich-progress.json",
+    "https://cloverui.vercel.app/r/sign-pad.json",
+    "https://cloverui.vercel.app/r/apple-music-card.json",
+    "https://cloverui.vercel.app/r/nucleus-text.json",
+    "https://cloverui.vercel.app/r/cursor-tag.json",
+    "https://cloverui.vercel.app/r/clicky.json",
+    "https://cloverui.vercel.app/r/mic.json"
+  ],
+  "type": "registry:item"
+}
