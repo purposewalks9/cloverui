@@ -36,18 +36,18 @@ export function SiteHeader({ docSchema }: { docSchema: DocSchema }) {
       <div className="flex min-w-0 items-center gap-2">
         <SidebarTrigger className="-ml-1" />
         <Separator orientation="vertical" className="h-4" />
-        <h1 className="shrink-0 text-[16px] font-semibold">{title}</h1>
+        <h1 className="min-w-0 truncate text-[16px] font-semibold">{title}</h1>
         {description && (
           <>
-            <Separator orientation="vertical" className="h-4" />
-            <p className="text-muted-foreground min-w-0 truncate text-[14px] font-medium">
+            <Separator orientation="vertical" className="hidden h-4 sm:block" />
+            <p className="text-muted-foreground hidden min-w-0 flex-[1_1_0] truncate text-[14px] font-medium sm:block">
               {description}
             </p>
           </>
         )}
       </div>
 
-      <div className="flex items-center gap-1.5">
+      <div className="flex shrink-0 items-center gap-1.5">
         <SearchForm docSchema={docSchema} />
 
         <ThemeToggle />

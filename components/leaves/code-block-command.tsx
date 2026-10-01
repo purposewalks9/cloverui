@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Copy, Terminal, ThumbsUp } from "lucide-react";
+import { Copy, ThumbsUp } from "lucide-react";
 import { SiBun, SiNpm, SiPnpm, SiYarn } from "@icons-pack/react-simple-icons";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";

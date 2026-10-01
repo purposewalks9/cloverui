@@ -96,7 +96,6 @@ export function DemoPreview({
           <button
             onClick={handleRefresh}
             className="text-muted-foreground hover:bg-muted hover:text-foreground flex h-8 w-8 cursor-pointer items-center justify-center rounded-md transition-colors"
-            title="Refresh component"
             aria-label="Refresh component"
           >
             <RefreshAnticlockwise

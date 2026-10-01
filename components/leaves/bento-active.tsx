@@ -9,8 +9,6 @@ function pickRandom(pool: number[]) {
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
-// Keeps `count` of `total` cards highlighted and swaps `step` of them every
-// `interval` ms, so the highlight wanders around the grid instead of jumping.
 export function BentoActiveProvider({
   total,
   count = 5,
@@ -24,7 +22,6 @@ export function BentoActiveProvider({
   interval?: number;
   children: React.ReactNode;
 }) {
-  // A fixed first set keeps the server and client render identical.
   const [active, setActive] = React.useState(() =>
     Array.from({ length: Math.min(count, total) }, (_, i) => (i * 5) % total),
   );

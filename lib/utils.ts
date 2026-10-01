@@ -12,22 +12,23 @@ export function absoluteUrl(path: string) {
   return `${base.replace(/\/$/, "")}${path.startsWith("/") ? path : `/${path}`}`;
 }
 
-export function buildOgUrl(params?: { title?: string; description?: string }) {
+export function buildOgUrl(slug?: string) {
   const url = new URL(absoluteUrl("/og"));
-  if (params?.title) url.searchParams.set("title", params.title);
-  if (params?.description) url.searchParams.set("description", params.description);
+  if (slug) url.searchParams.set("slug", slug);
   return url.toString();
 }
 
 export function constructMetadata({
   title = siteConfig.name,
   description = siteConfig.description,
-  image = absoluteUrl("/og"),
+  image = buildOgUrl(),
+  path = "/",
   ...props
 }: {
   title?: string;
   description?: string;
   image?: string;
+  path?: string;
 } & Partial<Metadata> = {}): Metadata {
   return {
     title,
@@ -37,13 +38,13 @@ export function constructMetadata({
       title,
       description,
       type: "website",
-      url: siteConfig.url,
+      url: absoluteUrl(path),
       siteName: siteConfig.name,
       images: [
         {
           url: image,
           width: 1200,
-          height: 628,
+          height: 630,
           alt: title,
         },
       ],
@@ -53,7 +54,8 @@ export function constructMetadata({
       title,
       description,
       images: [image],
-      creator: undefined,
+      creator: siteConfig.links.xHandle,
+      site: siteConfig.links.xHandle,
     },
     metadataBase: new URL(siteConfig.url),
     icons: "/icon.svg",

@@ -30,11 +30,7 @@ export function CopyCodeButton() {
         }, 1500);
       }}
     >
-      {isCopied ? (
-        <ThumbsUp className="size-3.5" />
-      ) : (
-        <Copy className="size-3.5" />
-      )}
+      {isCopied ? <ThumbsUp className="size-3.5" /> : <Copy className="size-3.5" />}
     </Button>
   );
 }

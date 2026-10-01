@@ -3,14 +3,11 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Github, Heart } from "lucide-react";
-import { siteConfig } from "@/lib/config";
 import { CloverLogo } from "@/components/seed/clover-logo";
 import type { DocSchema } from "@/lib/types";
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,

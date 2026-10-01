@@ -23,7 +23,6 @@ function ToolbarButton({
       size="icon"
       onClick={onClick}
       aria-label={label}
-      title={label}
       className="text-muted-foreground hover:text-foreground size-8 cursor-pointer [&_svg]:size-4"
     >
       {children}

@@ -1,14 +1,13 @@
 "use client";
 
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { CornerDownLeft, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import {
   Command,
   CommandCollection,
   CommandDialog,
   CommandDialogPopup,
   CommandEmpty,
-  CommandFooter,
   CommandGroup,
   CommandGroupLabel,
   CommandInput,
@@ -148,11 +147,11 @@ export function SearchForm({ docSchema }: { docSchema: DocSchema }) {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="text-muted-foreground hover:bg-sidebar-accent hover:text-foreground focus-visible:ring-ring bg-sidebar-accent/60 hidden h-8 cursor-pointer items-center gap-2 rounded-full pr-1.5 pl-3 text-sm transition-colors duration-200 focus-visible:ring-2 focus-visible:outline-none sm:inline-flex"
+        className="text-muted-foreground hover:bg-sidebar-accent hover:text-foreground focus-visible:ring-ring bg-sidebar-accent/60 hidden h-8 shrink-0 cursor-pointer items-center gap-2 rounded-full pr-1.5 pl-3 text-sm whitespace-nowrap transition-colors duration-200 focus-visible:ring-2 focus-visible:outline-none sm:inline-flex"
       >
-        <Search className="size-3.5" />
-        <span className="pr-6 lg:pr-10">Search</span>
-        <kbd className="bg-sidebar-accent text-muted-foreground rounded-full px-2 py-0.5 font-sans text-[11px] font-medium">
+        <Search className="size-3.5 shrink-0" />
+        <span className="pr-2 lg:pr-10">Search</span>
+        <kbd className="bg-sidebar-accent text-muted-foreground hidden rounded-full px-2 py-0.5 font-sans text-[11px] font-medium whitespace-nowrap md:inline">
           {isMac ? "⌘K" : "Ctrl K"}
         </kbd>
       </button>

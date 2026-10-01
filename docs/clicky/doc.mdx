@@ -1,0 +1,38 @@
+import { ClickyPlayground } from "./playground"
+
+<ClickyPlayground />
+
+## Installation
+
+<InstallationTabs item="clicky">
+```tsx file=../../registry/clover-ui/clicky.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { Clicky } from "@/components/clicky";
+
+<Clicky>
+  <button>Get started</button>
+</Clicky>
+```
+
+The hand waits until the element scrolls into view, glides in along a soft arc with a glowing trail, presses it and then keeps hovering over it. It is only an effect by default. Pass `autoClick` if the press should also click the element. When reduced motion is on, the hand appears in place without gliding or pressing.
+
+## Props
+
+<PropsTable data={[
+  { name: "children", type: "React.ReactNode", description: "The element to point at." },
+  { name: "color", type: '"purple" | "pink" | "blue" | "emerald" | "orange" | "default"', default: '"purple"', description: "Outline, edge and trail color of the hand." },
+  { name: "size", type: "number", default: "40", description: "Hand height in pixels." },
+  { name: "from", type: '"right" | "left" | "top" | "bottom"', default: '"right"', description: "Where the hand glides in from." },
+  { name: "anchor", type: "{ x: number; y: number }", default: "{ x: 62, y: 58 }", description: "Where the fingertip lands, in percent of the element's box." },
+  { name: "delay", type: "number", default: "0.4", description: "Seconds to wait after the element scrolls into view." },
+  { name: "trail", type: "boolean", default: "true", description: "Soft glow trail that follows the hand in." },
+  { name: "loop", type: "boolean", default: "true", description: "Keep pressing after the first click." },
+  { name: "interval", type: "number", default: "2.8", description: "Seconds between presses when looping." },
+  { name: "autoClick", type: "boolean", default: "false", description: "Also fire a real click on the wrapped element." },
+  { name: "className", type: "string" },
+]} />
