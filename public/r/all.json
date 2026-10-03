@@ -10,7 +10,6 @@
     "https://cloverui.vercel.app/r/gauge-text.json",
     "https://cloverui.vercel.app/r/spinner.json",
     "https://cloverui.vercel.app/r/pulse-loader.json",
-    "https://cloverui.vercel.app/r/spotlight-text.json",
     "https://cloverui.vercel.app/r/rich-text.json",
     "https://cloverui.vercel.app/r/soft-button.json",
     "https://cloverui.vercel.app/r/status-tag.json",
@@ -24,7 +23,8 @@
     "https://cloverui.vercel.app/r/nucleus-text.json",
     "https://cloverui.vercel.app/r/cursor-tag.json",
     "https://cloverui.vercel.app/r/clicky.json",
-    "https://cloverui.vercel.app/r/mic.json"
+    "https://cloverui.vercel.app/r/mic.json",
+    "https://cloverui.vercel.app/r/signal-globe.json"
   ],
   "type": "registry:item"
 }

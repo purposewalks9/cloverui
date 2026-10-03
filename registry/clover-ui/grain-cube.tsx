@@ -233,7 +233,7 @@ function GrainCube({
   size = 0.7,
   scale = 1,
   warp = 1,
-  grain = 0.6,
+  grain = 0.05,
   animate = true,
   speed = 1,
   interactive = true,

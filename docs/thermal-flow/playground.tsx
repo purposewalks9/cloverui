@@ -1,9 +1,12 @@
 "use client";
 
 import { ThermalFlow } from "@/registry/clover-ui/thermal-flow";
-import type { ThermalFlowTheme } from "@/registry/clover-ui/thermal-flow";
+import { THERMAL_FLOW_THEMES, type ThermalFlowTheme } from "@/registry/clover-ui/thermal-flow";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
 import type { ControlDef } from "@/lib/playground";
+
+const themeSwatch = (theme: ThermalFlowTheme) =>
+  `linear-gradient(135deg, ${THERMAL_FLOW_THEMES[theme].join(", ")})`;
 
 const controls: ControlDef[] = [
   {
@@ -11,13 +14,13 @@ const controls: ControlDef[] = [
     prop: "theme",
     label: "Theme",
     options: [
-      { label: "Thermal", value: "thermal" },
-      { label: "Aurora", value: "aurora" },
-      { label: "Sunset", value: "sunset" },
-      { label: "Ocean", value: "ocean" },
-      { label: "Ember", value: "ember" },
-      { label: "Candy", value: "candy" },
-      { label: "Mono", value: "mono" },
+      { label: "Thermal", value: "thermal", swatch: themeSwatch("thermal") },
+      { label: "Aurora", value: "aurora", swatch: themeSwatch("aurora") },
+      { label: "Sunset", value: "sunset", swatch: themeSwatch("sunset") },
+      { label: "Ocean", value: "ocean", swatch: themeSwatch("ocean") },
+      { label: "Ember", value: "ember", swatch: themeSwatch("ember") },
+      { label: "Candy", value: "candy", swatch: themeSwatch("candy") },
+      { label: "Mono", value: "mono", swatch: themeSwatch("mono") },
     ],
   },
   { type: "number", prop: "bands", label: "Bands", min: 0.5, max: 3, step: 0.1 },

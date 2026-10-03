@@ -1,47 +1,35 @@
 "use client";
 
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { ChevronDown } from "lucide-react";
-import { ColorPicker } from "@/components/garden/color-picker";
-import { cn } from "@/lib/utils";
+import * as React from "react";
+import { ColorSelector } from "@/components/ui/color-selector";
+
+const PRESETS = [
+  "#ffffff",
+  "#ef4444",
+  "#f97316",
+  "#e1e900",
+  "#22c55e",
+  "#0b87da",
+  "#7c3aed",
+  "#ec4899",
+];
 
 export function ColorField({
   value,
   onChange,
-  bare = false,
 }: {
   value: string;
   onChange: (value: string) => void;
-  bare?: boolean;
 }) {
+  const [initial] = React.useState(() => (value ?? "").toLowerCase());
+  const colors = PRESETS.includes(initial) ? PRESETS : [initial, ...PRESETS.slice(0, 7)];
+
   return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <button
-          type="button"
-          aria-label={`Pick a color, current ${value}`}
-          className={cn(
-            "bg-muted hover:bg-accent focus-visible:ring-ring data-[state=open]:ring-ring flex h-9 cursor-pointer items-center gap-2.5 rounded-lg pr-2.5 pl-1.5 transition-colors duration-200 focus-visible:ring-2 focus-visible:outline-none data-[state=open]:ring-2",
-            bare ? "w-full" : "w-fit",
-          )}
-        >
-          <span
-            className="size-6 shrink-0 rounded-md shadow-[inset_0_0_0_1px_rgba(0,0,0,0.08)]"
-            style={{ background: value }}
-          />
-          <span className="text-foreground font-mono text-xs uppercase">{value}</span>
-          <ChevronDown className="text-muted-foreground ml-auto size-3.5" />
-        </button>
-      </PopoverTrigger>
-      <PopoverContent
-        className="w-64 rounded-2xl p-3"
-        align="start"
-        side="bottom"
-        sideOffset={10}
-        showArrow
-      >
-        <ColorPicker value={value} onChange={onChange} />
-      </PopoverContent>
-    </Popover>
+    <ColorSelector
+      colors={colors}
+      value={(value ?? "").toLowerCase()}
+      onColorSelect={onChange}
+      className="flex-wrap p-0.5"
+    />
   );
 }

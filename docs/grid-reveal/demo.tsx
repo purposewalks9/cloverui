@@ -5,7 +5,7 @@ export function Demo() {
     <GridReveal
       rows={8}
       cols={8}
-      color="#E1E900"
+      color="graphite"
       pattern="random"
       blockDuration={0.28}
       stagger={0.018}

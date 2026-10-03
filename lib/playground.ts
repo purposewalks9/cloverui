@@ -28,6 +28,7 @@ function serializeAttr(prop: string, value: unknown): string | null {
   if (typeof value === "boolean") return value ? prop : `${prop}={false}`;
   if (typeof value === "number") return `${prop}={${value}}`;
   if (typeof value === "string") return `${prop}="${value}"`;
+  if (Array.isArray(value)) return `${prop}={${JSON.stringify(value).replace(/,/g, ", ")}}`;
   return null;
 }
 
@@ -35,10 +36,15 @@ export function generateCode(
   componentName: string,
   controls: ControlDef[],
   values: Record<string, unknown>,
+  fixedProps: Record<string, unknown> = {},
 ) {
   const childrenControl = controls.find((c) => c.prop === "children");
 
-  const attrs = controls
+  const fixedAttrs = Object.entries(fixedProps)
+    .map(([prop, value]) => serializeAttr(prop, value))
+    .filter((v): v is string => Boolean(v));
+
+  const controlAttrs = controls
     .filter((c) => c.prop !== "children")
     .map((c) => {
       if (c.type === "text-list") {
@@ -53,6 +59,8 @@ export function generateCode(
       return serializeAttr(c.prop, values[c.prop]);
     })
     .filter((v): v is string => Boolean(v));
+
+  const attrs = [...fixedAttrs, ...controlAttrs];
 
   const children = childrenControl ? values[childrenControl.prop] : undefined;
   const attrBlock = attrs.length ? `\n  ${attrs.join("\n  ")}\n` : "";

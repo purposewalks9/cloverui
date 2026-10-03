@@ -59,7 +59,7 @@ const AppleMusicGlyph = ({ className }: { className?: string }) => (
     viewBox="0 0 20 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    className={className}
+    className={cn("overflow-visible", className)}
     aria-hidden
   >
     <path
@@ -185,10 +185,10 @@ function AppleMusicCard({ url, className, ...props }: AppleMusicCardProps) {
           <h3 className="truncate text-sm font-medium text-white/60">{data.artist}</h3>
         </div>
 
-        <span className="mt-3 flex items-center gap-[3px] px-0.5 text-[12px] leading-none font-medium whitespace-nowrap text-white/60">
-          <AppleMusicGlyph className="h-[1em] w-[0.84em] shrink-0 -translate-y-[0.5px] mb-0.6" />
-          <span>Music</span>
-        </span>
+        <p className="mt-2 px-0.5 text-[13px] leading-none font-semibold whitespace-nowrap text-white/60">
+          <AppleMusicGlyph className="mr-[0.08em] inline-block h-[0.8em] w-[0.67em] align-baseline" />
+          Music
+        </p>
       </div>
     </CardFrame>
   );

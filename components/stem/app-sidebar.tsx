@@ -35,7 +35,7 @@ export function AppSidebar({ docSchema }: { docSchema: DocSchema }) {
             <CloverLogo size={20} />
           </span>
           <span className="text-[16px] tracking-tight">
-            <span className="font-bold">Clover UI</span>
+            <span className="font-meduim">Clover UI</span>
           </span>
         </Link>
       </SidebarHeader>

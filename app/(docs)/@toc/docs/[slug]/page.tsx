@@ -12,7 +12,7 @@ export function generateStaticParams() {
 
 export default async function TocSlot({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const content = await readFile(join(process.cwd(), "guides", `${slug}.mdx`), "utf-8");
+  const content = await readFile(join(process.cwd(), "docs", "guides", `${slug}.mdx`), "utf-8");
   const toc = await getTableOfContents(content);
   const guide = guides.find((item) => item.id === slug);
 
@@ -24,7 +24,7 @@ export default async function TocSlot({ params }: { params: Promise<{ slug: stri
         title={guide?.title ?? slug}
         content={content}
         url={`/docs/${slug}`}
-        editPath={`guides/${slug}.mdx`}
+        editPath={`docs/guides/${slug}.mdx`}
       />
     </aside>
   );

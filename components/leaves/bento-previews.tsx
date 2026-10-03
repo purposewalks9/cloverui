@@ -10,7 +10,6 @@ import { GaugeText } from "@/registry/clover-ui/gauge-text";
 import { SoftButton, type SoftColor } from "@/registry/clover-ui/soft-button";
 import { DropText } from "@/registry/clover-ui/drop-text";
 import { AppleMusicCard } from "@/registry/clover-ui/apple-music-card";
-import { SpotlightText } from "@/registry/clover-ui/spotlight-text";
 import { CursorTag } from "@/registry/clover-ui/cursor-tag";
 import { Mic } from "@/registry/clover-ui/mic";
 import { Clicky } from "@/registry/clover-ui/clicky";
@@ -43,10 +42,10 @@ export function GrainCubePreview() {
 }
 
 const GRID_STYLES = [
-  { pattern: "random", color: "#E1E900" },
-  { pattern: "wave", color: "#22d3ee" },
-  { pattern: "diagonal", color: "#f472b6" },
-  { pattern: "center", color: "#a78bfa" },
+  { pattern: "random", color: "graphite" },
+  { pattern: "wave", color: "ocean" },
+  { pattern: "diagonal", color: "burgundy" },
+  { pattern: "center", color: "plum" },
 ] as const;
 
 export function GridRevealPreview() {
@@ -170,14 +169,6 @@ export function RichProgressPreview() {
     <div className="w-full max-w-[200px]">
       <RichProgress value={manual ?? auto} onChange={setManual} showValue={false} />
     </div>
-  );
-}
-
-export function SpotlightPreview() {
-  return (
-    <p className="text-center text-3xl font-semibold tracking-tight">
-      <SpotlightText items={["brands", "interfaces", "products"]} color="blue" />
-    </p>
   );
 }
 

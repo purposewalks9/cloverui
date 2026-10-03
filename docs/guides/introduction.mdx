@@ -1,0 +1,52 @@
+Clover UI is a collection of animated React components built with Tailwind CSS and Motion. Each one installs as source code with the shadcn CLI, so it is yours to read, change and ship.
+
+It is not a package you import from `node_modules`. When you add a component, its file lands in your project next to your own code. There is no version to keep in sync and nothing hidden behind an API. If you want a different easing, color or size, open the file and change it.
+
+[Install Clover UI](/docs/installation) or browse the components in the sidebar.
+
+## What's inside
+
+The components are grouped by what they do:
+
+- **Text**: headlines and labels that move, such as Gauge Text, Drop Text, Nucleus Text, Rich Text and Text GIF.
+- **Animation**: backgrounds and effects such as Grain Cube, Thermal Flow, Grid Reveal, Token Fall and the Clicky pointer.
+- **Feedback**: loading and progress states, including Spinner, Pulse Loader, Status Tag and Rich Progress.
+- **Buttons**: Soft Button and Mic.
+- **Display**: Candlestick Chart, Apple Music Card and Cursor Tag.
+- **Input**: Sign Pad.
+
+## What every component gives you
+
+- **Source you own.** The CLI copies a single file into your project and installs only what it needs, such as `motion`.
+- **A live playground.** Each page has a Customize panel to try colors, sizes and timing, then copy the exact code for what you see.
+- **Light and dark mode.** Components use your theme tokens like `bg-background` and `text-foreground`, so they follow your theme.
+- **Reduced motion.** Animations respect the visitor's `prefers-reduced-motion` setting.
+- **Clean props.** Every prop is typed and listed in a props table, with defaults that look good straight away.
+
+## How it works
+
+Clover UI is a [shadcn registry](https://ui.shadcn.com/docs/registry). Each component is published as a JSON file at `https://cloverui.vercel.app/r/<name>.json`. The shadcn CLI reads that file, writes the component into your `components` folder and installs its dependencies.
+
+Because it uses the standard registry format, the same components also work with the [shadcn MCP server](/docs/mcp), so your AI editor can search and install them for you.
+
+## Where to start
+
+1. Follow [Installation](/docs/installation) to add the registry to `components.json`.
+2. Install one component by name, or all of them at once.
+3. Open any component page, adjust it in the playground and copy the code.
+
+## Credits
+
+Clover UI stands on the work of these projects and the people behind them.
+
+<CreditList>
+
+- <CreditLink logo="spell" href="https://spell.sh">Spell UI</CreditLink> by Tom ([@tomm_ui](https://x.com/tomm_ui)), the biggest inspiration behind Clover UI.
+- <CreditLink logo="shadcn" href="https://ui.shadcn.com">shadcn/ui</CreditLink> for the registry, CLI and MCP server.
+- <CreditLink logo="vercel" href="https://vercel.com">Vercel</CreditLink> for Next.js, hosting and [Agent Skills](https://github.com/vercel-labs/agent-skills).
+- <CreditLink logo="motion" href="https://motion.dev">Motion</CreditLink> for the animations.
+- <CreditLink logo="tailwind" href="https://tailwindcss.com">Tailwind CSS</CreditLink> for the styles and dark mode.
+- <CreditLink logo="baseui" href="https://base-ui.com">Base UI</CreditLink> for the accessible primitives under the site search and inputs.
+- <CreditLink logo="coss" href="https://coss.com/ui">coss ui</CreditLink> for the command menu, autocomplete and input components.
+
+</CreditList>

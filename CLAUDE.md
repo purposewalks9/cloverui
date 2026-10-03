@@ -18,7 +18,7 @@ Stack: Next.js 16 (webpack), React 19, Tailwind CSS v4, `motion`, shadcn, pnpm.
 - `docs/<slug>/`: `doc.mdx` (playground, installation, usage, props table), `demo.tsx` (a minimal `Demo` export) and `playground.tsx` (`PlaygroundShell` plus `ControlDef[]` from `@/lib/playground`). Passing `controls={[]}` shows the component on its own, with no Customize panel.
 - `app/(docs)/`: the docs layout (sidebar, header and the `@toc` Table of Contents slot), shared by two routes:
   - `components/[slug]`: component pages. A slug is published only when it has both a `docs/<slug>/` folder (with `doc.mdx` and `demo.tsx`) and a `registry.json` entry (`lib/slugs.ts`).
-  - `docs/[slug]`: Getting Started pages. Their content is in `guides/<slug>.mdx`, and the list (title, description, order) is in `lib/basic-doc.ts`.
+  - `docs/[slug]`: Getting Started pages. Their content is in `docs/guides/<slug>.mdx`, and the list (title, description, order) is in `lib/basic-doc.ts`.
 - `app/page.tsx`: home page. Its bento cards are listed by hand, so new components don't appear there on their own.
 - `app/og/route.tsx`: share preview image. `/og` is the site card, and `/og?slug=<name>` reads the component's title and description from `registry.json`.
 - `lib/config.ts`: the domain, GitHub, X handle and site description. Metadata, the sitemap, the GitHub stars button and the share previews all read from it.

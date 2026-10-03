@@ -17,7 +17,6 @@ import {
   NucleusPreview,
   RichProgressPreview,
   SoftButtonPreview,
-  SpotlightPreview,
   TextGifPreview,
   TokenFallPreview,
 } from "@/components/leaves/bento-previews";
@@ -39,7 +38,6 @@ const ROWS: { grid: string; items: BentoItem[] }[] = [
       { slug: "nucleus-text", title: "Nucleus Text", Demo: NucleusPreview, className: "" },
       { slug: "gauge-text", title: "Gauge Text", Demo: GaugePreview, className: "" },
       { slug: "drop-text", title: "Drop Text", Demo: DropTextPreview, className: "" },
-      { slug: "spotlight-text", title: "Spotlight Text", Demo: SpotlightPreview, className: "" },
       { slug: "cursor-tag", title: "Cursor Tag", Demo: CursorTagPreview, className: "" },
       { slug: "mic", title: "Mic", Demo: MicPreview, className: "" },
       { slug: "clicky", title: "Clicky", Demo: ClickyPreview, className: "" },
