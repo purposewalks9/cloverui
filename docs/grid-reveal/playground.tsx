@@ -47,7 +47,7 @@ const controls: ControlDef[] = [
 
 const defaultProps = {
   pattern: "random",
-  color: "graphite",
+  color: "yellow",
   rows: 8,
   cols: 8,
   blockDuration: 0.28,
