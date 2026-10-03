@@ -1,11 +1,10 @@
 import { Clicky } from "@/registry/clover-ui/clicky";
-import { SoftButton } from "@/registry/clover-ui/soft-button";
 
 export function Demo() {
   return (
     <div className="flex min-h-[220px] items-center justify-center">
       <Clicky>
-        <SoftButton color="purple">Get started</SoftButton>
+        <span className="text-3xl font-semibold tracking-tight">Click here</span>
       </Clicky>
     </div>
   );

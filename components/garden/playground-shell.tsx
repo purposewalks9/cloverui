@@ -34,6 +34,7 @@ interface PlaygroundShellProps {
   componentName: string;
   controls: ControlDef[];
   defaultProps: Record<string, unknown>;
+  fixedProps?: Record<string, unknown>;
   codeNote?: string;
   stageClassName?: string;
   render: (values: Record<string, unknown>) => React.ReactNode;
@@ -43,6 +44,7 @@ export function PlaygroundShell({
   componentName,
   controls,
   defaultProps,
+  fixedProps,
   codeNote,
   stageClassName,
   render,
@@ -53,8 +55,8 @@ export function PlaygroundShell({
   const [replayKey, setReplayKey] = React.useState(0);
 
   const code = React.useMemo(
-    () => generateCode(componentName, controls, values),
-    [componentName, controls, values],
+    () => generateCode(componentName, controls, values, fixedProps),
+    [componentName, controls, values, fixedProps],
   );
 
   const fullCode = codeNote ? `// ${codeNote}\n${code}` : code;

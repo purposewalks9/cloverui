@@ -4,6 +4,7 @@ import { CopyCodeButton } from "@/components/leaves/copy-code-button";
 import { InstallationTabs } from "@/components/leaves/installation-tabs";
 import { CodeBlockCommand } from "@/components/leaves/code-block-command";
 import { PropsTable } from "@/components/leaves/props-table";
+import { CreditLink, CreditList } from "@/components/leaves/credits";
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
@@ -14,6 +15,8 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     InstallationTabs,
     CodeBlockCommand,
     PropsTable,
+    CreditLink,
+    CreditList,
     h2: ({ children, ...props }) => {
       return (
         <h2

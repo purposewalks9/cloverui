@@ -27,7 +27,7 @@ export async function generateMetadata({
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const Doc = (await import(`@/guides/${slug}.mdx`)).default;
+  const Doc = (await import(`@/docs/guides/${slug}.mdx`)).default;
 
   return <ComponentPage docContent={<Doc />} />;
 }

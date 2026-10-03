@@ -1,7 +1,6 @@
 "use client";
 
 import { Clicky, type ClickyColor } from "@/registry/clover-ui/clicky";
-import { SoftButton } from "@/registry/clover-ui/soft-button";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
 import type { ControlDef } from "@/lib/playground";
 
@@ -54,7 +53,7 @@ export function ClickyPlayground() {
             loop={values.loop as boolean}
             interval={values.interval as number}
           >
-            <SoftButton color="purple">Get started</SoftButton>
+            <span className="text-3xl font-semibold tracking-tight">Click here</span>
           </Clicky>
         </div>
       )}

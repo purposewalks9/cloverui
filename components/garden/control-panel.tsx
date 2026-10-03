@@ -7,6 +7,7 @@ import { RichProgress } from "@/registry/clover-ui/rich-progress";
 import { cn } from "@/lib/utils";
 import type { ControlDef } from "@/lib/playground";
 import { ColorField } from "@/components/garden/color-field";
+import { ColorSelector } from "@/components/ui/color-selector";
 
 interface ControlPanelProps {
   controls: ControlDef[];
@@ -14,17 +15,53 @@ interface ControlPanelProps {
   onChange: (prop: string, value: unknown) => void;
 }
 
+function isColorControl(control: ControlDef) {
+  if (control.type === "color") return true;
+  if (control.type !== "select") return false;
+  return control.prop === "color" || control.options.every((opt) => Boolean(opt.swatch));
+}
+
+function controlGroup(control: ControlDef) {
+  if (isColorControl(control)) return 0;
+  if (control.type === "select") return 1;
+  if (control.type === "text" || control.type === "text-list") return 2;
+  if (control.type === "number") return 3;
+  return 4;
+}
+
+function isPatternControl(control: ControlDef) {
+  return control.prop === "pattern" || control.prop === "theme";
+}
+
+function groupControls(controls: ControlDef[]) {
+  return [0, 1, 2, 3, 4]
+    .map((rank) =>
+      controls
+        .filter((control) => controlGroup(control) === rank)
+        .sort((a, b) => Number(isPatternControl(b)) - Number(isPatternControl(a))),
+    )
+    .filter((group) => group.length > 0);
+}
+
 export function ControlPanel({ controls, values, onChange }: ControlPanelProps) {
+  const groups = groupControls(controls);
+
   return (
-    <div className="flex flex-col">
-      {controls.map((control) => (
-        <div key={control.prop} className="px-4 py-3.5">
-          <Field
-            control={control}
-            value={values[control.prop]}
-            values={values}
-            onChange={(value, prop = control.prop) => onChange(prop, value)}
-          />
+    <div className="divide-border/60 flex flex-col divide-y">
+      {groups.map((group) => (
+        <div
+          key={group[0].prop}
+          className={cn("flex flex-col px-4 py-4", group[0].type === "boolean" ? "gap-3" : "gap-4")}
+        >
+          {group.map((control) => (
+            <Field
+              key={control.prop}
+              control={control}
+              value={values[control.prop]}
+              values={values}
+              onChange={(value, prop = control.prop) => onChange(prop, value)}
+            />
+          ))}
         </div>
       ))}
     </div>
@@ -78,54 +115,6 @@ function OptionGroup({
             )}
           >
             {opt.label}
-          </button>
-        );
-      })}
-    </div>
-  );
-}
-
-function ColorSwatchGroup({
-  id,
-  label,
-  options,
-  value,
-  onChange,
-}: {
-  id: string;
-  label: string;
-  options: { label: string; value: string; swatch: string }[];
-  value: string;
-  onChange: (value: string) => void;
-}) {
-  return (
-    <div id={id} role="radiogroup" aria-label={label} className="flex flex-wrap gap-2">
-      {options.map((opt) => {
-        const active = opt.value === value;
-        return (
-          <button
-            key={opt.value}
-            type="button"
-            role="radio"
-            aria-checked={active}
-            aria-label={opt.label}
-            onClick={() => onChange(opt.value)}
-            className="group relative flex size-7 shrink-0 items-center justify-center rounded-full outline-none"
-          >
-            <span
-              className={cn(
-                "border-border size-6 rounded-full border shadow-sm transition-transform duration-150",
-                "group-hover:scale-110 group-focus-visible:scale-110",
-                active && "scale-110",
-              )}
-              style={{ background: opt.swatch }}
-            />
-            {active && (
-              <span
-                className="ring-offset-background pointer-events-none absolute inset-0 rounded-full ring-2 ring-offset-2"
-                style={{ ["--tw-ring-color" as string]: opt.swatch }}
-              />
-            )}
           </button>
         );
       })}
@@ -221,9 +210,7 @@ function Field({
       );
 
     case "select": {
-      const isPalette = control.options.every((opt) => Boolean(opt.swatch));
-
-      if (isPalette) {
+      if (isColorControl(control)) {
         const active = control.options.find((opt) => opt.value === value);
         return (
           <div className="flex flex-col gap-2">
@@ -231,12 +218,16 @@ function Field({
               <FieldLabel>{control.label}</FieldLabel>
               <span className="text-muted-foreground text-[11px]">{active?.label ?? ""}</span>
             </div>
-            <ColorSwatchGroup
-              id={control.prop}
-              label={control.label}
-              options={control.options as { label: string; value: string; swatch: string }[]}
+            <ColorSelector
+              colors={control.options.map((opt) => opt.value)}
+              swatches={Object.fromEntries(
+                control.options
+                  .filter((opt) => opt.swatch)
+                  .map((opt) => [opt.value, opt.swatch as string]),
+              )}
               value={value as string}
-              onChange={onChange}
+              onColorSelect={onChange}
+              className="flex-wrap p-0.5"
             />
           </div>
         );
@@ -283,11 +274,14 @@ function Field({
 
     case "color":
       return (
-        <div className="flex flex-col gap-1.5">
+        <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <FieldLabel>{control.label}</FieldLabel>
+            <span className="text-muted-foreground font-mono text-[11px] uppercase">
+              {value as string}
+            </span>
           </div>
-          <ColorField value={value as string} onChange={onChange} bare />
+          <ColorField value={value as string} onChange={onChange} />
         </div>
       );
 

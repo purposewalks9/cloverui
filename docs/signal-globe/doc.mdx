@@ -1,0 +1,52 @@
+import { SignalGlobePlayground } from "./playground"
+
+<SignalGlobePlayground />
+
+## Installation
+
+<InstallationTabs item="signal-globe">
+```tsx file=../../registry/clover-ui/signal-globe.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { SignalGlobe } from "@/components/signal-globe";
+
+<SignalGlobe
+  server={{
+    id: "sin-1",
+    label: "Singapore",
+    region: "ap-southeast-1",
+    lat: 1.3521,
+    lng: 103.8198,
+  }}
+  requests={[
+    {
+      id: "request-42",
+      origin: { lat: 35.6762, lng: 139.6503, label: "Tokyo" },
+      startedAt: Date.now(),
+      status: "pending",
+    },
+  ]}
+/>
+```
+
+Signal Globe is a true WebGL globe: request origins and server locations use latitude and longitude, and each request follows an elevated arc to the selected server. It has no map API key or tiles to configure.
+
+Pass the latest rolling slice from your telemetry stream as `requests`. A request can provide its own `destination`; otherwise it routes to `server`. Use a stable `id` for each request. When `startedAt` is supplied, the request automatically leaves the visualization after its duration and retention period; omit it for a persistent connection.
+
+## Props
+
+<PropsTable data={[
+  { name: "server", type: "GlobeServer", description: "The selected server or edge location. It needs an id, label, latitude and longitude; region and color are optional." },
+  { name: "requests", type: "GlobeRequest[]", default: "demo traffic", description: "Current request events. Each origin needs latitude and longitude; a destination overrides the selected server." },
+  { name: "maxFlights", type: "number", default: "96", description: "Maximum active routes to render. Values are safely clamped from 16 to 300." },
+  { name: "flightDuration", type: "number", default: "1800", description: "Milliseconds an event with startedAt spends in flight." },
+  { name: "retention", type: "number", default: "2200", description: "Milliseconds to keep a completed timed event visible." },
+  { name: "autoRotate", type: "boolean", default: "true", description: "Slowly rotate the globe while it is visible." },
+  { name: "interactive", type: "boolean", default: "true", description: "Allow dragging the globe to inspect request origins." },
+  { name: "animate", type: "boolean", default: "true", description: "Enable motion. It is also disabled for people who prefer reduced motion." },
+  { name: "className", type: "string", description: "Use a height class such as h-[480px] to size the globe." },
+]} />

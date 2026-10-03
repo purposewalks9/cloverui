@@ -14,7 +14,7 @@ import { GridRevealPlayground } from "./playground"
 ```tsx
 import { GridReveal } from "@/components/grid-reveal";
 
-<GridReveal rows={8} cols={8} pattern="random">
+<GridReveal rows={8} cols={8} color="forest" pattern="random">
   <YourContent />
 </GridReveal>
 ```
@@ -25,7 +25,7 @@ import { GridReveal } from "@/components/grid-reveal";
   { name: "children", type: "React.ReactNode", description: "Content revealed under the grid." },
   { name: "rows", type: "number", default: "6" },
   { name: "cols", type: "number", default: "10" },
-  { name: "color", type: "string", default: '"#000000"', description: "Block color." },
+  { name: "color", type: '"graphite" | "slate" | "ocean" | "forest" | "burgundy" | "walnut" | "plum" | "ivory"', default: '"graphite"', description: "Block color, picked from the preset palette." },
   { name: "pattern", type: '"random" | "wave" | "diagonal" | "center"', default: '"random"' },
   { name: "blockDuration", type: "number", default: "0.45", description: "Fade time for each block in seconds." },
   { name: "stagger", type: "number", default: "0.03" },

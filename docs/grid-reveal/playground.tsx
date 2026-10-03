@@ -1,6 +1,11 @@
 "use client";
 
-import { GridReveal } from "@/registry/clover-ui/grid-reveal";
+import {
+  GRID_REVEAL_COLORS,
+  GridReveal,
+  type GridRevealColor,
+  type GridRevealPattern,
+} from "@/registry/clover-ui/grid-reveal";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
 import type { ControlDef } from "@/lib/playground";
 
@@ -16,7 +21,16 @@ const controls: ControlDef[] = [
       { label: "Center", value: "center" },
     ],
   },
-  { type: "color", prop: "color", label: "Color" },
+  {
+    type: "select",
+    prop: "color",
+    label: "Color",
+    options: (Object.keys(GRID_REVEAL_COLORS) as GridRevealColor[]).map((color) => ({
+      label: color[0].toUpperCase() + color.slice(1),
+      value: color,
+      swatch: GRID_REVEAL_COLORS[color],
+    })),
+  },
   { type: "number", prop: "rows", label: "Rows", min: 2, max: 14, step: 1 },
   { type: "number", prop: "cols", label: "Cols", min: 2, max: 14, step: 1 },
   {
@@ -33,7 +47,7 @@ const controls: ControlDef[] = [
 
 const defaultProps = {
   pattern: "random",
-  color: "#E1E900",
+  color: "graphite",
   rows: 8,
   cols: 8,
   blockDuration: 0.28,
@@ -52,8 +66,8 @@ export function GridRevealPlayground() {
         <div className="flex w-full justify-center">
           <GridReveal
             key={JSON.stringify(values)}
-            pattern={values.pattern as "random" | "wave" | "diagonal" | "center"}
-            color={values.color as string}
+            pattern={values.pattern as GridRevealPattern}
+            color={values.color as GridRevealColor}
             rows={values.rows as number}
             cols={values.cols as number}
             blockDuration={values.blockDuration as number}
