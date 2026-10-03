@@ -42,10 +42,10 @@ export function GrainCubePreview() {
 }
 
 const GRID_STYLES = [
-  { pattern: "random", color: "graphite" },
-  { pattern: "wave", color: "ocean" },
-  { pattern: "diagonal", color: "burgundy" },
-  { pattern: "center", color: "plum" },
+  { pattern: "random", color: "yellow" },
+  { pattern: "wave", color: "blue" },
+  { pattern: "diagonal", color: "red" },
+  { pattern: "center", color: "green" },
 ] as const;
 
 export function GridRevealPreview() {

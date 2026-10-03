@@ -16,14 +16,14 @@ import { cn } from "@/lib/utils";
 export type GridRevealPattern = "random" | "wave" | "diagonal" | "center";
 
 export const GRID_REVEAL_COLORS = {
-  graphite: "#27272a",
-  slate: "#475569",
-  ocean: "#3f5f7f",
-  forest: "#2f4f3a",
-  burgundy: "#6b2737",
-  walnut: "#6b4a35",
-  plum: "#5b4a6e",
-  ivory: "#f2efe8",
+  yellow: "#fde047",
+  red: "#f87171",
+  blue: "#60a5fa",
+  green: "#4ade80",
+  white: "#ffffff",
+  orange: "#fb923c",
+  pink: "#f472b6",
+  violet: "#a78bfa",
 } as const;
 
 export type GridRevealColor = keyof typeof GRID_REVEAL_COLORS;
@@ -116,7 +116,7 @@ const GridReveal = forwardRef<GridRevealRef, GridRevealProps>(
       children,
       rows = 6,
       cols = 10,
-      color = "graphite",
+      color = "yellow",
       blockDuration = 0.45,
       stagger = 0.03,
       duration,
@@ -288,7 +288,7 @@ const GridReveal = forwardRef<GridRevealRef, GridRevealProps>(
               key={block.key}
               className={blockClassName}
               style={{
-                backgroundColor: GRID_REVEAL_COLORS[color] ?? GRID_REVEAL_COLORS.graphite,
+                backgroundColor: GRID_REVEAL_COLORS[color] ?? GRID_REVEAL_COLORS.yellow,
               }}
               initial={false}
               animate={
