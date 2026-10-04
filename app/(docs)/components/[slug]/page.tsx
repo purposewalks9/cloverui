@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { getRegistryItem } from "@/lib/registry";
 import { getPublishedSlugs } from "@/lib/slugs";
 import { buildOgUrl, constructMetadata } from "@/lib/utils";
@@ -30,6 +31,7 @@ export async function generateMetadata({
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  if (!(await getPublishedSlugs()).includes(slug)) notFound();
   const Doc = (await import(`@/docs/${slug}/doc.mdx`)).default;
 
   return <ComponentPage docContent={<Doc />} />;
