@@ -1,0 +1,109 @@
+import { CityLocatorPlayground } from "./playground"
+
+<CityLocatorPlayground />
+
+## Installation
+
+<InstallationTabs item="city-locator">
+```tsx file=../../registry/clover-ui/city-locator.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+"use client";
+
+import { useState } from "react";
+import { CityLocator } from "@/components/city-locator";
+
+export function MyLocation() {
+  const [locate, setLocate] = useState(false);
+
+  return (
+    <>
+      <CityLocator size={420} place="London" locate={locate} autoRotate showAtmosphere />
+      <button onClick={() => setLocate(true)}>Use my location</button>
+    </>
+  );
+}
+```
+
+City Locator is a display component that shows a city on a real 3D Earth: where someone lives on a profile, an office on a contact page, or where a visitor is browsing from. It's drawn with WebGL. It spins slowly until it has a location, then turns to face it, marks the spot with a softly zooming red pin and its name, and keeps swaying gently around it. Drag it to look around, and it eases back when you let go. The background is transparent, so it sits on any page in light or dark mode, and it shrinks to fit narrow screens.
+
+### Finding the visitor's city
+
+Set `locate` to show where the visitor is right now. The browser asks for permission once, the globe turns to their position, and the pin shows their city name. It doesn't follow them around afterwards. The browser only asks when `locate` becomes `true`, so turn it on after the person asks, for example from a "Use my location" button.
+
+Every lookup has a time limit, so a slow network or a missing answer never freezes the globe. It keeps spinning and shows the place it already had.
+
+### Privacy
+
+The globe never asks for location by itself or on the server, and it never stores or logs coordinates.
+
+To show the city name under the pin, it looks up a rounded position (about 1 km precise) with [BigDataCloud](https://www.bigdatacloud.com/free-api/free-reverse-geocode-to-city-api)'s free city lookup. The exact position never leaves the browser. Pass `reverseGeocoder={null}` to turn the lookup off, and use `label` to name the pin yourself. If you want to save or share the exact position, handle `onLocationChange` yourself.
+
+### States
+
+Use `onStatusChange` to show what's happening next to the globe:
+
+- `idle`: `locate` is off.
+- `locating`: waiting for the browser.
+- `located`: the visitor's city is showing.
+- `denied`: the person blocked location access.
+- `unavailable`: the device couldn't find a position.
+- `timeout`: finding a position took too long.
+- `unsupported`: the browser has no geolocation.
+
+### Showing a place
+
+Pass `place` with a city name and the globe turns straight to it, with the name under the pin:
+
+```tsx
+<CityLocator place="London" />
+```
+
+Any city, state or country works, in any language: "London", "Awka", "Texas", "Japan". The globe looks the name up a moment after typing stops, then turns to it.
+
+By default, names are looked up with [Photon](https://photon.komoot.io), a free OpenStreetMap search with no API key. Only the `place` text is sent to it, never the device's location. To use a different service, such as Google or Mapbox, pass a `geocoder` function that takes the text and returns `{ name, lat, lng }`, or `null` when nothing matches.
+
+If you already have coordinates, pass `location` with a latitude and longitude, and `label` for the name. The visitor's position from `locate` replaces both once it arrives.
+
+### How accurate it is
+
+`locate` uses the browser's own location service. The browser picks the best source it has:
+
+- **Phones with GPS:** usually within 5 to 20 meters outdoors.
+- **Laptops and desktops:** estimated from nearby Wi-Fi networks, usually within 20 to 100 meters.
+- **No GPS or Wi-Fi data:** estimated from the internet connection. This is often only accurate to the city, and VPNs can place someone in the wrong country.
+
+Each update includes `accuracy` in meters, so you can tell how good a reading is.
+
+### Earth image
+
+The globe uses NASA's Blue Marble image, which is free to use. By default it loads from `cloverui.vercel.app`. To host it yourself, save [earth.jpg](https://cloverui.vercel.app/textures/earth.jpg) to your `public` folder and pass `texture="/earth.jpg"`. Any 2:1 world map image works.
+
+## Props
+
+<PropsTable data={[
+  { name: "size", type: "number", default: "360", description: "Width and height in pixels. It never grows wider than its container." },
+  { name: "locate", type: "boolean", default: "false", description: "Find the visitor's position once and show their city. The browser asks for permission when this turns on." },
+  { name: "place", type: "string", description: "Any city, state or country to show, such as \"London\". It is looked up online and also sets the label." },
+  { name: "geocoder", type: "(query: string, signal: AbortSignal) => Promise<{ name: string; lat: number; lng: number } | null>", default: "photonGeocoder", description: "Function that turns place text into coordinates. Replace it to use your own search service." },
+  { name: "reverseGeocoder", type: "(coordinates: { lat: number; lng: number }, signal: AbortSignal) => Promise<string | null> | null", default: "bigDataCloudReverseGeocoder", description: "Function that turns the visitor's position into a city name for the label. Pass null to turn it off." },
+  { name: "location", type: "{ lat: number; lng: number }", description: "Exact coordinates to show when there is no visitor position and no place found." },
+  { name: "label", type: "string", description: "Name shown under the pin. It overrides the city name from place or from the visitor's position." },
+  { name: "interactive", type: "boolean", default: "true", description: "Allow dragging the globe with a mouse, pen or finger." },
+  { name: "autoRotate", type: "boolean", default: "true", description: "Spin slowly while there is no location. Once there is one, the globe keeps swaying gently around it so it feels alive, and the marker stays in view." },
+  { name: "autoRotateSpeed", type: "number", default: "6", description: "Spin speed in degrees per second." },
+  { name: "showAtmosphere", type: "boolean", default: "true", description: "Show the soft blue glow around the edge." },
+  { name: "marker", type: "boolean | { color?: string; ringColor?: string }", default: "true", description: "Show the location pin, or set its colors. The default is a red pin with a white outline and white label text." },
+  { name: "markerZoom", type: "boolean", default: "true", description: "Gently zoom the pin in and out." },
+  { name: "texture", type: "string", default: "Clover UI hosted earth.jpg", description: "URL of a 2:1 world map image. It must allow cross-origin loading." },
+  { name: "onLocationChange", type: "(position: CityLocatorPosition) => void", description: "Called once with lat, lng, accuracy and timestamp when the visitor's position is found." },
+  { name: "onPermissionChange", type: "(permission: \"prompt\" | \"granted\" | \"denied\") => void", description: "Called when the location permission changes while locate is on." },
+  { name: "onStatusChange", type: "(status: CityLocatorStatus) => void", description: "Called when the locate state changes. See States above." },
+  { name: "className", type: "string", description: "Extra classes for the root element." },
+]} />
+
+Motion is turned off for people who prefer reduced motion. The globe faces the location straight away, and the pin stays still.

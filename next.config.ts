@@ -26,6 +26,14 @@ const nextConfig = {
     ],
   },
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
+  headers: async () => {
+    return [
+      {
+        source: "/textures/:path*",
+        headers: [{ key: "Access-Control-Allow-Origin", value: "*" }],
+      },
+    ];
+  },
   rewrites: async () => {
     return [
       {

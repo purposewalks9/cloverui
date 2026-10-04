@@ -30,7 +30,7 @@
         "https://cloverui.vercel.app/r/cursor-tag.json",
         "https://cloverui.vercel.app/r/clicky.json",
         "https://cloverui.vercel.app/r/mic.json",
-        "https://cloverui.vercel.app/r/signal-globe.json"
+        "https://cloverui.vercel.app/r/city-locator.json"
       ]
     },
     {
@@ -334,17 +334,17 @@
       "category": "button"
     },
     {
-      "name": "signal-globe",
+      "name": "city-locator",
       "type": "registry:component",
-      "title": "Signal Globe",
-      "description": "A real WebGL globe that visualizes live requests flowing from anywhere in the world into a selected server or edge region.",
+      "title": "City Locator",
+      "description": "A real 3D Earth that finds a city by name or from the visitor's live location and marks it with a pin.",
       "files": [
         {
-          "path": "registry/clover-ui/signal-globe.tsx",
+          "path": "registry/clover-ui/city-locator.tsx",
           "type": "registry:component"
         }
       ],
-      "dependencies": ["cobe", "motion"],
+      "dependencies": ["motion", "class-variance-authority"],
       "registryDependencies": [],
       "category": "display"
     }
