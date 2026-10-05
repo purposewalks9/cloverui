@@ -32,7 +32,8 @@
         "https://cloverui.vercel.app/r/city-locator.json",
         "https://cloverui.vercel.app/r/rich-tooltip.json",
         "https://cloverui.vercel.app/r/block-text.json",
-        "https://cloverui.vercel.app/r/status-face.json"
+        "https://cloverui.vercel.app/r/status-face.json",
+        "https://cloverui.vercel.app/r/sticker-burst.json"
       ]
     },
     {
@@ -379,6 +380,21 @@
       "dependencies": ["motion"],
       "registryDependencies": [],
       "category": "feedback"
+    },
+    {
+      "name": "sticker-burst",
+      "type": "registry:component",
+      "title": "Sticker Burst",
+      "description": "A title label that bursts into a pile of colorful stickers until they fill the space, keeps shuffling them, then collapses back. Loops or plays on hover.",
+      "files": [
+        {
+          "path": "registry/clover-ui/sticker-burst.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": ["motion"],
+      "registryDependencies": [],
+      "category": "animation"
     }
   ]
 }
