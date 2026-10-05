@@ -38,7 +38,7 @@ Set `open` to keep it visible, for example in a static mockup. Text size and spa
   { name: "color", type: "string", description: "Custom background color. Replaces the variant colors." },
   { name: "textColor", type: "string", default: '"#ffffff"', description: "Text color when color is set." },
   { name: "open", type: "boolean", description: "Keeps the tooltip shown (true) or hidden (false). Leave it out to show on hover and focus." },
-  { name: "delay", type: "number", default: "100", description: "Milliseconds to wait on hover before showing." },
+  { name: "delay", type: "number", default: "0", description: "Milliseconds to wait on hover before showing. It shows right away by default." },
   { name: "contentClassName", type: "string", description: "Classes for the tooltip itself, such as a text size." },
   { name: "className", type: "string", description: "Classes for the wrapper around your element." },
 ]} />

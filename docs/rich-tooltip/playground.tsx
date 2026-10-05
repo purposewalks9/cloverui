@@ -61,7 +61,7 @@ const defaultProps = {
   from: "IST",
   to: "SAW",
   badge: "1d 2h",
-  delay: 100,
+  delay: 0,
 };
 
 export function RichTooltipPlayground() {

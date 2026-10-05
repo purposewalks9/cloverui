@@ -42,7 +42,7 @@ export interface RichTooltipProps
 
 const itemVariants: Variants = {
   hidden: { opacity: 0, y: 3 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.22, ease: [0.22, 1, 0.36, 1] } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.12, ease: [0.22, 1, 0.36, 1] } },
 };
 
 const staticItemVariants: Variants = {
@@ -59,7 +59,7 @@ function RichTooltip({
   variant = "solid",
   side = "top",
   open,
-  delay = 100,
+  delay = 0,
   className,
   contentClassName,
   children,
@@ -117,32 +117,28 @@ function RichTooltip({
   const bubble: Variants = reduceMotion
     ? {
         hidden: { opacity: 0 },
-        show: { opacity: 1, transition: { duration: 0.15 } },
-        exit: { opacity: 0, transition: { duration: 0.1 } },
+        show: { opacity: 1, transition: { duration: 0.08 } },
+        exit: { opacity: 0, transition: { duration: 0.06 } },
       }
     : {
-        hidden: { opacity: 0, y: top ? 6 : -6, scale: 0.92, filter: "blur(4px)" },
+        hidden: { opacity: 0, y: top ? 4 : -4, scale: 0.94 },
         show: {
           opacity: 1,
           y: 0,
           scale: 1,
-          filter: "blur(0px)",
           transition: {
             type: "spring",
-            duration: 0.38,
-            bounce: 0.28,
-            opacity: { duration: 0.18 },
-            filter: { duration: 0.2 },
-            delayChildren: 0.04,
-            staggerChildren: 0.035,
+            duration: 0.2,
+            bounce: 0.2,
+            opacity: { duration: 0.08 },
+            staggerChildren: 0.02,
           },
         },
         exit: {
           opacity: 0,
-          y: top ? 4 : -4,
-          scale: 0.96,
-          filter: "blur(2px)",
-          transition: { duration: 0.14, ease: "easeIn" },
+          y: top ? 2 : -2,
+          scale: 0.97,
+          transition: { duration: 0.08, ease: "easeIn" },
         },
       };
 

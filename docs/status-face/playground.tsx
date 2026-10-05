@@ -13,7 +13,7 @@ const controls: ControlDef[] = [
       {
         label: "Status color",
         value: "",
-        swatch: "conic-gradient(#4fd15e, #3f84f2, #f5a524, #f83c3c, #4fd15e)",
+        swatch: "conic-gradient(#22c55e, #84cc16, #f59e0b, #ef4444, #22c55e)",
       },
       { label: "Violet", value: "#8b5cf6", swatch: "#8b5cf6" },
       { label: "Pink", value: "#ec4899", swatch: "#ec4899" },
@@ -29,7 +29,6 @@ const controls: ControlDef[] = [
       { label: "Great", value: "great" },
       { label: "Good", value: "good" },
       { label: "OK", value: "ok" },
-      { label: "Meh", value: "meh" },
       { label: "Bad", value: "bad" },
     ],
   },
