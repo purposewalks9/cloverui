@@ -1,42 +1,84 @@
 "use client";
 
 import * as React from "react";
-import { cva, type VariantProps } from "class-variance-authority";
 import { AnimatePresence, animate, motion, useReducedMotion } from "motion/react";
 
 import { cn } from "@/lib/utils";
 
-const statusFaceVariants = cva(
-  "inline-flex items-center gap-4 rounded-2xl bg-(--tint) py-4 pr-7 pl-4 transition-colors duration-300",
-  {
-    variants: {
-      status: {
-        great:
-          "[--face:#4fd15e] [--ink:#24a83a] [--tint:#edf9ee] dark:[--ink:#5ddc6c] dark:[--tint:rgb(79_209_94/0.12)]",
-        ok: "[--face:#3f84f2] [--ink:#3a83e2] [--tint:#e7effb] dark:[--ink:#6ea6f5] dark:[--tint:rgb(63_132_242/0.14)]",
-        attention:
-          "[--face:#f83c3c] [--ink:#e23b3b] [--tint:#fde9e9] dark:[--ink:#ff6b6b] dark:[--tint:rgb(248_60_60/0.13)]",
-      },
-    },
-    defaultVariants: { status: "great" },
-  },
-);
+export type StatusFaceStatus = "great" | "good" | "ok" | "meh" | "bad";
 
-export type StatusFaceStatus = NonNullable<VariantProps<typeof statusFaceVariants>["status"]>;
-
-export interface StatusFaceProps extends Omit<React.ComponentProps<"div">, "title"> {
+export interface StatusFaceProps extends Omit<React.ComponentProps<"svg">, "color"> {
   status?: StatusFaceStatus;
-  title?: string;
-  description?: string;
+  color?: string;
   blink?: boolean;
+  label?: string;
 }
 
 type Pixel = [x: number, y: number];
 
-const COPY: Record<StatusFaceStatus, { title: string; description: string }> = {
-  great: { title: "Doing Great!", description: "You are on the right track" },
-  ok: { title: "Doing OK", description: "You're doing pretty well" },
-  attention: { title: "Pay Attention!", description: "You're off track right now" },
+const STATUS: Record<StatusFaceStatus, { color: string; label: string; mouth: Pixel[] }> = {
+  great: {
+    color: "#4fd15e",
+    label: "Great",
+    mouth: [
+      [2, 7],
+      [9, 7],
+      [3, 8],
+      [4, 8],
+      [5, 8],
+      [6, 8],
+      [7, 8],
+      [8, 8],
+    ],
+  },
+  good: {
+    color: "#2fc4b2",
+    label: "Good",
+    mouth: [
+      [3, 7],
+      [8, 7],
+      [4, 8],
+      [5, 8],
+      [6, 8],
+      [7, 8],
+    ],
+  },
+  ok: {
+    color: "#3f84f2",
+    label: "OK",
+    mouth: [
+      [4, 8],
+      [5, 8],
+      [6, 8],
+      [7, 8],
+    ],
+  },
+  meh: {
+    color: "#f5a524",
+    label: "Meh",
+    mouth: [
+      [3, 8],
+      [4, 7],
+      [5, 7],
+      [6, 8],
+      [7, 8],
+      [8, 7],
+    ],
+  },
+  bad: {
+    color: "#f83c3c",
+    label: "Bad",
+    mouth: [
+      [3, 7],
+      [4, 7],
+      [5, 7],
+      [6, 7],
+      [7, 7],
+      [8, 7],
+      [2, 8],
+      [9, 8],
+    ],
+  },
 };
 
 const FACE_ROWS: [from: number, to: number][] = [
@@ -59,74 +101,31 @@ const EYES: Pixel[] = [
   [7, 4],
 ];
 
-const MOUTHS: Record<StatusFaceStatus, Pixel[]> = {
-  great: [
-    [2, 7],
-    [9, 7],
-    [3, 8],
-    [4, 8],
-    [5, 8],
-    [6, 8],
-    [7, 8],
-    [8, 8],
-  ],
-  ok: [
-    [4, 8],
-    [5, 8],
-    [6, 8],
-    [7, 8],
-  ],
-  attention: [
-    [3, 7],
-    [4, 7],
-    [5, 7],
-    [6, 7],
-    [7, 7],
-    [8, 7],
-    [2, 8],
-    [9, 8],
-  ],
-};
+const PIXEL_ORIGIN = { transformBox: "fill-box", transformOrigin: "center" } as const;
 
-const GLYPHS: Record<StatusFaceStatus, Pixel[]> = {
-  great: [
-    [4, 3],
-    [3, 4],
-    [5, 4],
-    [2, 5],
-    [6, 5],
-  ],
-  ok: [
-    [2, 4],
-    [3, 4],
-    [4, 4],
-    [5, 4],
-    [6, 4],
-  ],
-  attention: [
-    [2, 3],
-    [6, 3],
-    [3, 4],
-    [5, 4],
-    [4, 5],
-  ],
-};
-
-function PixelFace({ status, blink }: { status: StatusFaceStatus; blink: boolean }) {
+function StatusFace({
+  status = "great",
+  color,
+  blink = true,
+  label,
+  className,
+  style,
+  ...props
+}: StatusFaceProps) {
   const reduceMotion = useReducedMotion();
   const ref = React.useRef<SVGSVGElement>(null);
   const previous = React.useRef(status);
+  const config = STATUS[status];
+  const blinking = blink && !reduceMotion;
 
   React.useEffect(() => {
-    if (previous.current === status || !ref.current || reduceMotion) {
-      previous.current = status;
-      return;
-    }
+    if (previous.current === status) return;
     previous.current = status;
+    if (!ref.current || reduceMotion) return;
     const controls = animate(
       ref.current,
-      { scale: [1, 0.9, 1.04, 1] },
-      { duration: 0.45, ease: "easeOut" },
+      { scale: [1, 0.88, 1.05, 1] },
+      { duration: 0.5, ease: "easeOut" },
     );
     return () => controls.stop();
   }, [status, reduceMotion]);
@@ -134,12 +133,18 @@ function PixelFace({ status, blink }: { status: StatusFaceStatus; blink: boolean
   return (
     <svg
       ref={ref}
-      aria-hidden
+      role="img"
+      aria-label={label ?? config.label}
       viewBox="0 0 12 12"
       shapeRendering="crispEdges"
-      className="size-12 shrink-0 overflow-visible"
+      className={cn("size-12 shrink-0 overflow-visible", className)}
+      style={{ ...PIXEL_ORIGIN, ...style }}
+      {...props}
     >
-      <g className="fill-(--face) transition-[fill] duration-300">
+      <g
+        className="transition-[fill] duration-300 ease-out"
+        style={{ fill: color ?? config.color }}
+      >
         {FACE_ROWS.map(([from, to], y) => (
           <rect key={y} x={from} y={y} width={to - from + 1} height={1.02} />
         ))}
@@ -147,12 +152,12 @@ function PixelFace({ status, blink }: { status: StatusFaceStatus; blink: boolean
 
       <motion.g
         className="fill-neutral-950"
-        style={{ transformBox: "fill-box", transformOrigin: "center" }}
-        animate={blink && !reduceMotion ? { scaleY: [1, 1, 0.1, 1] } : { scaleY: 1 }}
+        style={PIXEL_ORIGIN}
+        animate={blinking ? { scaleY: [1, 1, 0.1, 1] } : { scaleY: 1 }}
         transition={
-          blink && !reduceMotion
+          blinking
             ? { duration: 3.6, times: [0, 0.94, 0.97, 1], repeat: Infinity, ease: "easeInOut" }
-            : undefined
+            : { duration: 0.1 }
         }
       >
         {EYES.map(([x, y]) => (
@@ -162,14 +167,14 @@ function PixelFace({ status, blink }: { status: StatusFaceStatus; blink: boolean
 
       <g className="fill-neutral-950">
         <AnimatePresence initial={false}>
-          {MOUTHS[status].map(([x, y]) => (
+          {config.mouth.map(([x, y]) => (
             <motion.rect
               key={`${x}-${y}`}
               x={x}
               y={y}
               width={1}
               height={1}
-              style={{ transformBox: "fill-box", transformOrigin: "center" }}
+              style={PIXEL_ORIGIN}
               initial={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0 }}
@@ -186,79 +191,4 @@ function PixelFace({ status, blink }: { status: StatusFaceStatus; blink: boolean
   );
 }
 
-function StatusGlyph({ status }: { status: StatusFaceStatus }) {
-  return (
-    <svg
-      aria-hidden
-      viewBox="0 0 9 9"
-      shapeRendering="crispEdges"
-      className="size-[1.15em] shrink-0"
-    >
-      <circle
-        cx={4.5}
-        cy={4.5}
-        r={4.5}
-        shapeRendering="auto"
-        className="fill-(--ink) transition-[fill] duration-300"
-      />
-      <g className="fill-white">
-        {GLYPHS[status].map(([x, y]) => (
-          <rect key={`${x}-${y}`} x={x} y={y} width={1} height={1} />
-        ))}
-      </g>
-    </svg>
-  );
-}
-
-function StatusFace({
-  status = "great",
-  title,
-  description,
-  blink = true,
-  className,
-  ...props
-}: StatusFaceProps) {
-  const reduceMotion = useReducedMotion();
-  const heading = title ?? COPY[status].title;
-  const detail = description ?? COPY[status].description;
-  const swap = reduceMotion
-    ? { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 } }
-    : {
-        initial: { opacity: 0, y: 6, filter: "blur(3px)" },
-        animate: { opacity: 1, y: 0, filter: "blur(0px)" },
-        exit: { opacity: 0, y: -6, filter: "blur(3px)" },
-      };
-
-  return (
-    <div role="status" className={cn(statusFaceVariants({ status }), className)} {...props}>
-      <PixelFace status={status} blink={blink} />
-
-      <div className="flex min-w-0 flex-col gap-0.5 text-base">
-        <AnimatePresence mode="popLayout" initial={false}>
-          <motion.span
-            key={heading}
-            {...swap}
-            transition={{ duration: 0.25, ease: "easeOut" }}
-            className="text-foreground font-medium whitespace-nowrap"
-          >
-            {heading}
-          </motion.span>
-        </AnimatePresence>
-
-        <AnimatePresence mode="popLayout" initial={false}>
-          <motion.span
-            key={`${status}-${detail}`}
-            {...swap}
-            transition={{ duration: 0.25, delay: reduceMotion ? 0 : 0.05, ease: "easeOut" }}
-            className="flex items-center gap-1.5 whitespace-nowrap text-(--ink) transition-colors duration-300"
-          >
-            <StatusGlyph status={status} />
-            {detail}
-          </motion.span>
-        </AnimatePresence>
-      </div>
-    </div>
-  );
-}
-
-export { StatusFace, statusFaceVariants };
+export { StatusFace };

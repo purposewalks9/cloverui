@@ -369,14 +369,14 @@
       "name": "status-face",
       "type": "registry:component",
       "title": "Status Face",
-      "description": "A status card with a pixel face that smiles, goes flat or frowns, with colors and text that change smoothly when the status changes.",
+      "description": "A pixel face with five moods, from a big green smile to a red frown. It blinks, and redraws its mouth pixel by pixel when the mood changes.",
       "files": [
         {
           "path": "registry/clover-ui/status-face.tsx",
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion", "class-variance-authority"],
+      "dependencies": ["motion"],
       "registryDependencies": [],
       "category": "feedback"
     }
