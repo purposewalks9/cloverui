@@ -101,23 +101,9 @@ function StatusFace({
   ...props
 }: StatusFaceProps) {
   const reduceMotion = useReducedMotion();
-  const ref = React.useRef<SVGSVGElement>(null);
   const eyesRef = React.useRef<SVGGElement>(null);
-  const previous = React.useRef(status);
   const config = STATUS[status];
   const blinking = blink && !reduceMotion;
-
-  React.useEffect(() => {
-    if (previous.current === status) return;
-    previous.current = status;
-    if (!ref.current || reduceMotion) return;
-    const controls = animate(
-      ref.current,
-      { scale: [1, 0.9, 1.04, 1] },
-      { duration: 0.2, ease: "easeOut" },
-    );
-    return () => controls.stop();
-  }, [status, reduceMotion]);
 
   React.useEffect(() => {
     const eyes = eyesRef.current;
@@ -148,17 +134,16 @@ function StatusFace({
 
   return (
     <svg
-      ref={ref}
       role="img"
       aria-label={label ?? config.label}
       viewBox="0 0 12 12"
       shapeRendering="crispEdges"
       className={cn("size-12 shrink-0 overflow-visible", className)}
-      style={{ ...PIXEL_ORIGIN, ...style }}
+      style={style}
       {...props}
     >
       <g
-        className="transition-[fill] duration-100 ease-out"
+        className="transition-[fill] duration-200 ease-in-out"
         style={{ fill: color ?? config.color }}
       >
         {FACE_ROWS.map(([from, to], y) => (
@@ -181,15 +166,10 @@ function StatusFace({
               y={y}
               width={1}
               height={1}
-              style={PIXEL_ORIGIN}
-              initial={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0 }}
-              transition={{
-                duration: reduceMotion ? 0.08 : 0.1,
-                delay: reduceMotion ? 0 : Math.abs(x - 5.5) * 0.01,
-                ease: "easeOut",
-              }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2, ease: "easeInOut" }}
             />
           ))}
         </AnimatePresence>

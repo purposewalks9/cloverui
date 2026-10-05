@@ -12,17 +12,28 @@ import {
 
 import { cn } from "@/lib/utils";
 
+export const BLOCK_TEXT_THEMES = {
+  halloween: { colors: ["#ea580c", "#6d28d9", "#1c1917"], textColor: "#fff7ed" },
+  classic: { colors: ["#16a34a", "#ff5a1f", "#0029ff"], textColor: "#f5f5f5" },
+  ocean: { colors: ["#0369a1", "#0d9488", "#1e3a8a"], textColor: "#f0f9ff" },
+  candy: { colors: ["#db2777", "#9333ea", "#e11d48"], textColor: "#fdf2f8" },
+  sunset: { colors: ["#dc2626", "#ea580c", "#b45309"], textColor: "#fff7ed" },
+} as const;
+
+export type BlockTextTheme = keyof typeof BLOCK_TEXT_THEMES;
+
 export interface BlockTextProps extends Omit<React.ComponentProps<"span">, "children" | "color"> {
   words?: string[];
+  theme?: BlockTextTheme;
   colors?: string[];
   textColor?: string;
   interval?: number;
   duration?: number;
   paused?: boolean;
+  shimmer?: boolean;
 }
 
-const DEFAULT_WORDS = ["Welcome", "Hello", "Thanks"];
-const DEFAULT_COLORS = ["#16a34a", "#ff5a1f", "#0029ff"];
+const DEFAULT_WORDS = ["Trick", "Treat", "Boo!"];
 const FACES = [0, 1, 2, 3];
 
 function faceStep(face: number, step: number) {
@@ -35,11 +46,13 @@ function Face({
   angle,
   word,
   color,
+  shimmer,
 }: {
   face: number;
   angle: MotionValue<number>;
   word: string;
   color: string;
+  shimmer: boolean;
 }) {
   const shade = useTransform(angle, (value) => {
     const turn = ((value - face * 90) * Math.PI) / 180;
@@ -50,11 +63,41 @@ function Face({
     <span
       className="absolute inset-0 flex items-center overflow-hidden px-[0.55em] backface-hidden"
       style={{
-        backgroundColor: color,
+        backgroundImage: `radial-gradient(120% 140% at 50% 0%, color-mix(in oklab, ${color} 62%, white) 0%, ${color} 42%, color-mix(in oklab, ${color} 66%, black) 100%)`,
         transform: `rotateX(${face * -90}deg) translateZ(calc(var(--block-h) / 2))`,
       }}
     >
-      <span className="relative whitespace-nowrap">{word}</span>
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-px bg-[linear-gradient(180deg,rgba(255,255,255,.28),transparent_42%)] opacity-80"
+      />
+      <span
+        aria-hidden
+        className="pointer-events-none absolute -inset-x-1/3 top-0 h-px bg-white/70 blur-sm"
+      />
+      {shimmer ? (
+        <motion.span
+          className="relative whitespace-nowrap [filter:drop-shadow(0_1px_0_rgb(0_0_0/0.18))]"
+          style={{
+            WebkitTextFillColor: "transparent",
+            backgroundColor: "currentColor",
+            backgroundImage: `linear-gradient(to right, currentColor 0%, color-mix(in oklab, ${color} 60%, white) 40%, color-mix(in oklab, ${color} 60%, white) 60%, currentColor 100%)`,
+            WebkitBackgroundClip: "text",
+            backgroundClip: "text",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "50% 200%",
+          }}
+          initial={{ backgroundPositionX: "250%" }}
+          animate={{ backgroundPositionX: ["-100%", "250%"] }}
+          transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 1.5, ease: "linear" }}
+        >
+          {word}
+        </motion.span>
+      ) : (
+        <span className="relative whitespace-nowrap [text-shadow:0_1px_0_rgb(0_0_0/0.18)]">
+          {word}
+        </span>
+      )}
       <motion.span className="absolute inset-0 bg-black" style={{ opacity: shade }} />
     </span>
   );
@@ -62,11 +105,13 @@ function Face({
 
 function BlockText({
   words = DEFAULT_WORDS,
-  colors = DEFAULT_COLORS,
-  textColor = "#f5f5f5",
+  theme = "halloween",
+  colors,
+  textColor,
   interval = 1.4,
-  duration = 0.65,
+  duration = 1.2,
   paused = false,
+  shimmer = true,
   className,
   style,
   ...props
@@ -76,7 +121,8 @@ function BlockText({
   const [step, setStep] = React.useState(0);
   const stepRef = React.useRef(0);
   const list = words.length > 0 ? words : [""];
-  const palette = colors.length > 0 ? colors : DEFAULT_COLORS;
+  const preset = BLOCK_TEXT_THEMES[theme] ?? BLOCK_TEXT_THEMES.halloween;
+  const palette: readonly string[] = colors && colors.length > 0 ? colors : preset.colors;
   const count = list.length;
 
   const transform = useTransform(
@@ -123,7 +169,7 @@ function BlockText({
         "relative inline-block align-middle text-4xl leading-none font-bold tracking-tight [--block-h:1.9em] perspective-[14em]",
         className,
       )}
-      style={{ color: textColor, ...style }}
+      style={{ color: textColor ?? preset.textColor, ...style }}
       {...props}
     >
       <span className="sr-only">{list.join(", ")}</span>
@@ -154,6 +200,7 @@ function BlockText({
               angle={angle}
               word={list[index]}
               color={palette[index % palette.length]}
+              shimmer={shimmer && !reduceMotion}
             />
           );
         })}
