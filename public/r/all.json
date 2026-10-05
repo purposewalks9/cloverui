@@ -24,7 +24,9 @@
     "https://cloverui.vercel.app/r/cursor-tag.json",
     "https://cloverui.vercel.app/r/clicky.json",
     "https://cloverui.vercel.app/r/mic.json",
-    "https://cloverui.vercel.app/r/city-locator.json"
+    "https://cloverui.vercel.app/r/city-locator.json",
+    "https://cloverui.vercel.app/r/rich-tooltip.json",
+    "https://cloverui.vercel.app/r/block-text.json"
   ],
   "type": "registry:item"
 }

@@ -16,7 +16,7 @@ interface ControlPanelProps {
 }
 
 function isColorControl(control: ControlDef) {
-  if (control.type === "color") return true;
+  if (control.type === "color" || control.type === "color-list") return true;
   if (control.type !== "select") return false;
   return control.prop === "color" || control.options.every((opt) => Boolean(opt.swatch));
 }
@@ -161,8 +161,28 @@ function Field({
               <Input
                 id={item.prop}
                 value={(values[item.prop] as string) ?? ""}
-                onChange={(e) => onChange(item.prop, e.target.value)}
+                onChange={(e) => onChange(e.target.value, item.prop)}
                 className="h-8 w-full text-xs"
+              />
+            </div>
+          ))}
+        </div>
+      );
+
+    case "color-list":
+      return (
+        <div className="flex flex-col gap-3">
+          {control.items.map((item) => (
+            <div key={item.prop} className="flex flex-col gap-2">
+              <div className="flex items-center justify-between">
+                <FieldLabel>{item.label}</FieldLabel>
+                <span className="text-muted-foreground font-mono text-[11px] uppercase">
+                  {values[item.prop] as string}
+                </span>
+              </div>
+              <ColorField
+                value={values[item.prop] as string}
+                onChange={(next) => onChange(next, item.prop)}
               />
             </div>
           ))}

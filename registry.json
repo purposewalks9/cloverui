@@ -30,7 +30,9 @@
         "https://cloverui.vercel.app/r/cursor-tag.json",
         "https://cloverui.vercel.app/r/clicky.json",
         "https://cloverui.vercel.app/r/mic.json",
-        "https://cloverui.vercel.app/r/city-locator.json"
+        "https://cloverui.vercel.app/r/city-locator.json",
+        "https://cloverui.vercel.app/r/rich-tooltip.json",
+        "https://cloverui.vercel.app/r/block-text.json"
       ]
     },
     {
@@ -347,6 +349,36 @@
       "dependencies": ["motion", "class-variance-authority"],
       "registryDependencies": [],
       "category": "display"
+    },
+    {
+      "name": "rich-tooltip",
+      "type": "registry:component",
+      "title": "Rich Tooltip",
+      "description": "A clean tooltip with a soft tail that springs in on hover or focus, with optional route chips and a highlighted badge.",
+      "files": [
+        {
+          "path": "registry/clover-ui/rich-tooltip.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": ["motion", "class-variance-authority"],
+      "registryDependencies": [],
+      "category": "display"
+    },
+    {
+      "name": "block-text",
+      "type": "registry:component",
+      "title": "Block Text",
+      "description": "A colored 3D block that keeps rolling forward, bringing the next word up from the bottom as the current one tips away over the top.",
+      "files": [
+        {
+          "path": "registry/clover-ui/block-text.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": ["motion"],
+      "registryDependencies": [],
+      "category": "text"
     }
   ]
 }
