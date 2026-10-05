@@ -6,6 +6,12 @@ export type ControlDef =
       label: string;
       items: { prop: string; label: string }[];
     }
+  | {
+      type: "color-list";
+      prop: string;
+      label: string;
+      items: { prop: string; label: string }[];
+    }
   | { type: "boolean"; prop: string; label: string }
   | {
       type: "select";
@@ -47,7 +53,7 @@ export function generateCode(
   const controlAttrs = controls
     .filter((c) => c.prop !== "children")
     .map((c) => {
-      if (c.type === "text-list") {
+      if (c.type === "text-list" || c.type === "color-list") {
         const items = c.items
           .map((item) => values[item.prop])
           .filter((value): value is string => typeof value === "string" && value.trim().length > 0);

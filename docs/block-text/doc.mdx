@@ -1,0 +1,40 @@
+import { BlockTextPlayground } from "./playground"
+
+<BlockTextPlayground />
+
+## Installation
+
+<InstallationTabs item="block-text">
+```tsx file=../../registry/clover-ui/block-text.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { BlockText } from "@/components/block-text";
+
+<BlockText
+  words={["Welcome", "Hello", "Thanks"]}
+  colors={["#16a34a", "#ff5a1f", "#0029ff"]}
+  className="text-6xl"
+/>
+```
+
+The block works like a 3D cube that keeps rolling forward. The current word tips away over the top while the next one comes up from the bottom, and the loop goes on forever.
+
+Each word gets the color at the same position in `colors`. If there are fewer colors than words, the colors repeat. The block is as wide as the longest word, so it never jumps in size.
+
+Set the size with a text class in `className`. Everything else scales with it. When reduced motion is on, the words swap without the roll.
+
+## Props
+
+<PropsTable data={[
+  { name: "words", type: "string[]", default: '["Welcome", "Hello", "Thanks"]', description: "Words shown in order, one per side of the block." },
+  { name: "colors", type: "string[]", default: '["#16a34a", "#ff5a1f", "#0029ff"]', description: "Block color for each word." },
+  { name: "textColor", type: "string", default: '"#f5f5f5"' },
+  { name: "interval", type: "number", default: "1.4", description: "Seconds each word stays before the block rolls." },
+  { name: "duration", type: "number", default: "0.65", description: "Seconds one roll takes." },
+  { name: "paused", type: "boolean", default: "false", description: "Stops on the current word." },
+  { name: "className", type: "string", description: "Use a text size class here to size the block." },
+]} />
