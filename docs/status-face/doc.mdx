@@ -1,0 +1,40 @@
+import { StatusFacePlayground } from "./playground"
+
+<StatusFacePlayground />
+
+## Installation
+
+<InstallationTabs item="status-face">
+```tsx file=../../registry/clover-ui/status-face.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { StatusFace } from "@/components/status-face";
+
+<StatusFace status="great" />
+<StatusFace status="good" />
+<StatusFace status="ok" />
+<StatusFace status="meh" />
+<StatusFace status="bad" />
+```
+
+A small pixel face with five moods. Each one has its own mouth and color: green and smiling for `great`, teal with a small smile for `good`, blue and flat for `ok`, amber and wobbly for `meh`, and red and frowning for `bad`.
+
+When `status` changes, the face gives a small bounce, the mouth redraws pixel by pixel and the color fades over. It also blinks every few seconds. Set `blink={false}` to keep it still. With reduced motion on, it doesn't blink or bounce and changes with a simple fade.
+
+Set the size with a class, for example `className="size-20"`. Pass `color` to use any color instead of the status color.
+
+Screen readers read the mood name, such as "Great". Use `label` to give it your own wording.
+
+## Props
+
+<PropsTable data={[
+  { name: "status", type: '"great" | "good" | "ok" | "meh" | "bad"', default: '"great"', description: "Sets the mouth and the color." },
+  { name: "color", type: "string", description: "Face color. Replaces the status color." },
+  { name: "blink", type: "boolean", default: "true", description: "Makes the face blink every few seconds." },
+  { name: "label", type: "string", description: "What screen readers say. Defaults to the mood name." },
+  { name: "className", type: "string", default: '"size-12"', description: "Use a size class to change how big the face is." },
+]} />
