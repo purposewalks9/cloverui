@@ -14,29 +14,23 @@ import { RichTooltipPlayground } from "./playground"
 ```tsx
 import { RichTooltip } from "@/components/rich-tooltip";
 
-<RichTooltip label="Change of airport" route={["IST", "SAW"]} badge="1d 2h">
-  <button>Details</button>
+<RichTooltip label="Copy link">
+  <button>Copy</button>
 </RichTooltip>
 ```
 
-Wrap any element. The tooltip springs in when the pointer rests on it or it gets keyboard focus, and leaves when the pointer moves away, focus moves on, or Escape is pressed. On touch screens, tap to show it and tap anywhere else to hide it.
+Wrap any element. The tooltip fades in right away when the pointer rests on it or it gets keyboard focus, and leaves when the pointer moves away, focus moves on, or Escape is pressed. On touch screens, tap to show it and tap anywhere else to hide it. It takes about a tenth of a second to appear, with no bounce.
 
-`label` is the main text. `route` adds small chips joined by arrows, and `badge` adds one highlighted chip at the end, such as a time or a count. All three are optional apart from `label`.
+The `solid` variant uses the theme's text color, so it is dark in light mode and light in dark mode. `surface` matches the page, with a thin border. Set `delay` if you want it to wait a little before showing.
 
-The `solid` variant uses the theme's text color, so it is dark in light mode and light in dark mode. `surface` matches the page and relies on its shadow. Pass `color` and `textColor` for any other color. The chips and badge follow it automatically.
-
-Set `open` to keep it visible, for example in a static mockup. Text size and spacing scale with `contentClassName`, for example `contentClassName="text-base"`.
+Set `open` to keep it visible, for example in a static mockup. Change the text size with `contentClassName`, for example `contentClassName="text-sm"`.
 
 ## Props
 
 <PropsTable data={[
-  { name: "label", type: "ReactNode", description: "Main text of the tooltip." },
-  { name: "route", type: "string[]", description: "Chips joined by arrows, such as airport codes." },
-  { name: "badge", type: "ReactNode", description: "One highlighted chip at the end." },
-  { name: "variant", type: '"solid" | "surface"', default: '"solid"', description: "solid uses the theme text color, surface uses the page color." },
-  { name: "side", type: '"top" | "bottom"', default: '"top"', description: "Where the tooltip sits. The tail points at the element." },
-  { name: "color", type: "string", description: "Custom background color. Replaces the variant colors." },
-  { name: "textColor", type: "string", default: '"#ffffff"', description: "Text color when color is set." },
+  { name: "label", type: "ReactNode", description: "Text of the tooltip." },
+  { name: "variant", type: '"solid" | "surface"', default: '"solid"', description: "solid uses the theme text color, surface uses the page color with a border." },
+  { name: "side", type: '"top" | "bottom"', default: '"top"', description: "Where the tooltip sits. The arrow points at the element." },
   { name: "open", type: "boolean", description: "Keeps the tooltip shown (true) or hidden (false). Leave it out to show on hover and focus." },
   { name: "delay", type: "number", default: "0", description: "Milliseconds to wait on hover before showing. It shows right away by default." },
   { name: "contentClassName", type: "string", description: "Classes for the tooltip itself, such as a text size." },

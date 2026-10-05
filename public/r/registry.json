@@ -355,7 +355,7 @@
       "name": "rich-tooltip",
       "type": "registry:component",
       "title": "Rich Tooltip",
-      "description": "A clean tooltip with a soft tail that springs in on hover or focus, with optional route chips and a highlighted badge.",
+      "description": "A simple, fast tooltip that fades in on hover or focus, with a small arrow pointing at its element.",
       "files": [
         {
           "path": "registry/clover-ui/rich-tooltip.tsx",

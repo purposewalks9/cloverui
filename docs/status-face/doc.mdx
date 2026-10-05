@@ -22,7 +22,7 @@ import { StatusFace } from "@/components/status-face";
 
 A small pixel face with four moods. Each one has its own mouth and color, from best to worst: green with a big smile for `great`, lime with a small smile for `good`, amber and flat for `ok`, and red and frowning for `bad`.
 
-When `status` changes, the face gives a quick bounce, the mouth redraws pixel by pixel and the color fades over. It also blinks quickly at random moments every few seconds, sometimes twice, so it feels alive. Set `blink={false}` to keep it still. With reduced motion on, it doesn't blink or bounce and changes with a simple fade.
+When `status` changes, the mouth and the color fade smoothly into the new mood. It also blinks quickly at random moments every few seconds, sometimes twice, so it feels alive. Set `blink={false}` to keep it still. With reduced motion on, it doesn't blink.
 
 Set the size with a class, for example `className="size-20"`. Pass `color` to use any color instead of the status color.
 

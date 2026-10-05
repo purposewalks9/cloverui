@@ -2,60 +2,55 @@
 
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
-import { AnimatePresence, motion, useReducedMotion, type Variants } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 import { cn } from "@/lib/utils";
 
-const bubbleVariants = cva(
-  "relative flex flex-col items-center text-sm font-medium whitespace-nowrap",
+const tooltipVariants = cva(
+  "relative rounded-md px-2 py-1 text-xs leading-tight font-medium whitespace-nowrap shadow-md",
   {
     variants: {
       variant: {
-        solid:
-          "[--tip-bg:var(--foreground)] [--tip-chip:24%] [--tip-fg:var(--background)] dark:[--tip-chip:9%]",
-        surface:
-          "[--tip-bg:var(--popover)] [--tip-chip:9%] [--tip-fg:var(--popover-foreground)] dark:[--tip-chip:24%]",
-      },
-      side: {
-        top: "",
-        bottom: "flex-col-reverse",
+        solid: "bg-foreground text-background",
+        surface: "bg-popover text-popover-foreground border-border border",
       },
     },
-    defaultVariants: { variant: "solid", side: "top" },
+    defaultVariants: { variant: "solid" },
   },
 );
 
-export type RichTooltipVariant = NonNullable<VariantProps<typeof bubbleVariants>["variant"]>;
-export type RichTooltipSide = NonNullable<VariantProps<typeof bubbleVariants>["side"]>;
+const arrowVariants = cva("absolute left-1/2 size-1.5 -translate-x-1/2 rotate-45", {
+  variants: {
+    variant: {
+      solid: "bg-foreground",
+      surface: "bg-popover border-border",
+    },
+    side: {
+      top: "-bottom-[3px]",
+      bottom: "-top-[3px]",
+    },
+  },
+  compoundVariants: [
+    { variant: "surface", side: "top", className: "border-r border-b" },
+    { variant: "surface", side: "bottom", className: "border-t border-l" },
+  ],
+  defaultVariants: { variant: "solid", side: "top" },
+});
 
-export interface RichTooltipProps
-  extends Omit<React.ComponentProps<"span">, "color">, VariantProps<typeof bubbleVariants> {
+export type RichTooltipVariant = NonNullable<VariantProps<typeof tooltipVariants>["variant"]>;
+export type RichTooltipSide = NonNullable<VariantProps<typeof arrowVariants>["side"]>;
+
+export interface RichTooltipProps extends Omit<React.ComponentProps<"span">, "color"> {
   label: React.ReactNode;
-  route?: string[];
-  badge?: React.ReactNode;
-  color?: string;
-  textColor?: string;
+  variant?: RichTooltipVariant;
+  side?: RichTooltipSide;
   open?: boolean;
   delay?: number;
   contentClassName?: string;
 }
 
-const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 3 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.12, ease: [0.22, 1, 0.36, 1] } },
-};
-
-const staticItemVariants: Variants = {
-  hidden: { opacity: 1 },
-  show: { opacity: 1 },
-};
-
 function RichTooltip({
   label,
-  route,
-  badge,
-  color,
-  textColor = "#ffffff",
   variant = "solid",
   side = "top",
   open,
@@ -79,9 +74,7 @@ function RichTooltip({
   const [touched, setTouched] = React.useState(false);
   const visible = open ?? active;
   const top = side === "top";
-  const hasRoute = Boolean(route && route.length > 0);
-  const hasBadge = badge != null && badge !== "";
-  const hasExtras = hasRoute || hasBadge;
+  const offset = reduceMotion ? 0 : top ? 2 : -2;
 
   const clear = React.useCallback(() => {
     if (timer.current) clearTimeout(timer.current);
@@ -113,36 +106,6 @@ function RichTooltip({
     document.addEventListener("pointerdown", onDown);
     return () => document.removeEventListener("pointerdown", onDown);
   }, [touched, hide]);
-
-  const bubble: Variants = reduceMotion
-    ? {
-        hidden: { opacity: 0 },
-        show: { opacity: 1, transition: { duration: 0.08 } },
-        exit: { opacity: 0, transition: { duration: 0.06 } },
-      }
-    : {
-        hidden: { opacity: 0, y: top ? 4 : -4, scale: 0.94 },
-        show: {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          transition: {
-            type: "spring",
-            duration: 0.2,
-            bounce: 0.2,
-            opacity: { duration: 0.08 },
-            staggerChildren: 0.02,
-          },
-        },
-        exit: {
-          opacity: 0,
-          y: top ? 2 : -2,
-          scale: 0.97,
-          transition: { duration: 0.08, ease: "easeIn" },
-        },
-      };
-
-  const item = reduceMotion ? staticItemVariants : itemVariants;
 
   const trigger = React.isValidElement<{ "aria-describedby"?: string }>(children)
     ? React.cloneElement(children, { "aria-describedby": visible ? id : undefined })
@@ -187,89 +150,23 @@ function RichTooltip({
 
       <AnimatePresence>
         {visible && (
-          <span
+          <motion.span
+            id={id}
+            role="tooltip"
+            initial={{ opacity: 0, y: offset }}
+            animate={{ opacity: 1, y: 0, transition: { duration: 0.12, ease: "easeOut" } }}
+            exit={{ opacity: 0, transition: { duration: 0.08, ease: "easeIn" } }}
             className={cn(
-              "pointer-events-none absolute left-1/2 z-50 w-max -translate-x-1/2",
-              top ? "bottom-full mb-1.5" : "top-full mt-1.5",
+              "pointer-events-none absolute left-1/2 z-50 w-max",
+              top ? "bottom-full mb-2" : "top-full mt-2",
             )}
+            style={{ x: "-50%" }}
           >
-            <motion.span
-              id={id}
-              role="tooltip"
-              variants={bubble}
-              initial="hidden"
-              animate="show"
-              exit="exit"
-              style={{
-                transformOrigin: top ? "50% 100%" : "50% 0%",
-                ...(color
-                  ? ({
-                      "--tip-bg": color,
-                      "--tip-fg": textColor,
-                      "--tip-chip": "24%",
-                    } as React.CSSProperties)
-                  : null),
-              }}
-              className={cn(
-                bubbleVariants({ variant, side }),
-                "[filter:drop-shadow(0_0_0.5px_rgb(0_0_0/0.2))_drop-shadow(0_2px_3px_rgb(0_0_0/0.06))_drop-shadow(0_10px_18px_rgb(0_0_0/0.1))]",
-                "dark:[filter:drop-shadow(0_0_0.5px_rgb(255_255_255/0.22))_drop-shadow(0_10px_18px_rgb(0_0_0/0.5))]",
-                contentClassName,
-              )}
-            >
-              <span
-                className={cn(
-                  "flex items-center gap-[0.55em] rounded-[0.85em] bg-(--tip-bg) bg-linear-to-b from-white/[0.07] to-transparent py-[0.42em] pl-[0.9em] text-(--tip-fg) shadow-[inset_0_1px_0_rgb(255_255_255/0.12)]",
-                  hasExtras ? "pr-[0.45em]" : "pr-[0.9em]",
-                )}
-              >
-                <motion.span variants={item} className="shrink-0 py-[0.1em]">
-                  {label}
-                </motion.span>
-
-                {hasRoute && (
-                  <motion.span variants={item} className="flex shrink-0 items-center gap-[0.3em]">
-                    {route?.map((stop, index) => (
-                      <React.Fragment key={`${stop}-${index}`}>
-                        {index > 0 && (
-                          <svg
-                            aria-hidden
-                            viewBox="0 0 24 24"
-                            className="size-[0.95em] shrink-0 fill-none stroke-current stroke-[2.6] opacity-70"
-                          >
-                            <path d="m9 6 6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
-                        )}
-                        <span className="rounded-[0.45em] bg-[color-mix(in_oklab,var(--tip-fg)_var(--tip-chip),transparent)] px-[0.45em] py-[0.1em] font-semibold">
-                          {stop}
-                        </span>
-                      </React.Fragment>
-                    ))}
-                  </motion.span>
-                )}
-
-                {hasBadge && (
-                  <motion.span
-                    variants={item}
-                    className="shrink-0 rounded-[0.45em] bg-(--tip-fg) px-[0.45em] py-[0.1em] font-semibold text-(--tip-bg) tabular-nums"
-                  >
-                    {badge}
-                  </motion.span>
-                )}
-              </span>
-
-              <svg
-                aria-hidden
-                viewBox="0 0 16 7"
-                className={cn(
-                  "h-[0.45em] w-[1.05em] shrink-0 fill-(--tip-bg)",
-                  top ? "-mt-px" : "-mb-px rotate-180",
-                )}
-              >
-                <path d="M0 0C4.2 0 5.6 7 8 7S11.8 0 16 0Z" />
-              </svg>
-            </motion.span>
-          </span>
+            <span className={cn(tooltipVariants({ variant }), "block", contentClassName)}>
+              {label}
+              <span aria-hidden className={arrowVariants({ variant, side })} />
+            </span>
+          </motion.span>
         )}
       </AnimatePresence>
     </span>

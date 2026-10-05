@@ -1,21 +1,24 @@
 "use client";
 
-import { BlockText } from "@/registry/clover-ui/block-text";
+import { BLOCK_TEXT_THEMES, BlockText, type BlockTextTheme } from "@/registry/clover-ui/block-text";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
 import type { ControlDef } from "@/lib/playground";
 
+function bands([a, b, c]: readonly string[]) {
+  return `linear-gradient(135deg, ${a} 0 40%, ${b} 40% 70%, ${c} 70%)`;
+}
+
 const controls: ControlDef[] = [
   {
-    type: "color-list",
-    prop: "colors",
-    label: "Colors",
-    items: [
-      { prop: "color1", label: "Block 1" },
-      { prop: "color2", label: "Block 2" },
-      { prop: "color3", label: "Block 3" },
-    ],
+    type: "select",
+    prop: "theme",
+    label: "Theme",
+    options: (Object.keys(BLOCK_TEXT_THEMES) as BlockTextTheme[]).map((theme) => ({
+      label: theme[0].toUpperCase() + theme.slice(1),
+      value: theme,
+      swatch: bands(BLOCK_TEXT_THEMES[theme].colors),
+    })),
   },
-  { type: "color", prop: "textColor", label: "Text color" },
   {
     type: "text-list",
     prop: "words",
@@ -28,19 +31,18 @@ const controls: ControlDef[] = [
   },
   { type: "number", prop: "interval", label: "Pause (s)", min: 0.4, max: 4, step: 0.1 },
   { type: "number", prop: "duration", label: "Roll (s)", min: 0.2, max: 1.5, step: 0.05 },
+  { type: "boolean", prop: "shimmer", label: "Shimmer" },
   { type: "boolean", prop: "paused", label: "Paused" },
 ];
 
 const defaultProps = {
-  color1: "#16a34a",
-  color2: "#ff5a1f",
-  color3: "#0029ff",
-  textColor: "#f5f5f5",
-  word1: "Welcome",
-  word2: "Hello",
-  word3: "Thanks",
+  theme: "halloween",
+  word1: "Trick",
+  word2: "Treat",
+  word3: "Boo!",
   interval: 1.4,
-  duration: 0.65,
+  duration: 1.2,
+  shimmer: true,
   paused: false,
 };
 
@@ -59,11 +61,11 @@ export function BlockTextPlayground() {
       render={(values) => (
         <div className="flex min-h-[260px] w-full items-center justify-center">
           <BlockText
+            theme={values.theme as BlockTextTheme}
             words={filled(values, ["word1", "word2", "word3"])}
-            colors={filled(values, ["color1", "color2", "color3"])}
-            textColor={values.textColor as string}
             interval={values.interval as number}
             duration={values.duration as number}
+            shimmer={values.shimmer as boolean}
             paused={values.paused as boolean}
             className="text-5xl sm:text-6xl"
           />
