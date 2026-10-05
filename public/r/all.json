@@ -27,7 +27,8 @@
     "https://cloverui.vercel.app/r/rich-tooltip.json",
     "https://cloverui.vercel.app/r/block-text.json",
     "https://cloverui.vercel.app/r/status-face.json",
-    "https://cloverui.vercel.app/r/spooky-tv.json"
+    "https://cloverui.vercel.app/r/spooky-tv.json",
+    "https://cloverui.vercel.app/r/sticker-burst.json"
   ],
   "type": "registry:item"
 }
