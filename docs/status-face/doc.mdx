@@ -1,0 +1,36 @@
+import { StatusFacePlayground } from "./playground"
+
+<StatusFacePlayground />
+
+## Installation
+
+<InstallationTabs item="status-face">
+```tsx file=../../registry/clover-ui/status-face.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { StatusFace } from "@/components/status-face";
+
+<StatusFace status="great" />
+<StatusFace status="ok" />
+<StatusFace status="attention" description="Two tasks are overdue" />
+```
+
+A pixel face shows how things are going. Each status has its own color, face, title and description. Pass `title` or `description` to use your own text.
+
+When `status` changes, the mouth redraws pixel by pixel, the colors fade over and the text slides in. The face blinks now and then. Set `blink={false}` to keep it still. With reduced motion on, it doesn't blink and changes with a simple fade.
+
+The card is as wide as its text. Add `className="w-full"` to stretch it.
+
+## Props
+
+<PropsTable data={[
+  { name: "status", type: '"great" | "ok" | "attention"', default: '"great"', description: "Sets the face, the colors and the default text." },
+  { name: "title", type: "string", description: "Replaces the default title, such as \"Doing Great!\"." },
+  { name: "description", type: "string", description: "Replaces the default line under the title." },
+  { name: "blink", type: "boolean", default: "true", description: "Makes the face blink every few seconds." },
+  { name: "className", type: "string" },
+]} />
