@@ -1,11 +1,11 @@
-import { CityLocatorPlayground } from "./playground"
+import { PinDropPlayground } from "./playground"
 
-<CityLocatorPlayground />
+<PinDropPlayground />
 
 ## Installation
 
-<InstallationTabs item="city-locator">
-```tsx file=../../registry/clover-ui/city-locator.tsx
+<InstallationTabs item="pin-drop">
+```tsx file=../../registry/clover-ui/pin-drop.tsx
 ```
 </InstallationTabs>
 
@@ -15,21 +15,21 @@ import { CityLocatorPlayground } from "./playground"
 "use client";
 
 import { useState } from "react";
-import { CityLocator } from "@/components/city-locator";
+import { PinDrop } from "@/components/pin-drop";
 
 export function MyLocation() {
   const [locate, setLocate] = useState(false);
 
   return (
     <>
-      <CityLocator size={420} place="London" locate={locate} autoRotate showAtmosphere />
+      <PinDrop size={420} place="London" locate={locate} autoRotate showAtmosphere />
       <button onClick={() => setLocate(true)}>Use my location</button>
     </>
   );
 }
 ```
 
-City Locator is a display component that shows a city on a real 3D Earth: where someone lives on a profile, an office on a contact page, or where a visitor is browsing from. It's drawn with WebGL. It spins slowly until it has a location, then turns to face it, marks the spot with a softly zooming red pin and its name, and keeps swaying gently around it. Drag it to look around, and it eases back when you let go. The background is transparent, so it sits on any page in light or dark mode, and it shrinks to fit narrow screens.
+Pin Drop is a cartoon 3D globe that shows a city: where someone lives on a profile, an office on a contact page, or where a visitor is browsing from. It's drawn with WebGL: green land with raised coastlines on a blue ocean. It spins slowly until it has a location, then turns to face it, drops a softly zooming red pin with the place name, and keeps swaying gently around it. Drag or flick it to look around, and it eases back when you let go. The background is transparent, so it sits on any page in light or dark mode, and it shrinks to fit narrow screens.
 
 ### Finding the visitor's city
 
@@ -60,7 +60,7 @@ Use `onStatusChange` to show what's happening next to the globe:
 Pass `place` with a city name and the globe turns straight to it, with the name under the pin:
 
 ```tsx
-<CityLocator place="London" />
+<PinDrop place="London" />
 ```
 
 Any city, state or country works, in any language: "London", "Awka", "Texas", "Japan". The globe looks the name up a moment after typing stops, then turns to it.
@@ -79,9 +79,32 @@ If you already have coordinates, pass `location` with a latitude and longitude, 
 
 Each update includes `accuracy` in meters, so you can tell how good a reading is.
 
+### Colors and style
+
+Pass `colors` to restyle the globe. You can set any of the five colors and leave the rest as they are. Any CSS color works, such as hex, `rgb()`, `hsl()` or `oklch()`:
+
+```tsx
+<PinDrop
+  place="Tokyo"
+  colors={{ ocean: "#1e1b4b", deepOcean: "#0b0a24", land: "#f472b6", coast: "#9d174d", glow: "#a78bfa" }}
+/>
+```
+
+- `ocean`: the sea where the light hits it.
+- `deepOcean`: the sea toward the edges, and the dark rim.
+- `land`: the top of the land.
+- `coast`: the raised edge under the land.
+- `glow`: the atmosphere around the globe.
+
+The defaults are exported as `pinDropColors`. `relief` sets how raised the land looks: `0` is flat, `1` is the default and `3` is the most.
+
+### Speed
+
+The globe only does work when something changes. When it is standing still, scrolled out of view or in a background tab, it doesn't draw at all. The world map is downloaded once and shared by every globe on the page, and places you've already searched are remembered, so they show up instantly. If the graphics card resets, the globe redraws itself on its own.
+
 ### Earth image
 
-The globe uses NASA's Blue Marble image, which is free to use. By default it loads from `cloverui.vercel.app`. To host it yourself, save [earth.jpg](https://cloverui.vercel.app/textures/earth.jpg) to your `public` folder and pass `texture="/earth.jpg"`. Any 2:1 world map image works.
+The land comes from a black and white world map: white is land and black is sea. It's made from Natural Earth outlines, which are free to use. By default it loads from `cloverui.vercel.app`. To host it yourself, save [earth-land.png](https://cloverui.vercel.app/textures/earth-land.png) to your `public` folder and pass `texture="/earth-land.png"`. Any 2:1 black and white world map works.
 
 ## Props
 
@@ -96,13 +119,15 @@ The globe uses NASA's Blue Marble image, which is free to use. By default it loa
   { name: "interactive", type: "boolean", default: "true", description: "Allow dragging the globe with a mouse, pen or finger." },
   { name: "autoRotate", type: "boolean", default: "true", description: "Spin slowly while there is no location. Once there is one, the globe keeps swaying gently around it so it feels alive, and the marker stays in view." },
   { name: "autoRotateSpeed", type: "number", default: "6", description: "Spin speed in degrees per second." },
+  { name: "colors", type: "{ ocean?: string; deepOcean?: string; land?: string; coast?: string; glow?: string }", default: "pinDropColors", description: "Globe colors. Set only the ones you want to change. See Colors and style above." },
+  { name: "relief", type: "number", default: "1", description: "How raised the land looks, from 0 (flat) to 3." },
   { name: "showAtmosphere", type: "boolean", default: "true", description: "Show the soft blue glow around the edge." },
-  { name: "marker", type: "boolean | { color?: string; ringColor?: string }", default: "true", description: "Show the location pin, or set its colors. The default is a red pin with a white outline and white label text." },
+  { name: "marker", type: "boolean | { color?: string; ringColor?: string }", default: "true", description: "Show the location pin, or set its colors. The default is a red pin with a white outline. The name sits under it on a dark pill so it stays readable at any size, and `ringColor` sets the text color." },
   { name: "markerZoom", type: "boolean", default: "true", description: "Gently zoom the pin in and out." },
-  { name: "texture", type: "string", default: "Clover UI hosted earth.jpg", description: "URL of a 2:1 world map image. It must allow cross-origin loading." },
-  { name: "onLocationChange", type: "(position: CityLocatorPosition) => void", description: "Called once with lat, lng, accuracy and timestamp when the visitor's position is found." },
+  { name: "texture", type: "string", default: "Clover UI hosted earth-land.png", description: "URL of a 2:1 land map, white for land and black for sea. It must allow cross-origin loading." },
+  { name: "onLocationChange", type: "(position: PinDropPosition) => void", description: "Called once with lat, lng, accuracy and timestamp when the visitor's position is found." },
   { name: "onPermissionChange", type: "(permission: \"prompt\" | \"granted\" | \"denied\") => void", description: "Called when the location permission changes while locate is on." },
-  { name: "onStatusChange", type: "(status: CityLocatorStatus) => void", description: "Called when the locate state changes. See States above." },
+  { name: "onStatusChange", type: "(status: PinDropStatus) => void", description: "Called when the locate state changes. See States above." },
   { name: "className", type: "string", description: "Extra classes for the root element." },
 ]} />
 
