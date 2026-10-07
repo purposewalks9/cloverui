@@ -1,0 +1,187 @@
+import { GhostPlayground } from "./playground"
+
+<GhostPlayground />
+
+## Installation
+
+<InstallationTabs item="ghost">
+```tsx file=../../registry/clover-ui/ghost.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+The ghost is a little slime buddy that floats over your page, stays near the cursor and reacts to what people point at with a single word in a cartoon thought cloud. Setting it up takes three steps.
+
+### 1. Add it once
+
+Put it in your root layout so it's on every page.
+
+```tsx
+import { Ghost } from "@/components/ghost";
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>
+        {children}
+        <Ghost />
+      </body>
+    </html>
+  );
+}
+```
+
+That's enough to bring it to life. It says "boo" when it arrives, reacts to buttons and links with "ooh", "bye" when the cursor leaves the page, "yay" when it comes back, and "zzz" when nothing moves for a while.
+
+### 2. Label parts of your page
+
+Add `data-ghost` to anything you want it to react to. Add `data-ghost-press` for a different word when it's clicked.
+
+```tsx
+<div data-ghost="profile">...</div>
+<div data-ghost="card" data-ghost-press="opened">...</div>
+```
+
+### 3. Teach it your design system
+
+Instead of labeling every element, give it a list of CSS selectors and words. This works with any design system, because every library already has selectors for its parts: class names, `data-slot`, `role`, `aria-label` and so on. The first selector that matches wins, so put the specific ones first.
+
+```tsx
+<Ghost
+  reactions={{
+    "[aria-label='Copy code']": { hover: "copy", press: "copied" },
+    "[data-slot='card']": "card",
+    "[role='tab']": "tabs",
+    "input, textarea": "typing",
+    pre: "code",
+    "a[href^='http']": "away",
+  }}
+/>
+```
+
+For full control, pass a function instead. It gets the element under the cursor and `"hover"` or `"press"`, and returns a word, or nothing to stay quiet. Use `message` to make it react right away, for example when the page changes.
+
+```tsx
+"use client";
+
+import { usePathname } from "next/navigation";
+import { Ghost, type GhostReaction } from "@/components/ghost";
+
+const react: GhostReaction = (target, kind) => {
+  const link = target.closest("a[href^='/components/']");
+  if (link) return kind === "press" ? "go" : "ooh";
+  return null;
+};
+
+export function SiteGhost() {
+  const pathname = usePathname();
+  return <Ghost size="lg" reactions={react} message={pathname === "/" ? "home" : "hi"} />;
+}
+```
+
+### 4. Link your actions and read its state
+
+Wrap your app in `GhostProvider` instead of placing `<Ghost />` yourself. It takes the same props and renders the ghost for you. Then any component in your design system can call `useGhost()` to react to real actions, every time they happen, and to read what the ghost is doing.
+
+```tsx
+import { GhostProvider } from "@/components/ghost";
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>
+        <GhostProvider size="lg">{children}</GhostProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+```tsx
+"use client";
+
+import { useGhost } from "@/components/ghost";
+
+export function SaveButton({ onSave }: { onSave: () => Promise<void> }) {
+  const ghost = useGhost();
+
+  return (
+    <button
+      onClick={async () => {
+        ghost.say("saving");
+        await onSave();
+        ghost.say("saved");
+      }}
+    >
+      Save {ghost.state.thought === "saved" && "✓"}
+    </button>
+  );
+}
+```
+
+`useGhost()` gives you:
+
+- `say(word)`: react with a word right now. It shows every time you call it, even the same word twice.
+- `poof()`: melt away and pop up nearby.
+- `visit(element, word?)`: send the ghost to any part of your page, like a tour guide pointing something out. It melts away and pops up on that element, with an optional word.
+- `hide()` and `show()`: melt out of sight, for example while a dialog is open, and pop back up beside the cursor.
+- `state`: what the ghost is doing right now, `{ thought, visible, hopping }`. It updates live, so your components can react to the ghost too.
+
+It's safe to call anywhere. Outside a `GhostProvider` the calls do nothing and `state` stays idle, so library components can use it without breaking apps that don't have a ghost. Pass `ghost={false}` to the provider to keep the API working while not showing a ghost on a page.
+
+On this site, the copy buttons and the theme toggle are linked this way: copy something and it says "copied", switch themes and it says "spooky" or "bright", every time. The playground above uses `visit` to bring the site's own ghost into the preview, and its controls change that ghost's color and size.
+
+This site has a large one living in its layout. Through its `reactions` function it knows every Clover UI component and what kind it is ("fancy" for text, "spinny" for loaders, "magic" for effects), plus the install commands, copy buttons, search, the theme toggle and the code blocks.
+
+## How it behaves
+
+- **Stays near you:** it never slides across the page. While you're close it stays put, bobbing and turning to look at you. When you move away and stop, it melts into a little puddle and pops back up right beside the cursor.
+- **Can't be caught:** click it, or keep the cursor right next to it for about 3 seconds, and it melts away with a "hehe" and pops up a little way off. It never blocks clicks on your page.
+- **One word only:** it only reacts, it never asks questions, and it waits until the cursor rests on something for a moment, so sweeping across a menu doesn't make it chatter.
+- **Calm:** it only reacts when the cursor really moves, never while you scroll.
+- **Slimy:** thick, glossy colors, slime drips that slowly stretch from its bottom, a curly tail and a gentle jelly wobble. Its eyes sparkle, follow the pointer and blink.
+
+### Colors
+
+There are eight slime colors: `lime` (the default), `white`, `pink`, `peach`, `lemon`, `mint`, `sky` and `lilac`. Each one fades from a lighter top to a deep, juicy bottom, so it shows up on light and dark backgrounds.
+
+```tsx
+<Ghost color="mint" />
+```
+
+### Size
+
+`size` is `sm` (48px), `md` (72px) or `lg` (104px).
+
+### Where it floats
+
+It starts in the middle of wherever you place it, then floats over the whole screen. To keep it inside one area, use `boundary="parent"` and give that area `relative`.
+
+### Random thoughts
+
+Now and then it has a random one-word thought. Pass your own list, or turn all thoughts off.
+
+```tsx
+<Ghost thoughts={["hi", "yo", "🎃"]} />
+<Ghost thoughts={false} />
+```
+
+## Props
+
+<PropsTable data={[
+  { name: "color", type: "\"lime\" | \"white\" | \"pink\" | \"peach\" | \"lemon\" | \"mint\" | \"sky\" | \"lilac\"", default: '"lime"', description: "Color of the slime." },
+  { name: "size", type: "\"sm\" | \"md\" | \"lg\"", default: '"md"', description: "48, 72 or 104 pixels." },
+  { name: "reactions", type: "Record<string, string | { hover?: string; press?: string }> | ((target: Element, kind: \"hover\" | \"press\") => string | null | undefined)", description: "Words for parts of your design system: a map of CSS selectors to words, or a function. The first matching selector wins." },
+  { name: "message", type: "string", description: "A word to show right away. It shows again whenever it changes." },
+  { name: "thoughts", type: "boolean | string[]", default: "true", description: "Show thought clouds. Pass a list of words for its random thoughts, or false to turn all thoughts off." },
+  { name: "boundary", type: "\"page\" | \"parent\"", default: '"page"', description: "page lets it float over the whole screen. parent keeps it inside its parent element, which needs relative positioning." },
+  { name: "onStateChange", type: "(state: { thought: string | null; visible: boolean; hopping: boolean }) => void", description: "Called whenever the ghost's thought, visibility or hopping changes." },
+  { name: "className", type: "string", description: "Extra classes for the layer the ghost floats in, for example a z-index." },
+]} />
+
+`GhostProvider` takes all the props above plus `ghost`, a boolean that defaults to `true`. Set it to `false` to keep `useGhost()` working without showing a ghost.
+
+Elements can also use `data-ghost="word"` for a hover word and `data-ghost-press="word"` for a click word. These win over `reactions`.
+
+For people who prefer reduced motion, the ghost sits still in the bottom corner, doesn't hop to the cursor and doesn't show thoughts.

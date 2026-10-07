@@ -1,61 +1,41 @@
 "use client";
 
-import * as React from "react";
-
-import { PinDrop } from "@/registry/clover-ui/pin-drop";
+import { PinDrop, type PinDropTheme } from "@/registry/clover-ui/pin-drop";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
 import type { ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [
   { type: "text", prop: "place", label: "Place" },
   { type: "boolean", prop: "locate", label: "Use my location" },
-  { type: "number", prop: "size", label: "Size", min: 200, max: 480, step: 20 },
-  { type: "number", prop: "autoRotateSpeed", label: "Rotate speed", min: 1, max: 30, step: 1 },
-  { type: "boolean", prop: "autoRotate", label: "Auto rotate" },
+  { type: "number", prop: "zoom", label: "Zoom", min: 3, max: 18, step: 1 },
+  { type: "number", prop: "height", label: "Height", min: 240, max: 560, step: 20 },
+  {
+    type: "select",
+    prop: "theme",
+    label: "Theme",
+    options: [
+      { label: "Auto", value: "auto" },
+      { label: "Light", value: "light" },
+      { label: "Dark", value: "dark" },
+    ],
+  },
   { type: "boolean", prop: "interactive", label: "Interactive" },
-  { type: "number", prop: "relief", label: "Relief", min: 0, max: 3, step: 0.25 },
-  { type: "boolean", prop: "showAtmosphere", label: "Atmosphere" },
+  { type: "boolean", prop: "locateButton", label: "Locate button" },
   { type: "boolean", prop: "marker", label: "Marker" },
-  { type: "boolean", prop: "markerZoom", label: "Marker zoom" },
 ];
 
 const defaultProps = {
   place: "London",
   locate: false,
-  size: 360,
-  autoRotateSpeed: 6,
-  autoRotate: true,
+  zoom: 12,
+  height: 400,
+  theme: "auto",
   interactive: true,
-  relief: 1,
-  showAtmosphere: true,
+  locateButton: true,
   marker: true,
-  markerZoom: true,
 };
 
-const TOUR = [
-  "London",
-  "Lagos",
-  "Tokyo",
-  "New York",
-  "Rio de Janeiro",
-  "Sydney",
-  "Cairo",
-  "Paris",
-  "Mumbai",
-  "Mexico City",
-];
-
-function useTour() {
-  const [index, setIndex] = React.useState(0);
-  React.useEffect(() => {
-    const timer = window.setInterval(() => setIndex((value) => (value + 1) % TOUR.length), 4500);
-    return () => window.clearInterval(timer);
-  }, []);
-  return TOUR[index];
-}
-
 export function PinDropPlayground() {
-  const tour = useTour();
   return (
     <PlaygroundShell
       componentName="PinDrop"
@@ -64,17 +44,14 @@ export function PinDropPlayground() {
       codeNote="only turn locate on after the user asks to share their location"
       render={(values) => (
         <PinDrop
-          place={tour}
+          place={values.place as string}
           locate={values.locate as boolean}
-          texture="/textures/earth-land.png"
-          size={values.size as number}
-          autoRotateSpeed={values.autoRotateSpeed as number}
-          autoRotate={values.autoRotate as boolean}
+          zoom={values.zoom as number}
+          height={values.height as number}
+          theme={values.theme as PinDropTheme}
           interactive={values.interactive as boolean}
-          relief={values.relief as number}
-          showAtmosphere={values.showAtmosphere as boolean}
+          locateButton={values.locateButton as boolean}
           marker={values.marker as boolean}
-          markerZoom={values.markerZoom as boolean}
         />
       )}
     />

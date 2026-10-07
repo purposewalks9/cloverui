@@ -29,7 +29,7 @@ const nextConfig = {
   headers: async () => {
     return [
       {
-        source: "/textures/:path*",
+        source: "/logos/:path*",
         headers: [{ key: "Access-Control-Allow-Origin", value: "*" }],
       },
     ];

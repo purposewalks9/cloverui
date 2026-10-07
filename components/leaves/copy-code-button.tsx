@@ -5,10 +5,13 @@ import { trackEvent } from "@/lib/events";
 import { Copy, ThumbsUp } from "lucide-react";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
+import { useGhost } from "@/registry/clover-ui/ghost";
+import { ghostWords } from "@/components/leaves/site-ghost";
 
 export function CopyCodeButton() {
   const [isCopied, setIsCopied] = useState(false);
   const pathname = usePathname();
+  const ghost = useGhost();
 
   return (
     <Button
@@ -24,6 +27,7 @@ export function CopyCodeButton() {
 
         navigator.clipboard.writeText(pre.textContent ?? "");
         trackEvent("copy_code", { path: pathname });
+        ghost.say(ghostWords.copied);
         setIsCopied(true);
         setTimeout(() => {
           setIsCopied(false);

@@ -1,0 +1,70 @@
+import { PriceRangePlayground } from "./playground"
+
+<PriceRangePlayground />
+
+## Installation
+
+<InstallationTabs item="price-range">
+```tsx file=../../registry/clover-ui/price-range.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { useState } from "react";
+import { PriceRange, type PriceRangeValue } from "@/components/price-range";
+
+export function Example() {
+  const [budget, setBudget] = useState<PriceRangeValue>([30000, 120000]);
+
+  return <PriceRange value={budget} onValueChange={setBudget} />;
+}
+```
+
+Drag either handle, or click anywhere on the track to move the closest one. The handle follows your pointer exactly, and the price rounds to a clean step picked from `min` and `max` (1K steps for 0 to 200K). Each handle can also be focused and moved with the arrow keys, Page Up and Page Down (bigger jumps), Home and End.
+
+### Currency
+
+Pass a currency code and the labels show the symbol, like `$30K`.
+
+```tsx
+<PriceRange currency="USD" defaultValue={[30000, 120000]} />
+```
+
+### Custom labels
+
+```tsx
+<PriceRange
+  min={0}
+  max={500}
+  defaultValue={[50, 300]}
+  formatValue={(n) => `£${n}/night`}
+/>
+```
+
+### Knob shape
+
+```tsx
+<PriceRange knob="ring" defaultValue={[30000, 120000]} />
+```
+
+Pick from `circle`, `ring`, `pill` and `line`.
+
+## Props
+
+<PropsTable data={[
+  { name: "value", type: "[number, number]", description: "The selected range. Use with onValueChange." },
+  { name: "defaultValue", type: "[number, number]", description: "Starting range when you don't control it. Defaults to 15% and 60% of the way along." },
+  { name: "onValueChange", type: "(value: [number, number]) => void" },
+  { name: "min", type: "number", default: "0" },
+  { name: "max", type: "number", default: "200000" },
+  { name: "currency", type: "string", description: 'Currency code such as "USD". Adds the symbol to the labels.' },
+  { name: "formatValue", type: "(value: number) => string", description: "Replaces the default short format (30K)." },
+  { name: "ticks", type: "number", default: "25", description: "Number of tick marks under the track." },
+  { name: "showTicks", type: "boolean", default: "true" },
+  { name: "color", type: '"default" | "indigo" | "blue" | "emerald" | "rose" | "amber"', default: '"default"' },
+  { name: "knob", type: '"circle" | "ring" | "pill" | "line"', default: '"circle"', description: "Shape of the two handles." },
+  { name: "disabled", type: "boolean", default: "false", description: "Locks the handles and fades them. The bar and prices stay visible." },
+  { name: "className", type: "string" },
+]} />

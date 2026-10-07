@@ -12,6 +12,36 @@ import { PinDropPlayground } from "./playground"
 ## Usage
 
 ```tsx
+import { PinDrop } from "@/components/pin-drop";
+
+export function Office() {
+  return <PinDrop place="London" />;
+}
+```
+
+Pin Drop is a real, detailed world map with roads, cities, rivers and parks. Give it a place and it flies there and drops a red pin on the exact spot, with the place name under it. The pin bounces as it lands and sends out a soft pulse so it's easy to spot. People can drag the map and zoom with pinch, Ctrl + scroll or the keyboard, and the pin stays on its spot.
+
+The map is drawn with [MapLibre](https://maplibre.org) using free [OpenFreeMap](https://openfreemap.org) tiles built from [OpenStreetMap](https://www.openstreetmap.org) data. No API key or account is needed. It follows your site's light and dark mode, and it fills the width of its container.
+
+### Showing a place
+
+Pass `place` with any city, state, country or address, in any language: "London", "Awka", "Texas", "Japan". The map looks it up a moment after typing stops, then flies there. Cities and countries are framed so the whole area fits, and `zoom` sets how close it can get.
+
+By default, names are looked up with [Photon](https://photon.komoot.io), a free OpenStreetMap search with no API key. Only the `place` text is sent to it, never the device's location. To use a different service, such as Google or Mapbox, pass a `geocoder` function that takes the text and returns `{ name, lat, lng }`, or `null` when nothing matches.
+
+If you already have coordinates, pass `location` with a latitude and longitude, and `label` for the name:
+
+```tsx
+<PinDrop location={{ lat: 6.2104, lng: 7.0741 }} label="Awka" />
+```
+
+### Finding the visitor's location
+
+The round button in the top corner finds where the visitor is right now. The browser asks for permission, the map flies to their position and drops the pin there with their city name. Pressing it again flies back to them. Hide the button with `locateButton={false}`.
+
+To start locating from your own button instead, set `locate`. The browser only asks when `locate` becomes `true`, so turn it on after the person asks, never on page load:
+
+```tsx
 "use client";
 
 import { useState } from "react";
@@ -22,113 +52,76 @@ export function MyLocation() {
 
   return (
     <>
-      <PinDrop size={420} place="London" locate={locate} autoRotate showAtmosphere />
+      <PinDrop place="London" locate={locate} locateButton={false} />
       <button onClick={() => setLocate(true)}>Use my location</button>
     </>
   );
 }
 ```
 
-Pin Drop is a cartoon 3D globe that shows a city: where someone lives on a profile, an office on a contact page, or where a visitor is browsing from. It's drawn with WebGL: green land with raised coastlines on a blue ocean. It spins slowly until it has a location, then turns to face it, drops a softly zooming red pin with the place name, and keeps swaying gently around it. Drag or flick it to look around, and it eases back when you let go. The background is transparent, so it sits on any page in light or dark mode, and it shrinks to fit narrow screens.
-
-### Finding the visitor's city
-
-Set `locate` to show where the visitor is right now. The browser asks for permission once, the globe turns to their position, and the pin shows their city name. It doesn't follow them around afterwards. The browser only asks when `locate` becomes `true`, so turn it on after the person asks, for example from a "Use my location" button.
-
-Every lookup has a time limit, so a slow network or a missing answer never freezes the globe. It keeps spinning and shows the place it already had.
-
-### Privacy
-
-The globe never asks for location by itself or on the server, and it never stores or logs coordinates.
-
-To show the city name under the pin, it looks up a rounded position (about 1 km precise) with [BigDataCloud](https://www.bigdatacloud.com/free-api/free-reverse-geocode-to-city-api)'s free city lookup. The exact position never leaves the browser. Pass `reverseGeocoder={null}` to turn the lookup off, and use `label` to name the pin yourself. If you want to save or share the exact position, handle `onLocationChange` yourself.
-
-### States
-
-Use `onStatusChange` to show what's happening next to the globe:
-
-- `idle`: `locate` is off.
-- `locating`: waiting for the browser.
-- `located`: the visitor's city is showing.
-- `denied`: the person blocked location access.
-- `unavailable`: the device couldn't find a position.
-- `timeout`: finding a position took too long.
-- `unsupported`: the browser has no geolocation.
-
-### Showing a place
-
-Pass `place` with a city name and the globe turns straight to it, with the name under the pin:
-
-```tsx
-<PinDrop place="London" />
-```
-
-Any city, state or country works, in any language: "London", "Awka", "Texas", "Japan". The globe looks the name up a moment after typing stops, then turns to it.
-
-By default, names are looked up with [Photon](https://photon.komoot.io), a free OpenStreetMap search with no API key. Only the `place` text is sent to it, never the device's location. To use a different service, such as Google or Mapbox, pass a `geocoder` function that takes the text and returns `{ name, lat, lng }`, or `null` when nothing matches.
-
-If you already have coordinates, pass `location` with a latitude and longitude, and `label` for the name. The visitor's position from `locate` replaces both once it arrives.
+If the person blocks access, or the device can't find a position, a short message shows in the corner and the map stays where it was.
 
 ### How accurate it is
 
-`locate` uses the browser's own location service. The browser picks the best source it has:
+The browser picks the best location source it has:
 
 - **Phones with GPS:** usually within 5 to 20 meters outdoors.
 - **Laptops and desktops:** estimated from nearby Wi-Fi networks, usually within 20 to 100 meters.
 - **No GPS or Wi-Fi data:** estimated from the internet connection. This is often only accurate to the city, and VPNs can place someone in the wrong country.
 
-Each update includes `accuracy` in meters, so you can tell how good a reading is.
+Each reading includes `accuracy` in meters, passed to `onLocationChange`.
 
-### Colors and style
+### Privacy
 
-Pass `colors` to restyle the globe. You can set any of the five colors and leave the rest as they are. Any CSS color works, such as hex, `rgb()`, `hsl()` or `oklch()`:
+The map never asks for location by itself or on the server, and it never stores or logs coordinates.
+
+To show the city name under the pin, it looks up a rounded position (about 1 km precise) with [BigDataCloud](https://www.bigdatacloud.com/free-api/free-reverse-geocode-to-city-api)'s free city lookup. The exact position never leaves the browser, apart from loading the map tiles around it. Pass `reverseGeocoder={null}` to turn the lookup off, and use `label` to name the pin yourself.
+
+### States
+
+Use `onStatusChange` to react to what's happening:
+
+- `idle`: not locating.
+- `locating`: waiting for the browser.
+- `located`: the visitor's position is showing.
+- `denied`: the person blocked location access.
+- `unavailable`: the device couldn't find a position.
+- `timeout`: finding a position took too long.
+- `unsupported`: the browser has no geolocation.
+
+### Map style
+
+`theme` picks the light or dark map. `auto` follows your site's `dark` class, or the system setting when there isn't one. To use other map designs, pass any MapLibre style URL to `mapStyle`, for one theme or both:
 
 ```tsx
 <PinDrop
   place="Tokyo"
-  colors={{ ocean: "#1e1b4b", deepOcean: "#0b0a24", land: "#f472b6", coast: "#9d174d", glow: "#a78bfa" }}
+  mapStyle={{ light: "https://tiles.openfreemap.org/styles/bright" }}
 />
 ```
 
-- `ocean`: the sea where the light hits it.
-- `deepOcean`: the sea toward the edges, and the dark rim.
-- `land`: the top of the land.
-- `coast`: the raised edge under the land.
-- `glow`: the atmosphere around the globe.
-
-The defaults are exported as `pinDropColors`. `relief` sets how raised the land looks: `0` is flat, `1` is the default and `3` is the most.
-
-### Speed
-
-The globe only does work when something changes. When it is standing still, scrolled out of view or in a background tab, it doesn't draw at all. The world map is downloaded once and shared by every globe on the page, and places you've already searched are remembered, so they show up instantly. If the graphics card resets, the globe redraws itself on its own.
-
-### Earth image
-
-The land comes from a black and white world map: white is land and black is sea. It's made from Natural Earth outlines, which are free to use. By default it loads from `cloverui.vercel.app`. To host it yourself, save [earth-land.png](https://cloverui.vercel.app/textures/earth-land.png) to your `public` folder and pass `texture="/earth-land.png"`. Any 2:1 black and white world map works.
+The defaults are exported as `pinDropMapStyles`. Use `marker` to recolor the pin, for example `marker={{ color: "#2563eb" }}`.
 
 ## Props
 
 <PropsTable data={[
-  { name: "size", type: "number", default: "360", description: "Width and height in pixels. It never grows wider than its container." },
-  { name: "locate", type: "boolean", default: "false", description: "Find the visitor's position once and show their city. The browser asks for permission when this turns on." },
-  { name: "place", type: "string", description: "Any city, state or country to show, such as \"London\". It is looked up online and also sets the label." },
-  { name: "geocoder", type: "(query: string, signal: AbortSignal) => Promise<{ name: string; lat: number; lng: number } | null>", default: "photonGeocoder", description: "Function that turns place text into coordinates. Replace it to use your own search service." },
-  { name: "reverseGeocoder", type: "(coordinates: { lat: number; lng: number }, signal: AbortSignal) => Promise<string | null> | null", default: "bigDataCloudReverseGeocoder", description: "Function that turns the visitor's position into a city name for the label. Pass null to turn it off." },
+  { name: "place", type: "string", description: "Any city, state, country or address to show, such as \"London\". It is looked up online and also sets the label." },
   { name: "location", type: "{ lat: number; lng: number }", description: "Exact coordinates to show when there is no visitor position and no place found." },
-  { name: "label", type: "string", description: "Name shown under the pin. It overrides the city name from place or from the visitor's position." },
-  { name: "interactive", type: "boolean", default: "true", description: "Allow dragging the globe with a mouse, pen or finger." },
-  { name: "autoRotate", type: "boolean", default: "true", description: "Spin slowly while there is no location. Once there is one, the globe keeps swaying gently around it so it feels alive, and the marker stays in view." },
-  { name: "autoRotateSpeed", type: "number", default: "6", description: "Spin speed in degrees per second." },
-  { name: "colors", type: "{ ocean?: string; deepOcean?: string; land?: string; coast?: string; glow?: string }", default: "pinDropColors", description: "Globe colors. Set only the ones you want to change. See Colors and style above." },
-  { name: "relief", type: "number", default: "1", description: "How raised the land looks, from 0 (flat) to 3." },
-  { name: "showAtmosphere", type: "boolean", default: "true", description: "Show the soft blue glow around the edge." },
-  { name: "marker", type: "boolean | { color?: string; ringColor?: string }", default: "true", description: "Show the location pin, or set its colors. The default is a red pin with a white outline. The name sits under it on a dark pill so it stays readable at any size, and `ringColor` sets the text color." },
-  { name: "markerZoom", type: "boolean", default: "true", description: "Gently zoom the pin in and out." },
-  { name: "texture", type: "string", default: "Clover UI hosted earth-land.png", description: "URL of a 2:1 land map, white for land and black for sea. It must allow cross-origin loading." },
-  { name: "onLocationChange", type: "(position: PinDropPosition) => void", description: "Called once with lat, lng, accuracy and timestamp when the visitor's position is found." },
-  { name: "onPermissionChange", type: "(permission: \"prompt\" | \"granted\" | \"denied\") => void", description: "Called when the location permission changes while locate is on." },
+  { name: "label", type: "string", description: "Name shown under the pin. It overrides the name from place or from the visitor's position." },
+  { name: "height", type: "number", default: "400", description: "Height in pixels. The map always fills the width of its container." },
+  { name: "zoom", type: "number", default: "12", description: "How close the map flies in, from 2 (whole continent) to 18 (single street). Cities and countries are framed to fit, up to this zoom." },
+  { name: "locate", type: "boolean", default: "false", description: "Find the visitor's position and show it. The browser asks for permission when this turns on." },
+  { name: "locateButton", type: "boolean", default: "true", description: "Show the round button that finds the visitor's location." },
+  { name: "interactive", type: "boolean", default: "true", description: "Allow dragging and zooming. Scroll zoom needs Ctrl (or ⌘), and touch needs two fingers, so the page still scrolls normally." },
+  { name: "theme", type: "\"auto\" | \"light\" | \"dark\"", default: "\"auto\"", description: "Which map style to show. auto follows the site's dark class or the system setting." },
+  { name: "mapStyle", type: "{ light?: string; dark?: string }", default: "pinDropMapStyles", description: "MapLibre style URLs for the light and dark maps." },
+  { name: "marker", type: "boolean | { color?: string; ringColor?: string }", default: "true", description: "Show the pin, or set its colors. ringColor is the outline and the label text." },
+  { name: "geocoder", type: "(query: string, signal: AbortSignal) => Promise<{ name: string; lat: number; lng: number; bounds?: [number, number, number, number] } | null>", default: "photonGeocoder", description: "Turns place text into coordinates. bounds is [west, south, east, north] and frames the whole area." },
+  { name: "reverseGeocoder", type: "(coordinates: { lat: number; lng: number }, signal: AbortSignal) => Promise<string | null> | null", default: "bigDataCloudReverseGeocoder", description: "Turns the visitor's position into a city name for the label. Pass null to turn it off." },
+  { name: "onLocationChange", type: "(position: PinDropPosition) => void", description: "Called with lat, lng, accuracy and timestamp when the visitor's position is found." },
+  { name: "onPermissionChange", type: "(permission: \"prompt\" | \"granted\" | \"denied\") => void", description: "Called when the location permission changes while locating." },
   { name: "onStatusChange", type: "(status: PinDropStatus) => void", description: "Called when the locate state changes. See States above." },
   { name: "className", type: "string", description: "Extra classes for the root element." },
 ]} />
 
-Motion is turned off for people who prefer reduced motion. The globe faces the location straight away, and the pin stays still.
+For people who prefer reduced motion, the map jumps straight to the place and the pin appears without bouncing or pulsing.

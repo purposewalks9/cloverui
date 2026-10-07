@@ -8,6 +8,8 @@ import { SiClaude, SiOpenai, SiV0, SiX } from "@icons-pack/react-simple-icons";
 import { trackEvent } from "@/lib/events";
 import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
+import { useGhost } from "@/registry/clover-ui/ghost";
+import { ghostWords, sectionWord } from "@/components/leaves/site-ghost";
 
 const ACTIVE_OFFSET = 112;
 const ROW_CLASS =
@@ -137,11 +139,36 @@ export function DocsTableOfContents({
   const itemIds = React.useMemo(() => toc.map((item) => item.url.replace("#", "")), [toc]);
   const { activeId, progress } = useScrollState(itemIds);
   const [copied, setCopied] = React.useState(false);
+  const { say, visit } = useGhost();
+  const settled = React.useRef(false);
+  const finished = React.useRef(false);
+
+  React.useEffect(() => {
+    if (!activeId) return;
+    if (!settled.current) {
+      settled.current = true;
+      return;
+    }
+    const t = window.setTimeout(
+      () => say(sectionWord(document.getElementById(activeId)?.textContent)),
+      600,
+    );
+    return () => window.clearTimeout(t);
+  }, [activeId, say]);
+
+  React.useEffect(() => {
+    if (progress < 0.9) finished.current = false;
+    if (progress >= 1 && window.scrollY > 0 && !finished.current) {
+      finished.current = true;
+      say(ghostWords.done);
+    }
+  }, [progress, say]);
 
   const copyPage = async () => {
     try {
       await navigator.clipboard.writeText(content);
       trackEvent("copy_page", { url });
+      say(ghostWords.copied);
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch {
@@ -162,18 +189,21 @@ export function DocsTableOfContents({
       label: "Open in v0",
       href: `https://v0.dev?q=${prompt}`,
       event: "open_in_v0" as const,
+      word: ghostWords.v0,
       icon: <SiV0 className="text-black dark:text-white" />,
     },
     {
       label: "Open in ChatGPT",
       href: `https://chatgpt.com?q=${prompt}`,
       event: "open_in_chatgpt" as const,
+      word: ghostWords.chatgpt,
       icon: <SiOpenai className="text-black dark:text-white" />,
     },
     {
       label: "Open in Claude",
       href: `https://claude.ai/new?q=${prompt}`,
       event: "open_in_claude" as const,
+      word: ghostWords.claude,
       icon: <SiClaude color="#D97757" />,
     },
   ];
@@ -205,6 +235,8 @@ export function DocsTableOfContents({
                         event.preventDefault();
                         target.scrollIntoView({ behavior: "smooth", block: "start" });
                         history.replaceState(null, "", item.url);
+                        say(sectionWord(target.textContent));
+                        window.setTimeout(() => visit(target), 700);
                       }}
                       aria-current={isActive ? "location" : undefined}
                       className={cn(
@@ -231,16 +263,22 @@ export function DocsTableOfContents({
           <ActionButton
             label="Share on X"
             href={shareUrl}
-            onClick={() => trackEvent("share_on_x", { url })}
+            onClick={() => {
+              trackEvent("share_on_x", { url });
+              say(ghostWords.shared);
+            }}
           >
             <SiX className="text-black dark:text-white" />
           </ActionButton>
-          {openIn.map(({ label, href, event, icon }) => (
+          {openIn.map(({ label, href, event, word, icon }) => (
             <ActionButton
               key={label}
               label={label}
               href={href}
-              onClick={() => trackEvent(event, { url })}
+              onClick={() => {
+                trackEvent(event, { url });
+                say(word);
+              }}
             >
               {icon}
             </ActionButton>
@@ -248,13 +286,19 @@ export function DocsTableOfContents({
           <ActionButton
             label="Edit this page"
             href={`${siteConfig.links.github}/edit/main/${editPath}`}
-            onClick={() => trackEvent("click_edit_page", { doc: docId })}
+            onClick={() => {
+              trackEvent("click_edit_page", { doc: docId });
+              say(ghostWords.edit);
+            }}
           >
             <SquarePen />
           </ActionButton>
           <ActionButton
             label="Back to top"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            onClick={() => {
+              window.scrollTo({ top: 0, behavior: "smooth" });
+              say(ghostWords.top);
+            }}
           >
             <ArrowUp />
           </ActionButton>
