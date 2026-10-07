@@ -4,25 +4,15 @@ import { DocItem, DocSchema, RegistryItem } from "./types";
 
 const CATEGORY_LABELS: Record<string, string> = {
   text: "Text",
-  animation: "Animation",
-  button: "Buttons",
   input: "Inputs",
-  feedback: "Feedback",
+  loader: "Loaders",
+  cursor: "Cursors",
+  effect: "Effects",
   background: "Backgrounds",
-  interactive: "Interactive",
-  display: "Display",
+  data: "Widgets",
 };
 
-const CATEGORY_ORDER = [
-  "text",
-  "animation",
-  "button",
-  "input",
-  "feedback",
-  "background",
-  "interactive",
-  "display",
-];
+const CATEGORY_ORDER = ["text", "input", "loader", "cursor", "effect", "background", "data"];
 
 function toDocItem(item: RegistryItem): DocItem {
   return {
@@ -37,7 +27,7 @@ function toDocItem(item: RegistryItem): DocItem {
 function groupByCategory(items: RegistryItem[]) {
   const groups = new Map<string, DocItem[]>();
   for (const item of items) {
-    const key = item.category ?? "display";
+    const key = item.category ?? "effect";
     groups.set(key, [...(groups.get(key) ?? []), toDocItem(item)]);
   }
   return groups;
@@ -56,7 +46,7 @@ export const getDocSchema = async () => {
   const componentGroups: DocSchema = [...orderedKeys, ...extraKeys]
     .map((key) => ({
       title: CATEGORY_LABELS[key] ?? key,
-      items: byCategory.get(key) ?? [],
+      items: (byCategory.get(key) ?? []).sort((a, b) => a.title.localeCompare(b.title)),
     }))
     .filter((g) => g.items.length > 0);
 

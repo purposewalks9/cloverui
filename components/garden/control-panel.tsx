@@ -174,12 +174,7 @@ function Field({
         <div className="flex flex-col gap-3">
           {control.items.map((item) => (
             <div key={item.prop} className="flex flex-col gap-2">
-              <div className="flex items-center justify-between">
-                <FieldLabel>{item.label}</FieldLabel>
-                <span className="text-muted-foreground font-mono text-[11px] uppercase">
-                  {values[item.prop] as string}
-                </span>
-              </div>
+              <FieldLabel>{item.label}</FieldLabel>
               <ColorField
                 value={values[item.prop] as string}
                 onChange={(next) => onChange(next, item.prop)}
@@ -231,13 +226,9 @@ function Field({
 
     case "select": {
       if (isColorControl(control)) {
-        const active = control.options.find((opt) => opt.value === value);
         return (
           <div className="flex flex-col gap-2">
-            <div className="flex items-center justify-between">
-              <FieldLabel>{control.label}</FieldLabel>
-              <span className="text-muted-foreground text-[11px]">{active?.label ?? ""}</span>
-            </div>
+            <FieldLabel>{control.label}</FieldLabel>
             <ColorSelector
               colors={control.options.map((opt) => opt.value)}
               swatches={Object.fromEntries(
@@ -288,6 +279,7 @@ function Field({
           valueLabel={raw.toFixed(decimals)}
           size="sm"
           knob
+          className="[&_span.font-medium]:text-muted-foreground [&_span.font-medium]:font-normal"
         />
       );
     }
@@ -295,12 +287,7 @@ function Field({
     case "color":
       return (
         <div className="flex flex-col gap-2">
-          <div className="flex items-center justify-between">
-            <FieldLabel>{control.label}</FieldLabel>
-            <span className="text-muted-foreground font-mono text-[11px] uppercase">
-              {value as string}
-            </span>
-          </div>
+          <FieldLabel>{control.label}</FieldLabel>
           <ColorField value={value as string} onChange={onChange} />
         </div>
       );

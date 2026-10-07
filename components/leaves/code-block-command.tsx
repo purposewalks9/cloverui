@@ -6,6 +6,8 @@ import { SiBun, SiNpm, SiPnpm, SiYarn } from "@icons-pack/react-simple-icons";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
+import { useGhost } from "@/registry/clover-ui/ghost";
+import { ghostWords } from "@/components/leaves/site-ghost";
 import { useConfig } from "@/hooks/use-config";
 import { trackEvent } from "@/lib/events";
 import { cn } from "@/lib/utils";
@@ -26,6 +28,7 @@ interface CodeBlockCommandProps {
 export function CodeBlockCommand({ item, className, mcp = false }: CodeBlockCommandProps) {
   const [config, setConfig] = useConfig();
   const { isCopied, copyToClipboard } = useCopyToClipboard();
+  const ghost = useGhost();
 
   const commands = React.useMemo(() => {
     if (mcp) {
@@ -49,8 +52,9 @@ export function CodeBlockCommand({ item, className, mcp = false }: CodeBlockComm
     if (command) {
       copyToClipboard(command);
       trackEvent("copy_install_command", { command, pm: config.packageManager });
+      ghost.say(ghostWords.copied);
     }
-  }, [config.packageManager, commands, copyToClipboard]);
+  }, [config.packageManager, commands, copyToClipboard, ghost]);
 
   return (
     <div className={cn("relative overflow-hidden rounded-md border", className)}>
