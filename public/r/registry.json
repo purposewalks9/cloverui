@@ -33,7 +33,9 @@
         "https://cloverui.vercel.app/r/spinner.json",
         "https://cloverui.vercel.app/r/text-gif.json",
         "https://cloverui.vercel.app/r/thermal-flow.json",
-        "https://cloverui.vercel.app/r/token-fall.json"
+        "https://cloverui.vercel.app/r/token-fall.json",
+        "https://cloverui.vercel.app/r/theme-toggle.json",
+        "https://cloverui.vercel.app/r/rocker-switch.json"
       ]
     },
     {
@@ -395,6 +397,36 @@
       "dependencies": ["motion", "class-variance-authority"],
       "registryDependencies": [],
       "category": "cursor"
+    },
+    {
+      "name": "theme-toggle",
+      "type": "registry:component",
+      "title": "Theme Toggle",
+      "description": "A glossy black pill switch for light and dark mode. The knob slides across a lit track with a sun, or a dark one with a moon.",
+      "files": [
+        {
+          "path": "registry/clover-ui/theme-toggle.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": ["motion", "class-variance-authority", "next-themes"],
+      "registryDependencies": [],
+      "category": "input"
+    },
+    {
+      "name": "rocker-switch",
+      "type": "registry:component",
+      "title": "Rocker Switch",
+      "description": "A black ON/OFF rocker switch that tilts in 3D. The pressed side sinks in and ON glows when it is switched on.",
+      "files": [
+        {
+          "path": "registry/clover-ui/rocker-switch.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": ["motion", "class-variance-authority"],
+      "registryDependencies": [],
+      "category": "input"
     }
   ]
 }
