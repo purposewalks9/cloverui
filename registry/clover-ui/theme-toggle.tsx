@@ -168,8 +168,6 @@ function ThemeToggle({
         animate={ready ? { backgroundColor: dark ? darkColor : lightColor } : undefined}
         transition={{ duration: ready && !reduceMotion ? 0.35 : 0, ease: "easeOut" }}
       >
-        <span className="pointer-events-none absolute inset-x-[12%] top-0 h-1/2 rounded-b-full bg-linear-to-b from-white/18 to-transparent" />
-
         <AnimatePresence initial={false} mode="popLayout">
           {ready && (
             <motion.span
