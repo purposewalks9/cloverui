@@ -35,7 +35,8 @@
         "https://cloverui.vercel.app/r/thermal-flow.json",
         "https://cloverui.vercel.app/r/token-fall.json",
         "https://cloverui.vercel.app/r/theme-toggle.json",
-        "https://cloverui.vercel.app/r/rocker-switch.json"
+        "https://cloverui.vercel.app/r/rocker-switch.json",
+        "https://cloverui.vercel.app/r/agent-faq.json"
       ]
     },
     {
@@ -427,6 +428,21 @@
       "dependencies": ["motion", "class-variance-authority"],
       "registryDependencies": [],
       "category": "input"
+    },
+    {
+      "name": "agent-faq",
+      "type": "registry:component",
+      "title": "Agent FAQ",
+      "description": "A FAQ list with editable questions. Change one and an agent loader spins while your own AI finds the answer, then writes it out word by word.",
+      "files": [
+        {
+          "path": "registry/clover-ui/agent-faq.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": ["motion"],
+      "registryDependencies": [],
+      "category": "data"
     }
   ]
 }
