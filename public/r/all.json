@@ -30,7 +30,8 @@
     "https://cloverui.vercel.app/r/token-fall.json",
     "https://cloverui.vercel.app/r/theme-toggle.json",
     "https://cloverui.vercel.app/r/rocker-switch.json",
-    "https://cloverui.vercel.app/r/agent-faq.json"
+    "https://cloverui.vercel.app/r/agent-faq.json",
+    "https://cloverui.vercel.app/r/not-found.json"
   ],
   "type": "registry:item"
 }
