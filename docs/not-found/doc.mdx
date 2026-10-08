@@ -1,0 +1,44 @@
+import { NotFoundPlayground } from "./playground"
+
+<NotFoundPlayground />
+
+## Installation
+
+<InstallationTabs item="not-found">
+```tsx file=../../registry/clover-ui/not-found.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { NotFound } from "@/components/not-found";
+
+<NotFound />
+```
+
+A 404 block where the 0 is a little face. It looks sad and its eyes follow your cursor around the page. Hover or focus the button and it breaks into a big smile, then turns sad again when you leave. The ring draws itself in when the page loads, and the face blinks now and then.
+
+In Next.js, put it in `app/not-found.tsx` so it shows on every missing page:
+
+```tsx
+import { NotFound } from "@/components/not-found";
+
+export default function Page() {
+  return <NotFound className="min-h-svh justify-center" />;
+}
+```
+
+The button links to `href`, which is `/` by default. Pass `onAction` instead to handle the click yourself, for example with `router.push` or `router.back()`.
+
+It uses your theme colors, so it fits light and dark mode. With reduced motion on, the face stops following the cursor, doesn't blink, and changes mood without moving.
+
+## Props
+
+<PropsTable data={[
+  { name: "description", type: "ReactNode", description: "The message under the 404." },
+  { name: "actionLabel", type: "string", default: '"Back to home"', description: "Text on the button." },
+  { name: "href", type: "string", default: '"/"', description: "Where the button goes." },
+  { name: "onAction", type: "() => void", description: "Handles the click yourself. The button renders as a button instead of a link." },
+  { name: "className", type: "string" },
+]} />
