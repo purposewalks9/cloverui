@@ -19,6 +19,10 @@ import { ThemeToggle } from "@/components/theme-toggle";
 
 A glossy black pill with a black knob. In light mode the track lights up with a sun and the knob sits on the right. Click it and the knob springs to the left, the track turns dark and a moon spins in. The knob also stretches a little while you press it.
 
+It feels soft to touch. A spotlight follows the cursor across the track and the rim lights up on the side nearest the pointer. Pressing squeezes the whole switch slightly, it springs back with a small bounce when you let go, and each click sends a ripple out from where you pressed.
+
+It also shows the right side on the very first frame, before the page's JavaScript loads, as long as your theme uses the `dark` class (the next-themes default for shadcn).
+
 It switches your site's theme through [next-themes](https://github.com/pacocoursey/next-themes), the same setup as the shadcn dark mode guide. Wrap your app in its `ThemeProvider` with `attribute="class"` and the toggle works with no props.
 
 Not using next-themes? Pass `theme` and `onThemeChange` and handle the theme yourself:
@@ -29,7 +33,7 @@ const [theme, setTheme] = useState<"light" | "dark">("light");
 <ThemeToggle theme={theme} onThemeChange={setTheme} />
 ```
 
-It is a real switch for screen readers, labelled "Dark mode", and works with Tab and Space. With reduced motion on, it changes without sliding.
+It is a real switch for screen readers, labelled "Dark mode", and works with Tab and Space. With reduced motion on, it changes without sliding, squeezing or rippling.
 
 ## Props
 
