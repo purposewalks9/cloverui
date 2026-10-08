@@ -35,7 +35,8 @@
         "https://cloverui.vercel.app/r/token-fall.json",
         "https://cloverui.vercel.app/r/theme-toggle.json",
         "https://cloverui.vercel.app/r/rocker-switch.json",
-        "https://cloverui.vercel.app/r/glitch-text.json"
+        "https://cloverui.vercel.app/r/glitch-text.json",
+        "https://cloverui.vercel.app/r/not-found.json"
       ]
     },
     {
@@ -427,6 +428,21 @@
       "dependencies": ["motion"],
       "registryDependencies": [],
       "category": "text"
+    },
+    {
+      "name": "not-found",
+      "type": "registry:component",
+      "title": "Not Found",
+      "description": "A 404 block where the 0 is a sad little face. Its eyes follow the cursor, and it breaks into a smile when you hover the way home.",
+      "files": [
+        {
+          "path": "registry/clover-ui/not-found.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": ["motion"],
+      "registryDependencies": [],
+      "category": "data"
     }
   ]
 }
