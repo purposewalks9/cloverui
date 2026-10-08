@@ -10,6 +10,7 @@ import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
 import { useGhost } from "@/registry/clover-ui/ghost";
 import { ghostWords, sectionWord } from "@/components/leaves/site-ghost";
+import { GhostToggle } from "@/components/stem/ghost-toggle";
 
 const ACTIVE_OFFSET = 112;
 const ROW_CLASS =
@@ -302,6 +303,7 @@ export function DocsTableOfContents({
           >
             <ArrowUp />
           </ActionButton>
+          <GhostToggle className={ROW_CLASS} />
         </div>
       </div>
     </div>

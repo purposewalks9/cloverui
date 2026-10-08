@@ -1,0 +1,43 @@
+import { GlitchTextPlayground } from "./playground"
+
+<GlitchTextPlayground />
+
+## Installation
+
+<InstallationTabs item="glitch-text">
+```tsx file=../../registry/clover-ui/glitch-text.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { GlitchText } from "@/components/glitch-text";
+
+<GlitchText className="text-4xl font-bold">SIGNAL LOST</GlitchText>
+```
+
+Text that looks like a broken screen. Every so often it glitches: faded slices of the text tear sideways, the whole line shakes left and right, the letters jitter and skew, and a few characters flicker into random symbols before snapping back.
+
+By default it glitches on its own every few seconds. Set `trigger="hover"` to glitch only while the pointer is over it, or `trigger="always"` to keep it glitching. It uses the text's own color, so it works in light and dark mode. Pass `colors` for a colored split. Screen readers always hear the real text.
+
+```tsx
+<GlitchText trigger="hover" colors={["#ef4444", "#22d3ee"]}>
+  HOVER ME
+</GlitchText>
+```
+
+With reduced motion on, the text stays still and never glitches.
+
+## Props
+
+<PropsTable data={[
+  { name: "children", type: "string", description: "The text to show." },
+  { name: "trigger", type: '"auto" | "hover" | "always"', default: '"auto"', description: "Glitch every few seconds, only on hover, or all the time." },
+  { name: "interval", type: "number", default: "3000", description: "Milliseconds between glitches in auto mode, give or take 20%." },
+  { name: "duration", type: "number", default: "450", description: "How long one glitch lasts, in milliseconds." },
+  { name: "colors", type: "[string, string]", default: '["currentColor", "currentColor"]', description: "The colors of the two torn slices. They match the text by default." },
+  { name: "intensity", type: "number", default: "1", description: "How far the slices and letters jump. Higher is wilder." },
+  { name: "scramble", type: "boolean", default: "true", description: "Swaps a few letters for random symbols while glitching." },
+  { name: "className", type: "string" },
+]} />
