@@ -1,0 +1,76 @@
+import { AgentFaqPlayground } from "./playground"
+
+<AgentFaqPlayground />
+
+## Installation
+
+<InstallationTabs item="agent-faq">
+```tsx file=../../registry/clover-ui/agent-faq.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { AgentFaq } from "@/components/agent-faq";
+
+const items = [
+  { id: "free", question: "Is it free?", answer: "Yes, every component is free." },
+  { id: "dark", question: "Does it support dark mode?", answer: "Yes, it follows your theme." },
+];
+
+<AgentFaq
+  defaultItems={items}
+  onAsk={async (question) => {
+    const res = await fetch("/api/ask", {
+      method: "POST",
+      body: JSON.stringify({ question }),
+    });
+    return res.text();
+  }}
+/>
+```
+
+A FAQ list where each question opens to show its answer. Hover a question (or look on a phone) and a pencil appears. Tap it, change the question and press Enter. The plus icon turns into a spinning agent loader, the answer area shows a shimmering "Thinking…", and the new answer is written out word by word. Press Escape to cancel an edit.
+
+The component doesn't come with an AI. You connect your own through `onAsk`. It gets the new question and returns the answer, and it runs whenever a question is changed. Leave `onAsk` out and edits only change the question text.
+
+### Streaming answers
+
+If your AI streams its answer, return an async generator from `onAsk` and each piece shows up as soon as it arrives. Pass the `signal` to `fetch` so a request stops if the question is edited again or the component goes away.
+
+```tsx
+<AgentFaq
+  defaultItems={items}
+  onAsk={async function* (question, { signal }) {
+    const res = await fetch("/api/ask", {
+      method: "POST",
+      body: JSON.stringify({ question }),
+      signal,
+    });
+    const reader = res.body!.getReader();
+    const decoder = new TextDecoder();
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      yield decoder.decode(value, { stream: true });
+    }
+  }}
+/>
+```
+
+### Saving changes
+
+`onItemsChange` gets the full list after each finished answer, so you can save it to your database. If `onAsk` fails, the answer area says so and offers a Try again button.
+
+With reduced motion on, answers appear in one go and the panels open without sliding.
+
+## Props
+
+<PropsTable data={[
+  { name: "defaultItems", type: "{ id?: string; question: string; answer: string }[]", description: "The starting questions and answers." },
+  { name: "onAsk", type: "(question: string, context: { signal: AbortSignal; previous: AgentFaqItem }) => Promise<string> | AsyncIterable<string>", description: "Gets the answer for an edited question. Return the full text, or stream it in pieces." },
+  { name: "onItemsChange", type: "(items: AgentFaqItem[]) => void", description: "Called with the updated list after a question changes and its answer is done." },
+  { name: "editable", type: "boolean", default: "true", description: "Shows the pencil so questions can be edited." },
+  { name: "className", type: "string" },
+]} />
