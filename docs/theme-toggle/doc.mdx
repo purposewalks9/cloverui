@@ -17,13 +17,13 @@ import { ThemeToggle } from "@/components/theme-toggle";
 <ThemeToggle />
 ```
 
-A round, glossy button that matches the opposite of your theme: dark with a gold sun in light mode, and light with a dark moon in dark mode. Tap it and the theme flips. The button fades to its new color while the icon turns out and the other one turns in.
+A round, glossy button that matches the opposite of your theme: dark with a gold sun in light mode, and light with a dark moon in dark mode. Tap it and the theme flips instantly. There are no animations, so it never makes you wait.
 
-It moves like a small push switch. The button stands up out of its socket in light mode and stays latched lower in dark mode. Hovering dips it a little, pressing sinks it almost flat, and letting go springs it to its new height with a small bounce. A gentle ripple spreads from where you pressed and fades away. The whole page also fades between light and dark instead of snapping, in browsers that support view transitions (Chrome, Edge and Safari 18+). Set `pageFade={false}` to switch instantly. With a mouse, a spotlight follows the cursor and the rim lights up on the side nearest the pointer.
+It still feels like a small push switch. The button stands up out of its socket in light mode and sits latched lower in dark mode. Hovering dips it a little and pressing sinks it almost flat, all in the same frame. With a mouse, a spotlight follows the cursor and the rim lights up on the side nearest the pointer.
 
 It also shows the right icon on the very first frame, before the page's JavaScript loads, as long as your theme uses the `dark` class (the next-themes default for shadcn).
 
-It switches your site's theme through [next-themes](https://github.com/pacocoursey/next-themes), the same setup as the shadcn dark mode guide. Wrap your app in its `ThemeProvider` with `attribute="class"` and the toggle works with no props.
+It switches your site's theme through [next-themes](https://github.com/pacocoursey/next-themes), the same setup as the shadcn dark mode guide. Wrap your app in its `ThemeProvider` with `attribute="class"` and the toggle works with no props. Add `disableTransitionOnChange` to the provider too, so the rest of your page flips in the same frame instead of fading its colors.
 
 Not using next-themes? Pass `theme` and `onThemeChange` and handle the theme yourself:
 
@@ -33,7 +33,7 @@ const [theme, setTheme] = useState<"light" | "dark">("light");
 <ThemeToggle theme={theme} onThemeChange={setTheme} />
 ```
 
-Screen readers hear "Switch to dark mode" or "Switch to light mode", and it works with Tab, Enter and Space. With reduced motion on, the icons swap with a fade and it moves to its new height without the spring, and there is no ripple or page fade.
+Screen readers hear "Switch to dark mode" or "Switch to light mode", and it works with Tab, Enter and Space.
 
 ## Props
 
@@ -42,7 +42,6 @@ Screen readers hear "Switch to dark mode" or "Switch to light mode", and it work
   { name: "onThemeChange", type: '(theme: "light" | "dark") => void', description: "Called with the new theme on every click." },
   { name: "sunColor", type: "string", default: '"#f5b81c"', description: "Color of the sun on the dark button, shown in light mode." },
   { name: "moonColor", type: "string", default: '"#3b3d4a"', description: "Color of the moon on the light button, shown in dark mode." },
-  { name: "pageFade", type: "boolean", default: "true", description: "Fades the whole page between themes. Turn off to switch instantly." },
   { name: "size", type: '"sm" | "default" | "lg"', default: '"default"' },
   { name: "className", type: "string" },
 ]} />
