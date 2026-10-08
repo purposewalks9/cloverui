@@ -402,14 +402,14 @@
       "name": "theme-toggle",
       "type": "registry:component",
       "title": "Theme Toggle",
-      "description": "A round, glossy theme button that presses like a small push switch. It is dark in light mode and latches down light in dark mode, while the page fades between themes.",
+      "description": "A round, glossy theme button that presses like a small push switch and flips the theme instantly. It is dark in light mode and latches down light in dark mode.",
       "files": [
         {
           "path": "registry/clover-ui/theme-toggle.tsx",
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion", "class-variance-authority", "next-themes"],
+      "dependencies": ["class-variance-authority", "next-themes"],
       "registryDependencies": [],
       "category": "input"
     },
