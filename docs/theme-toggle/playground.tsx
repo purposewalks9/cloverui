@@ -7,7 +7,6 @@ import type { ControlDef } from "@/lib/playground";
 const controls: ControlDef[] = [
   { type: "color", prop: "sunColor", label: "Sun" },
   { type: "color", prop: "moonColor", label: "Moon" },
-  { type: "boolean", prop: "pageFade", label: "Page fade" },
   {
     type: "select",
     prop: "size",
@@ -24,7 +23,6 @@ const defaultProps = {
   sunColor: "#f5b81c",
   moonColor: "#3b3d4a",
   size: "lg",
-  pageFade: true,
 };
 
 export function ThemeTogglePlayground() {
@@ -39,7 +37,6 @@ export function ThemeTogglePlayground() {
           <ThemeToggle
             sunColor={values.sunColor as string}
             moonColor={values.moonColor as string}
-            pageFade={values.pageFade as boolean}
             size={values.size as ThemeToggleSize}
           />
         </div>
