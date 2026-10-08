@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 
 const themeToggleVariants = cva(
   [
-    "group relative inline-flex size-[2.8em] shrink-0 cursor-pointer rounded-full outline-none select-none [-webkit-tap-highlight-color:transparent]",
+    "relative inline-flex size-[2.8em] shrink-0 cursor-pointer rounded-full outline-none select-none [-webkit-tap-highlight-color:transparent]",
     "shadow-[0_0.2em_0.5em_rgb(0_0_0/0.3),0_0.05em_0.1em_rgb(0_0_0/0.35)]",
     "focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2",
     "disabled:cursor-not-allowed disabled:opacity-50",
@@ -42,16 +42,9 @@ const subscribe = () => () => {};
 
 const LIFT = {
   up: 0.24,
-  upHover: 0.19,
   latched: 0.1,
-  latchedHover: 0.08,
   pressed: 0.02,
 };
-
-const RIM_MASK = {
-  mask: "linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0)",
-  WebkitMask: "linear-gradient(#000 0 0) content-box xor, linear-gradient(#000 0 0)",
-} satisfies React.CSSProperties;
 
 const SKINS = {
   dark: {
@@ -103,10 +96,8 @@ function ThemeToggle({
   className,
   style,
   disabled,
-  onPointerMove,
   onPointerDown,
   onPointerUp,
-  onPointerEnter,
   onPointerLeave,
   onPointerCancel,
   onKeyDown,
@@ -115,7 +106,6 @@ function ThemeToggle({
   ...props
 }: ThemeToggleProps) {
   const [pressing, setPressing] = React.useState(false);
-  const [hovering, setHovering] = React.useState(false);
   const { resolvedTheme, setTheme } = useTheme();
   const mounted = React.useSyncExternalStore(
     subscribe,
@@ -126,15 +116,7 @@ function ThemeToggle({
   const dark = current === "dark";
   const ready = mounted && current !== undefined;
 
-  const lift = pressing
-    ? LIFT.pressed
-    : dark
-      ? hovering
-        ? LIFT.latchedHover
-        : LIFT.latched
-      : hovering
-        ? LIFT.upHover
-        : LIFT.up;
+  const lift = pressing ? LIFT.pressed : dark ? LIFT.latched : LIFT.up;
 
   const skin = (name: keyof typeof SKINS) => {
     if (!ready) return name === "dark" ? "dark:hidden" : "hidden dark:block";
@@ -153,25 +135,12 @@ function ThemeToggle({
       )}
       style={
         {
-          "--tt-x": "50%",
-          "--tt-y": "50%",
           ...(ready ? { "--lift": `${lift}em` } : null),
           ...style,
         } as React.CSSProperties
       }
-      onPointerMove={(event) => {
-        onPointerMove?.(event);
-        const rect = event.currentTarget.getBoundingClientRect();
-        event.currentTarget.style.setProperty("--tt-x", `${event.clientX - rect.left}px`);
-        event.currentTarget.style.setProperty("--tt-y", `${event.clientY - rect.top}px`);
-      }}
-      onPointerEnter={(event) => {
-        onPointerEnter?.(event);
-        if (event.pointerType === "mouse") setHovering(true);
-      }}
       onPointerLeave={(event) => {
         onPointerLeave?.(event);
-        setHovering(false);
         setPressing(false);
       }}
       onPointerDown={(event) => {
@@ -240,13 +209,6 @@ function ThemeToggle({
             />
           ))}
 
-          <span
-            className="absolute inset-0 hidden group-hover:block"
-            style={{
-              background: `radial-gradient(2.2em circle at calc(var(--tt-x) - 0.3em) calc(var(--tt-y) - 0.3em), ${dark ? "rgb(0 0 0 / 0.07)" : "rgb(255 255 255 / 0.16)"}, transparent 70%)`,
-            }}
-          />
-
           <span className="absolute inset-0 grid place-items-center">
             <span
               className={cn("col-start-1 row-start-1 size-[1.1em]", skin("dark"))}
@@ -263,15 +225,6 @@ function ThemeToggle({
           </span>
         </span>
       </span>
-
-      <span
-        aria-hidden
-        className="pointer-events-none absolute inset-0 hidden rounded-full p-[0.2em] group-hover:block"
-        style={{
-          ...RIM_MASK,
-          background: `radial-gradient(2.2em circle at var(--tt-x) var(--tt-y), ${dark ? "rgb(255 255 255 / 0.9)" : "rgb(255 255 255 / 0.5)"}, transparent 75%)`,
-        }}
-      />
     </button>
   );
 }

@@ -17,7 +17,6 @@
     "https://cloverui.vercel.app/r/logo-storm.json",
     "https://cloverui.vercel.app/r/mic.json",
     "https://cloverui.vercel.app/r/nucleus-text.json",
-    "https://cloverui.vercel.app/r/pin-drop.json",
     "https://cloverui.vercel.app/r/price-range.json",
     "https://cloverui.vercel.app/r/pulse-loader.json",
     "https://cloverui.vercel.app/r/rich-progress.json",
@@ -30,7 +29,7 @@
     "https://cloverui.vercel.app/r/token-fall.json",
     "https://cloverui.vercel.app/r/theme-toggle.json",
     "https://cloverui.vercel.app/r/rocker-switch.json",
-    "https://cloverui.vercel.app/r/agent-faq.json"
+    "https://cloverui.vercel.app/r/glitch-text.json"
   ],
   "type": "registry:item"
 }

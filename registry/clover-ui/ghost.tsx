@@ -7,6 +7,7 @@ import {
   AnimatePresence,
   animate as animateValue,
   motion,
+  type MotionValue,
   useMotionValue,
   useReducedMotion,
   useSpring,
@@ -62,6 +63,7 @@ export interface GhostProps extends Omit<React.ComponentProps<"div">, "color"> {
 type GhostBodyProps = Omit<React.ComponentProps<"svg">, "color"> & {
   color?: GhostColor;
   size?: GhostSize;
+  facing?: MotionValue<number>;
 };
 
 const sheet = (w: number) =>
@@ -88,13 +90,19 @@ const DRIPS = [
   { cx: 650, cy: 990, rx: 11, ry: 14, time: 3.1 },
 ];
 
-function GhostBody({ color, size, className, ref, ...props }: GhostBodyProps) {
+function GhostBody({ color, size, facing, className, ref, ...props }: GhostBodyProps) {
   const still = Boolean(useReducedMotion());
   const id = React.useId().replace(/[^a-zA-Z0-9_-]/g, "");
   const svgRef = React.useRef<SVGSVGElement | null>(null);
   const lookX = useSpring(0, { stiffness: 700, damping: 40 });
   const lookY = useSpring(0, { stiffness: 700, damping: 40 });
   const blink = useMotionValue(1);
+  const turn = (v: number, near: boolean) =>
+    near ? 1 + (Math.abs(v) / 10) * 0.08 : 1 - (Math.abs(v) / 10) * 0.3;
+  const leftEye = useTransform(lookX, (v) => turn(v, v <= 0));
+  const rightEye = useTransform(lookX, (v) => turn(v, v >= 0));
+  const leftShift = useTransform(lookX, (v) => Math.max(0, v) * 0.3);
+  const rightShift = useTransform(lookX, (v) => Math.min(0, v) * 0.3);
 
   const setRef = (node: SVGSVGElement | null) => {
     svgRef.current = node;
@@ -116,7 +124,8 @@ function GhostBody({ color, size, className, ref, ...props }: GhostBodyProps) {
       const dy = event.clientY - (box.top + box.height * 0.22);
       const reach = Math.min(1, Math.hypot(dx, dy) / (box.width * 1.5));
       const angle = Math.atan2(dy, dx);
-      lookX.set(Math.min(9, Math.cos(angle) * 15 * reach));
+      const side = (facing?.get() ?? 1) < 0 ? -1 : 1;
+      lookX.set(Math.max(-10, Math.min(9, Math.cos(angle) * 15 * reach * side)));
       lookY.set(Math.sin(angle) * 10 * reach);
       lastMove = performance.now();
     };
@@ -124,7 +133,7 @@ function GhostBody({ color, size, className, ref, ...props }: GhostBodyProps) {
     const look = () => {
       if (performance.now() - lastMove > 1600) {
         const center = Math.random() < 0.3;
-        lookX.set(center ? 0 : between(-15, 9));
+        lookX.set(center ? 0 : between(-10, 9));
         lookY.set(center ? 0 : between(-8, 9));
       }
       glance = window.setTimeout(look, between(700, 2600));
@@ -149,7 +158,7 @@ function GhostBody({ color, size, className, ref, ...props }: GhostBodyProps) {
       window.clearTimeout(blinking);
       running?.stop();
     };
-  }, [still, lookX, lookY, blink]);
+  }, [still, lookX, lookY, blink, facing]);
 
   const ripple = { duration: 2.2, repeat: Infinity, ease: "easeInOut" as const };
 
@@ -210,14 +219,28 @@ function GhostBody({ color, size, className, ref, ...props }: GhostBodyProps) {
           <g clipPath={`url(#${id}-body)`}>
             <ellipse cx={612} cy={960} rx={10} ry={26} fill="white" opacity={0.35} />
             <motion.g style={{ x: lookX, y: lookY, scaleY: blink }}>
-              <g fill="var(--ghost-line)">
-                <ellipse cx={518} cy={708} rx={18} ry={33} transform="rotate(-4 518 708)" />
-                <ellipse cx={561} cy={706} rx={18} ry={33} transform="rotate(4 561 706)" />
-              </g>
-              <g fill="white">
-                <circle cx={524} cy={693} r={7} />
-                <circle cx={567} cy={691} r={7} />
-              </g>
+              <motion.g style={{ scaleX: leftEye, x: leftShift }}>
+                <ellipse
+                  cx={518}
+                  cy={708}
+                  rx={18}
+                  ry={33}
+                  fill="var(--ghost-line)"
+                  transform="rotate(-4 518 708)"
+                />
+                <circle cx={524} cy={693} r={7} fill="white" />
+              </motion.g>
+              <motion.g style={{ scaleX: rightEye, x: rightShift }}>
+                <ellipse
+                  cx={561}
+                  cy={706}
+                  rx={18}
+                  ry={33}
+                  fill="var(--ghost-line)"
+                  transform="rotate(4 561 706)"
+                />
+                <circle cx={567} cy={691} r={7} fill="white" />
+              </motion.g>
             </motion.g>
           </g>
         </motion.g>
@@ -804,7 +827,7 @@ function Ghost({
             transformOrigin: "50% 100%",
           }}
         >
-          <GhostBody color={color} size={size} />
+          <GhostBody color={color} size={size} facing={face} />
         </motion.div>
         <AnimatePresence>
           {thought && <ThoughtBubble key={thought.id} thought={thought} box={box} />}
