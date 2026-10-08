@@ -17,11 +17,11 @@ import { ThemeToggle } from "@/components/theme-toggle";
 <ThemeToggle />
 ```
 
-A glossy black pill with a black knob. In light mode the track lights up with a sun and the knob sits on the right. Click it and the knob springs to the left, the track turns dark and a moon spins in. The knob also stretches a little while you press it.
+A round, glossy black button. It shows a sun in light mode and a moon in dark mode. Tap it and the theme flips: the icon spins out and the other one spins in.
 
-It feels soft to touch. A spotlight follows the cursor across the track and the rim lights up on the side nearest the pointer. Pressing squeezes the whole switch slightly, it springs back with a small bounce when you let go, and each click sends a ripple out from where you pressed.
+It feels soft to touch. Pressing squeezes it a little and it springs back with a small bounce when you let go, and each tap sends a ripple out from where you pressed. With a mouse, a spotlight follows the cursor and the rim lights up on the side nearest the pointer.
 
-It also shows the right side on the very first frame, before the page's JavaScript loads, as long as your theme uses the `dark` class (the next-themes default for shadcn).
+It also shows the right icon on the very first frame, before the page's JavaScript loads, as long as your theme uses the `dark` class (the next-themes default for shadcn).
 
 It switches your site's theme through [next-themes](https://github.com/pacocoursey/next-themes), the same setup as the shadcn dark mode guide. Wrap your app in its `ThemeProvider` with `attribute="class"` and the toggle works with no props.
 
@@ -33,15 +33,15 @@ const [theme, setTheme] = useState<"light" | "dark">("light");
 <ThemeToggle theme={theme} onThemeChange={setTheme} />
 ```
 
-It is a real switch for screen readers, labelled "Dark mode", and works with Tab and Space. With reduced motion on, it changes without sliding, squeezing or rippling.
+Screen readers hear "Switch to dark mode" or "Switch to light mode", and it works with Tab, Enter and Space. With reduced motion on, the icons swap with a fade and there is no squeeze or ripple.
 
 ## Props
 
 <PropsTable data={[
-  { name: "theme", type: '"light" | "dark"', description: "Controls the toggle yourself. Leave it out to use next-themes." },
+  { name: "theme", type: '"light" | "dark"', description: "Controls the button yourself. Leave it out to use next-themes." },
   { name: "onThemeChange", type: '(theme: "light" | "dark") => void', description: "Called with the new theme on every click." },
-  { name: "lightColor", type: "string", default: '"#41ad6d"', description: "Track color in light mode, behind the sun." },
-  { name: "darkColor", type: "string", default: '"#25272d"', description: "Track color in dark mode, behind the moon." },
+  { name: "sunColor", type: "string", default: '"#ffd76a"', description: "Color of the sun, shown in light mode." },
+  { name: "moonColor", type: "string", default: '"#e9e9f2"', description: "Color of the moon, shown in dark mode." },
   { name: "size", type: '"sm" | "default" | "lg"', default: '"default"' },
   { name: "className", type: "string" },
 ]} />
