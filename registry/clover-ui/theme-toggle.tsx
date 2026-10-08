@@ -9,8 +9,8 @@ import { cn } from "@/lib/utils";
 
 const themeToggleVariants = cva(
   [
-    "group relative inline-flex h-[2.8em] w-[5.6em] shrink-0 cursor-pointer rounded-full p-[0.2em] outline-none select-none",
-    "transition-[scale] duration-300 ease-[cubic-bezier(0.34,1.35,0.64,1)] active:scale-[0.96] active:duration-100 active:ease-out motion-reduce:active:scale-100",
+    "group relative inline-flex size-[2.8em] shrink-0 cursor-pointer rounded-full p-[0.2em] outline-none select-none",
+    "transition-[scale] duration-300 ease-[cubic-bezier(0.34,1.35,0.64,1)] active:scale-[0.92] active:duration-100 active:ease-out motion-reduce:active:scale-100",
     "bg-[linear-gradient(180deg,#323232,#050505)]",
     "shadow-[0_0.2em_0.5em_rgb(0_0_0/0.45),0_0.05em_0.1em_rgb(0_0_0/0.6),inset_0_0.06em_0_rgb(255_255_255/0.14),inset_0_-0.04em_0_rgb(255_255_255/0.05)]",
     "focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2",
@@ -37,8 +37,8 @@ export interface ThemeToggleProps
     VariantProps<typeof themeToggleVariants> {
   theme?: ThemeToggleTheme;
   onThemeChange?: (theme: ThemeToggleTheme) => void;
-  lightColor?: string;
-  darkColor?: string;
+  sunColor?: string;
+  moonColor?: string;
 }
 
 type Ripple = { id: number; x: number; y: number; size: number };
@@ -77,8 +77,8 @@ function Moon() {
 function ThemeToggle({
   theme,
   onThemeChange,
-  lightColor = "#41ad6d",
-  darkColor = "#25272d",
+  sunColor = "#ffd76a",
+  moonColor = "#e9e9f2",
   size = "default",
   className,
   style,
@@ -88,7 +88,7 @@ function ThemeToggle({
   ...props
 }: ThemeToggleProps) {
   const reduceMotion = useReducedMotion();
-  const trackRef = React.useRef<HTMLSpanElement>(null);
+  const faceRef = React.useRef<HTMLSpanElement>(null);
   const rippleId = React.useRef(0);
   const [ripples, setRipples] = React.useState<Ripple[]>([]);
   const { resolvedTheme, setTheme } = useTheme();
@@ -101,16 +101,12 @@ function ThemeToggle({
   const dark = current === "dark";
   const ready = mounted && current !== undefined;
 
-  const spring = reduceMotion
-    ? { duration: 0 }
-    : { type: "spring" as const, stiffness: 520, damping: 34, mass: 0.9 };
-
   const icon = reduceMotion
     ? { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 } }
     : {
-        initial: { opacity: 0, scale: 0.4, rotate: -90, filter: "blur(3px)" },
+        initial: { opacity: 0, scale: 0.3, rotate: -120, filter: "blur(3px)" },
         animate: { opacity: 1, scale: 1, rotate: 0, filter: "blur(0px)" },
-        exit: { opacity: 0, scale: 0.4, rotate: 90, filter: "blur(3px)" },
+        exit: { opacity: 0, scale: 0.3, rotate: 120, filter: "blur(3px)" },
       };
 
   const track = (target: HTMLButtonElement, clientX: number, clientY: number) => {
@@ -120,22 +116,20 @@ function ThemeToggle({
   };
 
   const ripple = (clientX?: number, clientY?: number) => {
-    const area = trackRef.current;
+    const area = faceRef.current;
     if (!area || reduceMotion) return;
     const rect = area.getBoundingClientRect();
     const x = clientX === undefined ? rect.width / 2 : clientX - rect.left;
     const y = clientY === undefined ? rect.height / 2 : clientY - rect.top;
     const size = 2 * Math.hypot(Math.max(x, rect.width - x), Math.max(y, rect.height - y));
     const id = ++rippleId.current;
-    setRipples((current) => [...current, { id, x, y, size }]);
+    setRipples((items) => [...items, { id, x, y, size }]);
   };
 
   return (
     <button
       type="button"
-      role="switch"
-      aria-checked={dark}
-      aria-label="Dark mode"
+      aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
       disabled={disabled}
       className={cn(themeToggleVariants({ size }), className)}
       style={{ "--tt-x": "50%", "--tt-y": "50%", ...style } as React.CSSProperties}
@@ -156,41 +150,21 @@ function ThemeToggle({
       }}
       {...props}
     >
-      <motion.span
-        key={ready ? "ready" : "pending"}
-        ref={trackRef}
-        className={cn(
-          "relative block size-full overflow-hidden rounded-full shadow-[inset_0_0.12em_0.3em_rgb(0_0_0/0.5),inset_0_-0.04em_0.06em_rgb(255_255_255/0.12)]",
-          !ready && "bg-(--tt-light) dark:bg-(--tt-dark)",
-        )}
-        style={{ "--tt-light": lightColor, "--tt-dark": darkColor } as React.CSSProperties}
-        initial={false}
-        animate={ready ? { backgroundColor: dark ? darkColor : lightColor } : undefined}
-        transition={{ duration: ready && !reduceMotion ? 0.35 : 0, ease: "easeOut" }}
+      <span
+        ref={faceRef}
+        className="relative block size-full overflow-hidden rounded-full"
+        style={{
+          background: "radial-gradient(circle at 38% 30%, #474747 0%, #1b1b1b 45%, #070707 80%)",
+          boxShadow:
+            "inset 0 0.07em 0.06em rgb(255 255 255 / 0.18), inset 0 -0.1em 0.2em rgb(0 0 0 / 0.6), 0 0.06em 0.12em rgb(0 0 0 / 0.5)",
+        }}
       >
-        <AnimatePresence initial={false} mode="popLayout">
-          {ready && (
-            <motion.span
-              key={dark ? "moon" : "sun"}
-              aria-hidden
-              className={cn(
-                "absolute top-1/2 -mt-[0.6em] size-[1.2em] drop-shadow-[0_0.04em_0.06em_rgb(0_0_0/0.35)]",
-                dark ? "right-[0.85em] text-[#e9e9f2]" : "left-[0.85em] text-white",
-              )}
-              {...icon}
-              transition={{ duration: reduceMotion ? 0.15 : 0.35, ease: [0.22, 1, 0.36, 1] }}
-            >
-              {dark ? <Moon /> : <Sun />}
-            </motion.span>
-          )}
-        </AnimatePresence>
-
         <span
           aria-hidden
           className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
           style={{
             background:
-              "radial-gradient(4.5em circle at calc(var(--tt-x) - 0.2em) calc(var(--tt-y) - 0.2em), rgb(255 255 255 / 0.2), transparent 70%)",
+              "radial-gradient(2.4em circle at calc(var(--tt-x) - 0.2em) calc(var(--tt-y) - 0.2em), rgb(255 255 255 / 0.16), transparent 70%)",
           }}
         />
 
@@ -198,7 +172,7 @@ function ThemeToggle({
           <motion.span
             key={item.id}
             aria-hidden
-            className="pointer-events-none absolute rounded-full bg-white/30"
+            className="pointer-events-none absolute rounded-full bg-white/25"
             style={{
               left: item.x - item.size / 2,
               top: item.y - item.size / 2,
@@ -209,29 +183,45 @@ function ThemeToggle({
             animate={{ scale: 1, opacity: 0 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             onAnimationComplete={() =>
-              setRipples((current) => current.filter(({ id }) => id !== item.id))
+              setRipples((items) => items.filter(({ id }) => id !== item.id))
             }
           />
         ))}
 
-        <motion.span
-          aria-hidden
-          className={cn(
-            "absolute top-[0.1em] left-[0.1em] size-[2.2em] rounded-full transition-[scale] duration-200 group-active:scale-x-[1.08]",
-            !ready && "translate-x-[2.8em] dark:translate-x-0",
+        <span aria-hidden className="absolute inset-0 grid place-items-center">
+          {ready ? (
+            <AnimatePresence initial={false} mode="popLayout">
+              <motion.span
+                key={dark ? "moon" : "sun"}
+                className="col-start-1 row-start-1 size-[1.2em]"
+                style={{
+                  color: dark ? moonColor : sunColor,
+                  filter: `drop-shadow(0 0 0.25em color-mix(in oklab, ${dark ? moonColor : sunColor} 45%, transparent))`,
+                }}
+                {...icon}
+                transition={{ duration: reduceMotion ? 0.15 : 0.4, ease: [0.22, 1, 0.36, 1] }}
+              >
+                {dark ? <Moon /> : <Sun />}
+              </motion.span>
+            </AnimatePresence>
+          ) : (
+            <>
+              <span
+                className="col-start-1 row-start-1 size-[1.2em] dark:hidden"
+                style={{ color: sunColor }}
+              >
+                <Sun />
+              </span>
+              <span
+                className="col-start-1 row-start-1 hidden size-[1.2em] dark:block"
+                style={{ color: moonColor }}
+              >
+                <Moon />
+              </span>
+            </>
           )}
-          initial={false}
-          animate={ready ? { x: dark ? "0em" : "2.8em" } : undefined}
-          transition={ready ? spring : { duration: 0 }}
-          style={{
-            background: "radial-gradient(circle at 38% 30%, #4b4b4b 0%, #1b1b1b 42%, #070707 78%)",
-            boxShadow:
-              "0 0.14em 0.35em rgb(0 0 0 / 0.55), -0.12em 0 0.3em rgb(0 0 0 / 0.35), inset 0 0.07em 0.06em rgb(255 255 255 / 0.2), inset 0 -0.1em 0.2em rgb(0 0 0 / 0.6)",
-          }}
-        >
-          <span className="absolute inset-[0.14em] rounded-full bg-[radial-gradient(circle_at_40%_28%,rgb(255_255_255/0.16),transparent_55%)]" />
-        </motion.span>
-      </motion.span>
+        </span>
+      </span>
 
       <span
         aria-hidden
@@ -239,7 +229,7 @@ function ThemeToggle({
         style={{
           ...RIM_MASK,
           background:
-            "radial-gradient(3.4em circle at var(--tt-x) var(--tt-y), rgb(255 255 255 / 0.55), transparent 75%)",
+            "radial-gradient(2.2em circle at var(--tt-x) var(--tt-y), rgb(255 255 255 / 0.55), transparent 75%)",
         }}
       />
     </button>
