@@ -3,16 +3,15 @@
 import * as React from "react";
 import { flushSync } from "react-dom";
 import { cva, type VariantProps } from "class-variance-authority";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion, useSpring, useTransform } from "motion/react";
 import { useTheme } from "next-themes";
 
 import { cn } from "@/lib/utils";
 
 const themeToggleVariants = cva(
   [
-    "group relative inline-flex size-[2.8em] shrink-0 cursor-pointer rounded-full p-[0.2em] outline-none select-none",
-    "transition-[scale] duration-500 ease-[cubic-bezier(0.22,1.2,0.36,1)] active:scale-[0.95] active:duration-200 active:ease-out motion-reduce:active:scale-100",
-    "shadow-[0_0.2em_0.5em_rgb(0_0_0/0.35),0_0.05em_0.1em_rgb(0_0_0/0.4)]",
+    "group relative inline-flex size-[2.8em] shrink-0 cursor-pointer rounded-full outline-none select-none [-webkit-tap-highlight-color:transparent]",
+    "shadow-[0_0.2em_0.5em_rgb(0_0_0/0.3),0_0.05em_0.1em_rgb(0_0_0/0.35)]",
     "focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2",
     "disabled:cursor-not-allowed disabled:opacity-50",
   ],
@@ -48,6 +47,16 @@ const subscribe = () => () => {};
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
+const LIFT = {
+  up: 0.24,
+  upHover: 0.19,
+  latched: 0.1,
+  latchedHover: 0.08,
+  pressed: 0.02,
+};
+
+const SPRING = { stiffness: 520, damping: 30, mass: 0.6 };
+
 const RIM_MASK = {
   mask: "linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0)",
   WebkitMask: "linear-gradient(#000 0 0) content-box xor, linear-gradient(#000 0 0)",
@@ -56,15 +65,17 @@ const RIM_MASK = {
 const SKINS = {
   dark: {
     rim: "linear-gradient(180deg, #343434, #050505)",
+    well: "linear-gradient(180deg, #000000, #101010)",
+    wall: "linear-gradient(180deg, #262626, #0a0a0a)",
     face: "radial-gradient(circle at 38% 30%, #474747 0%, #1b1b1b 45%, #070707 80%)",
-    shine:
-      "inset 0 0.07em 0.06em rgb(255 255 255 / 0.18), inset 0 -0.1em 0.2em rgb(0 0 0 / 0.6), 0 0.06em 0.12em rgb(0 0 0 / 0.5)",
+    shine: "inset 0 0.07em 0.06em rgb(255 255 255 / 0.18), inset 0 -0.1em 0.2em rgb(0 0 0 / 0.6)",
   },
   light: {
     rim: "linear-gradient(180deg, #ffffff, #c9c9cf)",
+    well: "linear-gradient(180deg, #a9a9b3, #c4c4cc)",
+    wall: "linear-gradient(180deg, #d4d4da, #a2a2ad)",
     face: "radial-gradient(circle at 38% 30%, #ffffff 0%, #f1f1f4 45%, #d6d6dc 85%)",
-    shine:
-      "inset 0 0.07em 0.06em rgb(255 255 255 / 0.9), inset 0 -0.1em 0.2em rgb(0 0 0 / 0.12), 0 0.06em 0.12em rgb(0 0 0 / 0.25)",
+    shine: "inset 0 0.07em 0.06em rgb(255 255 255 / 0.9), inset 0 -0.1em 0.2em rgb(0 0 0 / 0.12)",
   },
 };
 
@@ -92,33 +103,36 @@ function Moon() {
   );
 }
 
-function Skin({
-  skin,
+function Fade({
   shown,
   ready,
   fallback,
+  className,
+  style,
+  children,
 }: {
-  skin: (typeof SKINS)["dark"];
   shown: boolean;
   ready: boolean;
   fallback: string;
+  className?: string;
+  style?: React.CSSProperties;
+  children?: React.ReactNode;
 }) {
   return (
     <motion.span
+      key={ready ? "ready" : "pending"}
       aria-hidden
       className={cn(
-        "pointer-events-none absolute inset-0 rounded-full p-[0.2em]",
+        "pointer-events-none absolute inset-0 rounded-full",
         !ready && fallback,
+        className,
       )}
-      style={{ background: skin.rim }}
+      style={style}
       initial={false}
       animate={ready ? { opacity: shown ? 1 : 0 } : undefined}
       transition={{ duration: 0.5, ease: EASE }}
     >
-      <span
-        className="block size-full rounded-full"
-        style={{ background: skin.face, boxShadow: skin.shine }}
-      />
+      {children}
     </motion.span>
   );
 }
@@ -135,12 +149,22 @@ function ThemeToggle({
   disabled,
   onPointerMove,
   onPointerDown,
+  onPointerUp,
+  onPointerEnter,
+  onPointerLeave,
+  onPointerCancel,
+  onKeyDown,
+  onKeyUp,
+  onBlur,
   ...props
 }: ThemeToggleProps) {
   const reduceMotion = useReducedMotion();
-  const faceRef = React.useRef<HTMLSpanElement>(null);
+  const capRef = React.useRef<HTMLSpanElement>(null);
   const rippleId = React.useRef(0);
+  const settled = React.useRef(false);
   const [ripples, setRipples] = React.useState<Ripple[]>([]);
+  const [pressing, setPressing] = React.useState(false);
+  const [hovering, setHovering] = React.useState(false);
   const { resolvedTheme, setTheme } = useTheme();
   const mounted = React.useSyncExternalStore(
     subscribe,
@@ -152,6 +176,32 @@ function ThemeToggle({
   const ready = mounted && current !== undefined;
   const glow = dark ? "rgb(0 0 0 / 0.07)" : "rgb(255 255 255 / 0.16)";
 
+  const target = pressing
+    ? LIFT.pressed
+    : dark
+      ? hovering
+        ? LIFT.latchedHover
+        : LIFT.latched
+      : hovering
+        ? LIFT.upHover
+        : LIFT.up;
+  const lift = useSpring(LIFT.up, SPRING);
+
+  React.useEffect(() => {
+    if (!ready) return;
+    if (reduceMotion || !settled.current) lift.jump(target);
+    else lift.set(target);
+    settled.current = true;
+  }, [lift, target, ready, reduceMotion]);
+
+  const capY = useTransform(lift, (value) => `${-value}em`);
+  const wallHeight = useTransform(lift, (value) => `calc(100% + ${value}em)`);
+  const castShadow = useTransform(
+    lift,
+    (value) =>
+      `0 ${(0.03 + value * 0.3).toFixed(3)}em ${(0.06 + value * 0.6).toFixed(3)}em rgb(0 0 0 / ${(0.3 + value).toFixed(2)})`,
+  );
+
   const icon = reduceMotion
     ? { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 } }
     : {
@@ -160,14 +210,14 @@ function ThemeToggle({
         exit: { opacity: 0, scale: 0.6, rotate: 70 },
       };
 
-  const track = (target: HTMLButtonElement, clientX: number, clientY: number) => {
-    const rect = target.getBoundingClientRect();
-    target.style.setProperty("--tt-x", `${clientX - rect.left}px`);
-    target.style.setProperty("--tt-y", `${clientY - rect.top}px`);
+  const track = (button: HTMLButtonElement, clientX: number, clientY: number) => {
+    const rect = button.getBoundingClientRect();
+    button.style.setProperty("--tt-x", `${clientX - rect.left}px`);
+    button.style.setProperty("--tt-y", `${clientY - rect.top}px`);
   };
 
   const ripple = (clientX?: number, clientY?: number) => {
-    const area = faceRef.current;
+    const area = capRef.current;
     if (!area || reduceMotion) return;
     const rect = area.getBoundingClientRect();
     const x = clientX === undefined ? rect.width / 2 : clientX - rect.left;
@@ -221,10 +271,41 @@ function ThemeToggle({
         onPointerMove?.(event);
         track(event.currentTarget, event.clientX, event.clientY);
       }}
+      onPointerEnter={(event) => {
+        onPointerEnter?.(event);
+        if (event.pointerType === "mouse") setHovering(true);
+      }}
+      onPointerLeave={(event) => {
+        onPointerLeave?.(event);
+        setHovering(false);
+        setPressing(false);
+      }}
       onPointerDown={(event) => {
         onPointerDown?.(event);
+        if (event.button !== 0) return;
+        setPressing(true);
         track(event.currentTarget, event.clientX, event.clientY);
         ripple(event.clientX, event.clientY);
+      }}
+      onPointerUp={(event) => {
+        onPointerUp?.(event);
+        setPressing(false);
+      }}
+      onPointerCancel={(event) => {
+        onPointerCancel?.(event);
+        setPressing(false);
+      }}
+      onKeyDown={(event) => {
+        onKeyDown?.(event);
+        if (event.key === " " || event.key === "Enter") setPressing(true);
+      }}
+      onKeyUp={(event) => {
+        onKeyUp?.(event);
+        setPressing(false);
+      }}
+      onBlur={(event) => {
+        onBlur?.(event);
+        setPressing(false);
       }}
       onClick={(event) => {
         if (event.detail === 0) ripple();
@@ -232,84 +313,117 @@ function ThemeToggle({
       }}
       {...props}
     >
-      <Skin
-        key={ready ? "dark-ready" : "dark-pending"}
-        skin={SKINS.dark}
-        shown={!dark}
-        ready={ready}
-        fallback="dark:opacity-0"
-      />
-      <Skin
-        key={ready ? "light-ready" : "light-pending"}
-        skin={SKINS.light}
-        shown={dark}
-        ready={ready}
-        fallback="opacity-0 dark:opacity-100"
-      />
-
-      <span ref={faceRef} className="relative block size-full overflow-hidden rounded-full">
-        <span
-          aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-          style={{
-            background: `radial-gradient(2.4em circle at calc(var(--tt-x) - 0.2em) calc(var(--tt-y) - 0.2em), ${glow}, transparent 70%)`,
-          }}
-        />
-
-        {ripples.map((item) => (
-          <motion.span
-            key={item.id}
-            aria-hidden
-            className="pointer-events-none absolute rounded-full"
-            style={{
-              left: item.x - item.size / 2,
-              top: item.y - item.size / 2,
-              width: item.size,
-              height: item.size,
-              background: `radial-gradient(circle, ${dark ? "rgb(0 0 0 / 0.12)" : "rgb(255 255 255 / 0.22)"} 0%, transparent 65%)`,
-            }}
-            initial={{ scale: 0.15, opacity: 1 }}
-            animate={{ scale: 1, opacity: 0 }}
-            transition={{
-              scale: { duration: 0.9, ease: EASE },
-              opacity: { duration: 0.9, ease: "easeOut" },
-            }}
-            onAnimationComplete={() =>
-              setRipples((items) => items.filter(({ id }) => id !== item.id))
-            }
+      {(["dark", "light"] as const).map((name) => (
+        <Fade
+          key={name}
+          shown={name === "dark" ? !dark : dark}
+          ready={ready}
+          fallback={name === "dark" ? "dark:opacity-0" : "opacity-0 dark:opacity-100"}
+          className="p-[0.2em]"
+          style={{ background: SKINS[name].rim }}
+        >
+          <span
+            className="block size-full rounded-full shadow-[inset_0_0.1em_0.2em_rgb(0_0_0/0.45)]"
+            style={{ background: SKINS[name].well }}
           />
-        ))}
+        </Fade>
+      ))}
 
-        <span aria-hidden className="absolute inset-0 grid place-items-center">
-          {ready ? (
-            <AnimatePresence initial={false} mode="popLayout">
-              <motion.span
-                key={dark ? "moon" : "sun"}
-                className="col-start-1 row-start-1 size-[1.2em]"
-                style={{ color: dark ? moonColor : sunColor }}
-                {...icon}
-                transition={{ duration: reduceMotion ? 0.2 : 0.55, ease: EASE }}
-              >
-                {dark ? <Moon /> : <Sun />}
-              </motion.span>
-            </AnimatePresence>
-          ) : (
-            <>
-              <span
-                className="col-start-1 row-start-1 size-[1.2em] dark:hidden"
-                style={{ color: sunColor }}
-              >
-                <Sun />
-              </span>
-              <span
-                className="col-start-1 row-start-1 hidden size-[1.2em] dark:block"
-                style={{ color: moonColor }}
-              >
-                <Moon />
-              </span>
-            </>
-          )}
-        </span>
+      <span className="pointer-events-none absolute inset-[0.3em]">
+        <motion.span
+          aria-hidden
+          className="absolute inset-x-0 bottom-0 overflow-hidden rounded-full"
+          style={{ height: wallHeight, boxShadow: castShadow }}
+        >
+          {(["dark", "light"] as const).map((name) => (
+            <Fade
+              key={name}
+              shown={name === "dark" ? !dark : dark}
+              ready={ready}
+              fallback={name === "dark" ? "dark:opacity-0" : "opacity-0 dark:opacity-100"}
+              style={{ background: SKINS[name].wall }}
+            />
+          ))}
+        </motion.span>
+
+        <motion.span
+          ref={capRef}
+          className="absolute inset-0 overflow-hidden rounded-full will-change-transform"
+          style={{ y: capY }}
+        >
+          {(["dark", "light"] as const).map((name) => (
+            <Fade
+              key={name}
+              shown={name === "dark" ? !dark : dark}
+              ready={ready}
+              fallback={name === "dark" ? "dark:opacity-0" : "opacity-0 dark:opacity-100"}
+              style={{ background: SKINS[name].face, boxShadow: SKINS[name].shine }}
+            />
+          ))}
+
+          <span
+            aria-hidden
+            className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+            style={{
+              background: `radial-gradient(2.2em circle at calc(var(--tt-x) - 0.3em) calc(var(--tt-y) - 0.3em), ${glow}, transparent 70%)`,
+            }}
+          />
+
+          {ripples.map((item) => (
+            <motion.span
+              key={item.id}
+              aria-hidden
+              className="absolute rounded-full"
+              style={{
+                left: item.x - item.size / 2,
+                top: item.y - item.size / 2,
+                width: item.size,
+                height: item.size,
+                background: `radial-gradient(circle, ${dark ? "rgb(0 0 0 / 0.12)" : "rgb(255 255 255 / 0.22)"} 0%, transparent 65%)`,
+              }}
+              initial={{ scale: 0.15, opacity: 1 }}
+              animate={{ scale: 1, opacity: 0 }}
+              transition={{
+                scale: { duration: 0.9, ease: EASE },
+                opacity: { duration: 0.9, ease: "easeOut" },
+              }}
+              onAnimationComplete={() =>
+                setRipples((items) => items.filter(({ id }) => id !== item.id))
+              }
+            />
+          ))}
+
+          <span aria-hidden className="absolute inset-0 grid place-items-center">
+            {ready ? (
+              <AnimatePresence initial={false} mode="popLayout">
+                <motion.span
+                  key={dark ? "moon" : "sun"}
+                  className="col-start-1 row-start-1 size-[1.1em]"
+                  style={{ color: dark ? moonColor : sunColor }}
+                  {...icon}
+                  transition={{ duration: reduceMotion ? 0.2 : 0.55, ease: EASE }}
+                >
+                  {dark ? <Moon /> : <Sun />}
+                </motion.span>
+              </AnimatePresence>
+            ) : (
+              <>
+                <span
+                  className="col-start-1 row-start-1 size-[1.1em] dark:hidden"
+                  style={{ color: sunColor }}
+                >
+                  <Sun />
+                </span>
+                <span
+                  className="col-start-1 row-start-1 hidden size-[1.1em] dark:block"
+                  style={{ color: moonColor }}
+                >
+                  <Moon />
+                </span>
+              </>
+            )}
+          </span>
+        </motion.span>
       </span>
 
       <span

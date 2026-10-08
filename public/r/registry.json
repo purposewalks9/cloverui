@@ -402,7 +402,7 @@
       "name": "theme-toggle",
       "type": "registry:component",
       "title": "Theme Toggle",
-      "description": "A round, glossy theme button that is dark in light mode and light in dark mode. Tap it and the page fades to the other theme as the sun and moon swap.",
+      "description": "A round, glossy theme button that presses like a small push switch. It is dark in light mode and latches down light in dark mode, while the page fades between themes.",
       "files": [
         {
           "path": "registry/clover-ui/theme-toggle.tsx",
