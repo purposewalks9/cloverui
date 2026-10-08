@@ -5,8 +5,8 @@ import { PlaygroundShell } from "@/components/garden/playground-shell";
 import type { ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [
-  { type: "color", prop: "lightColor", label: "Light track" },
-  { type: "color", prop: "darkColor", label: "Dark track" },
+  { type: "color", prop: "sunColor", label: "Sun" },
+  { type: "color", prop: "moonColor", label: "Moon" },
   {
     type: "select",
     prop: "size",
@@ -20,8 +20,8 @@ const controls: ControlDef[] = [
 ];
 
 const defaultProps = {
-  lightColor: "#41ad6d",
-  darkColor: "#25272d",
+  sunColor: "#ffd76a",
+  moonColor: "#e9e9f2",
   size: "lg",
 };
 
@@ -35,8 +35,8 @@ export function ThemeTogglePlayground() {
       render={(values) => (
         <div className="flex min-h-[220px] w-full items-center justify-center">
           <ThemeToggle
-            lightColor={values.lightColor as string}
-            darkColor={values.darkColor as string}
+            sunColor={values.sunColor as string}
+            moonColor={values.moonColor as string}
             size={values.size as ThemeToggleSize}
           />
         </div>

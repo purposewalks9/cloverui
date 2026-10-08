@@ -402,7 +402,7 @@
       "name": "theme-toggle",
       "type": "registry:component",
       "title": "Theme Toggle",
-      "description": "A glossy black pill switch for light and dark mode. The knob slides across a lit track with a sun, or a dark one with a moon.",
+      "description": "A round, glossy black button for light and dark mode. Tap it and the sun spins out as the moon spins in, or the other way round.",
       "files": [
         {
           "path": "registry/clover-ui/theme-toggle.tsx",
