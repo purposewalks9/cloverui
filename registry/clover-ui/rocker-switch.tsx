@@ -8,7 +8,8 @@ import { cn } from "@/lib/utils";
 
 const rockerSwitchVariants = cva(
   [
-    "relative inline-flex h-[3.6em] w-[10em] shrink-0 cursor-pointer rounded-[0.45em] p-[0.32em] outline-none select-none",
+    "group relative inline-flex h-[3.6em] w-[10em] shrink-0 cursor-pointer rounded-[0.45em] p-[0.32em] outline-none select-none",
+    "transition-[scale] duration-300 ease-[cubic-bezier(0.34,1.35,0.64,1)] active:scale-[0.97] active:duration-100 active:ease-out motion-reduce:active:scale-100",
     "bg-[linear-gradient(180deg,#151515,#050505)]",
     "shadow-[0_0.3em_0.8em_rgb(0_0_0/0.55),0_0.06em_0.12em_rgb(0_0_0/0.6),inset_0_0.05em_0_rgb(255_255_255/0.1)]",
     "focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2",
@@ -40,6 +41,13 @@ export interface RockerSwitchProps
   glowColor?: string;
 }
 
+type Ripple = { id: number; x: number; y: number; size: number; color: string };
+
+const RIM_MASK = {
+  mask: "linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0)",
+  WebkitMask: "linear-gradient(#000 0 0) content-box xor, linear-gradient(#000 0 0)",
+} satisfies React.CSSProperties;
+
 const FACE = "linear-gradient(180deg, #3a3a3a 0%, #232323 40%, #171717 100%)";
 const PRESSED = "linear-gradient(180deg, #080808 0%, #101010 60%, #151515 100%)";
 
@@ -52,10 +60,15 @@ function RockerSwitch({
   glowColor = "#7dff3c",
   size = "default",
   className,
+  style,
   disabled,
+  onPointerMove,
   ...props
 }: RockerSwitchProps) {
   const reduceMotion = useReducedMotion();
+  const recessRef = React.useRef<HTMLSpanElement>(null);
+  const rippleId = React.useRef(0);
+  const [ripples, setRipples] = React.useState<Ripple[]>([]);
   const [inner, setInner] = React.useState(defaultChecked);
   const on = checked ?? inner;
 
@@ -63,6 +76,20 @@ function RockerSwitch({
     if (next === on) return;
     if (checked === undefined) setInner(next);
     onCheckedChange?.(next);
+  };
+
+  const ripple = (next: boolean, clientX?: number, clientY?: number) => {
+    const area = recessRef.current;
+    if (!area || reduceMotion) return;
+    const rect = area.getBoundingClientRect();
+    const x = clientX === undefined ? rect.width / 2 : clientX - rect.left;
+    const y = clientY === undefined ? rect.height / 2 : clientY - rect.top;
+    const size = 2 * Math.hypot(Math.max(x, rect.width - x), Math.max(y, rect.height - y));
+    const color = next
+      ? `color-mix(in oklab, ${glowColor} 35%, transparent)`
+      : "rgb(255 255 255 / 0.14)";
+    const id = ++rippleId.current;
+    setRipples((current) => [...current, { id, x, y, size, color }]);
   };
 
   const tilt = reduceMotion
@@ -76,13 +103,23 @@ function RockerSwitch({
       aria-checked={on}
       disabled={disabled}
       className={cn(rockerSwitchVariants({ size }), className)}
+      style={{ "--rs-x": "50%", "--rs-y": "50%", ...style } as React.CSSProperties}
+      onPointerMove={(event) => {
+        onPointerMove?.(event);
+        const rect = event.currentTarget.getBoundingClientRect();
+        event.currentTarget.style.setProperty("--rs-x", `${event.clientX - rect.left}px`);
+        event.currentTarget.style.setProperty("--rs-y", `${event.clientY - rect.top}px`);
+      }}
       onClick={(event) => {
         if (event.detail === 0) {
+          ripple(!on);
           set(!on);
           return;
         }
         const rect = event.currentTarget.getBoundingClientRect();
-        set(event.clientX < rect.left + rect.width / 2);
+        const next = event.clientX < rect.left + rect.width / 2;
+        if (next !== on) ripple(next, event.clientX, event.clientY);
+        set(next);
       }}
       {...props}
     >
@@ -95,7 +132,10 @@ function RockerSwitch({
         transition={{ duration: reduceMotion ? 0 : 0.3 }}
       />
 
-      <span className="relative block size-full rounded-[0.25em] bg-black perspective-[22em]">
+      <span
+        ref={recessRef}
+        className="relative block size-full rounded-[0.25em] bg-black perspective-[22em]"
+      >
         <motion.span
           className="relative flex size-full transform-3d"
           initial={false}
@@ -145,7 +185,49 @@ function RockerSwitch({
         </motion.span>
       </span>
 
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-[0.32em] overflow-hidden rounded-[0.25em]"
+      >
+        <span
+          className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          style={{
+            background:
+              "radial-gradient(5em circle at calc(var(--rs-x) - 0.32em) calc(var(--rs-y) - 0.32em), rgb(255 255 255 / 0.09), transparent 70%)",
+          }}
+        />
+        {ripples.map((item) => (
+          <motion.span
+            key={item.id}
+            className="absolute rounded-full"
+            style={{
+              left: item.x - item.size / 2,
+              top: item.y - item.size / 2,
+              width: item.size,
+              height: item.size,
+              background: item.color,
+            }}
+            initial={{ scale: 0, opacity: 1 }}
+            animate={{ scale: 1, opacity: 0 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            onAnimationComplete={() =>
+              setRipples((current) => current.filter(({ id }) => id !== item.id))
+            }
+          />
+        ))}
+      </span>
+
       <span className="pointer-events-none absolute inset-[0.32em] rounded-[0.25em] shadow-[inset_0_0_0_0.06em_rgb(0_0_0/0.9),inset_0_0.1em_0.25em_rgb(0_0_0/0.6)]" />
+
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-0 rounded-[0.45em] p-[0.32em] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        style={{
+          ...RIM_MASK,
+          background:
+            "radial-gradient(4em circle at var(--rs-x) var(--rs-y), rgb(255 255 255 / 0.4), transparent 75%)",
+        }}
+      />
     </button>
   );
 }
