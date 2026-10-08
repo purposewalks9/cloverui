@@ -1,0 +1,43 @@
+import { ThemeTogglePlayground } from "./playground"
+
+<ThemeTogglePlayground />
+
+## Installation
+
+<InstallationTabs item="theme-toggle">
+```tsx file=../../registry/clover-ui/theme-toggle.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { ThemeToggle } from "@/components/theme-toggle";
+
+<ThemeToggle />
+```
+
+A glossy black pill with a black knob. In light mode the track lights up with a sun and the knob sits on the right. Click it and the knob springs to the left, the track turns dark and a moon spins in. The knob also stretches a little while you press it.
+
+It switches your site's theme through [next-themes](https://github.com/pacocoursey/next-themes), the same setup as the shadcn dark mode guide. Wrap your app in its `ThemeProvider` with `attribute="class"` and the toggle works with no props.
+
+Not using next-themes? Pass `theme` and `onThemeChange` and handle the theme yourself:
+
+```tsx
+const [theme, setTheme] = useState<"light" | "dark">("light");
+
+<ThemeToggle theme={theme} onThemeChange={setTheme} />
+```
+
+It is a real switch for screen readers, labelled "Dark mode", and works with Tab and Space. With reduced motion on, it changes without sliding.
+
+## Props
+
+<PropsTable data={[
+  { name: "theme", type: '"light" | "dark"', description: "Controls the toggle yourself. Leave it out to use next-themes." },
+  { name: "onThemeChange", type: '(theme: "light" | "dark") => void', description: "Called with the new theme on every click." },
+  { name: "lightColor", type: "string", default: '"#41ad6d"', description: "Track color in light mode, behind the sun." },
+  { name: "darkColor", type: "string", default: '"#25272d"', description: "Track color in dark mode, behind the moon." },
+  { name: "size", type: '"sm" | "default" | "lg"', default: '"default"' },
+  { name: "className", type: "string" },
+]} />
