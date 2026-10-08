@@ -1,0 +1,41 @@
+import { RockerSwitchPlayground } from "./playground"
+
+<RockerSwitchPlayground />
+
+## Installation
+
+<InstallationTabs item="rocker-switch">
+```tsx file=../../registry/clover-ui/rocker-switch.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { useState } from "react";
+import { RockerSwitch } from "@/components/rocker-switch";
+
+export function Example() {
+  const [power, setPower] = useState(true);
+
+  return <RockerSwitch checked={power} onCheckedChange={setPower} />;
+}
+```
+
+It works like a real rocker switch. Click the ON side to press it in and the OFF side tips up, or click OFF to do the opposite. The rocker tilts in 3D with a small spring, and while it is on, the ON label glows and lights the frame below it.
+
+With the keyboard, Space or Enter flips it. It is a real switch for screen readers. Leave out `checked` to let it keep its own state, starting from `defaultChecked`. With reduced motion on, it changes without tilting.
+
+## Props
+
+<PropsTable data={[
+  { name: "checked", type: "boolean", description: "Controls the switch yourself." },
+  { name: "defaultChecked", type: "boolean", default: "true", description: "Starting state when checked is left out." },
+  { name: "onCheckedChange", type: "(checked: boolean) => void", description: "Called when the switch flips." },
+  { name: "onLabel", type: "string", default: '"ON"' },
+  { name: "offLabel", type: "string", default: '"OFF"' },
+  { name: "glowColor", type: "string", default: '"#7dff3c"', description: "Color of the ON label and its glow." },
+  { name: "size", type: '"sm" | "default" | "lg"', default: '"default"' },
+  { name: "disabled", type: "boolean" },
+  { name: "className", type: "string" },
+]} />
