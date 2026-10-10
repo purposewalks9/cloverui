@@ -27,38 +27,17 @@ uniform float uGlow;
 
 const float R = 0.34;
 const float RC = 0.372;
-const float H = 0.44;
-const float T = 0.56;
 const float CAM = 6.0;
 const float FOCAL = 2.31;
 
-float hash(vec3 p) {
-  p = fract(p * 0.3183099 + 0.1);
-  p *= 17.0;
-  return fract(p.x * p.y * p.z * (p.x + p.y + p.z));
-}
-
-float noise(vec3 x) {
-  vec3 i = floor(x);
-  vec3 f = fract(x);
-  f = f * f * (3.0 - 2.0 * f);
-  return mix(
-    mix(mix(hash(i), hash(i + vec3(1.0, 0.0, 0.0)), f.x),
-        mix(hash(i + vec3(0.0, 1.0, 0.0)), hash(i + vec3(1.0, 1.0, 0.0)), f.x), f.y),
-    mix(mix(hash(i + vec3(0.0, 0.0, 1.0)), hash(i + vec3(1.0, 0.0, 1.0)), f.x),
-        mix(hash(i + vec3(0.0, 1.0, 1.0)), hash(i + vec3(1.0, 1.0, 1.0)), f.x), f.y),
-    f.z);
-}
-
-float fbm(vec3 p) {
-  float sum = 0.0;
-  float amp = 0.5;
-  for (int i = 0; i < 3; i++) {
-    sum += amp * noise(p);
-    p = p * 2.07 + vec3(1.7, 9.2, 3.1);
-    amp *= 0.5;
-  }
-  return sum;
+vec3 environment(vec3 dir) {
+  float shift = sin(uTime * 0.18) * 0.06;
+  float panel = smoothstep(0.72, 0.91, dot(dir, normalize(vec3(-0.65 + shift, 0.5, 0.8))));
+  float strip = exp(-pow((dir.x - 0.35 - shift) * 9.0, 2.0));
+  strip *= smoothstep(-0.7, -0.25, dir.y) * (1.0 - smoothstep(0.65, 0.9, dir.y));
+  float top = pow(max(dot(dir, normalize(vec3(0.2, 0.95, -0.3))), 0.0), 18.0);
+  return vec3(0.025) + vec3(1.0, 0.94, 1.0) * panel * 1.8
+    + vec3(0.85, 0.9, 1.0) * strip * 1.25 + vec3(1.0) * top * 0.7;
 }
 
 void facet(int i, out vec3 n, out float d) {
@@ -73,10 +52,13 @@ void facet(int i, out vec3 n, out float d) {
     d = r;
   } else {
     float s = ring == 1 ? 1.0 : -1.0;
-    vec3 m = vec3(u.x * T, s * r, u.y * T);
+    float h = ring == 1 ? 0.48 : -0.18;
+    float taper = 1.0 - h;
+    float lean = ring == 1 ? -0.1 : 0.06;
+    vec3 m = vec3(u.x * taper, s * r - s * u.x * lean, u.y * taper);
     float l = length(m);
     n = m / l;
-    d = r * (H + T) / l;
+    d = r / l;
   }
 }
 
@@ -134,27 +116,6 @@ float edgeDist(vec3 p, float own) {
   return m;
 }
 
-float shellDist(vec3 p) {
-  float m = -1e9;
-  for (int i = 0; i < 36; i++) {
-    vec3 n;
-    float d;
-    facet(i, n, d);
-    m = max(m, dot(n, p) - d);
-  }
-  return m;
-}
-
-vec2 shards(vec3 q, float warp) {
-  vec3 w = q * 12.0 + warp * 1.4;
-  float a = dot(w, vec3(0.82, 0.31, 0.48));
-  float b = dot(w, vec3(-0.58, 0.74, 0.34));
-  float c = dot(w, vec3(0.12, -0.52, 0.85));
-  float line = max(abs(fract(a) - 0.5), max(abs(fract(b) - 0.5), abs(fract(c) - 0.5)));
-  float glint = hash(floor(vec3(a, b, c)));
-  return vec2(1.0 - smoothstep(0.0, 0.05, 0.5 - line), smoothstep(0.9, 1.0, glint));
-}
-
 void main() {
   vec2 uv = (gl_FragCoord.xy - 0.5 * uRes) / uRes.y;
   float px = (CAM / FOCAL) / uRes.y;
@@ -167,12 +128,6 @@ void main() {
   vec3 col = vec3(0.0);
   float alpha = 0.0;
 
-  float tc = max(0.0, -dot(oro, ord));
-  float sd = max(shellDist(oro + ord * tc), 0.0);
-  vec2 edge = abs(uv) / vec2(0.5 * uRes.x / uRes.y, 0.5);
-  float fade = (1.0 - smoothstep(0.42, 0.85, edge.x)) * (1.0 - smoothstep(0.6, 0.92, edge.y));
-  vec3 halo = uColor * (exp(-sd * 16.0) * 0.3 + exp(-sd * 7.0) * 0.04) * uGlow * fade;
-
   float tn;
   vec3 nn;
   float fn;
@@ -184,58 +139,36 @@ void main() {
     float te = exitGem(p, rr, ne, fe);
     vec3 pe = p + rr * te;
 
-    vec3 inside = vec3(0.0);
-    for (int i = 0; i < 14; i++) {
-      float s = (float(i) + 0.5) / 14.0;
-      vec3 q = p + rr * te * s;
-      vec3 flow = vec3(0.0, -uTime * 0.08, uTime * 0.03);
-      float warp = fbm(q * 2.2 + flow);
-      float cloud = smoothstep(0.45, 0.8, fbm(q * 3.0 - flow + warp));
-      float core = exp(-dot(q.xz, q.xz) * 60.0) * exp(-(q.y + 0.32) * (q.y + 0.32) * 7.0);
-      inside += uColor * (0.005 + cloud * 0.16 + core * 16.0) * 0.08;
-    }
-    float drift = fbm(pe * 2.2 + vec3(0.0, -uTime * 0.08, uTime * 0.03));
-    vec2 back = shards(pe, drift);
-    vec3 mid = p + rr * te * 0.5;
-    vec2 middle = shards(mid * 1.3 + 0.37, fbm(mid * 2.2 + vec3(uTime * 0.05)));
-    inside += uColor * (back.x * 0.28 + middle.x * 0.16 + back.y * 0.5 + middle.y * 0.35) + hot * (back.y + middle.y) * 0.12;
-    inside *= uGlow;
-
-    float backFacet = 0.35 + 0.65 * hash(vec3(fe * 1.3, fe * 2.1 + 4.0, 7.0));
-    inside = inside * backFacet + uColor * uColor * 0.06;
-    inside += uColor * (1.0 - smoothstep(0.0, px * 2.5, edgeDist(pe, fe))) * 0.6;
+    vec3 absorption = (vec3(1.0) - uColor) * 4.0 + vec3(0.15);
+    vec3 transmission = exp(-absorption * te);
+    vec3 outgoing = refract(rr, -ne, 1.7);
+    vec3 backLight = environment(length(outgoing) > 0.001 ? outgoing : reflect(rr, ne));
+    vec3 inside = transmission * (uColor * 0.38 + backLight * 0.85);
     vec3 bounce = reflect(rr, ne);
     vec3 n2;
     float f2;
     float t2 = exitGem(pe + bounce * 0.002, bounce, n2, f2);
-    vec3 p2 = pe + bounce * t2;
-    inside += hot * (1.0 - smoothstep(0.0, px * 2.0, edgeDist(p2, f2))) * 0.3;
+    vec3 bouncedLight = environment(reflect(bounce, n2));
+    inside += bouncedLight * exp(-absorption * (te + t2)) * 0.35;
+    inside += hot * (1.0 - smoothstep(0.0, px * 1.2, edgeDist(pe, fe))) * 0.08;
 
     vec3 v = -ord;
     float facing = max(dot(v, nn), 0.0);
     float fresnel = 0.04 + 0.96 * pow(1.0 - facing, 5.0);
     vec3 refl = reflect(ord, nn);
-    vec3 light = uRot * normalize(vec3(0.55, 0.8, 0.45));
-    vec3 rim = uRot * normalize(vec3(-0.9, 0.1, 0.25));
-    float spec = pow(max(dot(refl, light), 0.0), 60.0);
-    float softbox = smoothstep(0.55, 0.85, dot(refl, light));
-    float rimLight = pow(max(dot(nn, rim), 0.0), 6.0) * (1.0 - smoothstep(0.0, px * 6.0, edgeDist(p, fn)) * 0.7);
+    vec3 light = uRot * normalize(vec3(-0.55, 0.8, 0.65));
     float lambert = max(dot(nn, light) * 0.5 + 0.5, 0.0);
-    float frontFacet = (0.7 + 0.5 * hash(vec3(fn * 1.7, 3.3, fn * 0.9 + 1.0))) * (0.22 + 1.1 * lambert);
+    vec3 reflection = environment(refl);
+    float polish = clamp(uGlow, 0.0, 2.0);
 
-    col = inside * frontFacet * (1.0 - fresnel * 0.4);
-    col += (vec3(1.0) * spec * 2.0 + hot * softbox * 0.7) * (0.3 + fresnel);
-    col += hot * rimLight * 0.45;
-    col += hot * (1.0 - smoothstep(0.0, px * 1.4, edgeDist(p, fn))) * 0.75;
-    col += uColor * pow(1.0 - facing, 2.5) * 0.25;
+    col = inside * (0.45 + 0.55 * lambert) * (1.0 - fresnel);
+    col += reflection * (0.05 + fresnel * 0.95) * (0.65 + polish * 0.35);
+    col += hot * (1.0 - smoothstep(0.0, px * 1.1, edgeDist(p, fn))) * 0.28;
     alpha = 1.0;
-  } else {
-    col = halo;
   }
 
   col = vec3(1.0) - exp(-col * 1.6);
   col = pow(col, vec3(1.0 / 2.2));
-  if (alpha < 0.5) alpha = clamp(max(col.r, max(col.g, col.b)), 0.0, 1.0);
   gl_FragColor = vec4(col, alpha);
 }`;
 
@@ -259,7 +192,7 @@ function rotation(yaw: number, pitch: number) {
 const ROTATION = rotation(0.32, 0.1);
 
 function Gem({
-  color = "#ff2d55",
+  color = "#c026ff",
   size = 160,
   glow = 1,
   animate = true,
