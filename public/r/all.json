@@ -32,7 +32,7 @@
     "https://cloverui.vercel.app/r/rocker-switch.json",
     "https://cloverui.vercel.app/r/agent-faq.json",
     "https://cloverui.vercel.app/r/not-found.json",
-    "https://cloverui.vercel.app/r/gem.json"
+    "https://cloverui.vercel.app/r/logo-flow.json"
   ],
   "type": "registry:item"
 }
