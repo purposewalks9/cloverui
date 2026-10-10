@@ -4,12 +4,11 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-export interface GemProps extends Omit<React.ComponentProps<"div">, "color" | "children"> {
+export interface GemProps extends Omit<React.ComponentProps<"span">, "color" | "children"> {
   color?: string;
+  size?: number;
   glow?: number;
-  speed?: number;
-  backdrop?: boolean;
-  interactive?: boolean;
+  animate?: boolean;
 }
 
 const VERTEX = `
@@ -25,12 +24,13 @@ uniform float uTime;
 uniform mat3 uRot;
 uniform vec3 uColor;
 uniform float uGlow;
-uniform float uBackdrop;
-uniform float uLift;
 
-const float R = 0.40;
-const float H = 0.50;
-const float T = 0.50;
+const float R = 0.34;
+const float RC = 0.372;
+const float H = 0.44;
+const float T = 0.56;
+const float CAM = 6.0;
+const float FOCAL = 2.31;
 
 float hash(vec3 p) {
   p = fract(p * 0.3183099 + 0.1);
@@ -53,27 +53,30 @@ float noise(vec3 x) {
 float fbm(vec3 p) {
   float sum = 0.0;
   float amp = 0.5;
-  for (int i = 0; i < 4; i++) {
+  for (int i = 0; i < 3; i++) {
     sum += amp * noise(p);
-    p = p * 2.03 + vec3(1.7, 9.2, 3.1);
+    p = p * 2.07 + vec3(1.7, 9.2, 3.1);
     amp *= 0.5;
   }
   return sum;
 }
 
 void facet(int i, out vec3 n, out float d) {
-  float k = float(i - (i / 6) * 6);
-  float a = k * 1.0471976 + 0.5235988;
+  int ring = i / 12;
+  int k = i - ring * 12;
+  int side = k / 6;
+  float a = float(k - side * 6) * 1.0471976 + float(side) * 0.5235988;
+  float r = side == 0 ? R : RC;
   vec2 u = vec2(cos(a), sin(a));
-  if (i < 6) {
+  if (ring == 0) {
     n = vec3(u.x, 0.0, u.y);
-    d = R;
+    d = r;
   } else {
-    float s = i < 12 ? 1.0 : -1.0;
-    vec3 m = vec3(u.x * T, s * R, u.y * T);
+    float s = ring == 1 ? 1.0 : -1.0;
+    vec3 m = vec3(u.x * T, s * r, u.y * T);
     float l = length(m);
     n = m / l;
-    d = R * (H + T) / l;
+    d = r * (H + T) / l;
   }
 }
 
@@ -82,7 +85,7 @@ bool hitGem(vec3 ro, vec3 rd, out float tn, out vec3 nn, out float fn) {
   float tf = 1e9;
   nn = vec3(0.0);
   fn = 0.0;
-  for (int i = 0; i < 18; i++) {
+  for (int i = 0; i < 36; i++) {
     vec3 n;
     float d;
     facet(i, n, d);
@@ -106,7 +109,7 @@ float exitGem(vec3 p, vec3 rd, out vec3 ne, out float fe) {
   float te = 1e9;
   ne = vec3(0.0);
   fe = 0.0;
-  for (int i = 0; i < 18; i++) {
+  for (int i = 0; i < 36; i++) {
     vec3 n;
     float d;
     facet(i, n, d);
@@ -121,7 +124,7 @@ float exitGem(vec3 p, vec3 rd, out vec3 ne, out float fe) {
 
 float edgeDist(vec3 p, float own) {
   float m = 1e9;
-  for (int i = 0; i < 18; i++) {
+  for (int i = 0; i < 36; i++) {
     if (float(i) == own) continue;
     vec3 n;
     float d;
@@ -133,7 +136,7 @@ float edgeDist(vec3 p, float own) {
 
 float shellDist(vec3 p) {
   float m = -1e9;
-  for (int i = 0; i < 18; i++) {
+  for (int i = 0; i < 36; i++) {
     vec3 n;
     float d;
     facet(i, n, d);
@@ -142,88 +145,92 @@ float shellDist(vec3 p) {
   return m;
 }
 
+vec2 shards(vec3 q, float warp) {
+  vec3 w = q * 12.0 + warp * 1.4;
+  float a = dot(w, vec3(0.82, 0.31, 0.48));
+  float b = dot(w, vec3(-0.58, 0.74, 0.34));
+  float c = dot(w, vec3(0.12, -0.52, 0.85));
+  float line = max(abs(fract(a) - 0.5), max(abs(fract(b) - 0.5), abs(fract(c) - 0.5)));
+  float glint = hash(floor(vec3(a, b, c)));
+  return vec2(1.0 - smoothstep(0.0, 0.05, 0.5 - line), smoothstep(0.9, 1.0, glint));
+}
+
 void main() {
   vec2 uv = (gl_FragCoord.xy - 0.5 * uRes) / uRes.y;
-  vec3 ro = vec3(0.0, -uLift, 4.4);
-  vec3 rd = normalize(vec3(uv, -1.65));
+  float px = (CAM / FOCAL) / uRes.y;
+  vec3 ro = vec3(0.0, 0.0, CAM);
+  vec3 rd = normalize(vec3(uv, -FOCAL));
   vec3 oro = uRot * ro;
   vec3 ord = uRot * rd;
 
-  vec3 hot = mix(uColor, vec3(1.0), 0.35);
-  vec3 deep = uColor * uColor * 0.3;
+  vec3 hot = mix(uColor, vec3(1.0), 0.4);
   vec3 col = vec3(0.0);
   float alpha = 0.0;
 
-  vec3 bg = vec3(0.0);
-  if (uBackdrop > 0.5) {
-    float vignette = 1.0 - smoothstep(0.15, 1.1, length(uv * vec2(0.95, 0.75)));
-    bg = mix(vec3(0.0002), uColor * 0.0022, vignette);
-    float fog = fbm(vec3(uv.x * 2.4 + uTime * 0.03, uv.y * 3.2 - uTime * 0.02, uTime * 0.05));
-    bg += uColor * fog * fog * smoothstep(0.0, -0.55, uv.y) * 0.1 * uGlow;
-    vec2 q = (uv - vec2(0.0, -0.44)) / vec2(0.09, 0.016);
-    vec2 wide = (uv - vec2(0.0, -0.44)) / vec2(0.22, 0.05);
-    float pool = exp(-dot(q, q));
-    float spread = exp(-dot(wide, wide));
-    float grit = 0.8 + 0.4 * fbm(vec3(uv * 14.0, 2.0));
-    bg += (hot * pool * 0.3 + uColor * spread * 0.07) * grit * uGlow;
-  }
-
   float tc = max(0.0, -dot(oro, ord));
   float sd = max(shellDist(oro + ord * tc), 0.0);
-  vec3 halo = uColor * (exp(-sd * 9.0) * 0.28 + exp(-sd * 3.2) * 0.022) * uGlow;
+  vec2 edge = abs(uv) / vec2(0.5 * uRes.x / uRes.y, 0.5);
+  float fade = (1.0 - smoothstep(0.42, 0.85, edge.x)) * (1.0 - smoothstep(0.6, 0.92, edge.y));
+  vec3 halo = uColor * (exp(-sd * 16.0) * 0.3 + exp(-sd * 7.0) * 0.04) * uGlow * fade;
 
   float tn;
   vec3 nn;
   float fn;
   if (hitGem(oro, ord, tn, nn, fn)) {
     vec3 p = oro + ord * tn;
-    vec3 rr = refract(ord, nn, 1.0 / 1.6);
+    vec3 rr = refract(ord, nn, 1.0 / 1.7);
     vec3 ne;
     float fe;
     float te = exitGem(p, rr, ne, fe);
     vec3 pe = p + rr * te;
 
     vec3 inside = vec3(0.0);
-    for (int i = 0; i < 18; i++) {
-      float s = (float(i) + 0.5) / 18.0;
+    for (int i = 0; i < 14; i++) {
+      float s = (float(i) + 0.5) / 14.0;
       vec3 q = p + rr * te * s;
-      float core = exp(-dot(q.xz, q.xz) * 160.0) * exp(-(q.y + 0.3) * (q.y + 0.3) * 1.6);
-      vec3 flow = vec3(0.0, -uTime * 0.1, uTime * 0.04);
-      float warp = fbm(q * 2.0 + flow);
-      float cloud = smoothstep(0.38, 0.78, fbm(q * 2.6 - flow * 0.7 + warp));
-      float n = noise(q * 3.2 + warp * 2.0 + flow * 1.5);
-      float veins = 1.0 - smoothstep(0.0, 0.2, abs(sin(n * 10.0)));
-      inside += uColor * (0.003 + cloud * 0.09 + veins * 2.2 + core * 9.0) * 0.05;
+      vec3 flow = vec3(0.0, -uTime * 0.08, uTime * 0.03);
+      float warp = fbm(q * 2.2 + flow);
+      float cloud = smoothstep(0.45, 0.8, fbm(q * 3.0 - flow + warp));
+      float core = exp(-dot(q.xz, q.xz) * 60.0) * exp(-(q.y + 0.32) * (q.y + 0.32) * 7.0);
+      inside += uColor * (0.005 + cloud * 0.16 + core * 16.0) * 0.08;
     }
+    float drift = fbm(pe * 2.2 + vec3(0.0, -uTime * 0.08, uTime * 0.03));
+    vec2 back = shards(pe, drift);
+    vec3 mid = p + rr * te * 0.5;
+    vec2 middle = shards(mid * 1.3 + 0.37, fbm(mid * 2.2 + vec3(uTime * 0.05)));
+    inside += uColor * (back.x * 0.28 + middle.x * 0.16 + back.y * 0.5 + middle.y * 0.35) + hot * (back.y + middle.y) * 0.12;
     inside *= uGlow;
 
-    float backFacet = 0.3 + 0.7 * hash(vec3(fe * 1.3, fe * 2.1 + 4.0, 7.0));
-    inside = inside * backFacet + deep * 0.12;
-    float sparkle = noise(pe * 46.0 + vec3(uTime * 0.5));
-    inside += hot * smoothstep(0.93, 1.0, sparkle) * 0.8 * uGlow;
-    inside += uColor * (1.0 - smoothstep(0.0, 0.02, edgeDist(pe, fe))) * 0.35;
+    float backFacet = 0.35 + 0.65 * hash(vec3(fe * 1.3, fe * 2.1 + 4.0, 7.0));
+    inside = inside * backFacet + uColor * uColor * 0.06;
+    inside += uColor * (1.0 - smoothstep(0.0, px * 2.5, edgeDist(pe, fe))) * 0.6;
+    vec3 bounce = reflect(rr, ne);
+    vec3 n2;
+    float f2;
+    float t2 = exitGem(pe + bounce * 0.002, bounce, n2, f2);
+    vec3 p2 = pe + bounce * t2;
+    inside += hot * (1.0 - smoothstep(0.0, px * 2.0, edgeDist(p2, f2))) * 0.3;
 
     vec3 v = -ord;
     float facing = max(dot(v, nn), 0.0);
     float fresnel = 0.04 + 0.96 * pow(1.0 - facing, 5.0);
     vec3 refl = reflect(ord, nn);
-    vec3 light = uRot * normalize(vec3(0.45, 0.85, 0.55));
-    vec3 fill = uRot * normalize(vec3(-0.7, 0.2, 0.6));
-    float spec = pow(max(dot(refl, light), 0.0), 70.0);
-    float sheen = pow(max(dot(refl, light), 0.0), 5.0) + 0.4 * pow(max(dot(refl, fill), 0.0), 8.0);
-    float frontFacet = 0.7 + 0.5 * hash(vec3(fn * 1.7, 3.3, fn * 0.9 + 1.0));
-    frontFacet *= 0.3 + 1.0 * max(dot(nn, light) * 0.5 + 0.5, 0.0);
+    vec3 light = uRot * normalize(vec3(0.55, 0.8, 0.45));
+    vec3 rim = uRot * normalize(vec3(-0.9, 0.1, 0.25));
+    float spec = pow(max(dot(refl, light), 0.0), 60.0);
+    float softbox = smoothstep(0.55, 0.85, dot(refl, light));
+    float rimLight = pow(max(dot(nn, rim), 0.0), 6.0) * (1.0 - smoothstep(0.0, px * 6.0, edgeDist(p, fn)) * 0.7);
+    float lambert = max(dot(nn, light) * 0.5 + 0.5, 0.0);
+    float frontFacet = (0.7 + 0.5 * hash(vec3(fn * 1.7, 3.3, fn * 0.9 + 1.0))) * (0.22 + 1.1 * lambert);
 
-    col = inside * frontFacet * (1.0 - fresnel * 0.5);
-    float softbox = smoothstep(0.62, 0.86, dot(refl, light));
-    col += (vec3(1.0) * spec * 1.8 + hot * sheen * 0.12 + hot * softbox * 0.55) * (0.25 + fresnel);
-    col += hot * (1.0 - smoothstep(0.0, 0.01, edgeDist(p, fn))) * 0.8;
-    col += uColor * pow(1.0 - facing, 2.5) * 0.2;
-    col += halo * 0.15;
+    col = inside * frontFacet * (1.0 - fresnel * 0.4);
+    col += (vec3(1.0) * spec * 2.0 + hot * softbox * 0.7) * (0.3 + fresnel);
+    col += hot * rimLight * 0.45;
+    col += hot * (1.0 - smoothstep(0.0, px * 1.4, edgeDist(p, fn))) * 0.75;
+    col += uColor * pow(1.0 - facing, 2.5) * 0.25;
     alpha = 1.0;
   } else {
-    col = bg + halo;
-    alpha = uBackdrop > 0.5 ? 1.0 : 0.0;
+    col = halo;
   }
 
   col = vec3(1.0) - exp(-col * 1.6);
@@ -249,31 +256,30 @@ function rotation(yaw: number, pitch: number) {
   return new Float32Array([cy, 0, sy, sp * sy, cp, -sp * cy, -cp * sy, sp, cp * cy]);
 }
 
-const PITCH = 0.14;
+const ROTATION = rotation(0.32, 0.1);
 
 function Gem({
   color = "#ff2d55",
+  size = 160,
   glow = 1,
-  speed = 1,
-  backdrop = true,
-  interactive = true,
+  animate = true,
   className,
   style,
   ...props
 }: GemProps) {
-  const hostRef = React.useRef<HTMLDivElement>(null);
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const [failed, setFailed] = React.useState(false);
-  const live = React.useRef({ color: toLinear(color), glow, speed, backdrop, interactive });
+  const live = React.useRef({ color: toLinear(color), glow, animate });
+  const redrawRef = React.useRef<(() => void) | null>(null);
 
   React.useEffect(() => {
-    live.current = { color: toLinear(color), glow, speed, backdrop, interactive };
-  }, [color, glow, speed, backdrop, interactive]);
+    live.current = { color: toLinear(color), glow, animate };
+    redrawRef.current?.();
+  }, [color, glow, animate]);
 
   React.useEffect(() => {
     const canvas = canvasRef.current;
-    const host = hostRef.current;
-    if (!canvas || !host) return;
+    if (!canvas) return;
 
     const gl = canvas.getContext("webgl", {
       alpha: true,
@@ -281,7 +287,6 @@ function Gem({
       antialias: false,
       depth: false,
       stencil: false,
-      powerPreference: "high-performance",
     });
     if (!gl) {
       setFailed(true);
@@ -324,31 +329,22 @@ function Gem({
     gl.enableVertexAttribArray(position);
     gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
 
-    const uniform = (name: string) => gl.getUniformLocation(program, name);
-    const uRes = uniform("uRes");
-    const uTime = uniform("uTime");
-    const uRot = uniform("uRot");
-    const uColor = uniform("uColor");
-    const uGlow = uniform("uGlow");
-    const uBackdrop = uniform("uBackdrop");
-    const uLift = uniform("uLift");
+    const uRes = gl.getUniformLocation(program, "uRes");
+    const uTime = gl.getUniformLocation(program, "uTime");
+    const uRot = gl.getUniformLocation(program, "uRot");
+    const uColor = gl.getUniformLocation(program, "uColor");
+    const uGlow = gl.getUniformLocation(program, "uGlow");
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let raf = 0;
     let visible = true;
     let last = performance.now();
     let clock = 0;
-    let yaw = 0.5;
-    let pitch = PITCH;
-    let spin = 0;
-    let dragging = false;
-    let pointerX = 0;
-    let pointerY = 0;
 
     const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-      const width = Math.max(1, Math.round(host.clientWidth * dpr));
-      const height = Math.max(1, Math.round(host.clientHeight * dpr));
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const width = Math.max(1, Math.round(canvas.clientWidth * dpr));
+      const height = Math.max(1, Math.round(canvas.clientHeight * dpr));
       if (canvas.width !== width || canvas.height !== height) {
         canvas.width = width;
         canvas.height = height;
@@ -360,93 +356,54 @@ function Gem({
       const L = live.current;
       gl.uniform2f(uRes, canvas.width, canvas.height);
       gl.uniform1f(uTime, clock);
-      gl.uniformMatrix3fv(uRot, false, rotation(yaw, pitch));
+      gl.uniformMatrix3fv(uRot, false, ROTATION);
       gl.uniform3f(uColor, L.color[0], L.color[1], L.color[2]);
       gl.uniform1f(uGlow, Math.max(0, L.glow));
-      gl.uniform1f(uBackdrop, L.backdrop ? 1 : 0);
-      gl.uniform1f(uLift, reduced ? 0 : Math.sin(clock * 1.1) * 0.035);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     };
 
+    const moving = () => live.current.animate && !reduced && visible && !document.hidden;
+
     const tick = (now: number) => {
-      const dt = Math.min((now - last) / 1000, 0.05);
+      clock += Math.min((now - last) / 1000, 0.05);
       last = now;
-      const L = live.current;
-      if (!reduced) {
-        clock += dt * Math.max(L.speed, 0);
-        if (!dragging) {
-          yaw += dt * 0.35 * L.speed + spin * dt;
-          spin *= Math.exp(-dt * 2.2);
-          pitch += (PITCH - pitch) * Math.min(1, dt * 3);
-        }
-      }
       draw();
-      raf = visible && !document.hidden ? requestAnimationFrame(tick) : 0;
+      raf = moving() ? requestAnimationFrame(tick) : 0;
     };
 
-    const start = () => {
-      if (raf || !visible || document.hidden) return;
-      last = performance.now();
-      raf = requestAnimationFrame(tick);
+    const refresh = () => {
+      if (moving()) {
+        if (!raf) {
+          last = performance.now();
+          raf = requestAnimationFrame(tick);
+        }
+      } else {
+        draw();
+      }
     };
-
-    const onDown = (event: PointerEvent) => {
-      if (!live.current.interactive) return;
-      dragging = true;
-      spin = 0;
-      pointerX = event.clientX;
-      pointerY = event.clientY;
-      host.setPointerCapture(event.pointerId);
-    };
-    const onMove = (event: PointerEvent) => {
-      if (!dragging) return;
-      const dx = event.clientX - pointerX;
-      const dy = event.clientY - pointerY;
-      pointerX = event.clientX;
-      pointerY = event.clientY;
-      yaw += dx * 0.012;
-      pitch = Math.max(-0.5, Math.min(0.6, pitch + dy * 0.006));
-      spin = dx * 0.6;
-      if (reduced || !raf) draw();
-    };
-    const onUp = (event: PointerEvent) => {
-      dragging = false;
-      if (host.hasPointerCapture(event.pointerId)) host.releasePointerCapture(event.pointerId);
-    };
-
-    host.addEventListener("pointerdown", onDown);
-    host.addEventListener("pointermove", onMove);
-    host.addEventListener("pointerup", onUp);
-    host.addEventListener("pointercancel", onUp);
+    redrawRef.current = refresh;
 
     const ro = new ResizeObserver(() => {
       resize();
       draw();
     });
-    ro.observe(host);
+    ro.observe(canvas);
     const io = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting;
-      if (visible) start();
+      refresh();
     });
-    io.observe(host);
-    const onVisibility = () => {
-      if (!document.hidden) start();
-    };
-    document.addEventListener("visibilitychange", onVisibility);
+    io.observe(canvas);
+    document.addEventListener("visibilitychange", refresh);
 
     resize();
-    draw();
-    start();
+    refresh();
 
     return () => {
+      redrawRef.current = null;
       if (raf) cancelAnimationFrame(raf);
       ro.disconnect();
       io.disconnect();
-      document.removeEventListener("visibilitychange", onVisibility);
-      host.removeEventListener("pointerdown", onDown);
-      host.removeEventListener("pointermove", onMove);
-      host.removeEventListener("pointerup", onUp);
-      host.removeEventListener("pointercancel", onUp);
+      document.removeEventListener("visibilitychange", refresh);
       gl.deleteBuffer(buffer);
       gl.deleteProgram(program);
       gl.deleteShader(vs);
@@ -455,30 +412,28 @@ function Gem({
   }, []);
 
   return (
-    <div
-      ref={hostRef}
+    <span
       role="img"
-      aria-label="Glowing gem"
-      className={cn(
-        "relative aspect-[3/4] w-full max-w-sm overflow-hidden rounded-2xl select-none",
-        interactive && "cursor-grab touch-none active:cursor-grabbing",
-        className,
-      )}
-      style={style}
+      aria-label="Gem"
+      className={cn("relative inline-block shrink-0 align-middle", className)}
+      style={{ width: size * 0.42, height: size, ...style }}
       {...props}
     >
       {failed ? (
-        <div
-          className="absolute inset-[18%_32%] [clip-path:polygon(50%_0,100%_26%,100%_74%,50%_100%,0_74%,0_26%)]"
+        <span
+          className="absolute inset-0 [clip-path:polygon(50%_0,100%_28%,100%_72%,50%_100%,0_72%,0_28%)]"
           style={{
             background: `linear-gradient(160deg, white, ${color} 35%, color-mix(in oklab, ${color} 40%, black))`,
-            filter: `drop-shadow(0 0 24px ${color})`,
           }}
         />
       ) : (
-        <canvas ref={canvasRef} className="absolute inset-0 size-full" />
+        <canvas
+          ref={canvasRef}
+          aria-hidden
+          className="pointer-events-none absolute -inset-x-[50%] -inset-y-[15%] h-[130%] w-[200%]"
+        />
       )}
-    </div>
+    </span>
   );
 }
 
