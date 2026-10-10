@@ -18,18 +18,16 @@ const controls: ControlDef[] = [
       { label: "Diamond", value: "#dff4ff", swatch: "#dff4ff" },
     ],
   },
+  { type: "number", prop: "size", label: "Size", min: 60, max: 300, step: 10 },
   { type: "number", prop: "glow", label: "Glow", min: 0, max: 2, step: 0.05 },
-  { type: "number", prop: "speed", label: "Speed", min: 0, max: 3, step: 0.1 },
-  { type: "boolean", prop: "backdrop", label: "Backdrop" },
-  { type: "boolean", prop: "interactive", label: "Drag to spin" },
+  { type: "boolean", prop: "animate", label: "Inner shimmer" },
 ];
 
 const defaultProps = {
   color: "#ff2d55",
+  size: 180,
   glow: 1,
-  speed: 1,
-  backdrop: true,
-  interactive: true,
+  animate: true,
 };
 
 export function GemPlayground() {
@@ -39,13 +37,12 @@ export function GemPlayground() {
       controls={controls}
       defaultProps={defaultProps}
       render={(values) => (
-        <div className="flex w-full justify-center py-4">
+        <div className="flex min-h-[320px] w-full items-center justify-center py-8">
           <Gem
             color={values.color as string}
+            size={values.size as number}
             glow={values.glow as number}
-            speed={values.speed as number}
-            backdrop={values.backdrop as boolean}
-            interactive={values.interactive as boolean}
+            animate={values.animate as boolean}
           />
         </div>
       )}
