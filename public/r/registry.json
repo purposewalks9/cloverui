@@ -465,7 +465,7 @@
       "name": "gem",
       "type": "registry:component",
       "title": "Gem",
-      "description": "A small cut crystal rendered in real 3D, with many lit facets, glinting shards and a bright core inside, and a soft glow. No background, any color.",
+      "description": "A polished cut crystal rendered in real 3D, with crisp facets, tinted glass and studio reflections. No outer glow or background, any color.",
       "files": [
         {
           "path": "registry/clover-ui/gem.tsx",
@@ -478,3 +478,4 @@
     }
   ]
 }
+

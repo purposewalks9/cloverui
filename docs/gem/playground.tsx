@@ -13,18 +13,18 @@ const controls: ControlDef[] = [
       { label: "Ruby", value: "#ff2d55", swatch: "#ff2d55" },
       { label: "Sapphire", value: "#2f6bff", swatch: "#2f6bff" },
       { label: "Emerald", value: "#14d977", swatch: "#14d977" },
-      { label: "Amethyst", value: "#a855f7", swatch: "#a855f7" },
+      { label: "Amethyst", value: "#c026ff", swatch: "#c026ff" },
       { label: "Topaz", value: "#ff9f1c", swatch: "#ff9f1c" },
       { label: "Diamond", value: "#dff4ff", swatch: "#dff4ff" },
     ],
   },
   { type: "number", prop: "size", label: "Size", min: 60, max: 300, step: 10 },
-  { type: "number", prop: "glow", label: "Glow", min: 0, max: 2, step: 0.05 },
-  { type: "boolean", prop: "animate", label: "Inner shimmer" },
+  { type: "number", prop: "glow", label: "Polish", min: 0, max: 2, step: 0.05 },
+  { type: "boolean", prop: "animate", label: "Light movement" },
 ];
 
 const defaultProps = {
-  color: "#ff2d55",
+  color: "#c026ff",
   size: 180,
   glow: 1,
   animate: true,
