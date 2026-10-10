@@ -15,6 +15,7 @@ import { Mic } from "@/registry/clover-ui/mic";
 import { Clicky } from "@/registry/clover-ui/clicky";
 import { TextGif } from "@/registry/clover-ui/text-gif";
 import { cn } from "@/lib/utils";
+import { Demo as LogoFlowDemo } from "@/docs/logo-flow/demo";
 
 const TokenFall = dynamic(
   () => import("@/registry/clover-ui/token-fall").then((m) => m.TokenFall),
@@ -186,4 +187,8 @@ export function TextGifPreview() {
       CLOVER
     </TextGif>
   );
+}
+
+export function LogoFlowPreview() {
+  return <LogoFlowDemo />;
 }
