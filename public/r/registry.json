@@ -38,7 +38,7 @@
         "https://cloverui.vercel.app/r/rocker-switch.json",
         "https://cloverui.vercel.app/r/agent-faq.json",
         "https://cloverui.vercel.app/r/not-found.json",
-        "https://cloverui.vercel.app/r/gem.json"
+        "https://cloverui.vercel.app/r/logo-flow.json"
       ]
     },
     {
@@ -462,13 +462,13 @@
       "category": "data"
     },
     {
-      "name": "gem",
+      "name": "logo-flow",
       "type": "registry:component",
-      "title": "Gem",
-      "description": "An interactive 3D gem with Grain Cube-style drag rotation, a smooth static glass or solid body, and low grain. No background or outer glow.",
+      "title": "Logo Flow",
+      "description": "A compact scrolling strip of logo icons with a seamless loop and softly blurred, faded ends.",
       "files": [
         {
-          "path": "registry/clover-ui/gem.tsx",
+          "path": "registry/clover-ui/logo-flow.tsx",
           "type": "registry:component"
         }
       ],
@@ -478,4 +478,3 @@
     }
   ]
 }
-
