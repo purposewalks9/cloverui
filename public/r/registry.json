@@ -37,7 +37,8 @@
         "https://cloverui.vercel.app/r/theme-toggle.json",
         "https://cloverui.vercel.app/r/rocker-switch.json",
         "https://cloverui.vercel.app/r/agent-faq.json",
-        "https://cloverui.vercel.app/r/not-found.json"
+        "https://cloverui.vercel.app/r/not-found.json",
+        "https://cloverui.vercel.app/r/gem.json"
       ]
     },
     {
@@ -459,6 +460,21 @@
       "dependencies": ["motion"],
       "registryDependencies": [],
       "category": "data"
+    },
+    {
+      "name": "gem",
+      "type": "registry:component",
+      "title": "Gem",
+      "description": "A real 3D crystal rendered on the GPU, with glowing veins and a hot core moving inside, light catching every facet, and any color you like.",
+      "files": [
+        {
+          "path": "registry/clover-ui/gem.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "category": "effect"
     }
   ]
 }
