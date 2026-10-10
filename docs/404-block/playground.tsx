@@ -1,0 +1,33 @@
+"use client";
+
+import { Block404 } from "@/registry/clover-ui/404-block";
+import { PlaygroundShell } from "@/components/garden/playground-shell";
+import type { ControlDef } from "@/lib/playground";
+
+const controls: ControlDef[] = [
+  { type: "text", prop: "title", label: "Error text" },
+  { type: "text", prop: "actionLabel", label: "Button text" },
+];
+
+const defaultProps = {
+  title: "Error",
+  actionLabel: "Back to home",
+};
+
+export function Block404Playground() {
+  return (
+    <PlaygroundShell
+      componentName="Block404"
+      controls={controls}
+      defaultProps={defaultProps}
+      render={(values) => (
+        <Block404
+          title={(values.title as string) || undefined}
+          actionLabel={(values.actionLabel as string) || undefined}
+          onAction={() => {}}
+          className="w-full"
+        />
+      )}
+    />
+  );
+}
