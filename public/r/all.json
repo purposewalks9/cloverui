@@ -31,7 +31,8 @@
     "https://cloverui.vercel.app/r/rocker-switch.json",
     "https://cloverui.vercel.app/r/glitch-text.json",
     "https://cloverui.vercel.app/r/404-block.json",
-    "https://cloverui.vercel.app/r/element-button.json"
+    "https://cloverui.vercel.app/r/element-button.json",
+    "https://cloverui.vercel.app/r/logo-flow.json"
   ],
   "type": "registry:item"
 }
