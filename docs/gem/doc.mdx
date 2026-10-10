@@ -1,0 +1,37 @@
+import { GemPlayground } from "./playground"
+
+<GemPlayground />
+
+## Installation
+
+<InstallationTabs item="gem">
+```tsx file=../../registry/clover-ui/gem.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { Gem } from "@/components/gem";
+
+<Gem color="#ff2d55" />
+```
+
+A crystal rendered in real 3D on the GPU. Light catches each facet, the edges glow, and inside it glowing veins swirl around a hot core that burns brightest near the bottom tip. It slowly turns and floats. Drag it to spin it, and it keeps turning on its own when you let go.
+
+Pass any hex color to `color` and everything follows it: the veins, the core, the edges and the glow. Some to try: ruby `#ff2d55`, sapphire `#2f6bff`, emerald `#14d977`, amethyst `#a855f7`, topaz `#ff9f1c` and diamond `#dff4ff`.
+
+By default it sits in its own dark scene with drifting fog and a pool of light on the floor. Set `backdrop={false}` to show just the gem and its glow on top of your own background.
+
+It fills its box, which is `aspect-[3/4] w-full max-w-sm` by default. Change the size with `className`. It pauses when it scrolls out of view or the tab is hidden. With reduced motion on, it holds still but can still be dragged.
+
+## Props
+
+<PropsTable data={[
+  { name: "color", type: "string", default: '"#ff2d55"', description: "Gem color as a hex value. Everything inside and around it follows." },
+  { name: "glow", type: "number", default: "1", description: "Strength of the inner light and the glow around it. 0 to 2." },
+  { name: "speed", type: "number", default: "1", description: "How fast it turns and how fast the veins move. 0 stops both." },
+  { name: "backdrop", type: "boolean", default: "true", description: "Shows the dark scene with fog and floor light. Turn off for a see-through background." },
+  { name: "interactive", type: "boolean", default: "true", description: "Lets people drag to spin it." },
+  { name: "className", type: "string", description: "Size and shape of the box." },
+]} />
