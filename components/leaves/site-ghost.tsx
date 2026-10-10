@@ -125,15 +125,87 @@ export function useSiteGhostLook() {
   return React.useContext(LookContext);
 }
 
+const GUIDE_KEY = "clover-guide";
+const guideListeners = new Set<() => void>();
+
+function readGuide() {
+  try {
+    return window.localStorage.getItem(GUIDE_KEY) === "on";
+  } catch {
+    return false;
+  }
+}
+
+function writeGuide(on: boolean) {
+  try {
+    window.localStorage.setItem(GUIDE_KEY, on ? "on" : "off");
+  } catch {}
+  guideListeners.forEach((listener) => listener());
+}
+
+function subscribeGuide(listener: () => void) {
+  guideListeners.add(listener);
+  window.addEventListener("storage", listener);
+  return () => {
+    guideListeners.delete(listener);
+    window.removeEventListener("storage", listener);
+  };
+}
+
+type Guide = { shown: boolean; turnOn: () => void; turnOff: () => void };
+
+const GuideContext = React.createContext<Guide>({
+  shown: false,
+  turnOn: () => {},
+  turnOff: () => {},
+});
+
+export function useGuide() {
+  return React.useContext(GuideContext);
+}
+
 export function SiteGhostProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [look, setLook] = React.useState<Look | null>(null);
   const { color, size } = look ?? DEFAULT_LOOK;
+  const enabled = React.useSyncExternalStore(subscribeGuide, readGuide, () => false);
+  const [dismissedOn, setDismissedOn] = React.useState<string | null>(null);
+  const [lastPath, setLastPath] = React.useState(pathname);
+  if (lastPath !== pathname) {
+    setLastPath(pathname);
+    setDismissedOn(null);
+  }
+  const onGhostPage = pathname === "/components/ghost";
+  const shown = enabled || (onGhostPage && dismissedOn !== pathname);
+
+  const guide = React.useMemo<Guide>(
+    () => ({
+      shown,
+      turnOn: () => {
+        setDismissedOn(null);
+        writeGuide(true);
+      },
+      turnOff: () => {
+        setDismissedOn(pathname);
+        writeGuide(false);
+      },
+    }),
+    [shown, pathname],
+  );
+
   return (
     <LookContext.Provider value={setLook}>
-      <GhostProvider color={color} size={size} reactions={react} message={greeting(pathname)}>
-        {children}
-      </GhostProvider>
+      <GuideContext.Provider value={guide}>
+        <GhostProvider
+          ghost={shown}
+          color={color}
+          size={size}
+          reactions={react}
+          message={greeting(pathname)}
+        >
+          {children}
+        </GhostProvider>
+      </GuideContext.Provider>
     </LookContext.Provider>
   );
 }

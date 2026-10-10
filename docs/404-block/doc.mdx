@@ -1,0 +1,57 @@
+import { Block404Playground } from "./playground"
+
+<Block404Playground />
+
+## Installation
+
+<InstallationTabs item="404-block">
+```tsx file=../../registry/clover-ui/404-block.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { Block404 } from "@/components/404-block";
+
+<Block404 />
+```
+
+A 404 block you can drop into any page or section. The block centers itself in the space it gets, while the text and button stay left-aligned like a classic error page: a bold "Error" next to the **404**, a short message with the important words in bold, and a button. The 404 and the button are filled with live red lava, drawn by a small WebGL shader. The button is an [Element Button](/components/element-button), so installing 404 Block installs it too. A matching gradient shows right away and the live effect fades in on top, so nothing pops in.
+
+Pass your own `description` to add links. Wrap the key words in `<strong>` to make them stand out:
+
+```tsx
+<Block404
+  description={
+    <>
+      Sorry, that page doesn&apos;t exist. Try going to <a href="/"><strong>the docs</strong></a>.
+    </>
+  }
+/>
+```
+
+In Next.js, put it in `app/not-found.tsx` so it shows on every missing page:
+
+```tsx
+import { Block404 } from "@/components/404-block";
+
+export default function Page() {
+  return <Block404 className="min-h-svh justify-center" />;
+}
+```
+
+The button links to `href`, which is `/` by default. Pass `onAction` instead to handle the click yourself, for example with `router.push` or `router.back()`.
+
+The heading and message use your theme colors. With reduced motion on, the effect stays still, and if WebGL isn't available the 404 and button keep a plain gradient.
+
+## Props
+
+<PropsTable data={[
+  { name: "title", type: "string", default: '"Error"', description: "The word shown before the 404." },
+  { name: "description", type: "ReactNode", description: "The message under the heading. Text in <strong> shows in bold, in your foreground color." },
+  { name: "actionLabel", type: "string", default: '"Back to home"', description: "Text on the button." },
+  { name: "href", type: "string", default: '"/"', description: "Where the button goes." },
+  { name: "onAction", type: "() => void", description: "Handles the click yourself. The button renders as a button instead of a link." },
+  { name: "className", type: "string" },
+]} />

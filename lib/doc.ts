@@ -9,10 +9,11 @@ const CATEGORY_LABELS: Record<string, string> = {
   cursor: "Cursors",
   effect: "Effects",
   background: "Backgrounds",
+  block: "Blocks",
   data: "Widgets",
 };
 
-const CATEGORY_ORDER = ["text", "input", "loader", "cursor", "effect", "background", "data"];
+const CATEGORY_ORDER = ["text", "input", "loader", "cursor", "effect", "background", "block", "data"];
 
 function toDocItem(item: RegistryItem): DocItem {
   return {

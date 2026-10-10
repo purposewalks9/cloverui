@@ -36,7 +36,8 @@
         "https://cloverui.vercel.app/r/theme-toggle.json",
         "https://cloverui.vercel.app/r/rocker-switch.json",
         "https://cloverui.vercel.app/r/glitch-text.json",
-        "https://cloverui.vercel.app/r/not-found.json"
+        "https://cloverui.vercel.app/r/404-block.json",
+        "https://cloverui.vercel.app/r/element-button.json"
       ]
     },
     {
@@ -430,19 +431,34 @@
       "category": "text"
     },
     {
-      "name": "not-found",
+      "name": "404-block",
       "type": "registry:component",
-      "title": "Not Found",
-      "description": "A 404 block where the 0 is a sad little face. Its eyes follow the cursor, and it breaks into a smile when you hover the way home.",
+      "title": "404 Block",
+      "description": "A drop-in 404 block with a bold 404 and a button filled with live red lava.",
       "files": [
         {
-          "path": "registry/clover-ui/not-found.tsx",
+          "path": "registry/clover-ui/404-block.tsx",
           "type": "registry:component"
         }
       ],
       "dependencies": ["motion"],
+      "registryDependencies": ["https://cloverui.vercel.app/r/element-button.json"],
+      "category": "block"
+    },
+    {
+      "name": "element-button",
+      "type": "registry:component",
+      "title": "Element Button",
+      "description": "A button filled with live lava, ocean, stone or sky that flows faster when you hover it.",
+      "files": [
+        {
+          "path": "registry/clover-ui/element-button.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": ["motion", "@radix-ui/react-slot", "class-variance-authority"],
       "registryDependencies": [],
-      "category": "data"
+      "category": "input"
     }
   ]
 }
