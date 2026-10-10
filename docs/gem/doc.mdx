@@ -14,24 +14,23 @@ import { GemPlayground } from "./playground"
 ```tsx
 import { Gem } from "@/components/gem";
 
-<Gem color="#ff2d55" />
+<Gem color="#ff2d55" size={160} />
 ```
 
-A crystal rendered in real 3D on the GPU. Light catches each facet, the edges glow, and inside it glowing veins swirl around a hot core that burns brightest near the bottom tip. It slowly turns and floats. Drag it to spin it, and it keeps turning on its own when you let go.
+A cut crystal rendered in real 3D on the GPU. It is just the gem, with no card or background, so it sits on anything like an icon or an image. Light catches its many facets and the edges glow. Inside, the light breaks into small shards and glints around a bright core near the bottom tip, and a soft glow spills around it.
 
-Pass any hex color to `color` and everything follows it: the veins, the core, the edges and the glow. Some to try: ruby `#ff2d55`, sapphire `#2f6bff`, emerald `#14d977`, amethyst `#a855f7`, topaz `#ff9f1c` and diamond `#dff4ff`.
+Pass any hex color to `color` and everything follows it. Some to try: ruby `#ff2d55`, sapphire `#2f6bff`, emerald `#14d977`, amethyst `#a855f7`, topaz `#ff9f1c` and diamond `#dff4ff`.
 
-By default it sits in its own dark scene with drifting fog and a pool of light on the floor. Set `backdrop={false}` to show just the gem and its glow on top of your own background.
+`size` is the gem's height in pixels, and it is about half as wide. The glow spills a little past that box without taking extra space in your layout.
 
-It fills its box, which is `aspect-[3/4] w-full max-w-sm` by default. Change the size with `className`. It pauses when it scrolls out of view or the tab is hidden. With reduced motion on, it holds still but can still be dragged.
+The gem stays still. Only the light inside shifts slowly, and it pauses when the gem is off screen. Set `animate={false}` to freeze it. It is also frozen when reduced motion is on.
 
 ## Props
 
 <PropsTable data={[
-  { name: "color", type: "string", default: '"#ff2d55"', description: "Gem color as a hex value. Everything inside and around it follows." },
+  { name: "color", type: "string", default: '"#ff2d55"', description: "Gem color as a hex value." },
+  { name: "size", type: "number", default: "160", description: "Height in pixels. The width is about half of it." },
   { name: "glow", type: "number", default: "1", description: "Strength of the inner light and the glow around it. 0 to 2." },
-  { name: "speed", type: "number", default: "1", description: "How fast it turns and how fast the veins move. 0 stops both." },
-  { name: "backdrop", type: "boolean", default: "true", description: "Shows the dark scene with fog and floor light. Turn off for a see-through background." },
-  { name: "interactive", type: "boolean", default: "true", description: "Lets people drag to spin it." },
-  { name: "className", type: "string", description: "Size and shape of the box." },
+  { name: "animate", type: "boolean", default: "true", description: "Slowly moves the light inside. Turn off for a still gem." },
+  { name: "className", type: "string" },
 ]} />
