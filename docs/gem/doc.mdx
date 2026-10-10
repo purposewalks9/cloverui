@@ -14,24 +14,30 @@ import { GemPlayground } from "./playground"
 ```tsx
 import { Gem } from "@/components/gem";
 
-<Gem color="#c026ff" size={160} />
+<Gem size={180} grain={0.02} />
+<Gem color="#14d977" material="solid" />
 ```
 
-A polished cut crystal rendered in real 3D on the GPU. It has a clean glass body, sharp facets, and soft studio reflections. Refraction and tinted internal reflections give it depth, with no outer glow, cloudy fill, or shard texture. The surrounding canvas is transparent, so the gem sits directly on your page.
+A real 3D cut gem using the same WebGL rendering and drag rotation approach as Grain Cube. Its smooth material stays fixed: there is no animated surface, flowing color, inner shimmer, or outer glow. The canvas has no background.
 
-Pass any hex color to `color`. Try ruby `#ff2d55`, sapphire `#2f6bff`, emerald `#14d977`, amethyst `#c026ff`, topaz `#ff9f1c`, or diamond `#dff4ff`.
+Drag to turn the object on two axes. It has gentle inertia and settles back to its resting pitch like Grain Cube. You can also focus it and use the arrow keys. Disable `interactive` for a decorative gem.
 
-`size` is the gem's height in pixels, and its layout box is 42% as wide. The transparent canvas extends past that box to leave room for the angled facets.
+The default is a light, translucent glass body. Use `material="solid"` for a smooth opaque body, and `color` for its tint. `grain` defaults to `0.02`; set it to `0` for an entirely smooth surface.
 
-The gem stays still while the reflected studio light shifts slowly. Set `animate={false}` to freeze it. Animation pauses off screen and when reduced motion is enabled.
+The object stays still by default. Set `animate` to rotate the whole gem automatically, and `speed` to adjust the rotation. The material never animates independently. Automatic rotation pauses off screen, in a hidden tab, and when reduced motion is enabled.
+
+`size` sets the canvas height in pixels. Its width is 95% of that height, leaving room to rotate without clipping. The `glow` prop controls polished reflections for compatibility with earlier versions; it does not create an outer glow.
 
 ## Props
 
 <PropsTable data={[
-  { name: "color", type: "string", default: '"#c026ff"', description: "Gem color as a hex value." },
-  { name: "size", type: "number", default: "160", description: "Height in pixels. The width is about half of it." },
-  { name: "glow", type: "number", default: "1", description: "Strength of polished surface reflections, from 0 to 2. Does not add an outer glow." },
-  { name: "animate", type: "boolean", default: "true", description: "Slowly shifts the reflected studio light. Turn off for still lighting." },
+  { name: "color", type: "string", default: '"#e6e8ec"', description: "Gem tint as a hex value." },
+  { name: "size", type: "number", default: "160", description: "Canvas height in pixels. Width is 95% of the height." },
+  { name: "material", type: '"glass" | "solid"', default: '"glass"', description: "Translucent glass or a smooth opaque body." },
+  { name: "grain", type: "number", default: "0.02", description: "Surface grain from 0 to 1. Use 0 for a completely smooth body." },
+  { name: "glow", type: "number", default: "1", description: "Polished reflection strength from 0 to 2. No outer glow." },
+  { name: "interactive", type: "boolean", default: "true", description: "Enable pointer dragging and arrow-key rotation." },
+  { name: "animate", type: "boolean", default: "false", description: "Automatically rotate the object. The material stays fixed." },
+  { name: "speed", type: "number", default: "1", description: "Automatic rotation speed." },
   { name: "className", type: "string" },
 ]} />
-
