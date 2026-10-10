@@ -465,7 +465,7 @@
       "name": "gem",
       "type": "registry:component",
       "title": "Gem",
-      "description": "A polished cut crystal rendered in real 3D, with crisp facets, tinted glass and studio reflections. No outer glow or background, any color.",
+      "description": "An interactive 3D gem with Grain Cube-style drag rotation, a smooth static glass or solid body, and low grain. No background or outer glow.",
       "files": [
         {
           "path": "registry/clover-ui/gem.tsx",
