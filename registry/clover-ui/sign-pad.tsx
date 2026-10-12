@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { Eraser, Signature } from "lucide-react";
 
@@ -535,7 +537,7 @@ const SignPad = React.forwardRef<HTMLDivElement, SignPadProps>(
       onCancel,
       onChange,
       defaultValue = null,
-      accent = "var(--brand)",
+      accent = "var(--brand, #e1e900)",
       strokeWidth = 3,
       minInk = 0.3,
       labels: labelOverrides,

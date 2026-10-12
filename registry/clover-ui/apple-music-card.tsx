@@ -18,10 +18,10 @@ interface TrackData {
 function extractAppleMusicId(rawUrl: string): { id: string; kind: "song" | "album" } | null {
   try {
     const url = new URL(rawUrl);
-    if (!url.hostname.includes("music.apple.com")) return null;
+    if (url.hostname !== "music.apple.com" || !["https:", "http:"].includes(url.protocol)) return null;
 
     const trackId = url.searchParams.get("i");
-    if (trackId) return { id: trackId, kind: "song" };
+    if (trackId) return /^\d+$/.test(trackId) ? { id: trackId, kind: "song" } : null;
 
     const segments = url.pathname.split("/").filter(Boolean);
     const last = segments[segments.length - 1];
@@ -33,18 +33,20 @@ function extractAppleMusicId(rawUrl: string): { id: string; kind: "song" | "albu
   }
 }
 
-async function fetchTrackData(url: string): Promise<TrackData> {
+async function fetchTrackData(url: string, signal: AbortSignal): Promise<TrackData> {
   const parsed = extractAppleMusicId(url);
   if (!parsed) throw new Error("Not a valid music.apple.com link");
 
-  const res = await fetch(`https://itunes.apple.com/lookup?id=${parsed.id}&entity=song`);
+  const res = await fetch(`https://itunes.apple.com/lookup?id=${parsed.id}&entity=song`, { signal });
   if (!res.ok) throw new Error("iTunes lookup failed");
 
   const data = await res.json();
   if (!data.resultCount) throw new Error("No results for that link");
 
   const result =
-    data.results.find((r: { wrapperType: string }) => r.wrapperType === "track") ?? data.results[0];
+    data.results.find((r: { wrapperType: string }) =>
+      r.wrapperType === (parsed.kind === "song" ? "track" : "collection"),
+    ) ?? data.results[0];
 
   return {
     title: result.trackName ?? result.collectionName ?? "Unknown title",
@@ -88,8 +90,8 @@ const NeutralBackdrop = () => (
   />
 );
 
-const AppleMusicCardSkeleton = ({ className }: { className?: string }) => (
-  <CardFrame className={cn("bg-muted/50 ring-border ring-1 ring-inset", className)}>
+const AppleMusicCardSkeleton = ({ className, ...props }: React.ComponentProps<"div">) => (
+  <CardFrame className={cn("bg-muted/50 ring-border ring-1 ring-inset", className)} {...props}>
     <div className="relative p-4" aria-busy="true" aria-label="Loading Apple Music track">
       <div className="bg-muted aspect-square w-full animate-pulse rounded-2xl" />
 
@@ -104,8 +106,8 @@ const AppleMusicCardSkeleton = ({ className }: { className?: string }) => (
   </CardFrame>
 );
 
-const AppleMusicCardError = ({ className }: { className?: string }) => (
-  <CardFrame className={className}>
+const AppleMusicCardError = ({ className, ...props }: React.ComponentProps<"div">) => (
+  <CardFrame className={className} {...props}>
     <NeutralBackdrop />
     <div className="relative flex aspect-square w-full items-center justify-center p-4">
       <p className="px-4 text-center text-sm text-white/60">Failed to load Apple Music data</p>
@@ -118,12 +120,14 @@ function useTrack(url: string) {
 
   React.useEffect(() => {
     let cancelled = false;
-    fetchTrackData(url).then(
+    const controller = new AbortController();
+    fetchTrackData(url, controller.signal).then(
       (data) => !cancelled && setState({ url, data }),
       () => !cancelled && setState({ url, data: null }),
     );
     return () => {
       cancelled = true;
+      controller.abort();
     };
   }, [url]);
 
@@ -134,8 +138,8 @@ function useTrack(url: string) {
 function AppleMusicCard({ url, className, ...props }: AppleMusicCardProps) {
   const data = useTrack(url);
 
-  if (data === undefined) return <AppleMusicCardSkeleton className={className} />;
-  if (!data) return <AppleMusicCardError className={className} />;
+  if (data === undefined) return <AppleMusicCardSkeleton className={className} {...props} />;
+  if (!data) return <AppleMusicCardError className={className} {...props} />;
 
   return (
     <CardFrame className={className} {...props}>

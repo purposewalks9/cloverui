@@ -200,8 +200,8 @@ function ThermalFlow({
   const [nonce, setNonce] = React.useState(0);
 
   const list = colors && colors.length >= 2 ? colors : THERMAL_FLOW_THEMES[theme];
-  const listKey = list.join(",");
-  const palette = React.useMemo(() => buildPalette(listKey.split(",")), [listKey]);
+  const listKey = JSON.stringify(list);
+  const palette = React.useMemo(() => buildPalette(JSON.parse(listKey)), [listKey]);
 
   const live = React.useRef<Live>({
     palette,
@@ -321,7 +321,7 @@ function ThermalFlow({
     const tick = (now: number) => {
       raf = 0;
       const L = live.current;
-      const moving = L.animate && !reduced;
+      const moving = L.animate && L.speed !== 0 && !reduced;
       const dt = last ? Math.min((now - last) / 1000, 0.1) : 0;
       last = now;
       if (moving) time += dt * L.speed;

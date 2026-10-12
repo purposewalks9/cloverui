@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { Slot, Slottable } from "@radix-ui/react-slot";
 
@@ -103,6 +105,7 @@ const SoftButton = React.forwardRef<HTMLButtonElement, SoftButtonProps>(
     return (
       <Comp
         ref={ref}
+        type={asChild ? undefined : "button"}
         className={[
           "group relative inline-flex cursor-pointer items-center justify-center",
           "gap-2 overflow-hidden whitespace-nowrap rounded-full font-semibold",

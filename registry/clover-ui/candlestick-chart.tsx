@@ -90,19 +90,6 @@ export function CandleChartStick({
   const dragRafRef = React.useRef<number | null>(null);
 
   React.useEffect(() => {
-    if (!root.current) return;
-
-    const ro = new ResizeObserver((entries) => {
-      const w = entries[0]?.contentRect.width;
-      if (w) setContainerWidth(w);
-    });
-
-    ro.observe(root.current);
-
-    return () => ro.disconnect();
-  }, []);
-
-  React.useEffect(() => {
     return () => {
       if (rafRef.current !== null) {
         cancelAnimationFrame(rafRef.current);
@@ -132,6 +119,20 @@ export function CandleChartStick({
     () => data.slice(rangeStart, rangeStart + visibleCount),
     [data, rangeStart, visibleCount],
   );
+  const hasVisibleData = visibleData.length > 0;
+
+  React.useEffect(() => {
+    if (!root.current) return;
+
+    const ro = new ResizeObserver((entries) => {
+      const w = entries[0]?.contentRect.width;
+      if (w) setContainerWidth(w);
+    });
+
+    ro.observe(root.current);
+
+    return () => ro.disconnect();
+  }, [hasVisibleData]);
 
   const { candles, colWidth } = React.useMemo(() => {
     const n = visibleData.length;
@@ -289,6 +290,17 @@ export function CandleChartStick({
   React.useEffect(() => {
     setRangeStart((start) => Math.max(0, Math.min(start, data.length - visibleCount)));
   }, [data.length, visibleCount]);
+
+  React.useEffect(() => {
+    if (visibleCount !== 0 || initialVisible === 0) return;
+    setVisibleCount(initialVisible);
+    setRangeStart(Math.max(0, data.length - initialVisible));
+    setActiveLocalIndex(
+      defaultIndex === undefined
+        ? initialVisible - 1
+        : Math.max(0, Math.min(defaultIndex, initialVisible - 1)),
+    );
+  }, [data.length, initialVisible, visibleCount, defaultIndex]);
 
   if (candles.length === 0 || !active) return null;
 

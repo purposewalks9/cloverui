@@ -419,6 +419,7 @@ function Ghost({
   onStateChange,
   className,
   style,
+  ref,
   ...props
 }: GhostProps) {
   const still = Boolean(useReducedMotion());
@@ -430,6 +431,11 @@ function Ghost({
   const layerRef = React.useRef<HTMLDivElement>(null);
   const anchorRef = React.useRef<HTMLSpanElement>(null);
   const [mounted, setMounted] = React.useState(false);
+  React.useImperativeHandle(
+    ref,
+    () => (mounted || boundary === "parent" ? layerRef.current! : null!),
+    [mounted, boundary],
+  );
   const box = SIZES[size];
   const x = useMotionValue(0);
   const y = useMotionValue(0);

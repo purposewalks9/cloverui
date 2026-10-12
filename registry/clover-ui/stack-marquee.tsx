@@ -39,9 +39,11 @@ function StackMarquee({
   onMouseLeave,
   onFocusCapture,
   onBlurCapture,
+  ref,
   ...props
 }: StackMarqueeProps) {
   const hostRef = React.useRef<HTMLDivElement>(null);
+  React.useImperativeHandle(ref, () => (logos.length ? hostRef.current! : null!), [logos.length]);
   const trackRef = React.useRef<HTMLDivElement>(null);
   const groupRef = React.useRef<HTMLDivElement>(null);
   const animationRef = React.useRef<Animation | null>(null);

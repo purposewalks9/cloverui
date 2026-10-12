@@ -1,0 +1,13 @@
+interface:
+  display_name: "UI Reviewer"
+  short_description: "Audit components without changing their existing designs."
+  default_prompt: "Use $review-ui to audit these components for portability, themes, behavior, and performance while preserving their designs."
+  icon_small: "assets/icon.svg"
+  icon_large: "assets/icon.svg"
+policy:
+  products:
+    - chatgpt
+    - codex
+    - api
+    - atlas
+  allow_implicit_invocation: true

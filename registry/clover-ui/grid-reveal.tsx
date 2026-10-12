@@ -138,7 +138,18 @@ const GridReveal = forwardRef<GridRevealRef, GridRevealProps>(
     const [revealed, setRevealed] = useState(false);
 
     const hasPlayedRef = useRef(false);
-    const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
+    const callbacks = useRef({ onStart, onComplete });
+    useEffect(() => {
+      callbacks.current = { onStart, onComplete };
+    }, [onStart, onComplete]);
+    const timers = useRef(new Set<ReturnType<typeof setTimeout>>());
+    const schedule = useCallback((callback: () => void, delay: number) => {
+      const timer = setTimeout(() => {
+        timers.current.delete(timer);
+        callback();
+      }, delay);
+      timers.current.add(timer);
+    }, []);
 
     const count = rows * cols;
 
@@ -191,7 +202,7 @@ const GridReveal = forwardRef<GridRevealRef, GridRevealProps>(
 
     const clearTimers = useCallback(() => {
       timers.current.forEach(clearTimeout);
-      timers.current = [];
+      timers.current.clear();
     }, []);
 
     const cycleTime = maxFactor * perStepDelay + blockDuration;
@@ -201,29 +212,23 @@ const GridReveal = forwardRef<GridRevealRef, GridRevealProps>(
 
       const revealPhase = () => {
         setRevealed(true);
-        onStart?.();
+        callbacks.current.onStart?.();
 
-        const afterReveal = setTimeout(() => {
-          onComplete?.();
+        schedule(() => {
+          callbacks.current.onComplete?.();
 
           if (!loop) return;
 
-          const afterPause = setTimeout(() => {
+          schedule(() => {
             setRevealed(false);
 
-            const nextCycle = setTimeout(revealPhase, cycleTime * 1000 + loopDelay * 1000);
-
-            timers.current.push(nextCycle);
+            schedule(revealPhase, cycleTime * 1000 + loopDelay * 1000);
           }, loopDelay * 1000);
-
-          timers.current.push(afterPause);
         }, cycleTime * 1000);
-
-        timers.current.push(afterReveal);
       };
 
       revealPhase();
-    }, [clearTimers, loop, loopDelay, onComplete, onStart, cycleTime]);
+    }, [clearTimers, schedule, loop, loopDelay, cycleTime]);
 
     const cover = useCallback(() => {
       clearTimers();
@@ -252,7 +257,7 @@ const GridReveal = forwardRef<GridRevealRef, GridRevealProps>(
       }
 
       return clearTimers;
-    }, [autoStart, inView]);
+    }, [autoStart, inView, play, clearTimers]);
 
     const handleViewportEnter = useCallback(() => {
       if (once && hasPlayedRef.current) {
