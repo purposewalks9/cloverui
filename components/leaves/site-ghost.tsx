@@ -179,7 +179,7 @@ export function SiteGhostProvider({ children }: { children: React.ReactNode }) {
     setDismissedOn(null);
   }
   const onGhostPage = pathname === "/components/ghost";
-  const shown = enabled || (onGhostPage && dismissedOn !== pathname);
+  const shown = pathname !== "/record" && (enabled || (onGhostPage && dismissedOn !== pathname));
 
   const guide = React.useMemo<Guide>(
     () => ({
