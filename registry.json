@@ -466,7 +466,7 @@
       "name": "cookie-consent",
       "type": "registry:component",
       "title": "Cookie Consent",
-      "description": "A cookie banner that slides up and follows your theme, with a rich heading, a live obsidian Accept button and real per-category choices.",
+      "description": "A cookie banner that slides up and follows your theme, with a rich heading and real per-category choices.",
       "files": [
         {
           "path": "registry/clover-ui/cookie-consent.tsx",
@@ -474,7 +474,7 @@
         }
       ],
       "dependencies": ["motion", "lucide-react", "class-variance-authority"],
-      "registryDependencies": ["https://cloverui.vercel.app/r/liquid-button.json"],
+      "registryDependencies": ["button"],
       "category": "block"
     },
     {
