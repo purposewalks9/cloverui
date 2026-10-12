@@ -6,7 +6,7 @@ import { ChevronDown } from "lucide-react";
 import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
-import { LiquidButton } from "@/registry/clover-ui/liquid-button";
+import { Button } from "@/components/ui/button";
 
 export type CookieCategory = {
   id: string;
@@ -32,19 +32,9 @@ export const defaultCookieCategories: CookieCategory[] = [
     required: true,
   },
   {
-    id: "functional",
-    label: "Functional",
-    description: "Remember settings like language, theme and region.",
-  },
-  {
     id: "analytics",
     label: "Analytics",
     description: "Count visits and see which pages people use, so we can improve them.",
-  },
-  {
-    id: "marketing",
-    label: "Marketing",
-    description: "Measure campaigns and show ads that match your interests.",
   },
 ];
 
@@ -123,7 +113,7 @@ function ConsentSwitch({
       onClick={() => onCheckedChange(!checked)}
       className={cn(
         "relative inline-flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full p-0.5 transition-colors duration-200 outline-none",
-        "focus-visible:ring-ring focus-visible:ring-offset-card focus-visible:ring-2 focus-visible:ring-offset-2",
+        "focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2",
         "disabled:cursor-not-allowed disabled:opacity-60",
         checked ? "bg-foreground" : "bg-input",
       )}
@@ -140,7 +130,7 @@ function ConsentSwitch({
 }
 
 const quietButton =
-  "inline-flex h-9 shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-lg px-3.5 text-sm font-medium whitespace-nowrap transition-[color,background-color,scale] duration-150 outline-none select-none active:scale-[0.96] focus-visible:ring-ring focus-visible:ring-offset-card focus-visible:ring-2 focus-visible:ring-offset-2";
+  "inline-flex h-9 shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-lg px-3.5 text-sm font-medium whitespace-nowrap transition-[color,background-color,scale] duration-150 outline-none select-none active:scale-[0.96] focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2";
 
 function CookieConsent({
   title = "We use cookies",
@@ -229,20 +219,20 @@ function CookieConsent({
           }
           className={cn(
             cookieConsentVariants({ position }),
-            "bg-card text-muted-foreground border-border rounded-2xl border p-4",
+            "bg-background text-muted-foreground border-border rounded-none border p-4",
             className,
           )}
           {...(props as React.ComponentProps<typeof motion.section>)}
         >
           <h2
             id={`${id}-title`}
-            className="inline-block bg-linear-to-b from-zinc-900 to-zinc-600 bg-clip-text text-[17px] leading-tight font-semibold tracking-tight text-transparent dark:from-zinc-100 dark:to-zinc-400"
+            className="inline-block bg-linear-to-b from-zinc-900 to-zinc-600 bg-clip-text text-lg leading-tight font-bold tracking-tight text-transparent dark:from-zinc-100 dark:to-zinc-400"
           >
             {title}
           </h2>
           <p
             id={`${id}-description`}
-            className="[&_a]:text-foreground [&_a]:decoration-muted-foreground/40 [&_a:hover]:decoration-foreground [&_strong]:text-foreground mt-1.5 text-sm leading-relaxed text-pretty [&_a]:underline [&_a]:underline-offset-4 [&_a]:transition-colors [&_strong]:font-medium"
+            className="[&_a]:text-foreground [&_a]:decoration-muted-foreground/40 [&_a:hover]:decoration-foreground [&_strong]:text-foreground mt-1.5 text-sm leading-relaxed text-pretty [&_a]:underline [&_a]:underline-offset-4 [&_a]:transition-colors [&_strong]:font-semibold"
           >
             {description}
             {policyHref && (
@@ -261,14 +251,17 @@ function CookieConsent({
               onClick={() => setManaging((value) => !value)}
               className={cn(
                 quietButton,
-                "text-muted-foreground hover:text-foreground -ml-2 h-8 px-2",
+                "text-muted-foreground hover:text-foreground -ml-2 h-8 gap-0 px-2 leading-none",
               )}
             >
               {manageLabel}
               <ChevronDown
                 aria-hidden
                 strokeWidth={2}
-                className={cn("size-4 transition-transform duration-300", managing && "rotate-180")}
+                className={cn(
+                  "size-3.5 translate-y-px transition-transform duration-300",
+                  managing && "rotate-180",
+                )}
               />
             </button>
           </div>
@@ -277,29 +270,28 @@ function CookieConsent({
             {managing && (
               <motion.div
                 key="preferences"
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
+                initial={{ height: 0, opacity: 0, y: -4 }}
+                animate={{ height: "auto", opacity: 1, y: 0 }}
+                exit={{ height: 0, opacity: 0, y: -4 }}
                 transition={
-                  reduced ? { duration: 0 } : { duration: 0.32, ease: [0.22, 1, 0.36, 1] }
+                  reduced
+                    ? { duration: 0 }
+                    : {
+                        height: { duration: 0.42, ease: [0.32, 0.72, 0, 1] },
+                        opacity: { duration: 0.28, ease: "easeOut" },
+                        y: { duration: 0.42, ease: [0.32, 0.72, 0, 1] },
+                      }
                 }
-                className="overflow-hidden"
+                className="overflow-hidden pt-2"
               >
-                <ul
-                  id={`${id}-preferences`}
-                  className="divide-border border-border bg-muted/40 mt-2 divide-y rounded-xl border"
-                >
+                <ul id={`${id}-preferences`} className="flex flex-col gap-1">
                   {categories.map((category) => (
-                    <li key={category.id} className="flex items-center gap-4 px-3.5 py-3">
+                    <li
+                      key={category.id}
+                      className="bg-muted/50 flex items-center gap-4 px-3.5 py-3"
+                    >
                       <div className="min-w-0 flex-1">
-                        <p className="text-foreground flex items-center gap-2 text-sm font-medium">
-                          {category.label}
-                          {category.required && (
-                            <span className="bg-muted text-muted-foreground rounded-full px-1.5 py-px text-[11px] font-medium whitespace-nowrap">
-                              Always on
-                            </span>
-                          )}
-                        </p>
+                        <p className="text-foreground text-sm font-medium">{category.label}</p>
                         {category.description && (
                           <p className="text-muted-foreground mt-0.5 text-xs leading-relaxed">
                             {category.description}
@@ -322,20 +314,12 @@ function CookieConsent({
           </AnimatePresence>
 
           <div className="mt-4 grid grid-cols-2 gap-2">
-            <button
-              type="button"
-              onClick={managing ? save : rejectAll}
-              className={cn(quietButton, "bg-muted text-foreground hover:bg-muted/70 w-full")}
-            >
+            <Button variant="secondary" className="w-full" onClick={managing ? save : rejectAll}>
               {managing ? saveLabel : rejectLabel}
-            </button>
-            <LiquidButton
-              element="obsidian"
-              onClick={acceptAll}
-              className="focus-visible:ring-offset-card w-full"
-            >
+            </Button>
+            <Button className="w-full" onClick={acceptAll}>
               {acceptLabel}
-            </LiquidButton>
+            </Button>
           </div>
         </motion.section>
       )}

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { LazyMount } from "@/components/leaves/lazy-mount";
 import { getPublishedSlugs } from "@/lib/slugs";
 import { cn } from "@/lib/utils";
+import { CookieConsent } from "@/registry/clover-ui/cookie-consent";
 import { RichText } from "@/registry/clover-ui/rich-text";
 import { SoftButton, type SoftColor } from "@/registry/clover-ui/soft-button";
 import {
@@ -166,6 +167,7 @@ export default async function Home() {
           </BentoActiveProvider>
         </section>
       </main>
+      <CookieConsent />
     </div>
   );
 }
