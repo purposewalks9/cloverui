@@ -1,0 +1,47 @@
+import { GlossySwitchPlayground } from "./playground"
+
+<GlossySwitchPlayground />
+
+## Installation
+
+<InstallationTabs item="glossy-switch">
+```tsx file=../../registry/clover-ui/glossy-switch.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { GlossySwitch } from "@/components/glossy-switch";
+
+<GlossySwitch aria-label="Notifications" />
+```
+
+A chunky switch with a glossy black frame and a big domed black knob. When it's on, the inside lights up green with a bold **ON** next to the knob. Click it and the knob snaps across in a tenth of a second, the track turns dark, and **OFF** shows on the other side.
+
+It works like a normal switch: Tab to it and press Space or Enter to flip it. Give it an `aria-label` so screen readers know what it turns on and off.
+
+Leave it uncontrolled with `defaultChecked`, or control it with `checked` and `onCheckedChange`:
+
+```tsx
+const [enabled, setEnabled] = React.useState(true);
+
+<GlossySwitch aria-label="Wi-Fi" checked={enabled} onCheckedChange={setEnabled} />
+```
+
+Pass any CSS color to `color` to change the on color. The switch stays black in light and dark mode. With reduced motion on, it switches instantly.
+
+## Props
+
+<PropsTable data={[
+  { name: "checked", type: "boolean", description: "Controls the switch yourself." },
+  { name: "defaultChecked", type: "boolean", default: "true", description: "Starting state when uncontrolled." },
+  { name: "onCheckedChange", type: "(checked: boolean) => void", description: "Called with the new state." },
+  { name: "color", type: "string", default: '"#5aa676"', description: "The track color when on." },
+  { name: "size", type: '"sm" | "default" | "lg"', default: '"default"' },
+  { name: "onLabel", type: "string", default: '"ON"' },
+  { name: "offLabel", type: "string", default: '"OFF"' },
+  { name: "disabled", type: "boolean", default: "false" },
+  { name: "aria-label", type: "string", description: "What the switch controls. Falls back to the current label." },
+  { name: "className", type: "string" },
+]} />

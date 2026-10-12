@@ -15,7 +15,7 @@ import { Mic } from "@/registry/clover-ui/mic";
 import { Clicky } from "@/registry/clover-ui/clicky";
 import { TextGif } from "@/registry/clover-ui/text-gif";
 import { cn } from "@/lib/utils";
-import { Demo as LogoFlowDemo } from "@/docs/logo-flow/demo";
+import { Demo as StackMarqueeDemo } from "@/docs/stack-marquee/demo";
 
 const TokenFall = dynamic(
   () => import("@/registry/clover-ui/token-fall").then((m) => m.TokenFall),
@@ -189,6 +189,6 @@ export function TextGifPreview() {
   );
 }
 
-export function LogoFlowPreview() {
-  return <LogoFlowDemo />;
+export function StackMarqueePreview() {
+  return <StackMarqueeDemo />;
 }

@@ -13,7 +13,7 @@ import {
   GrainCubePreview,
   GridRevealPreview,
   MicPreview,
-  LogoFlowPreview,
+  StackMarqueePreview,
   NucleusPreview,
   RichProgressPreview,
   SoftButtonPreview,
@@ -42,7 +42,7 @@ const ROWS: { grid: string; items: BentoItem[] }[] = [
       { slug: "mic", title: "Mic", Demo: MicPreview, className: "" },
       { slug: "clicky", title: "Clicky", Demo: ClickyPreview, className: "" },
       { slug: "text-gif", title: "Text Gif", Demo: TextGifPreview, className: "" },
-      { slug: "logo-flow", title: "Logo Flow", Demo: LogoFlowPreview, className: "" },
+      { slug: "stack-marquee", title: "Stack Marquee", Demo: StackMarqueePreview, className: "" },
     ],
   },
   {

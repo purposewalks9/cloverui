@@ -43,12 +43,15 @@ export const ghostWords = {
 
 const flavors: Record<string, string[]> = {
   text: ["fancy", "stylish", "wordy"],
-  input: ["clicky", "tappy"],
+  button: ["clicky", "tappy"],
+  control: ["flippy", "slidey"],
   loader: ["spinny", "loading"],
   cursor: ["pointy", "buddy"],
   effect: ["magic", "sparkly"],
   background: ["dreamy", "pretty"],
+  logo: ["brandy", "famous"],
   data: ["smart", "numbers"],
+  block: ["handy", "ready"],
 };
 
 const items = new Map(

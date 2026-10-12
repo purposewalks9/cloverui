@@ -6,35 +6,33 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-export type LogoFlowDirection = "left" | "right";
-export type LogoFlowLogo = { name: string } & (
+export type StackMarqueeDirection = "left" | "right";
+export type StackMarqueeLogo = { name: string } & (
   { icon: React.ReactNode; src?: never } | { src: string; icon?: never }
 );
 
-export interface LogoFlowProps extends Omit<React.ComponentProps<"div">, "children"> {
-  logos: LogoFlowLogo[];
+export interface StackMarqueeProps extends Omit<React.ComponentProps<"div">, "children"> {
+  logos: StackMarqueeLogo[];
   speed?: number;
-  direction?: LogoFlowDirection;
+  direction?: StackMarqueeDirection;
   iconSize?: number;
   gap?: number;
   edgeWidth?: number;
-  blur?: number;
   paused?: boolean;
   pauseOnHover?: boolean;
   label?: string;
 }
 
-function LogoFlow({
+function StackMarquee({
   logos,
   speed = 28,
   direction = "left",
   iconSize = 18,
   gap = 28,
   edgeWidth = 48,
-  blur = 4,
   paused = false,
   pauseOnHover = true,
-  label = "Software and integrations",
+  label = "Agent tools",
   className,
   style,
   onMouseEnter,
@@ -42,7 +40,7 @@ function LogoFlow({
   onFocusCapture,
   onBlurCapture,
   ...props
-}: LogoFlowProps) {
+}: StackMarqueeProps) {
   const hostRef = React.useRef<HTMLDivElement>(null);
   const trackRef = React.useRef<HTMLDivElement>(null);
   const groupRef = React.useRef<HTMLDivElement>(null);
@@ -135,7 +133,7 @@ function LogoFlow({
       aria-label={label}
       tabIndex={0}
       className={cn(
-        "text-foreground focus-visible:ring-ring relative w-full overflow-hidden py-4 outline-none focus-visible:ring-2",
+        "text-foreground focus-visible:ring-ring w-full overflow-hidden py-4 outline-none focus-visible:ring-2",
         className,
       )}
       style={{ maskImage: mask, WebkitMaskImage: mask, ...style }}
@@ -198,27 +196,10 @@ function LogoFlow({
           </div>
         ))}
       </div>
-      {blur > 0 &&
-        edgeWidth > 0 &&
-        ["left", "right"].map((side) => (
-          <span
-            key={side}
-            aria-hidden
-            className="pointer-events-none absolute inset-y-0"
-            style={{
-              [side]: 0,
-              width,
-              backdropFilter: `blur(${Math.max(0, blur)}px)`,
-              WebkitBackdropFilter: `blur(${Math.max(0, blur)}px)`,
-              maskImage: `linear-gradient(to ${side === "left" ? "right" : "left"}, black, transparent)`,
-              WebkitMaskImage: `linear-gradient(to ${side === "left" ? "right" : "left"}, black, transparent)`,
-            }}
-          />
-        ))}
     </div>
   );
 }
 
-LogoFlow.displayName = "LogoFlow";
+StackMarquee.displayName = "StackMarquee";
 
-export { LogoFlow };
+export { StackMarquee };
