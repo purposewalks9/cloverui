@@ -78,6 +78,7 @@ function LogoStorm({
   speed = 1,
   label = "Logos of companies",
   className,
+  ref,
   ...props
 }: LogoStormProps) {
   const reduceMotion = useReducedMotion();
@@ -90,6 +91,7 @@ function LogoStorm({
   const pace = 1 / Math.max(speed, 0.1);
   const steps = React.useMemo(() => plan(logos.length), [logos.length]);
   const listRef = React.useRef<HTMLUListElement>(null);
+  React.useImperativeHandle(ref, () => listRef.current!, []);
   const marks = React.useRef<(HTMLSpanElement | null)[]>([]);
   const [started, setStarted] = React.useState(false);
   const stagger = (1.2 / Math.max(logos.length, 1)) * pace;
@@ -110,11 +112,12 @@ function LogoStorm({
   React.useEffect(() => {
     if (!started || still || logos.length === 0) return;
     const pick = random(logos.length * 13 + 5);
+    const animations = new Set<Animation>();
     let bounce = 0;
     const wait = window.setTimeout(
       () => {
         bounce = window.setInterval(() => {
-          marks.current[Math.floor(pick() * logos.length)]?.animate(
+          const animation = marks.current[Math.floor(pick() * logos.length)]?.animate(
             [
               { transform: "scale(1) rotate(0deg)" },
               { transform: "scale(1.14) rotate(-4deg)" },
@@ -122,6 +125,10 @@ function LogoStorm({
             ],
             { duration: 420 * pace, easing: "ease-out" },
           );
+          if (animation) {
+            animations.add(animation);
+            animation.onfinish = () => animations.delete(animation);
+          }
         }, 1300 * pace);
       },
       (0.6 * pace + logos.length * stagger) * 1000,
@@ -129,6 +136,7 @@ function LogoStorm({
     return () => {
       window.clearTimeout(wait);
       window.clearInterval(bounce);
+      animations.forEach((animation) => animation.cancel());
     };
   }, [started, still, logos.length, pace, stagger]);
 

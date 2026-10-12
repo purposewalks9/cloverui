@@ -42,9 +42,11 @@ function Clicky({
   interval = 2.4,
   autoClick = false,
   className,
+  ref,
   ...props
 }: ClickyProps) {
   const [scope, animate] = useAnimate<HTMLSpanElement>();
+  React.useImperativeHandle(ref, () => scope.current, [scope]);
   const targetRef = React.useRef<HTMLSpanElement>(null);
   const inView = useInView(scope, { once: true, amount: 0.6 });
   const reduceMotion = useReducedMotion();

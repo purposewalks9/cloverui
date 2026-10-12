@@ -7,9 +7,11 @@
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
-    "registry:build": "pnpx shadcn build",
+    "registry:build": "shadcn build",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "registry:check": "node scripts/check-registry.mjs",
+    "registry:typecheck": "tsc --noEmit -p tsconfig.registry.json"
   },
   "dependencies": {
     "@base-ui/react": "^1.1.0",

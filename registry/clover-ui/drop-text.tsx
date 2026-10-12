@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import { forwardRef, useCallback, useImperativeHandle, useMemo, useState } from "react";
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -66,6 +66,12 @@ const DropText = forwardRef<DropTextRef, DropTextProps>(
   ) => {
     const [played, setPlayed] = useState(!inView && autoStart);
     const [landed, setLanded] = useState(false);
+    const frame = useRef<number | null>(null);
+    const cancelPlay = useCallback(() => {
+      if (frame.current !== null) cancelAnimationFrame(frame.current);
+      frame.current = null;
+    }, []);
+    useEffect(() => cancelPlay, [cancelPlay]);
 
     const units = useMemo(() => {
       if (splitBy === "characters") {
@@ -77,16 +83,21 @@ const DropText = forwardRef<DropTextRef, DropTextProps>(
     const effectiveStagger = stagger / Math.max(speed, 0.01);
 
     const play = useCallback(() => {
+      cancelPlay();
       setLanded(false);
       setPlayed(false);
-      requestAnimationFrame(() => setPlayed(true));
+      frame.current = requestAnimationFrame(() => {
+        frame.current = null;
+        setPlayed(true);
+      });
       onStart?.();
-    }, [onStart]);
+    }, [onStart, cancelPlay]);
 
     const reset = useCallback(() => {
+      cancelPlay();
       setPlayed(false);
       setLanded(false);
-    }, []);
+    }, [cancelPlay]);
 
     useImperativeHandle(ref, () => ({ play, reset }), [play, reset]);
 

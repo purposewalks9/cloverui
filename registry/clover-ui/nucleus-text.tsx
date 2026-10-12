@@ -105,8 +105,9 @@ const NucleusText = React.forwardRef<HTMLSpanElement, NucleusTextProps>(
       });
 
       const start = performance.now();
+      let shakeAnimation: Animation | undefined;
       if (shake > 0) {
-        host.animate(
+        shakeAnimation = host.animate(
           [
             { transform: "translate3d(0, 0, 0)" },
             { transform: `translate3d(${-2.5 * shake}px, 0, 0) rotate(${-0.45 * shake}deg)` },
@@ -156,6 +157,7 @@ const NucleusText = React.forwardRef<HTMLSpanElement, NucleusTextProps>(
       return () => {
         disposed = true;
         cancelAnimationFrame(raf);
+        shakeAnimation?.cancel();
       };
     }, [children, particleColor, particleCount, particleSize, gatherSpeed, shake]);
 

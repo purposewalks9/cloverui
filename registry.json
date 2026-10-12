@@ -68,7 +68,9 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion"],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [],
       "category": "effect"
     },
@@ -98,7 +100,9 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "category": "text"
     },
@@ -113,7 +117,9 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion"],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [],
       "category": "loader"
     },
@@ -128,7 +134,9 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion"],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [],
       "category": "loader"
     },
@@ -158,7 +166,9 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["@radix-ui/react-slot"],
+      "dependencies": [
+        "@radix-ui/react-slot"
+      ],
       "registryDependencies": [],
       "category": "button"
     },
@@ -173,7 +183,10 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["matter-js", "@types/matter-js"],
+      "dependencies": [
+        "matter-js",
+        "@types/matter-js"
+      ],
       "registryDependencies": [],
       "category": "effect"
     },
@@ -203,7 +216,9 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion"],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [],
       "category": "text"
     },
@@ -233,7 +248,10 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion", "class-variance-authority"],
+      "dependencies": [
+        "motion",
+        "class-variance-authority"
+      ],
       "registryDependencies": [],
       "category": "control"
     },
@@ -248,7 +266,9 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion"],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [],
       "category": "loader"
     },
@@ -263,7 +283,9 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion", "lucide-react"],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "category": "control"
     },
@@ -308,7 +330,10 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion", "class-variance-authority"],
+      "dependencies": [
+        "motion",
+        "class-variance-authority"
+      ],
       "registryDependencies": [],
       "category": "cursor"
     },
@@ -323,7 +348,9 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion"],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [],
       "category": "cursor"
     },
@@ -338,7 +365,10 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion", "class-variance-authority"],
+      "dependencies": [
+        "motion",
+        "class-variance-authority"
+      ],
       "registryDependencies": [],
       "category": "button"
     },
@@ -353,7 +383,9 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion"],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [],
       "category": "text"
     },
@@ -368,7 +400,9 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion"],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [],
       "category": "logo"
     },
@@ -383,7 +417,10 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion", "class-variance-authority"],
+      "dependencies": [
+        "motion",
+        "class-variance-authority"
+      ],
       "registryDependencies": [],
       "category": "cursor"
     },
@@ -398,7 +435,10 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["class-variance-authority", "next-themes"],
+      "dependencies": [
+        "class-variance-authority",
+        "next-themes"
+      ],
       "registryDependencies": [],
       "category": "button"
     },
@@ -413,7 +453,9 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion"],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [],
       "category": "text"
     },
@@ -428,8 +470,12 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion"],
-      "registryDependencies": ["https://cloverui.vercel.app/r/liquid-button.json"],
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://cloverui.vercel.app/r/liquid-button.json"
+      ],
       "category": "block"
     },
     {
@@ -443,7 +489,11 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion", "@radix-ui/react-slot", "class-variance-authority"],
+      "dependencies": [
+        "motion",
+        "@radix-ui/react-slot",
+        "class-variance-authority"
+      ],
       "registryDependencies": [],
       "category": "button"
     },
@@ -473,8 +523,14 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion", "lucide-react", "class-variance-authority"],
-      "registryDependencies": ["button"],
+      "dependencies": [
+        "motion",
+        "lucide-react",
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
       "category": "block"
     },
     {
@@ -488,7 +544,9 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["class-variance-authority"],
+      "dependencies": [
+        "class-variance-authority"
+      ],
       "registryDependencies": [],
       "category": "control"
     }

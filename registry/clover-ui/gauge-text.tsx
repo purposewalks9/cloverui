@@ -8,6 +8,7 @@ import {
   useMemo,
   useRef,
   useState,
+  type ComponentPropsWithoutRef,
 } from "react";
 import { Gauge } from "lucide-react";
 
@@ -15,7 +16,7 @@ import { cn } from "@/lib/utils";
 
 export type GaugeSpeed = "slow" | "normal" | "fast";
 
-export interface GaugeTextProps {
+export interface GaugeTextProps extends Omit<ComponentPropsWithoutRef<"span">, "children" | "color"> {
   value: number;
 
   suffix?: string;
@@ -92,6 +93,10 @@ const GaugeText = forwardRef<GaugeTextRef, GaugeTextProps>(
 
     const frame = useRef<number | null>(null);
     const hasPlayedRef = useRef(false);
+    const callbacks = useRef({ onStart, onComplete });
+    useEffect(() => {
+      callbacks.current = { onStart, onComplete };
+    }, [onStart, onComplete]);
 
     const countDuration = duration ?? COUNT_DURATION[speed];
 
@@ -101,13 +106,13 @@ const GaugeText = forwardRef<GaugeTextRef, GaugeTextProps>(
       }
 
       setLanded(false);
-      onStart?.();
+      callbacks.current.onStart?.();
 
       const start = performance.now();
 
       const tick = (now: number) => {
         const elapsed = (now - start) / 1000;
-        const t = Math.min(elapsed / countDuration, 1);
+        const t = countDuration > 0 ? Math.min(elapsed / countDuration, 1) : 1;
         const eased = easeOutExpo(t);
 
         setDisplay(value * eased);
@@ -117,12 +122,13 @@ const GaugeText = forwardRef<GaugeTextRef, GaugeTextProps>(
         } else {
           setDisplay(value);
           setLanded(true);
-          onComplete?.();
+          frame.current = null;
+          callbacks.current.onComplete?.();
         }
       };
 
       frame.current = requestAnimationFrame(tick);
-    }, [value, countDuration, onStart, onComplete]);
+    }, [value, countDuration]);
 
     const reset = useCallback(() => {
       if (frame.current) {
@@ -147,7 +153,7 @@ const GaugeText = forwardRef<GaugeTextRef, GaugeTextProps>(
           cancelAnimationFrame(frame.current);
         }
       };
-    }, [autoStart, inView]);
+    }, [autoStart, inView, play]);
 
     const handleViewportEnter = useCallback(() => {
       if (once && hasPlayedRef.current) return;
@@ -156,7 +162,8 @@ const GaugeText = forwardRef<GaugeTextRef, GaugeTextProps>(
       play();
     }, [once, play]);
 
-    const formatted = useMemo(() => display.toFixed(decimals), [display, decimals]);
+    const precision = Number.isFinite(decimals) ? Math.max(0, Math.min(100, Math.trunc(decimals))) : 0;
+    const formatted = useMemo(() => display.toFixed(precision), [display, precision]);
 
     return (
       <span

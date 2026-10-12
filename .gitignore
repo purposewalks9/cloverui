@@ -35,7 +35,12 @@ yarn-error.log*
 
 .cursor
 .claude
-.agents
+/.agents/*
+!/.agents/skills/
+/.agents/skills/*
+!/.agents/skills/review-ui/
+!/.agents/skills/preserve-ui-design/
+!/.agents/skills/commit-verified-changes/
 skills-lock.json
 
 # env files (can opt-in for committing if needed)

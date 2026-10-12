@@ -2,12 +2,11 @@
 
 import {
   motion,
-  useAnimationFrame,
   useMotionValue,
   useTransform,
   type MotionValue,
 } from "motion/react";
-import { forwardRef, useCallback, useImperativeHandle, useMemo, useRef, useState } from "react";
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -32,10 +31,11 @@ export interface SpinnerRef {
   pause: () => void;
 }
 
-function parseColor(input: string): [number, number, number, number] {
-  if (input.startsWith("#")) {
+function parseColor(input: string): [number, number, number, number] | null {
+  input = input.trim();
+  if (/^#(?:[\da-f]{3,4}|[\da-f]{6}|[\da-f]{8})$/i.test(input)) {
     let hex = input.slice(1);
-    if (hex.length === 3)
+    if (hex.length === 3 || hex.length === 4)
       hex = hex
         .split("")
         .map((c) => c + c)
@@ -52,15 +52,16 @@ function parseColor(input: string): [number, number, number, number] {
   if (m) {
     return [Number(m[1]), Number(m[2]), Number(m[3]), m[4] !== undefined ? Number(m[4]) : 1];
   }
-  return [255, 255, 255, 1];
+  return null;
 }
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
-function mixColors(c1: string, c2: string, t: number) {
+function colorMixer(c1: string, c2: string) {
   const a = parseColor(c1);
   const b = parseColor(c2);
-  return `rgba(${Math.round(lerp(a[0], b[0], t))}, ${Math.round(lerp(a[1], b[1], t))}, ${Math.round(
+  if (!a || !b) return (t: number) => `color-mix(in srgb, ${c1} ${(1 - t) * 100}%, ${c2} ${t * 100}%)`;
+  return (t: number) => `rgba(${Math.round(lerp(a[0], b[0], t))}, ${Math.round(lerp(a[1], b[1], t))}, ${Math.round(
     lerp(a[2], b[2], t),
   )}, ${Number(lerp(a[3], b[3], t).toFixed(3))})`;
 }
@@ -95,11 +96,21 @@ const Spinner = forwardRef<SpinnerRef, SpinnerProps>(
     const toggle = useCallback(() => setRunning((r) => !r), []);
     useImperativeHandle(ref, () => ({ play, pause }), [play, pause]);
 
-    useAnimationFrame((_, delta) => {
+    useEffect(() => {
       if (!running) return;
-      elapsed.current += delta / 1000;
-      time.set(elapsed.current);
-    });
+      let frame = 0;
+      let previous: number | null = null;
+      const tick = (now: number) => {
+        if (previous !== null) elapsed.current += Math.min(now - previous, 40) / 1000;
+        previous = now;
+        time.set(elapsed.current);
+        frame = requestAnimationFrame(tick);
+      };
+      frame = requestAnimationFrame(tick);
+      return () => cancelAnimationFrame(frame);
+    }, [running, time]);
+
+    const mix = useMemo(() => colorMixer(trackColor, color), [trackColor, color]);
 
     const resolvedDotSize = dotSize ?? size * 0.16;
 
@@ -150,7 +161,7 @@ const Spinner = forwardRef<SpinnerRef, SpinnerProps>(
             x={dot.x}
             y={dot.y}
             size={resolvedDotSize}
-            color={color}
+            mix={mix}
             trackColor={trackColor}
             duration={duration}
             tailLength={tailLength}
@@ -171,7 +182,7 @@ interface SpinnerDotProps {
   x: number;
   y: number;
   size: number;
-  color: string;
+  mix: (brightness: number) => string;
   trackColor: string;
   duration: number;
   tailLength: number;
@@ -185,7 +196,7 @@ function SpinnerDot({
   x,
   y,
   size,
-  color,
+  mix,
   trackColor,
   duration,
   tailLength,
@@ -193,9 +204,9 @@ function SpinnerDot({
   className,
 }: SpinnerDotProps) {
   const backgroundColor = useTransform(time, (t) => {
-    const head = (t / duration) % 1;
-    const brightness = Math.max(0, 1 - trailDistance(head, fraction) / tailLength);
-    return mixColors(trackColor, color, brightness);
+    const head = (t / Math.max(0.001, duration)) % 1;
+    const brightness = Math.max(0, 1 - trailDistance(head, fraction) / Math.max(0.001, tailLength));
+    return mix(brightness);
   });
 
   return (

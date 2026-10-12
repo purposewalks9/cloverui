@@ -8,7 +8,9 @@ Stack: Next.js 16 (webpack), React 19, Tailwind CSS v4, `motion`, shadcn, pnpm.
 
 - `pnpm dev`: dev server on port 3000
 - `pnpm registry:build`: rebuild `public/r/*.json` from `registry.json`. Run it after any change to a registry component or `registry.json`.
-- `pnpm lint` and `pnpm exec tsc --noEmit`: both must pass for files you touch. The `jotai` errors in `hooks/use-config.ts` and `components/roots/providers.tsx`, and the one in `components/leaves/code-block-command.tsx`, were already there.
+- `pnpm registry:check`: verify imports, client boundaries, docs, and generated registry content.
+- `pnpm registry:typecheck`: type-check the distributed components independently of the docs app.
+- `pnpm lint` and `pnpm exec tsc --noEmit`: check the full app too and report baseline failures accurately. The 2026-10-12 baseline has two unavailable `SiOpenai` exports in `components/stem/toc.tsx` and `docs/stack-marquee/demo.tsx`; see `docs/component-audit.md`.
 - `pnpm format`: Prettier. `.prettierignore` skips `*.mdx`, `registry/clover-ui/soft-button.tsx` and `docs/soft-button`.
 
 ## Layout
@@ -29,7 +31,7 @@ Stack: Next.js 16 (webpack), React 19, Tailwind CSS v4, `motion`, shadcn, pnpm.
 1. Write `registry/clover-ui/<slug>.tsx`, then add or update its `registry.json` entry.
 2. Add `docs/<slug>/doc.mdx`, `demo.tsx` and `playground.tsx`. The props table and the usage text must match what the code actually does.
 3. Run `pnpm registry:build`, then lint and type-check.
-4. Follow the `component-quality` skill checklist (`.claude/skills/component-quality`).
+4. Follow `.agents/skills/review-ui/SKILL.md`. Preserve existing designs with `.agents/skills/preserve-ui-design/SKILL.md`. Use `.agents/skills/commit-verified-changes/SKILL.md` when committing or publishing changes.
 
 `registry.json` also has an `all` item that installs every component through `registryDependencies`. Add each new component's URL to it, and remove it there when a component is deleted.
 
@@ -40,9 +42,13 @@ When renaming or deleting a component, update every one of these: the component 
 - No code comments. The owner had all of them removed, so don't add new ones. Keep tooling directives such as `eslint-disable` and `@ts-expect-error`.
 - Variants use `cva`, and classes are merged with `cn()` from `@/lib/utils`. Accept `className` and spread `...props` onto the root element. Take `ref` as a normal prop (React 19).
 - Export the prop types, e.g. `MicColor` and `CursorTagSide`, so playgrounds cast to them instead of redeclaring unions or using `any`.
-- Use theme tokens (`bg-background`, `text-foreground`, `text-muted-foreground`, ...) instead of hardcoded colors, and check both light and dark mode.
+- Use host theme tokens for semantic UI and inherited text. Preserve existing artwork colors, material palettes, gradients, shadows, and effects. Do not repaint existing components to fit a theme. Use current override props or document the host mapping; check light, dark, and a custom palette. See `docs/component-integration.md`.
 - Respect `prefers-reduced-motion` with `useReducedMotion()`. Clean up timers, animation frames, media streams and running animations when an effect re-runs or the component unmounts.
 - Keep button and toolbar text on one line (`whitespace-nowrap`, `shrink-0`). Check headers at 200% browser zoom.
+
+## Design preservation
+
+Existing component and demo designs are protected by default. Internal fixes, packaging, and performance work must preserve normal rendering, visual defaults, public APIs, and playground layout. The owner can explicitly authorize a visual change. Before editing, retain a source baseline and compare affected renders when possible; report checks that could not run. Do not treat automated checks as proof of universal compatibility. The full workflow is `.agents/skills/preserve-ui-design/SKILL.md`.
 
 ## Things to be careful with
 

@@ -7,3 +7,7 @@ When the user asks to build, extend, review, or troubleshoot the real-time globe
 The root agent is the **Globe Orchestrator**. It owns the task decomposition, architecture, implementation plan, integration, verification, and final answer. It may delegate independent work only when that improves the result. Every specialist reports its findings to the Globe Orchestrator; specialists do not independently merge competing implementations or change unrelated files.
 
 For all other work, follow the existing repository conventions in `CLAUDE.md`.
+
+## Component maintenance
+
+Preserve existing component and demo designs during audits, portability fixes, and performance work. Read `.agents/skills/preserve-ui-design/SKILL.md` before those edits and `.agents/skills/review-ui/SKILL.md` for audits. For commits and GitHub updates use `.agents/skills/commit-verified-changes/SKILL.md`. Explicit user design instructions take precedence.

@@ -41,7 +41,19 @@ export const defaultCookieCategories: CookieCategory[] = [
 export function getCookieConsent(storageKey = "cookie-consent"): CookieConsentRecord | null {
   try {
     const value = window.localStorage.getItem(storageKey);
-    return value ? (JSON.parse(value) as CookieConsentRecord) : null;
+    const record: unknown = value ? JSON.parse(value) : null;
+    if (!record || typeof record !== "object") return null;
+    const { choice, preferences, date } = record as Partial<CookieConsentRecord>;
+    if (
+      !["all", "necessary", "custom"].includes(choice ?? "") ||
+      !preferences ||
+      typeof preferences !== "object" ||
+      Array.isArray(preferences) ||
+      !Object.values(preferences).every((enabled) => typeof enabled === "boolean") ||
+      typeof date !== "string" ||
+      !Number.isFinite(Date.parse(date))
+    ) return null;
+    return record as CookieConsentRecord;
   } catch {
     return null;
   }
@@ -83,11 +95,14 @@ export interface CookieConsentProps
   delay?: number;
 }
 
-function initialPreferences(categories: CookieCategory[]): CookiePreferences {
+function initialPreferences(
+  categories: CookieCategory[],
+  saved: CookiePreferences = {},
+): CookiePreferences {
   return Object.fromEntries(
     categories.map((category) => [
       category.id,
-      Boolean(category.required || category.defaultEnabled),
+      Boolean(category.required || (saved[category.id] ?? category.defaultEnabled)),
     ]),
   );
 }
@@ -161,11 +176,12 @@ function CookieConsent({
   const [stored, setStored] = React.useState<boolean | null>(null);
   const [managing, setManaging] = React.useState(false);
   const [preferences, setPreferences] = React.useState(() => initialPreferences(categories));
+  const currentPreferences = initialPreferences(categories, preferences);
   const open = openProp ?? stored === false;
 
   React.useEffect(() => {
     const record = storageKey ? getCookieConsent(storageKey) : null;
-    if (record) setPreferences((previous) => ({ ...previous, ...record.preferences }));
+    setPreferences(record?.preferences ?? {});
     setStored(record !== null);
   }, [storageKey]);
 
@@ -174,6 +190,7 @@ function CookieConsent({
   }, [open]);
 
   const finish = (choice: CookieConsentChoice, next: CookiePreferences) => {
+    next = initialPreferences(categories, next);
     setPreferences(next);
     if (storageKey) {
       try {
@@ -197,7 +214,7 @@ function CookieConsent({
       "necessary",
       Object.fromEntries(categories.map((category) => [category.id, Boolean(category.required)])),
     );
-  const save = () => finish("custom", preferences);
+  const save = () => finish("custom", currentPreferences);
 
   const hidden = reduced ? { opacity: 0 } : { opacity: 0, y: 32, filter: "blur(6px)" };
   const shown = reduced ? { opacity: 1 } : { opacity: 1, y: 0, filter: "blur(0px)" };
@@ -300,7 +317,7 @@ function CookieConsent({
                       </div>
                       <ConsentSwitch
                         label={category.label}
-                        checked={category.required ? true : Boolean(preferences[category.id])}
+                        checked={currentPreferences[category.id]}
                         disabled={category.required}
                         onCheckedChange={(checked) =>
                           setPreferences((previous) => ({ ...previous, [category.id]: checked }))
@@ -314,10 +331,10 @@ function CookieConsent({
           </AnimatePresence>
 
           <div className="mt-4 grid grid-cols-2 gap-2">
-            <Button variant="secondary" className="w-full" onClick={managing ? save : rejectAll}>
+            <Button type="button" variant="secondary" className="w-full" onClick={managing ? save : rejectAll}>
               {managing ? saveLabel : rejectLabel}
             </Button>
-            <Button className="w-full" onClick={acceptAll}>
+            <Button type="button" className="w-full" onClick={acceptAll}>
               {acceptLabel}
             </Button>
           </div>

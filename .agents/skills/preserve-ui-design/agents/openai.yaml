@@ -1,0 +1,4 @@
+interface:
+  display_name: "Preserve UI Design"
+  short_description: "Protect component designs during internal improvements."
+  default_prompt: "Use $preserve-ui-design to improve this component without changing its existing design."
