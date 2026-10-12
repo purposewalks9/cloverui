@@ -34,11 +34,12 @@
         "https://cloverui.vercel.app/r/thermal-flow.json",
         "https://cloverui.vercel.app/r/token-fall.json",
         "https://cloverui.vercel.app/r/theme-toggle.json",
-        "https://cloverui.vercel.app/r/rocker-switch.json",
         "https://cloverui.vercel.app/r/glitch-text.json",
         "https://cloverui.vercel.app/r/404-block.json",
-        "https://cloverui.vercel.app/r/element-button.json",
-        "https://cloverui.vercel.app/r/logo-flow.json"
+        "https://cloverui.vercel.app/r/liquid-button.json",
+        "https://cloverui.vercel.app/r/stack-marquee.json",
+        "https://cloverui.vercel.app/r/cookie-consent.json",
+        "https://cloverui.vercel.app/r/glossy-switch.json"
       ]
     },
     {
@@ -159,7 +160,7 @@
       ],
       "dependencies": ["@radix-ui/react-slot"],
       "registryDependencies": [],
-      "category": "input"
+      "category": "button"
     },
     {
       "name": "token-fall",
@@ -234,7 +235,7 @@
       ],
       "dependencies": ["motion", "class-variance-authority"],
       "registryDependencies": [],
-      "category": "input"
+      "category": "control"
     },
     {
       "name": "rich-progress",
@@ -264,7 +265,7 @@
       ],
       "dependencies": ["motion", "lucide-react"],
       "registryDependencies": [],
-      "category": "input"
+      "category": "control"
     },
     {
       "name": "apple-music-card",
@@ -339,7 +340,7 @@
       ],
       "dependencies": ["motion", "class-variance-authority"],
       "registryDependencies": [],
-      "category": "input"
+      "category": "button"
     },
     {
       "name": "block-text",
@@ -369,7 +370,7 @@
       ],
       "dependencies": ["motion"],
       "registryDependencies": [],
-      "category": "effect"
+      "category": "logo"
     },
     {
       "name": "ghost",
@@ -399,22 +400,7 @@
       ],
       "dependencies": ["class-variance-authority", "next-themes"],
       "registryDependencies": [],
-      "category": "input"
-    },
-    {
-      "name": "rocker-switch",
-      "type": "registry:component",
-      "title": "Rocker Switch",
-      "description": "A black ON/OFF rocker switch that tilts in 3D. The pressed side sinks in and ON glows when it is switched on.",
-      "files": [
-        {
-          "path": "registry/clover-ui/rocker-switch.tsx",
-          "type": "registry:component"
-        }
-      ],
-      "dependencies": ["motion", "class-variance-authority"],
-      "registryDependencies": [],
-      "category": "input"
+      "category": "button"
     },
     {
       "name": "glitch-text",
@@ -443,38 +429,68 @@
         }
       ],
       "dependencies": ["motion"],
-      "registryDependencies": ["https://cloverui.vercel.app/r/element-button.json"],
+      "registryDependencies": ["https://cloverui.vercel.app/r/liquid-button.json"],
       "category": "block"
     },
     {
-      "name": "element-button",
+      "name": "liquid-button",
       "type": "registry:component",
-      "title": "Element Button",
-      "description": "A button filled with live lava, ocean, stone or sky that flows faster when you hover it.",
+      "title": "Liquid Button",
+      "description": "A button filled with a live, flowing liquid (lava, ocean, stone, sky or obsidian) drawn by a tiny WebGL shader. It speeds up on hover and presses in on click.",
       "files": [
         {
-          "path": "registry/clover-ui/element-button.tsx",
+          "path": "registry/clover-ui/liquid-button.tsx",
           "type": "registry:component"
         }
       ],
       "dependencies": ["motion", "@radix-ui/react-slot", "class-variance-authority"],
       "registryDependencies": [],
-      "category": "input"
+      "category": "button"
     },
     {
-      "name": "logo-flow",
+      "name": "stack-marquee",
       "type": "registry:component",
-      "title": "Logo Flow",
-      "description": "A compact scrolling strip of logo icons with a seamless loop and softly blurred, faded ends.",
+      "title": "Stack Marquee",
+      "description": "A compact scrolling strip of AI and developer tool logos with a seamless loop and faded ends.",
       "files": [
         {
-          "path": "registry/clover-ui/logo-flow.tsx",
+          "path": "registry/clover-ui/stack-marquee.tsx",
           "type": "registry:component"
         }
       ],
       "dependencies": [],
       "registryDependencies": [],
-      "category": "effect"
+      "category": "logo"
+    },
+    {
+      "name": "cookie-consent",
+      "type": "registry:component",
+      "title": "Cookie Consent",
+      "description": "A cookie banner that slides up and follows your theme, with a rich heading, a live obsidian Accept button and real per-category choices.",
+      "files": [
+        {
+          "path": "registry/clover-ui/cookie-consent.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": ["motion", "lucide-react", "class-variance-authority"],
+      "registryDependencies": ["https://cloverui.vercel.app/r/liquid-button.json"],
+      "category": "block"
+    },
+    {
+      "name": "glossy-switch",
+      "type": "registry:component",
+      "title": "Glossy Switch",
+      "description": "A glossy black ON/OFF switch with a big domed knob that snaps across a colored track, with labels on each side.",
+      "files": [
+        {
+          "path": "registry/clover-ui/glossy-switch.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": ["class-variance-authority"],
+      "registryDependencies": [],
+      "category": "control"
     }
   ]
 }

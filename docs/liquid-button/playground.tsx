@@ -1,10 +1,10 @@
 "use client";
 
 import {
-  ElementButton,
-  type ElementButtonSize,
+  LiquidButton,
+  type LiquidButtonSize,
   type ElementName,
-} from "@/registry/clover-ui/element-button";
+} from "@/registry/clover-ui/liquid-button";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
 import type { ControlDef } from "@/lib/playground";
 
@@ -19,6 +19,7 @@ const controls: ControlDef[] = [
       { label: "Ocean", value: "ocean", swatch: "#1d6fc4" },
       { label: "Stone", value: "stone", swatch: "#8a5a2b" },
       { label: "Sky", value: "sky", swatch: "#3f6d96" },
+      { label: "Obsidian", value: "obsidian", swatch: "#1f1f23" },
     ],
   },
   {
@@ -41,20 +42,20 @@ const defaultProps = {
   disabled: false,
 };
 
-export function ElementButtonPlayground() {
+export function LiquidButtonPlayground() {
   return (
     <PlaygroundShell
-      componentName="ElementButton"
+      componentName="LiquidButton"
       controls={controls}
       defaultProps={defaultProps}
       render={(values) => (
-        <ElementButton
+        <LiquidButton
           element={values.element as ElementName}
-          size={values.size as ElementButtonSize}
+          size={values.size as LiquidButtonSize}
           disabled={values.disabled as boolean}
         >
           {values.children as string}
-        </ElementButton>
+        </LiquidButton>
       )}
     />
   );

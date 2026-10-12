@@ -7,7 +7,7 @@ import { useReducedMotion } from "motion/react";
 
 import { cn } from "@/lib/utils";
 
-export type ElementName = "lava" | "ocean" | "stone" | "sky";
+export type ElementName = "lava" | "ocean" | "stone" | "sky" | "obsidian";
 export type ElementColors = [string, string, string];
 
 type ElementLook = {
@@ -70,6 +70,18 @@ export const elementPalettes: Record<ElementName, ElementLook> = {
     distortion: 0.3,
     speed: 0.75,
     sparkle: 0,
+    grain: 0,
+  },
+  obsidian: {
+    colors: ["#5c5c63", "#1f1f23", "#050506"],
+    text: "#fafafa",
+    ring: "#a1a1aa",
+    shape: 0,
+    scale: 48,
+    swirl: 0.8,
+    distortion: 0.25,
+    speed: 0.4,
+    sparkle: 0.18,
     grain: 0,
   },
 };
@@ -315,7 +327,7 @@ export function useElementSurface(
   return { ready, boost };
 }
 
-const elementButtonVariants = cva(
+const liquidButtonVariants = cva(
   [
     "group/element relative isolate inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 overflow-hidden font-semibold whitespace-nowrap select-none",
     "transition-transform duration-150 ease-out outline-none active:scale-[0.96] active:duration-75",
@@ -334,16 +346,16 @@ const elementButtonVariants = cva(
   },
 );
 
-export type ElementButtonSize = NonNullable<VariantProps<typeof elementButtonVariants>["size"]>;
+export type LiquidButtonSize = NonNullable<VariantProps<typeof liquidButtonVariants>["size"]>;
 
-export interface ElementButtonProps
-  extends React.ComponentProps<"button">, VariantProps<typeof elementButtonVariants> {
+export interface LiquidButtonProps
+  extends React.ComponentProps<"button">, VariantProps<typeof liquidButtonVariants> {
   element?: ElementName;
   colors?: ElementColors;
   asChild?: boolean;
 }
 
-function ElementButton({
+function LiquidButton({
   element = "lava",
   colors,
   size,
@@ -356,7 +368,7 @@ function ElementButton({
   onFocus,
   onBlur,
   ...props
-}: ElementButtonProps) {
+}: LiquidButtonProps) {
   const still = Boolean(useReducedMotion());
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const palette = elementPalettes[element];
@@ -366,7 +378,7 @@ function ElementButton({
   return (
     <Comp
       data-element={element}
-      className={cn(elementButtonVariants({ size }), className)}
+      className={cn(liquidButtonVariants({ size }), className)}
       style={
         {
           backgroundImage: elementGradient(colors ?? palette.colors),
@@ -411,4 +423,4 @@ function ElementButton({
   );
 }
 
-export { ElementButton, elementButtonVariants };
+export { LiquidButton, liquidButtonVariants };

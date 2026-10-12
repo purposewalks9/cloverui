@@ -5,11 +5,11 @@ import { useReducedMotion } from "motion/react";
 
 import { cn } from "@/lib/utils";
 import {
-  ElementButton,
+  LiquidButton,
   elementGradient,
   useElementSurface,
   type ElementColors,
-} from "@/registry/clover-ui/element-button";
+} from "@/registry/clover-ui/liquid-button";
 
 export interface Block404Props extends Omit<React.ComponentProps<"section">, "title"> {
   title?: string;
@@ -125,13 +125,13 @@ function Block404({
         )}
 
         {onAction ? (
-          <ElementButton onClick={onAction} className="mt-6">
+          <LiquidButton onClick={onAction} className="mt-6">
             {actionLabel}
-          </ElementButton>
+          </LiquidButton>
         ) : (
-          <ElementButton asChild className="mt-6">
+          <LiquidButton asChild className="mt-6">
             <a href={href}>{actionLabel}</a>
-          </ElementButton>
+          </LiquidButton>
         )}
       </div>
     </section>

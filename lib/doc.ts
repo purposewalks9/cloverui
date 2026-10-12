@@ -3,17 +3,30 @@ import { getRegistry } from "./registry";
 import { DocItem, DocSchema, RegistryItem } from "./types";
 
 const CATEGORY_LABELS: Record<string, string> = {
+  button: "Buttons",
+  control: "Form Controls",
   text: "Text",
-  input: "Inputs",
-  loader: "Loaders",
+  loader: "Loaders & Progress",
   cursor: "Cursors",
   effect: "Effects",
-  background: "Backgrounds",
-  block: "Blocks",
-  data: "Widgets",
+  logo: "Logos",
+  background: "Backgrounds & 3D",
+  data: "Charts & Cards",
+  block: "Page Blocks",
 };
 
-const CATEGORY_ORDER = ["text", "input", "loader", "cursor", "effect", "background", "block", "data"];
+const CATEGORY_ORDER = [
+  "button",
+  "control",
+  "text",
+  "loader",
+  "cursor",
+  "effect",
+  "logo",
+  "background",
+  "data",
+  "block",
+];
 
 function toDocItem(item: RegistryItem): DocItem {
   return {

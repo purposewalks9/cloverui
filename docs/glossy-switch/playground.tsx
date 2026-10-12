@@ -1,11 +1,11 @@
 "use client";
 
-import { RockerSwitch, type RockerSwitchSize } from "@/registry/clover-ui/rocker-switch";
+import { GlossySwitch, type GlossySwitchSize } from "@/registry/clover-ui/glossy-switch";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
 import type { ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [
-  { type: "color", prop: "glowColor", label: "Glow" },
+  { type: "color", prop: "color", label: "On color" },
   {
     type: "select",
     prop: "size",
@@ -18,28 +18,32 @@ const controls: ControlDef[] = [
   },
   { type: "text", prop: "onLabel", label: "On label" },
   { type: "text", prop: "offLabel", label: "Off label" },
+  { type: "boolean", prop: "disabled", label: "Disabled" },
 ];
 
 const defaultProps = {
-  glowColor: "#7dff3c",
+  color: "#5aa676",
   size: "lg",
   onLabel: "ON",
   offLabel: "OFF",
+  disabled: false,
 };
 
-export function RockerSwitchPlayground() {
+export function GlossySwitchPlayground() {
   return (
     <PlaygroundShell
-      componentName="RockerSwitch"
+      componentName="GlossySwitch"
       controls={controls}
       defaultProps={defaultProps}
       render={(values) => (
         <div className="flex min-h-[220px] w-full items-center justify-center">
-          <RockerSwitch
-            glowColor={values.glowColor as string}
-            size={values.size as RockerSwitchSize}
+          <GlossySwitch
+            aria-label="Power"
+            color={values.color as string}
+            size={values.size as GlossySwitchSize}
             onLabel={values.onLabel as string}
             offLabel={values.offLabel as string}
+            disabled={values.disabled as boolean}
           />
         </div>
       )}

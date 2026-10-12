@@ -28,11 +28,12 @@
     "https://cloverui.vercel.app/r/thermal-flow.json",
     "https://cloverui.vercel.app/r/token-fall.json",
     "https://cloverui.vercel.app/r/theme-toggle.json",
-    "https://cloverui.vercel.app/r/rocker-switch.json",
     "https://cloverui.vercel.app/r/glitch-text.json",
     "https://cloverui.vercel.app/r/404-block.json",
-    "https://cloverui.vercel.app/r/element-button.json",
-    "https://cloverui.vercel.app/r/logo-flow.json"
+    "https://cloverui.vercel.app/r/liquid-button.json",
+    "https://cloverui.vercel.app/r/stack-marquee.json",
+    "https://cloverui.vercel.app/r/cookie-consent.json",
+    "https://cloverui.vercel.app/r/glossy-switch.json"
   ],
   "type": "registry:item"
 }

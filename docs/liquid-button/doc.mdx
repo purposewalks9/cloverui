@@ -1,37 +1,38 @@
-import { ElementButtonPlayground } from "./playground"
+import { LiquidButtonPlayground } from "./playground"
 
-<ElementButtonPlayground />
+<LiquidButtonPlayground />
 
 ## Installation
 
-<InstallationTabs item="element-button">
-```tsx file=../../registry/clover-ui/element-button.tsx
+<InstallationTabs item="liquid-button">
+```tsx file=../../registry/clover-ui/liquid-button.tsx
 ```
 </InstallationTabs>
 
 ## Usage
 
 ```tsx
-import { ElementButton } from "@/components/element-button";
+import { LiquidButton } from "@/components/liquid-button";
 
-<ElementButton element="lava">Get started</ElementButton>
+<LiquidButton element="lava">Get started</LiquidButton>
 ```
 
-A button filled with one of the four elements, drawn live by a small WebGL shader:
+A button filled with one of five elements, drawn live by a small WebGL shader:
 
 - **Lava**: molten red lava that swirls in bright red, crimson and near-black.
 - **Ocean**: shimmering underwater light that ripples across deep blue.
 - **Stone**: slow layers of brown rock with a fine grain, drifting sideways.
 - **Sky**: soft steel-blue wisps that sweep past like wind.
+- **Obsidian**: glossy black glass with slow silver sheens rolling across it.
 
 Hover or focus it and the element flows faster. Click it and it presses in. Each element sets its own text and focus ring color. A matching gradient shows right away and the live effect fades in on top, so nothing pops in while it loads. With reduced motion on, the effect is drawn once and stays still. If WebGL isn't available, the gradient stays.
 
 Use `asChild` to render a link instead of a button:
 
 ```tsx
-<ElementButton element="ocean" asChild>
+<LiquidButton element="ocean" asChild>
   <a href="/docs">Read the docs</a>
-</ElementButton>
+</LiquidButton>
 ```
 
 Pass three hex colors to `colors`, from brightest to darkest, to recolor an element while keeping its motion.
@@ -39,7 +40,7 @@ Pass three hex colors to `colors`, from brightest to darkest, to recolor an elem
 ## Props
 
 <PropsTable data={[
-  { name: "element", type: '"lava" | "ocean" | "stone" | "sky"', default: '"lava"', description: "Which element fills the button." },
+  { name: "element", type: '"lava" | "ocean" | "stone" | "sky" | "obsidian"', default: '"lava"', description: "Which element fills the button." },
   { name: "size", type: '"sm" | "default" | "lg"', default: '"default"' },
   { name: "colors", type: "[string, string, string]", description: "Three hex colors, brightest to darkest. Defaults to the element's own colors." },
   { name: "asChild", type: "boolean", default: "false", description: "Renders the child element (for example a link) with the button's look." },
