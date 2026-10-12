@@ -22,7 +22,7 @@ const controls: ControlDef[] = [
 ];
 
 const defaultProps = {
-  color: "#5aa676",
+  color: "#42aa78",
   size: "lg",
   onLabel: "ON",
   offLabel: "OFF",
