@@ -1,11 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { BookOpen, Box, Check, Copy } from "lucide-react";
+import { BookOpen, Box, Copy, ThumbsUp } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Search, type SearchGroup, type SearchItem } from "@/registry/clover-ui/search";
 import type { DocSchema } from "@/lib/types";
-import { useIsMac } from "@/hooks/use-is-mac";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { useConfig } from "@/hooks/use-config";
 import { trackEvent } from "@/lib/events";
@@ -23,7 +22,6 @@ export function SearchForm({
 }) {
   const [highlighted, setHighlighted] = useState<SearchItem | null>(null);
   const router = useRouter();
-  const isMac = useIsMac();
   const { copyToClipboard, isCopied } = useCopyToClipboard();
   const [config] = useConfig();
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -73,7 +71,6 @@ export function SearchForm({
     <Search
       groups={groups}
       shortcut={shortcut}
-      shortcutLabel={isMac ? "⌘ K" : "Ctrl K"}
       placeholder="Search components..."
       className={className}
       onHighlight={setHighlighted}
@@ -87,14 +84,14 @@ export function SearchForm({
           <button
             type="button"
             onClick={copyInstall}
-            className="inline-flex min-h-7 cursor-pointer items-center gap-1.5 rounded-md px-1.5 text-neutral-600 hover:bg-neutral-200 focus-visible:outline-2 focus-visible:outline-neutral-500 dark:text-neutral-300 dark:hover:bg-neutral-800"
+            className="inline-flex min-h-9 cursor-pointer items-center gap-1.5 rounded-md px-1.5 text-neutral-600 hover:bg-neutral-200 focus-visible:outline-2 focus-visible:outline-neutral-500 dark:text-neutral-300 dark:hover:bg-neutral-800"
           >
             {isCopied ? (
-              <Check aria-hidden className="size-3" />
+              <ThumbsUp aria-hidden className="size-4" />
             ) : (
-              <Copy aria-hidden className="size-3" />
+              <Copy aria-hidden className="size-4" />
             )}
-            {isCopied ? "Copied" : "Copy install"}
+            {isCopied ? "Copied" : "Copy"}
           </button>
         ) : null
       }
