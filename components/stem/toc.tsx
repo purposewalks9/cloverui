@@ -1,9 +1,11 @@
 "use client";
 
+import { OpenAILogo } from "@/components/seed/openai-logo";
+
 import * as React from "react";
 import Link from "next/link";
 import { ArrowUp, Copy, SquarePen, ThumbsUp } from "lucide-react";
-import { SiClaude, SiOpenai, SiV0, SiX } from "@icons-pack/react-simple-icons";
+import { SiClaude, SiV0, SiX } from "@icons-pack/react-simple-icons";
 
 import { trackEvent } from "@/lib/events";
 import { siteConfig } from "@/lib/config";
@@ -198,7 +200,7 @@ export function DocsTableOfContents({
       href: `https://chatgpt.com?q=${prompt}`,
       event: "open_in_chatgpt" as const,
       word: ghostWords.chatgpt,
-      icon: <SiOpenai className="text-black dark:text-white" />,
+      icon: <OpenAILogo className="text-black dark:text-white" />,
     },
     {
       label: "Open in Claude",
