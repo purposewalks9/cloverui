@@ -34,12 +34,18 @@ export interface GlossySwitchProps
   checked?: boolean;
   defaultChecked?: boolean;
   onCheckedChange?: (checked: boolean) => void;
-  onLabel?: string;
-  offLabel?: string;
+  showLabels?: boolean;
   color?: string;
 }
 
 const KNOB = "3.48em";
+const SLIDE = "duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none";
+const TRACK_SURFACE = {
+  backgroundImage:
+    "radial-gradient(ellipse at 27% 72%, rgb(255 255 255 / 0.035), transparent 65%), linear-gradient(180deg, rgb(0 0 0 / 0.13), transparent 36%, transparent 70%, rgb(0 0 0 / 0.06))",
+  boxShadow:
+    "inset 0 0.1em 0.18em rgb(0 0 0 / 0.58), inset 0.055em 0 0.1em rgb(0 0 0 / 0.18), inset 0 -0.025em 0.07em rgb(0 0 0 / 0.2)",
+} satisfies React.CSSProperties;
 
 const BEVEL_MASK = {
   maskImage: "linear-gradient(#000 0 0), linear-gradient(#000 0 0)",
@@ -51,8 +57,7 @@ function GlossySwitch({
   checked,
   defaultChecked = true,
   onCheckedChange,
-  onLabel = "ON",
-  offLabel = "OFF",
+  showLabels = true,
   color = "#42aa78",
   size = "default",
   className,
@@ -73,7 +78,7 @@ function GlossySwitch({
       type="button"
       role="switch"
       aria-checked={on}
-      aria-label={props["aria-label"] ?? (on ? onLabel : offLabel)}
+      aria-label={props["aria-label"] ?? (on ? "ON" : "OFF")}
       disabled={disabled}
       className={cn(glossySwitchVariants({ size }), className)}
       style={{ "--ds-color": color, ...style } as React.CSSProperties}
@@ -105,41 +110,45 @@ function GlossySwitch({
         }}
       />
       <span
-        className={cn(
-          "relative flex size-full items-center overflow-hidden rounded-full p-[0.06em] transition-[background-color] duration-100 ease-out motion-reduce:transition-none",
-          on ? "bg-[var(--ds-color)]" : "bg-[#1c1c1c]",
-        )}
-        style={{
-          backgroundImage:
-            "radial-gradient(ellipse at 27% 72%, rgb(255 255 255 / 0.035), transparent 65%), linear-gradient(180deg, rgb(0 0 0 / 0.13), transparent 36%, transparent 70%, rgb(0 0 0 / 0.06))",
-          boxShadow:
-            "0 0 0 0.035em #020303, inset 0 0.1em 0.18em rgb(0 0 0 / 0.58), inset 0.055em 0 0.1em rgb(0 0 0 / 0.18), inset 0 -0.025em 0.07em rgb(0 0 0 / 0.2)",
-        }}
+        className="relative flex size-full items-center overflow-hidden rounded-full bg-[#1c1c1c] p-[0.06em]"
+        style={{ boxShadow: "0 0 0 0.035em #020303" }}
       >
         <span
           aria-hidden
           className={cn(
-            "pointer-events-none absolute inset-y-0 flex items-center justify-center font-bold tracking-[0.01em] whitespace-nowrap text-white transition-opacity duration-100 ease-out motion-reduce:transition-none",
-            on ? "opacity-100" : "opacity-0",
+            "pointer-events-none absolute inset-0 rounded-full bg-[var(--ds-color)] transition-[clip-path]",
+            SLIDE,
           )}
-          style={{ left: 0, right: KNOB }}
-        >
-          <span className="text-[1.35em]">{onLabel}</span>
-        </span>
+          style={{ clipPath: on ? "inset(0 0% 0 0)" : "inset(0 100% 0 0)" }}
+        />
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-0 rounded-full"
+          style={TRACK_SURFACE}
+        />
+        {showLabels && (
+          <>
+            <span
+              aria-hidden
+              className="pointer-events-none absolute inset-y-0 flex items-center justify-center font-bold tracking-[0.01em] whitespace-nowrap text-white"
+              style={{ left: 0, right: KNOB }}
+            >
+              <span className="text-[1.35em]">ON</span>
+            </span>
+            <span
+              aria-hidden
+              className="pointer-events-none absolute inset-y-0 flex items-center justify-center font-bold tracking-[0.01em] whitespace-nowrap text-white/60"
+              style={{ left: KNOB, right: 0 }}
+            >
+              <span className="text-[1.35em]">OFF</span>
+            </span>
+          </>
+        )}
         <span
           aria-hidden
           className={cn(
-            "pointer-events-none absolute inset-y-0 flex items-center justify-center font-bold tracking-[0.01em] whitespace-nowrap text-white/60 transition-opacity duration-100 ease-out motion-reduce:transition-none",
-            on ? "opacity-0" : "opacity-100",
-          )}
-          style={{ left: KNOB, right: 0 }}
-        >
-          <span className="text-[1.35em]">{offLabel}</span>
-        </span>
-        <span
-          aria-hidden
-          className={cn(
-            "relative z-10 shrink-0 rounded-full transition-transform duration-100 ease-out motion-reduce:transition-none",
+            "relative z-10 shrink-0 rounded-full transition-transform",
+            SLIDE,
             on && "translate-x-[4em]",
           )}
           style={{

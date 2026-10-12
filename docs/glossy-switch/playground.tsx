@@ -5,7 +5,21 @@ import { PlaygroundShell } from "@/components/garden/playground-shell";
 import type { ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [
-  { type: "color", prop: "color", label: "On color" },
+  {
+    type: "select",
+    prop: "color",
+    label: "On color",
+    options: [
+      { label: "Green", value: "#42aa78", swatch: "#42aa78" },
+      { label: "Black", value: "#111111", swatch: "#111111" },
+      { label: "Red", value: "#ef4444", swatch: "#ef4444" },
+      { label: "Orange", value: "#f97316", swatch: "#f97316" },
+      { label: "Yellow", value: "#e1e900", swatch: "#e1e900" },
+      { label: "Lime", value: "#22c55e", swatch: "#22c55e" },
+      { label: "Blue", value: "#0b87da", swatch: "#0b87da" },
+      { label: "Purple", value: "#7c3aed", swatch: "#7c3aed" },
+    ],
+  },
   {
     type: "select",
     prop: "size",
@@ -16,16 +30,14 @@ const controls: ControlDef[] = [
       { label: "Large", value: "lg" },
     ],
   },
-  { type: "text", prop: "onLabel", label: "On label" },
-  { type: "text", prop: "offLabel", label: "Off label" },
+  { type: "boolean", prop: "showLabels", label: "Show labels" },
   { type: "boolean", prop: "disabled", label: "Disabled" },
 ];
 
 const defaultProps = {
   color: "#42aa78",
   size: "lg",
-  onLabel: "ON",
-  offLabel: "OFF",
+  showLabels: true,
   disabled: false,
 };
 
@@ -35,14 +47,14 @@ export function GlossySwitchPlayground() {
       componentName="GlossySwitch"
       controls={controls}
       defaultProps={defaultProps}
+      fixedProps={{ "aria-label": "Power" }}
       render={(values) => (
         <div className="flex min-h-[220px] w-full items-center justify-center">
           <GlossySwitch
             aria-label="Power"
             color={values.color as string}
             size={values.size as GlossySwitchSize}
-            onLabel={values.onLabel as string}
-            offLabel={values.offLabel as string}
+            showLabels={values.showLabels as boolean}
             disabled={values.disabled as boolean}
           />
         </div>

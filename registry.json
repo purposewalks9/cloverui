@@ -529,7 +529,8 @@
         "class-variance-authority"
       ],
       "registryDependencies": [
-        "button"
+        "button",
+        "https://cloverui.vercel.app/r/glossy-switch.json"
       ],
       "category": "block"
     },
