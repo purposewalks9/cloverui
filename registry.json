@@ -39,7 +39,8 @@
         "https://cloverui.vercel.app/r/liquid-button.json",
         "https://cloverui.vercel.app/r/stack-marquee.json",
         "https://cloverui.vercel.app/r/cookie-consent.json",
-        "https://cloverui.vercel.app/r/glossy-switch.json"
+        "https://cloverui.vercel.app/r/glossy-switch.json",
+        "https://cloverui.vercel.app/r/search.json"
       ]
     },
     {
@@ -550,6 +551,29 @@
       ],
       "registryDependencies": [],
       "category": "control"
+    },
+    {
+      "name": "search",
+      "type": "registry:component",
+      "title": "Search",
+      "description": "A smooth, matte search trigger and responsive command menu with grouped results, category filters, and keyboard navigation.",
+      "files": [
+        {
+          "path": "registry/clover-ui/search.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "@radix-ui/react-dialog",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "category": "control",
+      "meta": {
+        "addedAt": "2026-10-12"
+      }
     }
   ]
 }

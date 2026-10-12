@@ -10,7 +10,7 @@ Stack: Next.js 16 (webpack), React 19, Tailwind CSS v4, `motion`, shadcn, pnpm.
 - `pnpm registry:build`: rebuild `public/r/*.json` from `registry.json`. Run it after any change to a registry component or `registry.json`.
 - `pnpm registry:check`: verify imports, client boundaries, docs, and generated registry content.
 - `pnpm registry:typecheck`: type-check the distributed components independently of the docs app.
-- `pnpm lint` and `pnpm exec tsc --noEmit`: check the full app too and report baseline failures accurately. The 2026-10-12 baseline has two unavailable `SiOpenai` exports in `components/stem/toc.tsx` and `docs/stack-marquee/demo.tsx`; see `docs/component-audit.md`.
+- `pnpm lint` and `pnpm exec tsc --noEmit`: check the full app too and report baseline failures accurately. The OpenAI mark is preserved locally in `components/seed/openai-logo.tsx`, since newer icon-package releases removed its export.
 - `pnpm format`: Prettier. `.prettierignore` skips `*.mdx`, `registry/clover-ui/soft-button.tsx` and `docs/soft-button`.
 
 ## Layout
@@ -28,7 +28,7 @@ Stack: Next.js 16 (webpack), React 19, Tailwind CSS v4, `motion`, shadcn, pnpm.
 
 ## Adding or changing a component
 
-1. Write `registry/clover-ui/<slug>.tsx`, then add or update its `registry.json` entry.
+1. Write `registry/clover-ui/<slug>.tsx`, then add or update its `registry.json` entry. For a new component, include `meta.addedAt` as its real release date (`YYYY-MM-DD`); the mobile menu’s New view automatically shows the six most recent dated components. Keep that original date on later edits.
 2. Add `docs/<slug>/doc.mdx`, `demo.tsx` and `playground.tsx`. The props table and the usage text must match what the code actually does.
 3. Run `pnpm registry:build`, then lint and type-check.
 4. Follow `.agents/skills/review-ui/SKILL.md`. Preserve existing designs with `.agents/skills/preserve-ui-design/SKILL.md`. Use `.agents/skills/commit-verified-changes/SKILL.md` when committing or publishing changes.

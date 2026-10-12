@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { ThemeToggle } from "@/components/stem/theme-toggle";
+import { MobileMenu } from "@/components/stem/mobile-menu";
 import { SearchForm } from "@/components/stem/command-menu";
 import type { DocSchema } from "@/lib/types";
 
@@ -15,7 +16,13 @@ function titleFromSlug(slug: string) {
     .join(" ");
 }
 
-export function SiteHeader({ docSchema }: { docSchema: DocSchema }) {
+export function SiteHeader({
+  docSchema,
+  githubStars,
+}: {
+  docSchema: DocSchema;
+  githubStars: React.ReactNode;
+}) {
   const pathname = usePathname();
 
   let title = "Components";
@@ -31,7 +38,8 @@ export function SiteHeader({ docSchema }: { docSchema: DocSchema }) {
   return (
     <header className="border-border bg-sidebar text-foreground sticky top-0 z-30 flex h-12 shrink-0 items-center justify-between gap-3 border-b px-4">
       <div className="flex min-w-0 items-center gap-2">
-        <SidebarTrigger className="-ml-1" />
+        <MobileMenu docSchema={docSchema} githubStars={githubStars} />
+        <SidebarTrigger className="-ml-1 hidden md:inline-flex" />
         <Separator orientation="vertical" className="h-4" />
         <h1 className="min-w-0 truncate text-[15px] font-semibold whitespace-nowrap sm:text-[16px] md:shrink-0">
           {title}
@@ -47,9 +55,14 @@ export function SiteHeader({ docSchema }: { docSchema: DocSchema }) {
       </div>
 
       <div className="flex shrink-0 items-center gap-1.5">
-        <SearchForm docSchema={docSchema} />
+        <SearchForm
+          docSchema={docSchema}
+          className="hidden h-9 w-44 rounded-xl sm:inline-flex [&>span]:rounded-lg"
+        />
 
-        <ThemeToggle />
+        <div className="hidden md:block">
+          <ThemeToggle />
+        </div>
       </div>
     </header>
   );

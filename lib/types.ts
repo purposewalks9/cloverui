@@ -4,6 +4,7 @@ export interface DocItem {
   description: string;
   href: string;
   meta?: {
+    addedAt?: string;
     docs?: Array<{
       title: string;
       url: string;
@@ -29,6 +30,7 @@ export interface RegistryItem {
   dependencies?: string[];
   registryDependencies?: string[];
   meta?: {
+    addedAt?: string;
     docs?: Array<{
       title: string;
       url: string;

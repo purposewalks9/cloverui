@@ -1,5 +1,7 @@
 "use client";
 
+import { OpenAILogo } from "@/components/seed/openai-logo";
+
 import {
   SiClaude,
   SiGithub,
@@ -8,7 +10,6 @@ import {
   SiLangchain,
   SiMistralai,
   SiModelcontextprotocol,
-  SiOpenai,
   SiVercel,
 } from "@icons-pack/react-simple-icons";
 import { StackMarquee, type StackMarqueeLogo } from "@/registry/clover-ui/stack-marquee";
@@ -78,7 +79,7 @@ function CursorIcon() {
 
 export const stackMarqueeLogos: StackMarqueeLogo[] = [
   { name: "Claude", icon: <SiClaude color="default" /> },
-  { name: "OpenAI", icon: <SiOpenai /> },
+  { name: "OpenAI", icon: <OpenAILogo /> },
   { name: "OpenClaw", icon: <OpenClawIcon /> },
   { name: "Grok", icon: <GrokIcon /> },
   { name: "GitHub", icon: <SiGithub /> },

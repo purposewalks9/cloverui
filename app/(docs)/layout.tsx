@@ -1,3 +1,4 @@
+import { GitHubStars } from "@/components/seed/github-stars";
 import { AppSidebar } from "@/components/stem/app-sidebar";
 import { SiteHeader } from "@/components/stem/site-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
@@ -17,7 +18,7 @@ export default async function DocsLayout({
       <SidebarProvider>
         <AppSidebar docSchema={docSchema} />
         <SidebarInset className="bg-sidebar min-w-0">
-          <SiteHeader docSchema={docSchema} />
+          <SiteHeader docSchema={docSchema} githubStars={<GitHubStars />} />
           {children}
         </SidebarInset>
         {toc}
