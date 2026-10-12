@@ -11,7 +11,7 @@ import { SearchPlayground } from "./playground"
 
 ## Usage
 
-A smooth, inset search trigger that opens a grouped command menu. The frame stays neutral in light and dark mode, with a thin border and matte surfaces. Bring your own icons and item colors.
+A compact, borderless black search trigger that opens a grouped command menu. The wider modal uses neutral light and dark surfaces, readable results, a compact input, and an integrated footer. Bring your own icons and item colors.
 
 ```tsx
 "use client";
@@ -46,7 +46,7 @@ Filtering matches every word in the label, description, group label, category, o
 
 The input receives focus when the modal opens. Arrow Up and Arrow Down move through enabled results; Enter selects, and Escape closes. Focus stays inside the modal and returns to the trigger when it closes. On small screens the modal fits the viewport and its results scroll independently.
 
-Set `shortcut` on **one** search per page to enable Command/Ctrl K and `/`. Shortcuts ignore text inputs and other dialogs. Item `shortcut` arrays are visual hints; your application owns those shortcuts. Disabled items cannot be selected.
+Set `shortcut` on **one** search per page to enable Command/Ctrl K and `/`. Shortcuts ignore text inputs and other dialogs. The trigger has no keyboard hint by default; pass `shortcutLabel` to opt into one. Item `shortcut` arrays are visual hints; your application owns those shortcuts. Disabled items cannot be selected.
 
 `onSelect` receives the selected item, and an item's optional `onSelect` callback runs too. Use one callback style unless both actions are intentional. Selection closes the modal. The example playground only reports the selected action; it does not open apps or send mail.
 
@@ -72,7 +72,7 @@ The surfaces use neutral Tailwind colors. Configure Tailwind's class-based `dark
   { name: "emptyMessage", type: "string", description: "Text when no result matches." },
   { name: "showCategories", type: "boolean", default: "true" },
   { name: "shortcut", type: "boolean", default: "false", description: "Enable Command/Ctrl K and slash." },
-  { name: "shortcutLabel", type: "string", description: "Optional keyboard hint in the trigger." },
+  { name: "shortcutLabel", type: "string", description: "Optional keyboard hint in the trigger; hidden by default." },
   { name: "compact", type: "boolean", default: "false", description: "Show an icon-only trigger." },
   { name: "disabled", type: "boolean", default: "false" },
   { name: "trigger", type: "ReactElement | null", description: "Custom trigger button, or no trigger." },
