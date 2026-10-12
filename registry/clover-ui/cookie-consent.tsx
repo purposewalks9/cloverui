@@ -7,6 +7,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { GlossySwitch } from "@/registry/clover-ui/glossy-switch";
 
 export type CookieCategory = {
   id: string;
@@ -104,43 +105,6 @@ function initialPreferences(
       category.id,
       Boolean(category.required || (saved[category.id] ?? category.defaultEnabled)),
     ]),
-  );
-}
-
-function ConsentSwitch({
-  checked,
-  disabled,
-  label,
-  onCheckedChange,
-}: {
-  checked: boolean;
-  disabled?: boolean;
-  label: string;
-  onCheckedChange: (checked: boolean) => void;
-}) {
-  return (
-    <button
-      type="button"
-      role="switch"
-      aria-checked={checked}
-      aria-label={label}
-      disabled={disabled}
-      onClick={() => onCheckedChange(!checked)}
-      className={cn(
-        "relative inline-flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full p-0.5 transition-colors duration-200 outline-none",
-        "focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2",
-        "disabled:cursor-not-allowed disabled:opacity-60",
-        checked ? "bg-foreground" : "bg-input",
-      )}
-    >
-      <span
-        aria-hidden
-        className={cn(
-          "bg-background size-5 rounded-full transition-[translate] duration-200 ease-out",
-          checked ? "translate-x-4" : "translate-x-0",
-        )}
-      />
-    </button>
   );
 }
 
@@ -315,8 +279,10 @@ function CookieConsent({
                           </p>
                         )}
                       </div>
-                      <ConsentSwitch
-                        label={category.label}
+                      <GlossySwitch
+                        aria-label={category.label}
+                        color="#111111"
+                        size="sm"
                         checked={currentPreferences[category.id]}
                         disabled={category.required}
                         onCheckedChange={(checked) =>
