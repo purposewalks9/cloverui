@@ -33,7 +33,8 @@
     "https://cloverui.vercel.app/r/liquid-button.json",
     "https://cloverui.vercel.app/r/stack-marquee.json",
     "https://cloverui.vercel.app/r/cookie-consent.json",
-    "https://cloverui.vercel.app/r/glossy-switch.json"
+    "https://cloverui.vercel.app/r/glossy-switch.json",
+    "https://cloverui.vercel.app/r/search.json"
   ],
   "type": "registry:item"
 }

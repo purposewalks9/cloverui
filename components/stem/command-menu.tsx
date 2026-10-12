@@ -1,210 +1,103 @@
 "use client";
 
-import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Search } from "lucide-react";
-import {
-  Command,
-  CommandCollection,
-  CommandDialog,
-  CommandDialogPopup,
-  CommandEmpty,
-  CommandGroup,
-  CommandGroupLabel,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandPanel,
-  CommandSeparator,
-} from "@/components/ui/command";
-import { DocSchema } from "@/lib/types";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { BookOpen, Box, Check, Copy } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { Search, type SearchGroup, type SearchItem } from "@/registry/clover-ui/search";
+import type { DocSchema } from "@/lib/types";
 import { useIsMac } from "@/hooks/use-is-mac";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { useConfig } from "@/hooks/use-config";
 import { trackEvent } from "@/lib/events";
 
-interface PageItem {
-  value: string;
-  label: string;
-  url: string;
-  isComponent: boolean;
-}
-
-interface PageGroup {
-  value: string;
-  items: PageItem[];
-}
-
-export function SearchForm({ docSchema }: { docSchema: DocSchema }) {
-  const [open, setOpen] = useState(false);
-  const [selectedType, setSelectedType] = useState<"page" | "component" | null>(null);
-  const [copyPayload, setCopyPayload] = useState("");
+export function SearchForm({
+  docSchema,
+  shortcut = true,
+  className,
+  onNavigate,
+}: {
+  docSchema: DocSchema;
+  shortcut?: boolean;
+  className?: string;
+  onNavigate?: () => void;
+}) {
+  const [highlighted, setHighlighted] = useState<SearchItem | null>(null);
   const router = useRouter();
   const isMac = useIsMac();
-  const { copyToClipboard } = useCopyToClipboard();
+  const { copyToClipboard, isCopied } = useCopyToClipboard();
   const [config] = useConfig();
-  const packageManager = config.packageManager;
+  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const lastQuery = useRef("");
 
-  const searchTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
-  const lastTrackedQueryRef = useRef<string>("");
+  useEffect(() => () => clearTimeout(timer.current), []);
 
-  const trackSearchQuery = useCallback((query: string) => {
-    const trimmed = query.trim();
-    if (trimmed && trimmed !== lastTrackedQueryRef.current) {
-      lastTrackedQueryRef.current = trimmed;
-      trackEvent("search_query", { query: trimmed });
-    }
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      if (searchTimeoutRef.current) {
-        clearTimeout(searchTimeoutRef.current);
+  const onQueryChange = useCallback((query: string) => {
+    clearTimeout(timer.current);
+    timer.current = setTimeout(() => {
+      const value = query.trim();
+      if (value && value !== lastQuery.current) {
+        lastQuery.current = value;
+        trackEvent("search_query", { query: value });
       }
-    };
+    }, 500);
   }, []);
 
-  const groupedItems = useMemo<PageGroup[]>(() => {
-    return docSchema.map((group) => {
-      const isComponentGroup = group.title !== "Getting Started";
-      return {
-        value: group.title,
+  const groups = useMemo<SearchGroup[]>(
+    () =>
+      docSchema.map((group) => ({
+        id: group.title,
+        label: group.title,
         items: group.items.map((item) => ({
-          value: item.id,
+          id: item.href,
           label: item.title,
-          url: item.href,
-          isComponent: isComponentGroup,
+          category: item.href.startsWith("/components/") ? "Components" : "Docs",
+          keywords: [item.description, item.id],
+          icon: item.href.startsWith("/components/") ? <Box /> : <BookOpen />,
         })),
-      };
-    });
-  }, [docSchema]);
-
-  const handlePageHighlight = useCallback(
-    (item: PageItem | null) => {
-      if (!item) {
-        setSelectedType(null);
-        setCopyPayload("");
-        return;
-      }
-
-      if (item.isComponent) {
-        const componentName = item.url.split("/").pop();
-        setSelectedType("component");
-        const componentArg = `@clover-ui/${componentName}`;
-        let cmd: string;
-        switch (packageManager) {
-          case "pnpm":
-            cmd = `pnpm dlx shadcn@latest add ${componentArg}`;
-            break;
-          case "bun":
-            cmd = `bunx --bun shadcn@latest add ${componentArg}`;
-            break;
-          case "yarn":
-            cmd = `yarn dlx shadcn@latest add ${componentArg}`;
-            break;
-          default:
-            cmd = `npx shadcn@latest add ${componentArg}`;
-        }
-        setCopyPayload(cmd);
-      } else {
-        setSelectedType("page");
-        setCopyPayload("");
-      }
-    },
-    [packageManager],
+      })),
+    [docSchema],
   );
 
-  useEffect(() => {
-    const down = (e: KeyboardEvent) => {
-      if ((e.key === "k" && (e.metaKey || e.ctrlKey)) || e.key === "/") {
-        if (
-          (e.target instanceof HTMLElement && e.target.isContentEditable) ||
-          e.target instanceof HTMLInputElement ||
-          e.target instanceof HTMLTextAreaElement ||
-          e.target instanceof HTMLSelectElement
-        ) {
-          return;
-        }
-
-        e.preventDefault();
-        setOpen((open) => !open);
-      }
-
-      if (e.key === "c" && (e.metaKey || e.ctrlKey)) {
-        if (selectedType === "component" && copyPayload) {
-          copyToClipboard(copyPayload);
-          trackEvent("copy_install_command", { command: copyPayload, pm: packageManager });
-        }
-      }
-    };
-
-    document.addEventListener("keydown", down);
-    return () => document.removeEventListener("keydown", down);
-  }, [copyPayload, selectedType, copyToClipboard]);
+  const copyInstall = () => {
+    if (!highlighted?.id.startsWith("/components/")) return;
+    const prefix =
+      { pnpm: "pnpm dlx", bun: "bunx --bun", yarn: "yarn dlx", npm: "npx" }[
+        config.packageManager
+      ] ?? "npx";
+    const command = `${prefix} shadcn@latest add @clover-ui/${highlighted.id.split("/").pop()}`;
+    copyToClipboard(command);
+    trackEvent("copy_install_command", { command, pm: config.packageManager });
+  };
 
   return (
-    <>
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="text-muted-foreground hover:bg-sidebar-accent hover:text-foreground focus-visible:ring-ring bg-sidebar-accent/60 hidden h-8 shrink-0 cursor-pointer items-center gap-2 rounded-full pr-1.5 pl-3 text-sm whitespace-nowrap transition-colors duration-200 focus-visible:ring-2 focus-visible:outline-none sm:inline-flex"
-      >
-        <Search className="size-3.5 shrink-0" />
-        <span className="pr-2 lg:pr-10">Search</span>
-        <kbd className="bg-sidebar-accent text-muted-foreground hidden rounded-full px-2 py-0.5 font-sans text-[11px] font-medium whitespace-nowrap md:inline">
-          {isMac ? "⌘K" : "Ctrl K"}
-        </kbd>
-      </button>
-      <CommandDialog onOpenChange={setOpen} open={open}>
-        <CommandDialogPopup>
-          <Command
-            items={groupedItems}
-            onItemHighlighted={(highlightedValue) => {
-              const item = highlightedValue as PageItem | null;
-              handlePageHighlight(item);
-            }}
+    <Search
+      groups={groups}
+      shortcut={shortcut}
+      shortcutLabel={isMac ? "⌘ K" : "Ctrl K"}
+      placeholder="Search components..."
+      className={className}
+      onHighlight={setHighlighted}
+      onQueryChange={onQueryChange}
+      onSelect={(item) => {
+        onNavigate?.();
+        router.push(item.id);
+      }}
+      footer={
+        highlighted?.id.startsWith("/components/") ? (
+          <button
+            type="button"
+            onClick={copyInstall}
+            className="inline-flex min-h-7 cursor-pointer items-center gap-1.5 rounded-md px-1.5 text-neutral-600 hover:bg-neutral-200 focus-visible:outline-2 focus-visible:outline-neutral-500 dark:text-neutral-300 dark:hover:bg-neutral-800"
           >
-            <CommandInput
-              placeholder="Type a command or search..."
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                if (searchTimeoutRef.current) {
-                  clearTimeout(searchTimeoutRef.current);
-                }
-                searchTimeoutRef.current = setTimeout(() => {
-                  trackSearchQuery(e.target.value);
-                }, 500);
-              }}
-            />
-            <CommandPanel>
-              <CommandEmpty>The search results could not be found.</CommandEmpty>
-              <CommandList>
-                {(group: PageGroup, _index: number) => (
-                  <Fragment key={group.value}>
-                    <CommandGroup items={group.items}>
-                      <CommandGroupLabel>{group.value}</CommandGroupLabel>
-                      <CommandCollection>
-                        {(item: PageItem) => (
-                          <CommandItem
-                            key={item.value}
-                            onClick={() => {
-                              router.push(item.url);
-                              setOpen(false);
-                            }}
-                            value={item.value}
-                          >
-                            {item.label}
-                          </CommandItem>
-                        )}
-                      </CommandCollection>
-                    </CommandGroup>
-                    <CommandSeparator />
-                  </Fragment>
-                )}
-              </CommandList>
-            </CommandPanel>
-          </Command>
-        </CommandDialogPopup>
-      </CommandDialog>
-    </>
+            {isCopied ? (
+              <Check aria-hidden className="size-3" />
+            ) : (
+              <Copy aria-hidden className="size-3" />
+            )}
+            {isCopied ? "Copied" : "Copy install"}
+          </button>
+        ) : null
+      }
+    />
   );
 }

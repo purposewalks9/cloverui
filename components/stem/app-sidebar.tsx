@@ -20,9 +20,11 @@ import {
 
 export function AppSidebar({ docSchema }: { docSchema: DocSchema }) {
   const pathname = usePathname();
-  const { isMobile, setOpenMobile } = useSidebar();
+  const { isMobile } = useSidebar();
 
   const navGroups = docSchema.filter((group) => group.items.length > 0);
+
+  if (isMobile) return null;
 
   return (
     <Sidebar collapsible="offcanvas" className="border-sidebar-border bg-sidebar border-r">
@@ -58,7 +60,7 @@ export function AppSidebar({ docSchema }: { docSchema: DocSchema }) {
                         isActive={isActive}
                         className="text-muted-foreground hover:text-foreground data-[active=true]:bg-sidebar-accent data-[active=true]:text-foreground h-9 rounded-md text-[15px] font-normal transition-all duration-200 hover:bg-transparent data-[active=true]:border-[var(--brand)]"
                       >
-                        <Link href={href} onClick={() => isMobile && setOpenMobile(false)}>
+                        <Link href={href}>
                           <span>{item.title}</span>
                         </Link>
                       </SidebarMenuButton>
