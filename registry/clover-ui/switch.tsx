@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
 
-const glossySwitchVariants = cva(
+const switchVariants = cva(
   [
     "group relative inline-flex h-[4.2em] w-[8.2em] shrink-0 cursor-pointer rounded-full p-[0.3em] outline-none select-none",
     "bg-[linear-gradient(145deg,#353737_0%,#111212_18%,#080909_40%,#434545_72%,#1b1c1c_88%,#0b0c0c_100%)]",
@@ -16,21 +16,21 @@ const glossySwitchVariants = cva(
   {
     variants: {
       size: {
-        sm: "text-[10px]",
-        default: "text-[13px]",
-        lg: "text-[17px]",
+        sm: "text-[6px]",
+        default: "text-[8px]",
+        lg: "text-[11px]",
       },
     },
     defaultVariants: { size: "default" },
   },
 );
 
-export type GlossySwitchSize = NonNullable<VariantProps<typeof glossySwitchVariants>["size"]>;
+export type SwitchSize = NonNullable<VariantProps<typeof switchVariants>["size"]>;
 
-export interface GlossySwitchProps
+export interface SwitchProps
   extends
     Omit<React.ComponentProps<"button">, "onClick" | "children" | "onChange" | "color">,
-    VariantProps<typeof glossySwitchVariants> {
+    VariantProps<typeof switchVariants> {
   checked?: boolean;
   defaultChecked?: boolean;
   onCheckedChange?: (checked: boolean) => void;
@@ -38,11 +38,10 @@ export interface GlossySwitchProps
   color?: string;
 }
 
-const KNOB = "3.48em";
-const SLIDE = "duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none";
+const KNOB = "3.6em";
 const TRACK_SURFACE = {
   backgroundImage:
-    "radial-gradient(ellipse at 27% 72%, rgb(255 255 255 / 0.035), transparent 65%), linear-gradient(180deg, rgb(0 0 0 / 0.13), transparent 36%, transparent 70%, rgb(0 0 0 / 0.06))",
+    "linear-gradient(180deg, rgb(255 255 255 / 0.07), transparent 38%), radial-gradient(ellipse at 27% 72%, rgb(255 255 255 / 0.035), transparent 65%), linear-gradient(180deg, rgb(0 0 0 / 0.13), transparent 36%, transparent 70%, rgb(0 0 0 / 0.06))",
   boxShadow:
     "inset 0 0.1em 0.18em rgb(0 0 0 / 0.58), inset 0.055em 0 0.1em rgb(0 0 0 / 0.18), inset 0 -0.025em 0.07em rgb(0 0 0 / 0.2)",
 } satisfies React.CSSProperties;
@@ -53,7 +52,7 @@ const BEVEL_MASK = {
   maskComposite: "exclude",
 } satisfies React.CSSProperties;
 
-function GlossySwitch({
+function Switch({
   checked,
   defaultChecked = true,
   onCheckedChange,
@@ -64,7 +63,7 @@ function GlossySwitch({
   style,
   disabled,
   ...props
-}: GlossySwitchProps) {
+}: SwitchProps) {
   const [inner, setInner] = React.useState(defaultChecked);
   const on = checked ?? inner;
 
@@ -80,7 +79,7 @@ function GlossySwitch({
       aria-checked={on}
       aria-label={props["aria-label"] ?? (on ? "ON" : "OFF")}
       disabled={disabled}
-      className={cn(glossySwitchVariants({ size }), className)}
+      className={cn(switchVariants({ size }), className)}
       style={{ "--ds-color": color, ...style } as React.CSSProperties}
       onClick={toggle}
       {...props}
@@ -110,16 +109,13 @@ function GlossySwitch({
         }}
       />
       <span
-        className="relative flex size-full items-center overflow-hidden rounded-full bg-[#1c1c1c] p-[0.06em]"
+        className="relative flex size-full items-center overflow-hidden rounded-full bg-[#1c1c1c]"
         style={{ boxShadow: "0 0 0 0.035em #020303" }}
       >
         <span
           aria-hidden
-          className={cn(
-            "pointer-events-none absolute inset-0 rounded-full bg-[var(--ds-color)] transition-[clip-path]",
-            SLIDE,
-          )}
-          style={{ clipPath: on ? "inset(0 0% 0 0)" : "inset(0 100% 0 0)" }}
+          className="pointer-events-none absolute inset-0 rounded-full bg-[var(--ds-color)]"
+          style={{ clipPath: on ? "inset(0 1.8em 0 0)" : "inset(0 100% 0 0)" }}
         />
         <span
           aria-hidden
@@ -146,18 +142,14 @@ function GlossySwitch({
         )}
         <span
           aria-hidden
-          className={cn(
-            "relative z-10 shrink-0 rounded-full transition-transform",
-            SLIDE,
-            on && "translate-x-[4em]",
-          )}
+          className={cn("relative z-10 shrink-0 rounded-full", on && "translate-x-[4em]")}
           style={{
             width: KNOB,
             height: KNOB,
             background:
               "conic-gradient(from 215deg, #060707 0deg, #121414 38deg, #4c4f4f 91deg, #7e8181 135deg, #333535 166deg, #4b4e4e 210deg, #121313 252deg, #090a0a 300deg, #060707 360deg)",
             boxShadow:
-              "0 0 0 0.065em #080909, 0 0.1em 0.12em rgb(0 0 0 / 0.75), -0.16em 0.04em 0.25em rgb(0 0 0 / 0.38), -0.3em 0.05em 0.55em rgb(0 0 0 / 0.28), inset 0 0.025em 0.025em rgb(255 255 255 / 0.18)",
+              "0 0 0 0.065em #080909, 0 0.1em 0.12em rgb(0 0 0 / 0.75), -0.16em 0.04em 0.25em rgb(0 0 0 / 0.38), -0.3em 0.05em 0.55em rgb(0 0 0 / 0.28), inset 0 0.035em 0.06em rgb(255 255 255 / 0.22)",
           }}
         >
           <span
@@ -184,4 +176,4 @@ function GlossySwitch({
   );
 }
 
-export { GlossySwitch, glossySwitchVariants };
+export { Switch, switchVariants };

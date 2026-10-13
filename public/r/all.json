@@ -14,7 +14,7 @@
     "https://cloverui.vercel.app/r/ghost.json",
     "https://cloverui.vercel.app/r/grain-cube.json",
     "https://cloverui.vercel.app/r/grid-reveal.json",
-    "https://cloverui.vercel.app/r/logo-storm.json",
+    "https://cloverui.vercel.app/r/logo-pop.json",
     "https://cloverui.vercel.app/r/mic.json",
     "https://cloverui.vercel.app/r/nucleus-text.json",
     "https://cloverui.vercel.app/r/price-range.json",
@@ -28,12 +28,12 @@
     "https://cloverui.vercel.app/r/thermal-flow.json",
     "https://cloverui.vercel.app/r/token-fall.json",
     "https://cloverui.vercel.app/r/theme-toggle.json",
-    "https://cloverui.vercel.app/r/glitch-text.json",
+    "https://cloverui.vercel.app/r/glitchy-text.json",
     "https://cloverui.vercel.app/r/404-block.json",
     "https://cloverui.vercel.app/r/liquid-button.json",
     "https://cloverui.vercel.app/r/stack-marquee.json",
     "https://cloverui.vercel.app/r/cookie-consent.json",
-    "https://cloverui.vercel.app/r/glossy-switch.json",
+    "https://cloverui.vercel.app/r/switch.json",
     "https://cloverui.vercel.app/r/search.json"
   ],
   "type": "registry:item"

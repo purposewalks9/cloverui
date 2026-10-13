@@ -13,8 +13,7 @@ export function CloverLogo({ className, size = 24 }: CloverLogoProps) {
       viewBox="0 0 16 16"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={cn("shrink-0", className)}
-      style={{ color: "var(--brand, currentColor)" }}
+      className={cn("text-foreground shrink-0", className)}
     >
       <g clipPath="url(#clip0_214_2)">
         <path

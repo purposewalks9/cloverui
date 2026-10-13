@@ -55,10 +55,7 @@ export function SiteHeader({
       </div>
 
       <div className="flex shrink-0 items-center gap-1.5">
-        <SearchForm
-          docSchema={docSchema}
-          className="hidden h-9 w-44 rounded-xl sm:inline-flex [&>span]:rounded-lg"
-        />
+        <SearchForm docSchema={docSchema} nav className="hidden w-40 sm:inline-flex" />
 
         <div className="hidden md:block">
           <ThemeToggle />

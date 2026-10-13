@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { cn } from "@/lib/utils";
 import { BookOpen, Box, Copy, ThumbsUp } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Search, type SearchGroup, type SearchItem } from "@/registry/clover-ui/search";
@@ -9,14 +10,19 @@ import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { useConfig } from "@/hooks/use-config";
 import { trackEvent } from "@/lib/events";
 
+const navSearchClassName =
+  "border-border border-[0.5px] text-muted-foreground hover:text-foreground bg-transparent hover:bg-transparent h-8 gap-1.5 rounded-none px-2.5 text-[13px] [&>kbd]:bg-transparent [&>kbd]:border-border [&>kbd]:rounded-none [&>kbd]:border [&>kbd]:px-1.5 [&>kbd]:py-px [&>kbd]:text-[11px] [&>kbd]:font-medium [&>kbd]:border-[0.5px] [&>svg]:size-3.5 [&>svg]:stroke-[1.25]";
+
 export function SearchForm({
   docSchema,
   shortcut = true,
+  nav = false,
   className,
   onNavigate,
 }: {
   docSchema: DocSchema;
   shortcut?: boolean;
+  nav?: boolean;
   className?: string;
   onNavigate?: () => void;
 }) {
@@ -71,8 +77,9 @@ export function SearchForm({
     <Search
       groups={groups}
       shortcut={shortcut}
-      placeholder="Search components..."
-      className={className}
+      shortcutLabel={nav && shortcut ? "/" : undefined}
+      placeholder="Search docs..."
+      className={cn(nav && navSearchClassName, className)}
       onHighlight={setHighlighted}
       onQueryChange={onQueryChange}
       onSelect={(item) => {
@@ -84,7 +91,7 @@ export function SearchForm({
           <button
             type="button"
             onClick={copyInstall}
-            className="inline-flex min-h-9 cursor-pointer items-center gap-1.5 rounded-md px-1.5 text-neutral-600 hover:bg-neutral-200 focus-visible:outline-2 focus-visible:outline-neutral-500 dark:text-neutral-300 dark:hover:bg-neutral-800"
+            className="text-foreground/70 hover:bg-foreground/10 hover:text-foreground focus-visible:outline-ring inline-flex min-h-9 cursor-pointer items-center gap-1.5 px-1.5 focus-visible:outline-2"
           >
             {isCopied ? (
               <ThumbsUp aria-hidden className="size-4" />

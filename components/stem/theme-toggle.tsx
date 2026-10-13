@@ -10,6 +10,7 @@ export function ThemeToggle() {
   return (
     <ThemeButton
       size="sm"
+      className="translate-y-[calc(var(--lift)/2)] text-[calc(32px/2.8)]"
       onThemeChange={(next) => ghost.say(next === "light" ? ghostWords.light : ghostWords.dark)}
     />
   );

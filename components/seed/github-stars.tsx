@@ -2,13 +2,13 @@ import Link from "next/link";
 import { SiGithub } from "@icons-pack/react-simple-icons";
 import { siteConfig } from "@/lib/config";
 
-function formatStars(count: number) {
+export function formatStars(count: number) {
   if (count >= 1_000_000) return `${(count / 1_000_000).toFixed(1).replace(/\.0$/, "")}m`;
   if (count >= 1000) return `${(count / 1000).toFixed(1).replace(/\.0$/, "")}k`;
   return `${count}`;
 }
 
-async function getStars(): Promise<number | null> {
+export async function getStars(): Promise<number | null> {
   try {
     const repoPath = new URL(siteConfig.links.github).pathname.replace(/^\/|\/$/g, "");
     const res = await fetch(`https://api.github.com/repos/${repoPath}`, {
@@ -38,7 +38,7 @@ export async function GitHubStars() {
       target="_blank"
       rel="noreferrer"
       aria-label={label}
-      className="text-foreground hover:text-foreground/70 focus-visible:ring-ring inline-flex h-8 shrink-0 items-center justify-center gap-1.5 rounded-md px-1.5 text-xs font-medium whitespace-nowrap transition-colors focus-visible:ring-2 focus-visible:outline-none"
+      className="text-foreground hover:text-foreground/70 focus-visible:ring-ring inline-flex h-8 shrink-0 items-center justify-center gap-1.5 rounded-none px-1.5 text-xs font-medium whitespace-nowrap transition-colors focus-visible:ring-2 focus-visible:outline-none"
     >
       <SiGithub size={14} className="shrink-0" />
       <span className="tabular-nums">{stars !== null ? formatStars(stars) : "Star"}</span>

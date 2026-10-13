@@ -5,21 +5,21 @@ import { motion, useReducedMotion, type Variants } from "motion/react";
 
 import { cn } from "@/lib/utils";
 
-export interface LogoStormLogo {
+export interface LogoPopLogo {
   name: string;
   src: string;
   ratio?: number;
 }
 
-export interface LogoStormProps extends React.ComponentProps<"ul"> {
-  logos?: LogoStormLogo[];
+export interface LogoPopProps extends React.ComponentProps<"ul"> {
+  logos?: LogoPopLogo[];
   speed?: number;
   label?: string;
 }
 
 const BASE = "https://cloverui.vercel.app/logos/";
 
-export const logoStormLogos: LogoStormLogo[] = (
+export const logoPopLogos: LogoPopLogo[] = (
   [
     ["vercel", "Vercel", 5.03],
     ["openai", "OpenAI", 3.69],
@@ -73,14 +73,14 @@ function subscribeNothing() {
   return () => {};
 }
 
-function LogoStorm({
-  logos = logoStormLogos,
+function LogoPop({
+  logos = logoPopLogos,
   speed = 1,
   label = "Logos of companies",
   className,
   ref,
   ...props
-}: LogoStormProps) {
+}: LogoPopProps) {
   const reduceMotion = useReducedMotion();
   const mounted = React.useSyncExternalStore(
     subscribeNothing,
@@ -206,4 +206,4 @@ function LogoStorm({
   );
 }
 
-export { LogoStorm };
+export { LogoPop };

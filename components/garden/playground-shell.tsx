@@ -23,7 +23,7 @@ function ToolbarButton({
       size="icon"
       onClick={onClick}
       aria-label={label}
-      className="text-muted-foreground hover:text-foreground size-8 cursor-pointer [&_svg]:size-4"
+      className="text-muted-foreground hover:text-foreground size-8 cursor-pointer rounded-none [&_svg]:size-4"
     >
       {children}
     </Button>
@@ -87,7 +87,7 @@ export function PlaygroundShell({
   }
 
   return (
-    <div className="not-prose border-border my-6 flex flex-col overflow-hidden rounded-lg border lg:flex-row">
+    <div className="not-prose border-border my-6 flex flex-col overflow-hidden rounded-none border lg:flex-row">
       <div
         className={cn(
           "relative flex min-h-[22rem] min-w-0 flex-1 items-center justify-center overflow-hidden p-4 sm:p-8 lg:min-h-[28rem]",

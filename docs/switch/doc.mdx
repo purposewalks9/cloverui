@@ -1,23 +1,23 @@
-import { GlossySwitchPlayground } from "./playground"
+import { SwitchPlayground } from "./playground"
 
-<GlossySwitchPlayground />
+<SwitchPlayground />
 
 ## Installation
 
-<InstallationTabs item="glossy-switch">
-```tsx file=../../registry/clover-ui/glossy-switch.tsx
+<InstallationTabs item="switch">
+```tsx file=../../registry/clover-ui/switch.tsx
 ```
 </InstallationTabs>
 
 ## Usage
 
 ```tsx
-import { GlossySwitch } from "@/components/glossy-switch";
+import { Switch } from "@/components/switch";
 
-<GlossySwitch aria-label="Notifications" />
+<Switch aria-label="Notifications" />
 ```
 
-A chunky switch with a polished black glass frame and a domed black glass knob. Thin curved reflections catch the beveled edges, while the green track sits recessed beneath the knob. The color slides across the full track in step with the knob over 150 ms, with a crisp edge instead of a fade. **ON** and **OFF** are fixed labels, uncovered by the moving knob.
+A chunky switch with a polished black glass frame and a domed black glass knob. Thin curved reflections catch the beveled edges, while the green track sits recessed beneath the knob. Clicking it switches instantly: the knob and the track color jump straight to the new side, with no slide. **ON** and **OFF** are fixed labels, uncovered by the moving knob.
 
 It works like a normal switch: Tab to it and press Space or Enter to flip it. Give it an `aria-label` so screen readers know what it turns on and off.
 
@@ -26,10 +26,10 @@ Leave it uncontrolled with `defaultChecked`, or control it with `checked` and `o
 ```tsx
 const [enabled, setEnabled] = React.useState(true);
 
-<GlossySwitch aria-label="Wi-Fi" checked={enabled} onCheckedChange={setEnabled} />
+<Switch aria-label="Wi-Fi" checked={enabled} onCheckedChange={setEnabled} />
 ```
 
-Pass any CSS color to `color` to change the on color. The switch stays black in light and dark mode. With reduced motion on, it switches instantly.
+Pass any CSS color to `color` to change the on color. The switch stays black in light and dark mode.
 
 The playground offers black in place of white so the white labels stay visible. Use the **Show labels** control, or `showLabels={false}`, to hide both labels. Their wording is fixed; `onLabel` and `offLabel` are no longer supported. Keep an `aria-label` that describes what the switch controls even when the visible labels are hidden.
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { GlossySwitch, type GlossySwitchSize } from "@/registry/clover-ui/glossy-switch";
+import { Switch, type SwitchSize } from "@/registry/clover-ui/switch";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
 import type { ControlDef } from "@/lib/playground";
 
@@ -36,24 +36,24 @@ const controls: ControlDef[] = [
 
 const defaultProps = {
   color: "#42aa78",
-  size: "lg",
+  size: "default",
   showLabels: true,
   disabled: false,
 };
 
-export function GlossySwitchPlayground() {
+export function SwitchPlayground() {
   return (
     <PlaygroundShell
-      componentName="GlossySwitch"
+      componentName="Switch"
       controls={controls}
       defaultProps={defaultProps}
       fixedProps={{ "aria-label": "Power" }}
       render={(values) => (
         <div className="flex min-h-[220px] w-full items-center justify-center">
-          <GlossySwitch
+          <Switch
             aria-label="Power"
             color={values.color as string}
-            size={values.size as GlossySwitchSize}
+            size={values.size as SwitchSize}
             showLabels={values.showLabels as boolean}
             disabled={values.disabled as boolean}
           />

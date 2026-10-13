@@ -1,29 +1,29 @@
 import Link from "next/link";
+import { Heart } from "lucide-react";
 import { LazyMount } from "@/components/leaves/lazy-mount";
-import { getPublishedSlugs } from "@/lib/slugs";
+import { SiteFooter } from "@/components/leaves/site-footer";
+import { RootHeader } from "@/components/stem/root-header";
+import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
 import { CookieConsent } from "@/registry/clover-ui/cookie-consent";
-import { RichText } from "@/registry/clover-ui/rich-text";
-import { SoftButton, type SoftColor } from "@/registry/clover-ui/soft-button";
+import { BlockText } from "@/registry/clover-ui/block-text";
 import {
-  AppleMusicPreview,
   ClickyPreview,
   CursorTagPreview,
   DropTextPreview,
-  GaugePreview,
+  PriceRangePreview,
   GrainCubePreview,
   GridRevealPreview,
-  MicPreview,
-  StackMarqueePreview,
+  LiquidButtonPreview,
+  BlockTextPreview,
   NucleusPreview,
-  RichProgressPreview,
+  SignPadPreview,
   SoftButtonPreview,
-  TextGifPreview,
-  TokenFallPreview,
+  SwitchPreview,
 } from "@/components/leaves/bento-previews";
 import { BentoActiveCard, BentoActiveProvider } from "@/components/leaves/bento-active";
-import { CandlestickPreview } from "@/components/leaves/candlestick-preview";
-import { Demo as PulseLoaderDemo } from "@/docs/pulse-loader/demo";
+
+const HERO_WORDS = ["headlines", "buttons", "controls", "cursors", "loaders", "effects"];
 
 type BentoItem = {
   slug: string;
@@ -37,46 +37,27 @@ const ROWS: { grid: string; items: BentoItem[] }[] = [
     grid: "auto-rows-[13rem] lg:grid-cols-4",
     items: [
       { slug: "nucleus-text", title: "Nucleus Text", Demo: NucleusPreview, className: "" },
-      { slug: "gauge-text", title: "Gauge Text", Demo: GaugePreview, className: "" },
+      { slug: "grid-reveal", title: "Grid Reveal", Demo: GridRevealPreview, className: "" },
       { slug: "drop-text", title: "Drop Text", Demo: DropTextPreview, className: "" },
       { slug: "cursor-tag", title: "Cursor Tag", Demo: CursorTagPreview, className: "" },
-      { slug: "mic", title: "Mic", Demo: MicPreview, className: "" },
+      { slug: "liquid-button", title: "Liquid Button", Demo: LiquidButtonPreview, className: "" },
       { slug: "clicky", title: "Clicky", Demo: ClickyPreview, className: "" },
-      { slug: "text-gif", title: "Text Gif", Demo: TextGifPreview, className: "" },
-      { slug: "stack-marquee", title: "Stack Marquee", Demo: StackMarqueePreview, className: "" },
+      { slug: "price-range", title: "Price Range", Demo: PriceRangePreview, className: "" },
+      { slug: "grain-cube", title: "Grain Cube", Demo: GrainCubePreview, className: "" },
     ],
   },
   {
     grid: "auto-rows-[15rem] lg:grid-cols-5",
     items: [
-      { slug: "grain-cube", title: "Grain Cube", Demo: GrainCubePreview, className: "" },
+      { slug: "block-text", title: "Block Text", Demo: BlockTextPreview, className: "" },
       { slug: "soft-button", title: "Soft Button", Demo: SoftButtonPreview, className: "" },
-      { slug: "rich-progress", title: "Rich Progress", Demo: RichProgressPreview, className: "" },
-      { slug: "grid-reveal", title: "Grid Reveal", Demo: GridRevealPreview, className: "" },
+      { slug: "sign-pad", title: "Sign Pad", Demo: SignPadPreview, className: "col-span-2" },
       {
-        slug: "pulse-loader",
-        title: "Pulse Loader",
-        Demo: PulseLoaderDemo,
+        slug: "switch",
+        title: "Switch",
+        Demo: SwitchPreview,
         className: "col-span-2 lg:col-span-1",
       },
-    ],
-  },
-  {
-    grid: "auto-rows-[22rem] lg:grid-cols-4",
-    items: [
-      {
-        slug: "candlestick-chart",
-        title: "Candlestick Chart",
-        Demo: CandlestickPreview,
-        className: "col-span-2",
-      },
-      {
-        slug: "apple-music-card",
-        title: "Apple Music Card",
-        Demo: AppleMusicPreview,
-        className: "",
-      },
-      { slug: "token-fall", title: "Token Fall", Demo: TokenFallPreview, className: "" },
     ],
   },
 ];
@@ -93,59 +74,43 @@ function BentoCard({ Demo, className, index }: BentoItem & { index: number }) {
   );
 }
 
-function ThemeSoftButton({
-  href,
-  light,
-  dark,
-  children,
-}: {
-  href: string;
-  light: SoftColor;
-  dark: SoftColor;
-  children: React.ReactNode;
-}) {
-  return (
-    <>
-      <span className="dark:hidden">
-        <SoftButton asChild size="sm" color={light}>
-          <Link href={href}>{children}</Link>
-        </SoftButton>
-      </span>
-      <span className="hidden dark:inline">
-        <SoftButton asChild size="sm" color={dark}>
-          <Link href={href}>{children}</Link>
-        </SoftButton>
-      </span>
-    </>
-  );
-}
-
-export default async function Home() {
-  const slugs = await getPublishedSlugs();
-  const [firstSlug] = slugs;
-
+export default function Home() {
   return (
     <div className="relative flex min-h-dvh flex-col">
-      <main className="w-full flex-1 px-5 pt-12 pb-24 sm:px-8 sm:pt-16">
+      <RootHeader />
+      <main className="mx-auto w-full max-w-6xl flex-1 px-4 pt-12 pb-24 sm:px-6 sm:pt-16">
         <section>
-          <div className="flex max-w-2xl flex-col gap-6">
+          <div className="mx-auto flex max-w-2xl flex-col items-center gap-6 text-center">
             <h1 className="text-3xl font-medium tracking-tight text-balance sm:text-4xl">
-              <RichText className="drop-shadow-[0_1px_0_rgb(255,255,255)] [text-shadow:none] dark:drop-shadow-[0_1px_0_rgb(0,0,0)] dark:[text-shadow:none]">
-                Crafted components for thoughtful interfaces.
-              </RichText>
+              Crafted{" "}
+              <BlockText
+                words={HERO_WORDS}
+                colors={["#9333ea", "#dc2626", "#db2777"]}
+                textColor="#fafafa"
+                className="mx-1 text-[length:inherit] font-semibold [--block-h:1.6em]"
+              />{" "}
+              for thoughtful interfaces.
             </h1>
-            <p className="text-muted-foreground max-w-xl text-base leading-relaxed text-pretty sm:text-lg">
-              A growing library of shaders, physics and motion primitives for React and Tailwind
-              CSS. Open source, and ready to drop into your next project.
+            <p className="text-muted-foreground max-w-md text-base leading-relaxed text-pretty sm:text-lg">
+              Shaders, physics and motion primitives for React and Tailwind CSS. Open source and
+              ready to drop in.
             </p>
-            <div className="flex flex-wrap items-center gap-3">
-              <ThemeSoftButton href={`/components/${firstSlug ?? ""}`} light="black" dark="white">
-                Components
-              </ThemeSoftButton>
-              <span className="bg-secondary text-muted-foreground inline-flex h-9 items-center gap-2 rounded-full px-3.5 text-sm font-medium whitespace-nowrap">
-                <span aria-hidden className="size-1.5 rounded-full bg-[var(--brand)]" />
-                New component every week
-              </span>
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <Link
+                href="/docs/introduction"
+                className="gradient-ring focus-visible:ring-ring relative inline-flex h-9 shrink-0 items-center justify-center bg-white px-4 text-sm font-medium whitespace-nowrap text-[#171717] transition-[filter] hover:brightness-95 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none dark:bg-black dark:text-white dark:hover:brightness-125"
+              >
+                Get started
+              </Link>
+              <Link
+                href={siteConfig.links.sponsor}
+                target="_blank"
+                rel="noreferrer"
+                className="border-border text-foreground hover:bg-secondary focus-visible:ring-ring inline-flex h-9 shrink-0 items-center justify-center gap-2 border px-4 text-sm font-medium whitespace-nowrap transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+              >
+                <Heart aria-hidden className="size-3.5 text-[#db2777] dark:text-[#f472b6]" />
+                <span className="sponsor-gradient">Sponsor</span>
+              </Link>
             </div>
           </div>
         </section>
@@ -167,6 +132,7 @@ export default async function Home() {
           </BentoActiveProvider>
         </section>
       </main>
+      <SiteFooter />
       <CookieConsent />
     </div>
   );

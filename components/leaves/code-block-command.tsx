@@ -57,7 +57,7 @@ export function CodeBlockCommand({ item, className, mcp = false }: CodeBlockComm
   }, [config.packageManager, commands, copyToClipboard, ghost]);
 
   return (
-    <div className={cn("relative overflow-hidden rounded-md border", className)}>
+    <div className={cn("relative overflow-hidden rounded-none border", className)}>
       <Tabs
         value={config.packageManager}
         onValueChange={(value) => {
@@ -75,7 +75,7 @@ export function CodeBlockCommand({ item, className, mcp = false }: CodeBlockComm
               <TabsTrigger
                 key={value}
                 value={value}
-                className="data-[state=active]:bg-background data-[state=active]:border-border h-auto gap-1.5 rounded-sm px-2 py-1 font-mono text-xs data-[state=active]:border"
+                className="data-[state=active]:bg-background data-[state=active]:border-border h-auto gap-1.5 px-2 py-1 font-mono text-xs data-[state=active]:border"
               >
                 <Icon size={13} className={className} aria-hidden="true" />
                 {value}
@@ -85,7 +85,7 @@ export function CodeBlockCommand({ item, className, mcp = false }: CodeBlockComm
           <Button
             size="icon"
             variant="ghost"
-            className="hover:bg-accent absolute right-2 size-7 cursor-pointer"
+            className="hover:bg-accent absolute right-2 size-7 cursor-pointer rounded-none"
             onClick={copyCommand}
           >
             <span className="sr-only">Copy</span>

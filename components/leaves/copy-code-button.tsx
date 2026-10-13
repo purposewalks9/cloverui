@@ -18,7 +18,7 @@ export function CopyCodeButton() {
       variant="ghost"
       size="icon"
       aria-label={isCopied ? "Copied" : "Copy code"}
-      className="size-7 dark:bg-[#191919] dark:hover:bg-[#212121]"
+      className="size-7 rounded-none dark:bg-[#191919] dark:hover:bg-[#212121]"
       onClick={(e) => {
         const container = e.currentTarget.closest("[data-code-container]");
         const pre = container?.querySelector("pre");

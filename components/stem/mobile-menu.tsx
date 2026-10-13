@@ -46,7 +46,7 @@ export function MobileMenu({
         <button
           type="button"
           aria-label="Open menu"
-          className="text-foreground hover:bg-muted inline-flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current md:hidden"
+          className="text-foreground hover:bg-muted inline-flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current md:hidden"
         >
           <Menu aria-hidden className="size-5" strokeWidth={1.7} />
         </button>
@@ -71,7 +71,7 @@ export function MobileMenu({
             <CloverLogo size={480} />
           </div>
           <div className="flex shrink-0 flex-wrap items-center justify-between gap-x-2 gap-y-1 px-4 pt-3 sm:px-6">
-            <Dialog.Close className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-lg pr-2 focus-visible:outline-2 focus-visible:outline-current">
+            <Dialog.Close className="inline-flex min-h-11 cursor-pointer items-center gap-2 pr-2 focus-visible:outline-2 focus-visible:outline-current">
               <X aria-hidden className="size-5" />
               <Dialog.Title className="text-xl font-medium tracking-tight">Menu</Dialog.Title>
             </Dialog.Close>
@@ -86,7 +86,7 @@ export function MobileMenu({
                   setShowNew((value) => !value);
                   scrollRef.current?.scrollTo({ top: 0 });
                 }}
-                className="bg-foreground text-background inline-flex min-h-10 cursor-pointer items-center gap-1 rounded-xl px-3 text-sm font-medium whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current"
+                className="bg-foreground text-background inline-flex min-h-10 cursor-pointer items-center gap-1 rounded-none px-3 text-sm font-medium whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current"
               >
                 <Plus aria-hidden className="size-4" />
                 New
@@ -113,14 +113,13 @@ export function MobileMenu({
                     { title: "Home", href: "/" },
                     { title: "Docs", href: "/docs/introduction" },
                     { title: "Components", href: components[0]?.href ?? "/docs/introduction" },
-                    { title: "Sponsor", href: "/sponsor" },
                   ].map((item) => (
                     <Link
                       key={item.title}
                       href={item.href}
                       onClick={close}
                       aria-current={pathname === item.href ? "page" : undefined}
-                      className="max-w-full rounded-md py-1 text-[clamp(1.75rem,8vw,2.5rem)] leading-tight tracking-tight focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
+                      className="max-w-full py-1 text-[clamp(1.75rem,8vw,2.5rem)] leading-tight tracking-tight focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
                     >
                       {item.title}
                     </Link>
@@ -144,7 +143,7 @@ export function MobileMenu({
                           href={item.href}
                           onClick={close}
                           aria-current={pathname === item.href ? "page" : undefined}
-                          className="group max-w-full rounded-md py-2 text-2xl leading-tight tracking-tight focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current aria-[current=page]:underline aria-[current=page]:decoration-[var(--brand)] aria-[current=page]:underline-offset-8"
+                          className="group max-w-full rounded-none py-2 text-2xl leading-tight tracking-tight focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current aria-[current=page]:underline aria-[current=page]:decoration-[var(--brand)] aria-[current=page]:underline-offset-8"
                         >
                           <span className="inline-flex items-center gap-3">
                             {item.title}
