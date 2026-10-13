@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "clicky",
   "title": "Clicky",
-  "description": "A 3D hand cursor that pops in on any element and presses it with a soft glow to show people where to click.",
+  "description": "A 3D hand cursor that pops in and presses any element to show people where to click.",
   "dependencies": [
     "motion"
   ],

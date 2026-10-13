@@ -383,13 +383,23 @@ export function Search({
                       {item.icon && (
                         <span
                           aria-hidden
-                          className="bg-muted text-muted-foreground flex size-7 shrink-0 items-center justify-center [&>svg]:size-4"
+                          className={cn(
+                            "bg-muted text-muted-foreground flex size-7 shrink-0 items-center justify-center [&>svg]:size-4",
+                            activeItem?.id === item.id && "text-[#a855f7] dark:text-[#c084fc]",
+                          )}
                         >
                           {item.icon}
                         </span>
                       )}
                       <span className="min-w-0 flex-1">
-                        <span className="block truncate">{item.label}</span>
+                        <span
+                          className={cn(
+                            "block truncate",
+                            activeItem?.id === item.id && "sponsor-gradient w-fit max-w-full",
+                          )}
+                        >
+                          {item.label}
+                        </span>
                         {item.description && (
                           <span className="text-muted-foreground block truncate text-sm">
                             {item.description}

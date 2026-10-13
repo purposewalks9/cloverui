@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "theme-toggle",
   "title": "Theme Toggle",
-  "description": "A round, glossy theme button that presses like a small push switch and flips the theme instantly. It is dark in light mode and latches down light in dark mode.",
+  "description": "A round, glossy push button that latches down and flips the theme instantly.",
   "dependencies": [
     "class-variance-authority",
     "next-themes"

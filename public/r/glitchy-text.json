@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "glitchy-text",
   "title": "Glitchy Text",
-  "description": "Text that glitches like a broken screen, tearing into faded slices, shaking left and right and flickering random symbols on its own, on hover or all the time.",
+  "description": "Text that glitches like a broken screen, tearing into slices and flickering symbols.",
   "dependencies": [
     "motion"
   ],

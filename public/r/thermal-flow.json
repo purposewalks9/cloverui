@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "thermal-flow",
   "title": "Thermal Flow",
-  "description": "A smooth, rich thermal-gradient background rendered on the GPU. Seven themes or your own palette, no dependencies.",
+  "description": "A smooth, rich thermal-gradient background rendered on the GPU, with seven themes.",
   "dependencies": [],
   "registryDependencies": [],
   "files": [

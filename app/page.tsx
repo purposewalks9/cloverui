@@ -5,7 +5,6 @@ import { SiteFooter } from "@/components/leaves/site-footer";
 import { RootHeader } from "@/components/stem/root-header";
 import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
-import { CookieConsent } from "@/registry/clover-ui/cookie-consent";
 import { BlockText } from "@/registry/clover-ui/block-text";
 import {
   ClickyPreview,
@@ -133,7 +132,6 @@ export default function Home() {
         </section>
       </main>
       <SiteFooter />
-      <CookieConsent />
     </div>
   );
 }

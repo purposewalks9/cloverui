@@ -1,7 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { RichProgress, type RichProgressProps } from "@/registry/clover-ui/rich-progress";
+import {
+  RichProgress,
+  type RichProgressColor,
+  type RichProgressKnob,
+  type RichProgressSize,
+} from "@/registry/clover-ui/rich-progress";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
 import type { ControlDef } from "@/lib/playground";
 
@@ -42,8 +47,16 @@ const controls: ControlDef[] = [
       { label: "Large", value: "lg" },
     ],
   },
+  {
+    type: "select",
+    prop: "knob",
+    label: "Knob",
+    options: [
+      { label: "Square", value: "square" },
+      { label: "Circle", value: "circle" },
+    ],
+  },
   { type: "boolean", prop: "showValue", label: "Show value" },
-  { type: "boolean", prop: "knob", label: "Knob" },
 ];
 
 const defaultProps = {
@@ -51,8 +64,8 @@ const defaultProps = {
   value: 65,
   color: "default",
   size: "default",
+  knob: "square",
   showValue: true,
-  knob: true,
 };
 
 export function RichProgressPlayground() {
@@ -69,10 +82,10 @@ export function RichProgressPlayground() {
             value={value}
             onChange={setValue}
             label={values.label as string}
-            color={values.color as RichProgressProps["color"]}
-            size={values.size as RichProgressProps["size"]}
+            color={values.color as RichProgressColor}
+            size={values.size as RichProgressSize}
             showValue={values.showValue as boolean}
-            knob={values.knob as boolean}
+            knob={values.knob as RichProgressKnob}
           />
         </div>
       )}

@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "grain-cube",
   "title": "Grain Cube",
-  "description": "A grainy, isometric 3D cube rendered on the GPU with a flowing gradient on each face. Drag to spin it.",
+  "description": "A grainy isometric 3D cube with a flowing gradient on each face. Drag to spin it.",
   "dependencies": [],
   "registryDependencies": [],
   "files": [

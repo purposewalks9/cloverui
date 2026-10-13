@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { BookOpen, Box, Copy, ThumbsUp } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { Search, type SearchGroup, type SearchItem } from "@/registry/clover-ui/search";
+import { Search, type SearchGroup, type SearchItem } from "@/components/stem/search";
 import type { DocSchema } from "@/lib/types";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { useConfig } from "@/hooks/use-config";
@@ -17,12 +17,14 @@ export function SearchForm({
   docSchema,
   shortcut = true,
   nav = false,
+  compact = false,
   className,
   onNavigate,
 }: {
   docSchema: DocSchema;
   shortcut?: boolean;
   nav?: boolean;
+  compact?: boolean;
   className?: string;
   onNavigate?: () => void;
 }) {
@@ -79,7 +81,8 @@ export function SearchForm({
       shortcut={shortcut}
       shortcutLabel={nav && shortcut ? "/" : undefined}
       placeholder="Search docs..."
-      className={cn(nav && navSearchClassName, className)}
+      compact={compact}
+      className={cn(nav && navSearchClassName, compact && "size-8 px-0", className)}
       onHighlight={setHighlighted}
       onQueryChange={onQueryChange}
       onSelect={(item) => {

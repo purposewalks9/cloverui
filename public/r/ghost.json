@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "ghost",
   "title": "Ghost Guide",
-  "description": "A tiny tour guide for your design system. It floats by the cursor and reacts to every part of your UI in one word.",
+  "description": "A tiny tour guide that floats by the cursor and reacts to your UI in one word.",
   "dependencies": [
     "motion",
     "class-variance-authority"

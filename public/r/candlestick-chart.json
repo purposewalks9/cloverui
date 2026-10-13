@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "candlestick-chart",
   "title": "Candlestick Chart",
-  "description": "A responsive candlestick chart with drag-to-pan, wheel-to-zoom, an animated cursor, and an OHLC tooltip.",
+  "description": "A responsive candlestick chart with drag-to-pan, zoom and an OHLC tooltip.",
   "dependencies": [],
   "registryDependencies": [],
   "files": [

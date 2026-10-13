@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "text-gif",
   "title": "Text GIF",
-  "description": "Animated text filled with a GIF, creating a moving visual effect inside the letter shapes.",
+  "description": "Animated text filled with a GIF, so the letters show a moving picture inside.",
   "dependencies": [],
   "registryDependencies": [],
   "files": [

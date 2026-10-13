@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { CloverLogo } from "@/components/seed/clover-logo";
 import { GlitchGroup, GlitchName } from "@/components/stem/glitch-brand";
-import { GitHubStars } from "@/components/seed/github-stars";
 import { MobileMenu } from "@/components/stem/mobile-menu";
 import { SearchForm } from "@/components/stem/command-menu";
 import { ThemeToggle } from "@/components/stem/theme-toggle";
@@ -37,11 +36,12 @@ export async function RootHeader() {
           </nav>
         </div>
 
-        <div className="hidden shrink-0 items-center gap-2 md:flex">
-          <SearchForm docSchema={docSchema} nav className="w-40" />
+        <div className="flex shrink-0 items-center gap-2">
+          <SearchForm docSchema={docSchema} nav className="hidden w-40 md:inline-flex" />
+          <SearchForm docSchema={docSchema} nav compact shortcut={false} className="md:hidden" />
           <ThemeToggle />
+          <MobileMenu docSchema={docSchema} />
         </div>
-        <MobileMenu docSchema={docSchema} githubStars={<GitHubStars />} />
       </div>
     </header>
   );

@@ -28,7 +28,7 @@ Stack: Next.js 16 (webpack), React 19, Tailwind CSS v4, `motion`, shadcn, pnpm.
 
 ## Adding or changing a component
 
-1. Write `registry/clover-ui/<slug>.tsx`, then add or update its `registry.json` entry. For a new component, include `meta.addedAt` as its real release date (`YYYY-MM-DD`); the mobile menu’s New view automatically shows the six most recent dated components. Keep that original date on later edits.
+1. Write `registry/clover-ui/<slug>.tsx`, then add or update its `registry.json` entry. For a new component, include `meta.addedAt` as its real release date (`YYYY-MM-DD`), and keep that original date on later edits.
 2. Add `docs/<slug>/doc.mdx`, `demo.tsx` and `playground.tsx`. The props table and the usage text must match what the code actually does.
 3. Run `pnpm registry:build`, then lint and type-check.
 4. Follow `.agents/skills/review-ui/SKILL.md`. Preserve existing designs with `.agents/skills/preserve-ui-design/SKILL.md`. Use `.agents/skills/commit-verified-changes/SKILL.md` when committing or publishing changes.
