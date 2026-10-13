@@ -41,7 +41,7 @@ export function SearchTrigger({
       type="button"
       aria-label={placeholder}
       className={cn(
-        "inline-flex h-9 min-w-0 cursor-pointer items-center gap-2 rounded-xl bg-neutral-950 px-3 text-sm text-neutral-300 hover:bg-neutral-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-500 disabled:pointer-events-none disabled:opacity-50",
+        "border-border bg-background text-foreground/75 hover:bg-accent hover:text-foreground focus-visible:outline-ring inline-flex h-9 min-w-0 cursor-pointer items-center gap-2 border px-3 text-sm focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-50",
         compact ? "w-9 shrink-0 justify-center px-0" : "w-full max-w-60",
         className,
       )}
@@ -50,7 +50,7 @@ export function SearchTrigger({
       <SearchIcon aria-hidden className="size-4 shrink-0" strokeWidth={1.7} />
       {!compact && <span className="min-w-0 flex-1 truncate text-left">{placeholder}</span>}
       {!compact && shortcutLabel && (
-        <kbd className="shrink-0 font-sans text-xs text-neutral-400">{shortcutLabel}</kbd>
+        <kbd className="text-muted-foreground shrink-0 font-sans text-xs">{shortcutLabel}</kbd>
       )}
     </button>
   );
@@ -75,7 +75,7 @@ export interface SearchProps extends Omit<SearchTriggerProps, "onSelect" | "chil
 
 function Keycap({ children }: { children: React.ReactNode }) {
   return (
-    <kbd className="inline-flex h-6 min-w-6 items-center justify-center rounded-md bg-neutral-200/70 px-1 font-sans text-xs text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300">
+    <kbd className="bg-foreground/10 text-foreground/70 inline-flex h-6 min-w-6 items-center justify-center px-1 font-sans text-xs">
       {children}
     </kbd>
   );
@@ -247,7 +247,7 @@ export function Search({
         </Dialog.Trigger>
       )}
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-[60] bg-black/20 dark:bg-black/50" />
+        <Dialog.Overlay className="fixed inset-0 z-[60] bg-black/20 backdrop-blur-md dark:bg-black/50" />
         <Dialog.Content
           ref={contentRef}
           onOpenAutoFocus={(event) => {
@@ -255,7 +255,7 @@ export function Search({
             inputRef.current?.focus();
           }}
           className={cn(
-            "fixed top-[calc(var(--search-viewport-top,0px)+1rem)] left-1/2 z-[70] flex max-h-[calc(var(--search-viewport-height,100dvh)-2rem)] w-[calc(100%-1.5rem)] max-w-[560px] -translate-x-1/2 flex-col gap-2 rounded-[24px] border border-neutral-200/80 bg-neutral-100 p-2 text-neutral-800 shadow-[0_24px_80px_-24px_rgb(0_0_0/0.25)] outline-none sm:top-[calc(var(--search-viewport-top,0px)+var(--search-viewport-height,100dvh)*0.12)] sm:max-h-[calc(var(--search-viewport-height,100dvh)*0.76)] dark:border-neutral-700/70 dark:bg-neutral-900 dark:text-neutral-100",
+            "border-border bg-muted text-popover-foreground fixed top-[calc(var(--search-viewport-top,0px)+1rem)] left-1/2 z-[70] flex max-h-[calc(var(--search-viewport-height,100dvh)-2rem)] w-[calc(100%-1.5rem)] max-w-[560px] -translate-x-1/2 flex-col gap-2 border p-2 shadow-[0_24px_80px_-24px_rgb(0_0_0/0.25)] outline-none sm:top-[calc(var(--search-viewport-top,0px)+var(--search-viewport-height,100dvh)*0.12)] sm:max-h-[calc(var(--search-viewport-height,100dvh)*0.76)]",
             contentClassName,
           )}
         >
@@ -263,10 +263,10 @@ export function Search({
           <Dialog.Description className="sr-only">
             Search and filter the list. Use the arrow keys to navigate and Enter to select.
           </Dialog.Description>
-          <div className="flex h-10 shrink-0 items-center gap-2.5 rounded-xl bg-white pr-0.5 pl-3 dark:bg-neutral-950">
+          <div className="bg-popover flex h-10 shrink-0 items-center gap-2.5 pr-0.5 pl-3">
             <SearchIcon
               aria-hidden
-              className="size-4 shrink-0 text-neutral-400"
+              className="text-muted-foreground size-4 shrink-0"
               strokeWidth={1.7}
             />
             <input
@@ -303,11 +303,11 @@ export function Search({
                   select(activeItem);
                 }
               }}
-              className="h-10 w-full min-w-0 bg-transparent text-base outline-none placeholder:text-neutral-400 dark:placeholder:text-neutral-500"
+              className="placeholder:text-muted-foreground h-10 w-full min-w-0 bg-transparent text-base outline-none"
             />
             <Dialog.Close
               aria-label="Close search"
-              className="flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-xl text-neutral-500 hover:bg-neutral-100 focus-visible:outline-2 focus-visible:outline-neutral-500 dark:hover:bg-neutral-800"
+              className="text-muted-foreground hover:bg-accent hover:text-accent-foreground focus-visible:outline-ring flex size-10 shrink-0 cursor-pointer items-center justify-center focus-visible:outline-2"
             >
               <X aria-hidden className="size-4" />
             </Dialog.Close>
@@ -330,10 +330,10 @@ export function Search({
                     inputRef.current?.focus();
                   }}
                   className={cn(
-                    "min-h-10 shrink-0 cursor-pointer rounded-lg px-3 text-sm whitespace-nowrap focus-visible:outline-2 focus-visible:outline-neutral-500",
+                    "focus-visible:outline-ring min-h-10 shrink-0 cursor-pointer px-3 text-sm whitespace-nowrap focus-visible:outline-2",
                     activeCategory === value
-                      ? "bg-white text-neutral-800 shadow-xs dark:bg-neutral-800 dark:text-neutral-100"
-                      : "text-neutral-500 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-100",
+                      ? "bg-popover text-popover-foreground shadow-xs"
+                      : "text-muted-foreground hover:text-foreground",
                   )}
                 >
                   {value ?? "All"}
@@ -355,11 +355,11 @@ export function Search({
               >
                 <div
                   id={`${id}-group-${encodeURIComponent(group.id)}`}
-                  className="px-2 pt-1 pb-1.5 text-[13px] font-medium text-neutral-500 dark:text-neutral-400"
+                  className="text-muted-foreground px-2 pt-1 pb-1.5 text-[13px] font-medium"
                 >
                   {group.label}
                 </div>
-                <div className="rounded-2xl bg-white p-1 dark:bg-neutral-950/80">
+                <div className="bg-popover p-1">
                   {group.items.map((item) => (
                     <div
                       key={item.id}
@@ -375,15 +375,15 @@ export function Search({
                       onMouseDown={(event) => event.preventDefault()}
                       onClick={() => select(item)}
                       className={cn(
-                        "flex min-h-11 items-center gap-2.5 rounded-xl px-2.5 py-2 text-base",
+                        "flex min-h-11 items-center gap-2.5 px-2.5 py-2 text-base",
                         item.disabled ? "cursor-not-allowed opacity-40" : "cursor-pointer",
-                        activeItem?.id === item.id && "bg-neutral-100 dark:bg-neutral-800",
+                        activeItem?.id === item.id && "bg-accent text-accent-foreground",
                       )}
                     >
                       {item.icon && (
                         <span
                           aria-hidden
-                          className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-neutral-100 text-neutral-500 dark:bg-neutral-800 dark:text-neutral-400 [&>svg]:size-4"
+                          className="bg-muted text-muted-foreground flex size-7 shrink-0 items-center justify-center [&>svg]:size-4"
                         >
                           {item.icon}
                         </span>
@@ -391,7 +391,7 @@ export function Search({
                       <span className="min-w-0 flex-1">
                         <span className="block truncate">{item.label}</span>
                         {item.description && (
-                          <span className="block truncate text-sm text-neutral-500 dark:text-neutral-400">
+                          <span className="text-muted-foreground block truncate text-sm">
                             {item.description}
                           </span>
                         )}
@@ -409,7 +409,7 @@ export function Search({
               </div>
             ))}
             {!filteredGroups.length && (
-              <div className="px-5 py-12 text-center text-sm text-neutral-500 dark:text-neutral-400">
+              <div className="text-muted-foreground px-5 py-12 text-center text-sm">
                 {emptyMessage}
               </div>
             )}
@@ -417,7 +417,7 @@ export function Search({
           <span role="status" className="sr-only">
             {filteredGroups.reduce((count, group) => count + group.items.length, 0)} results
           </span>
-          <div className="flex min-h-10 shrink-0 flex-wrap items-center justify-between gap-x-3 gap-y-2 px-2 py-1 text-xs text-neutral-500 sm:text-sm dark:text-neutral-400">
+          <div className="text-muted-foreground flex min-h-10 shrink-0 flex-wrap items-center justify-between gap-x-3 gap-y-2 px-2 py-1 text-xs sm:text-sm">
             <div aria-hidden className="flex items-center gap-3">
               <span className="hidden items-center gap-1 sm:inline-flex">
                 <Keycap>

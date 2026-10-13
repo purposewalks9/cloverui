@@ -11,7 +11,7 @@ import { SearchPlayground } from "./playground"
 
 ## Usage
 
-A compact, borderless black search trigger that opens a grouped command menu. The wider modal uses neutral light and dark surfaces, readable results, a compact input, and an integrated footer. Bring your own icons and item colors.
+A compact, borderless search trigger that opens a grouped command menu. The trigger uses your theme's background with a thin border, so it is white in light mode and black in dark mode. The wider modal uses your theme's surfaces, readable results, a compact input, and an integrated footer. Bring your own icons and item colors.
 
 ```tsx
 "use client";
@@ -56,7 +56,7 @@ Control the dialog with `open` and `onOpenChange`, or use `defaultOpen`. Pass a 
 
 Requires React 19, Tailwind CSS v4, `@radix-ui/react-dialog`, `lucide-react`, and the standard shadcn `cn` utility. The registry declares its dependencies. No Next.js router, theme provider, docs imports, or external assets are required.
 
-The surfaces use neutral Tailwind colors. Configure Tailwind's class-based `dark` variant and set `.dark` on `html` or `body`, since the dialog portals to `document.body`. The component inherits your font. No animation package is needed.
+Colors come from the standard shadcn theme tokens: `background` for the trigger, `muted` for the modal frame, `popover` for the input and result cards, `accent` for the highlighted result, and `foreground`, `muted-foreground`, `border` and `ring` for text, borders and focus. It follows light, dark, and custom palettes automatically. Set your `.dark` class on `html` or `body`, since the dialog portals to `document.body`. The component inherits your font. No animation package is needed.
 
 ## Props
 

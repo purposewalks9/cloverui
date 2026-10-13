@@ -1,20 +1,20 @@
-import { LogoStormPlayground } from "./playground"
+import { LogoPopPlayground } from "./playground"
 
-<LogoStormPlayground />
+<LogoPopPlayground />
 
 ## Installation
 
-<InstallationTabs item="logo-storm">
-```tsx file=../../registry/clover-ui/logo-storm.tsx
+<InstallationTabs item="logo-pop">
+```tsx file=../../registry/clover-ui/logo-pop.tsx
 ```
 </InstallationTabs>
 
 ## Usage
 
 ```tsx
-import { LogoStorm } from "@/components/logo-storm";
+import { LogoPop } from "@/components/logo-pop";
 
-<LogoStorm
+<LogoPop
   logos={[
     { name: "Acme", src: "/logos/acme.svg", ratio: 4 },
     { name: "Globex", src: "/logos/globex.svg", ratio: 3 },
@@ -22,7 +22,7 @@ import { LogoStorm } from "@/components/logo-storm";
 />
 ```
 
-Logo Storm is a "trusted by" logo grid with some life in it. When it scrolls into view, the logos pop in one by one in a random order. Each one lands a little too big and tilted, then settles straight into its own spot. Nothing overlaps. After that the logos stay, and every so often one gives a small bounce.
+Logo Pop is a "trusted by" logo grid with some life in it. When it scrolls into view, the logos pop in one by one in a random order. Each one lands a little too big and tilted, then settles straight into its own spot. Nothing overlaps. After that the logos stay, and every so often one gives a small bounce.
 
 The grid has 4 columns, and 2 on small screens. Change it with `className`, for example `className="sm:grid-cols-6"`. Use a text size class to make every logo bigger or smaller.
 
@@ -34,12 +34,12 @@ With reduced motion on, the logos show right away without moving.
 
 ### Logos
 
-The default logos are Vercel, OpenAI, Linear, Notion, Cursor, Framer, Discord, Google, Shopify, Netflix, Ramp, Descript, Duolingo, Phantom, OpenSea and Tesla, taken from the open source [Spell UI](https://github.com/xxtomm/spell-ui) (MIT license). They load from `cloverui.vercel.app` and are exported as `logoStormLogos`. Each logo is a trademark of its company, so use them only as placeholders and swap in the companies you actually work with.
+The default logos are Vercel, OpenAI, Linear, Notion, Cursor, Framer, Discord, Google, Shopify, Netflix, Ramp, Descript, Duolingo, Phantom, OpenSea and Tesla, taken from the open source [Spell UI](https://github.com/xxtomm/spell-ui) (MIT license). They load from `cloverui.vercel.app` and are exported as `logoPopLogos`. Each logo is a trademark of its company, so use them only as placeholders and swap in the companies you actually work with.
 
 ## Props
 
 <PropsTable data={[
-  { name: "logos", type: "{ name: string; src: string; ratio?: number }[]", default: "logoStormLogos", description: "The logos to show, in grid order." },
+  { name: "logos", type: "{ name: string; src: string; ratio?: number }[]", default: "logoPopLogos", description: "The logos to show, in grid order." },
   { name: "speed", type: "number", default: "1", description: "Higher is faster." },
   { name: "label", type: "string", default: '"Logos of companies"', description: "What screen readers call the list." },
   { name: "className", type: "string", description: "Grid columns, gaps, color and a text size to scale the logos." },

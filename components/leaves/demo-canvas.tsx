@@ -24,7 +24,7 @@ export function DemoCanvas({
         <TabsList className="h-9 gap-1 p-0">
           <TabsTrigger
             value="preview"
-            className="data-[state=active]:bg-background cursor-pointer rounded-md px-2.5 text-center transition-all"
+            className="data-[state=active]:bg-background cursor-pointer rounded-none px-2.5 text-center transition-all"
           >
             <Monitor className="h-4 w-4" />
             <span className="sr-only">Preview</span>
@@ -32,7 +32,7 @@ export function DemoCanvas({
 
           <TabsTrigger
             value="code"
-            className="data-[state=active]:bg-background cursor-pointer rounded-md px-2.5 text-center transition-all"
+            className="data-[state=active]:bg-background cursor-pointer px-2.5 text-center transition-all"
           >
             <Code2 className="h-4 w-4" />
             <span className="sr-only">Code</span>
@@ -69,7 +69,7 @@ export function DemoPreview({
     <TabsContent value="preview">
       <div
         className={cn(
-          "not-prose preview relative flex min-h-[28rem] w-full overflow-hidden rounded-sm border p-6 md:min-h-[32rem]",
+          "not-prose preview relative flex min-h-[28rem] w-full overflow-hidden rounded-none border p-6 md:min-h-[32rem]",
           center ? "items-center justify-center" : "items-stretch justify-start",
           className,
         )}
@@ -90,12 +90,12 @@ export function DemoPreview({
           </LazyMount>
         </Suspense>
 
-        <div className="bg-background absolute bottom-3 left-3 z-20 flex items-center gap-1 rounded-lg border p-1 shadow-md">
+        <div className="bg-background absolute bottom-3 left-3 z-20 flex items-center gap-1 border p-1 shadow-md">
           {v0Id && <OpenInV0Button id={v0Id} />}
 
           <button
             onClick={handleRefresh}
-            className="text-muted-foreground hover:bg-muted hover:text-foreground flex h-8 w-8 cursor-pointer items-center justify-center rounded-md transition-colors"
+            className="text-muted-foreground hover:bg-muted hover:text-foreground flex h-8 w-8 cursor-pointer items-center justify-center rounded-none transition-colors"
             aria-label="Refresh component"
           >
             <RefreshAnticlockwise

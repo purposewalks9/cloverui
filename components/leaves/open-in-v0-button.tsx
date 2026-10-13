@@ -13,7 +13,7 @@ export function OpenInV0Button({ id }: { id: string }) {
   return (
     <Button
       aria-label="Open in v0"
-      className="h-7 gap-1 rounded-md px-3 text-xs shadow-none"
+      className="h-7 gap-1 rounded-none px-3 text-xs shadow-none"
       asChild
     >
       <a

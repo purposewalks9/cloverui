@@ -1,10 +1,10 @@
 "use client";
 
-import { LogoStorm, logoStormLogos } from "@/registry/clover-ui/logo-storm";
+import { LogoPop, logoPopLogos } from "@/registry/clover-ui/logo-pop";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
 import type { ControlDef } from "@/lib/playground";
 
-const logos = logoStormLogos.map((logo) => ({
+const logos = logoPopLogos.map((logo) => ({
   ...logo,
   src: logo.src.replace("https://cloverui.vercel.app", ""),
 }));
@@ -17,16 +17,16 @@ const defaultProps = {
   speed: 1,
 };
 
-export function LogoStormPlayground() {
+export function LogoPopPlayground() {
   return (
     <PlaygroundShell
-      componentName="LogoStorm"
+      componentName="LogoPop"
       controls={controls}
       defaultProps={defaultProps}
       codeNote="pass logos={[{ name, src, ratio }]} for your own logos"
       render={(values) => (
         <div className="flex min-h-[320px] w-full items-center justify-center px-6">
-          <LogoStorm
+          <LogoPop
             key={String(values.speed)}
             logos={logos}
             speed={values.speed as number}

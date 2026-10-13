@@ -1,0 +1,46 @@
+import { GlitchyTextPlayground } from "./playground"
+
+<GlitchyTextPlayground />
+
+## Installation
+
+<InstallationTabs item="glitchy-text">
+```tsx file=../../registry/clover-ui/glitchy-text.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { GlitchyText } from "@/components/glitchy-text";
+
+<GlitchyText className="text-4xl font-bold">SIGNAL LOST</GlitchyText>
+```
+
+Text that looks like a broken screen. Every so often it glitches: faded slices of the text tear sideways, the whole line shakes left and right, and the letters jitter and skew before snapping back. The letters themselves never change.
+
+By default it glitches on its own every few seconds. Set `trigger="hover"` to glitch only while the pointer is over it, or `trigger="always"` to keep it glitching. By default the torn slices use the text's own color, so it works in light and dark mode. Set `color` to `red`, `blue`, `green`, `purple` or `orange` to tint the slices. Set `color="pixel"` for a multicolor glitch: the slices flash random colors and small colored pixel blocks pop up across the text. Pass `colors` to pick the two slice colors yourself. Screen readers always hear the real text.
+
+```tsx
+<GlitchyText color="pixel">SIGNAL LOST</GlitchyText>
+
+<GlitchyText trigger="hover" colors={["#ef4444", "#22d3ee"]}>
+  HOVER ME
+</GlitchyText>
+```
+
+With reduced motion on, the text stays still and never glitches.
+
+## Props
+
+<PropsTable data={[
+  { name: "children", type: "string", description: "The text to show." },
+  { name: "trigger", type: '"auto" | "hover" | "always"', default: '"auto"', description: "Glitch every few seconds, only on hover, or all the time." },
+  { name: "interval", type: "number", default: "3000", description: "Milliseconds between glitches in auto mode, give or take 20%." },
+  { name: "duration", type: "number", default: "450", description: "How long one glitch lasts, in milliseconds." },
+  { name: "color", type: '"default" | "red" | "blue" | "green" | "purple" | "orange" | "pixel"', default: '"default"', description: "Tints the torn slices. \"pixel\" flashes many colors and adds colored pixel blocks." },
+  { name: "colors", type: "[string, string]", description: "Your own colors for the two torn slices. Overrides the slice colors from color." },
+  { name: "intensity", type: "number", default: "1", description: "How far the slices and letters jump. Higher is wilder." },
+  { name: "scramble", type: "boolean", default: "false", description: "Swaps a few letters for random symbols while glitching. Off by default." },
+  { name: "className", type: "string" },
+]} />

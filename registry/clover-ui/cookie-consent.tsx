@@ -7,7 +7,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { GlossySwitch } from "@/registry/clover-ui/glossy-switch";
+import { Switch } from "@/registry/clover-ui/switch";
 
 export type CookieCategory = {
   id: string;
@@ -53,7 +53,8 @@ export function getCookieConsent(storageKey = "cookie-consent"): CookieConsentRe
       !Object.values(preferences).every((enabled) => typeof enabled === "boolean") ||
       typeof date !== "string" ||
       !Number.isFinite(Date.parse(date))
-    ) return null;
+    )
+      return null;
     return record as CookieConsentRecord;
   } catch {
     return null;
@@ -279,7 +280,7 @@ function CookieConsent({
                           </p>
                         )}
                       </div>
-                      <GlossySwitch
+                      <Switch
                         aria-label={category.label}
                         color="#111111"
                         size="sm"
@@ -297,7 +298,12 @@ function CookieConsent({
           </AnimatePresence>
 
           <div className="mt-4 grid grid-cols-2 gap-2">
-            <Button type="button" variant="secondary" className="w-full" onClick={managing ? save : rejectAll}>
+            <Button
+              type="button"
+              variant="secondary"
+              className="w-full"
+              onClick={managing ? save : rejectAll}
+            >
               {managing ? saveLabel : rejectLabel}
             </Button>
             <Button type="button" className="w-full" onClick={acceptAll}>

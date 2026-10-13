@@ -16,7 +16,7 @@ import { GhostToggle } from "@/components/stem/ghost-toggle";
 
 const ACTIVE_OFFSET = 112;
 const ROW_CLASS =
-  "text-muted-foreground hover:text-foreground focus-visible:ring-ring flex items-center gap-2 rounded-sm text-sm transition-colors duration-200 focus-visible:ring-2 focus-visible:outline-none [&_svg]:size-3.5";
+  "text-muted-foreground hover:text-foreground focus-visible:ring-ring flex items-center gap-2 rounded-none text-sm transition-colors duration-200 focus-visible:ring-2 focus-visible:outline-none [&_svg]:size-3.5";
 
 interface TocItem {
   title?: React.ReactNode;
@@ -243,7 +243,7 @@ export function DocsTableOfContents({
                       }}
                       aria-current={isActive ? "location" : undefined}
                       className={cn(
-                        "focus-visible:ring-ring block rounded-sm py-1.5 text-[15px] leading-snug no-underline transition-colors duration-200 focus-visible:ring-2 focus-visible:outline-none motion-reduce:transition-none",
+                        "focus-visible:ring-ring block py-1.5 text-[15px] leading-snug no-underline transition-colors duration-200 focus-visible:ring-2 focus-visible:outline-none motion-reduce:transition-none",
                         item.depth >= 3 && "pl-3 text-sm",
                         isActive
                           ? "text-foreground font-medium"

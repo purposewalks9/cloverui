@@ -27,7 +27,7 @@ const COLLAPSE_THRESHOLD = 4;
 
 function TypePill({ children }: { children: React.ReactNode }) {
   return (
-    <code className="bg-muted text-foreground rounded-sm px-1.5 py-0.5 font-mono text-xs whitespace-nowrap">
+    <code className="bg-muted text-foreground rounded-none px-1.5 py-0.5 font-mono text-xs whitespace-nowrap">
       {children}
     </code>
   );
@@ -110,14 +110,14 @@ function PropRow({ item }: { item: PropsTableItem }) {
 export function PropsTable({ data }: PropsTableProps) {
   if (data.length === 0) {
     return (
-      <div className="border-border bg-muted mt-6 flex h-[42px] w-full items-center justify-center overflow-hidden rounded-lg border">
+      <div className="border-border bg-muted mt-6 flex h-[42px] w-full items-center justify-center overflow-hidden border">
         <div className="text-muted-foreground text-center text-sm">No Additional Props</div>
       </div>
     );
   }
 
   return (
-    <div className="border-border not-prose mt-6 w-full overflow-hidden rounded-lg border">
+    <div className="border-border not-prose mt-6 w-full overflow-hidden rounded-none border">
       <div className="bg-muted flex items-center justify-between px-4 py-3">
         <span className="text-muted-foreground text-sm font-medium">Prop</span>
         <span className="text-muted-foreground text-sm font-medium">Type</span>

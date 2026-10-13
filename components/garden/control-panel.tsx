@@ -92,7 +92,7 @@ function OptionGroup({
       id={id}
       role="radiogroup"
       aria-label={label}
-      className={joined ? "grid w-full overflow-hidden rounded-md" : "flex flex-wrap gap-1.5"}
+      className={joined ? "grid w-full overflow-hidden rounded-none" : "flex flex-wrap gap-1.5"}
       style={
         joined ? { gridTemplateColumns: `repeat(${options.length}, minmax(0, 1fr))` } : undefined
       }
@@ -110,7 +110,7 @@ function OptionGroup({
               "truncate text-xs font-medium transition-colors",
               joined
                 ? cn("px-2.5 py-1.5", i > 0 && "border-input border-l")
-                : "border-input rounded-md border px-2 py-1",
+                : "border-input rounded-none border px-2 py-1",
               active ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:bg-muted",
             )}
           >
@@ -194,7 +194,7 @@ function Field({
             id={control.prop}
             role="group"
             aria-label={control.label}
-            className="inline-flex overflow-hidden rounded-md"
+            className="inline-flex overflow-hidden"
           >
             <button
               type="button"

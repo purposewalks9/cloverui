@@ -20,7 +20,7 @@
         "https://cloverui.vercel.app/r/ghost.json",
         "https://cloverui.vercel.app/r/grain-cube.json",
         "https://cloverui.vercel.app/r/grid-reveal.json",
-        "https://cloverui.vercel.app/r/logo-storm.json",
+        "https://cloverui.vercel.app/r/logo-pop.json",
         "https://cloverui.vercel.app/r/mic.json",
         "https://cloverui.vercel.app/r/nucleus-text.json",
         "https://cloverui.vercel.app/r/price-range.json",
@@ -34,12 +34,12 @@
         "https://cloverui.vercel.app/r/thermal-flow.json",
         "https://cloverui.vercel.app/r/token-fall.json",
         "https://cloverui.vercel.app/r/theme-toggle.json",
-        "https://cloverui.vercel.app/r/glitch-text.json",
+        "https://cloverui.vercel.app/r/glitchy-text.json",
         "https://cloverui.vercel.app/r/404-block.json",
         "https://cloverui.vercel.app/r/liquid-button.json",
         "https://cloverui.vercel.app/r/stack-marquee.json",
         "https://cloverui.vercel.app/r/cookie-consent.json",
-        "https://cloverui.vercel.app/r/glossy-switch.json",
+        "https://cloverui.vercel.app/r/switch.json",
         "https://cloverui.vercel.app/r/search.json"
       ]
     },
@@ -69,9 +69,7 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "registryDependencies": [],
       "category": "effect"
     },
@@ -101,9 +99,7 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": ["lucide-react"],
       "registryDependencies": [],
       "category": "text"
     },
@@ -118,9 +114,7 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "registryDependencies": [],
       "category": "loader"
     },
@@ -135,9 +129,7 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "registryDependencies": [],
       "category": "loader"
     },
@@ -167,9 +159,7 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "@radix-ui/react-slot"
-      ],
+      "dependencies": ["@radix-ui/react-slot"],
       "registryDependencies": [],
       "category": "button"
     },
@@ -184,10 +174,7 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "matter-js",
-        "@types/matter-js"
-      ],
+      "dependencies": ["matter-js", "@types/matter-js"],
       "registryDependencies": [],
       "category": "effect"
     },
@@ -217,9 +204,7 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "registryDependencies": [],
       "category": "text"
     },
@@ -249,10 +234,7 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion",
-        "class-variance-authority"
-      ],
+      "dependencies": ["motion", "class-variance-authority"],
       "registryDependencies": [],
       "category": "control"
     },
@@ -267,9 +249,7 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "registryDependencies": [],
       "category": "loader"
     },
@@ -284,9 +264,7 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": ["lucide-react"],
       "registryDependencies": [],
       "category": "control"
     },
@@ -331,10 +309,7 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion",
-        "class-variance-authority"
-      ],
+      "dependencies": ["motion", "class-variance-authority"],
       "registryDependencies": [],
       "category": "cursor"
     },
@@ -349,9 +324,7 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "registryDependencies": [],
       "category": "cursor"
     },
@@ -366,10 +339,7 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion",
-        "class-variance-authority"
-      ],
+      "dependencies": ["motion", "class-variance-authority"],
       "registryDependencies": [],
       "category": "button"
     },
@@ -384,26 +354,22 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "registryDependencies": [],
       "category": "text"
     },
     {
-      "name": "logo-storm",
+      "name": "logo-pop",
       "type": "registry:component",
-      "title": "Logo Storm",
+      "title": "Logo Pop",
       "description": "A tidy grid of company logos that pop in one by one in random order, tilt and settle, then stay with an occasional bounce.",
       "files": [
         {
-          "path": "registry/clover-ui/logo-storm.tsx",
+          "path": "registry/clover-ui/logo-pop.tsx",
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "registryDependencies": [],
       "category": "logo"
     },
@@ -418,10 +384,7 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion",
-        "class-variance-authority"
-      ],
+      "dependencies": ["motion", "class-variance-authority"],
       "registryDependencies": [],
       "category": "cursor"
     },
@@ -436,27 +399,22 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "class-variance-authority",
-        "next-themes"
-      ],
+      "dependencies": ["class-variance-authority", "next-themes"],
       "registryDependencies": [],
       "category": "button"
     },
     {
-      "name": "glitch-text",
+      "name": "glitchy-text",
       "type": "registry:component",
-      "title": "Glitch Text",
+      "title": "Glitchy Text",
       "description": "Text that glitches like a broken screen, tearing into faded slices, shaking left and right and flickering random symbols on its own, on hover or all the time.",
       "files": [
         {
-          "path": "registry/clover-ui/glitch-text.tsx",
+          "path": "registry/clover-ui/glitchy-text.tsx",
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "registryDependencies": [],
       "category": "text"
     },
@@ -471,12 +429,8 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion"
-      ],
-      "registryDependencies": [
-        "https://cloverui.vercel.app/r/liquid-button.json"
-      ],
+      "dependencies": ["motion"],
+      "registryDependencies": ["https://cloverui.vercel.app/r/liquid-button.json"],
       "category": "block"
     },
     {
@@ -490,11 +444,7 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion",
-        "@radix-ui/react-slot",
-        "class-variance-authority"
-      ],
+      "dependencies": ["motion", "@radix-ui/react-slot", "class-variance-authority"],
       "registryDependencies": [],
       "category": "button"
     },
@@ -524,31 +474,22 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion",
-        "lucide-react",
-        "class-variance-authority"
-      ],
-      "registryDependencies": [
-        "button",
-        "https://cloverui.vercel.app/r/glossy-switch.json"
-      ],
+      "dependencies": ["motion", "lucide-react", "class-variance-authority"],
+      "registryDependencies": ["button", "https://cloverui.vercel.app/r/switch.json"],
       "category": "block"
     },
     {
-      "name": "glossy-switch",
+      "name": "switch",
       "type": "registry:component",
-      "title": "Glossy Switch",
-      "description": "A glossy black ON/OFF switch with a big domed knob that snaps across a colored track, with labels on each side.",
+      "title": "Switch",
+      "description": "A glossy black ON/OFF switch with a big domed knob that switches instantly across a colored track, with labels on each side.",
       "files": [
         {
-          "path": "registry/clover-ui/glossy-switch.tsx",
+          "path": "registry/clover-ui/switch.tsx",
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "class-variance-authority"
-      ],
+      "dependencies": ["class-variance-authority"],
       "registryDependencies": [],
       "category": "control"
     },

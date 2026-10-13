@@ -13,10 +13,10 @@ export function InstallationTabs({ item, children }: InstallationTabsProps) {
   return (
     <Tabs defaultValue="cli" className="w-full">
       <TabsList className="not-prose">
-        <TabsTrigger value="cli" className="rounded-md text-center">
+        <TabsTrigger value="cli" className="rounded-none text-center">
           CLI
         </TabsTrigger>
-        <TabsTrigger value="manual" className="rounded-md text-center">
+        <TabsTrigger value="manual" className="rounded-none text-center">
           Manual
         </TabsTrigger>
       </TabsList>

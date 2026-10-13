@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
 
 import { cn } from "@/lib/utils";
@@ -64,6 +64,7 @@ const DropText = forwardRef<DropTextRef, DropTextProps>(
     },
     ref,
   ) => {
+    const reduceMotion = useReducedMotion();
     const [played, setPlayed] = useState(!inView && autoStart);
     const [landed, setLanded] = useState(false);
     const frame = useRef<number | null>(null);
@@ -79,6 +80,9 @@ const DropText = forwardRef<DropTextRef, DropTextProps>(
       }
       return children.split(" ");
     }, [children, splitBy]);
+    const offset = reduceMotion ? 0 : dropDistance;
+    const hidden = { transform: `translateY(${-offset}px)`, opacity: 0 };
+    const shown = { transform: "translateY(0px)", opacity: 1 };
     const effectiveDuration = duration / Math.max(speed, 0.01);
     const effectiveStagger = stagger / Math.max(speed, 0.01);
 
@@ -120,14 +124,15 @@ const DropText = forwardRef<DropTextRef, DropTextProps>(
               splitBy === "words" ? wordClassName : charClassName,
               landed && landedClassName,
             )}
-            initial={{ y: -dropDistance, opacity: 0 }}
-            animate={played ? { y: 0, opacity: 1 } : { y: -dropDistance, opacity: 0 }}
+            style={{ willChange: landed ? undefined : "transform, opacity" }}
+            initial={hidden}
+            animate={played ? shown : hidden}
             transition={{
-              type: bounce > 0 ? "spring" : "tween",
+              type: bounce > 0 && !reduceMotion ? "spring" : "tween",
               bounce,
-              duration: effectiveDuration,
-              ease: bounce > 0 ? undefined : "easeIn",
-              delay: delay + index * effectiveStagger,
+              duration: reduceMotion ? 0.2 : effectiveDuration,
+              ease: bounce > 0 && !reduceMotion ? undefined : "easeIn",
+              delay: reduceMotion ? 0 : delay + index * effectiveStagger,
             }}
             onAnimationComplete={() => {
               if (played && index === units.length - 1) {

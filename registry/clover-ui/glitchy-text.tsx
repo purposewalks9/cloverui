@@ -5,13 +5,16 @@ import { useReducedMotion } from "motion/react";
 
 import { cn } from "@/lib/utils";
 
-export type GlitchTextTrigger = "auto" | "hover" | "always";
+export type GlitchyTextTrigger = "auto" | "hover" | "always";
 
-export interface GlitchTextProps extends Omit<React.ComponentProps<"span">, "children"> {
+export type GlitchyTextColor = "default" | "red" | "blue" | "green" | "purple" | "orange" | "pixel";
+
+export interface GlitchyTextProps extends Omit<React.ComponentProps<"span">, "children"> {
   children: string;
-  trigger?: GlitchTextTrigger;
+  trigger?: GlitchyTextTrigger;
   interval?: number;
   duration?: number;
+  color?: GlitchyTextColor;
   colors?: [string, string];
   intensity?: number;
   scramble?: boolean;
@@ -19,8 +22,30 @@ export interface GlitchTextProps extends Omit<React.ComponentProps<"span">, "chi
 
 const GLYPHS = "!<>-_\\/[]{}=+*^?#%&@$";
 const FRAME = 40;
+const BLOCKS = 14;
+const PIXELS = [
+  "#ef4444",
+  "#f97316",
+  "#facc15",
+  "#22c55e",
+  "#22d3ee",
+  "#3b82f6",
+  "#a855f7",
+  "#ec4899",
+];
+
+const PALETTES: Record<GlitchyTextColor, [string, string]> = {
+  default: ["currentColor", "currentColor"],
+  red: ["#ef4444", "#f43f5e"],
+  blue: ["#3b82f6", "#22d3ee"],
+  green: ["#22c55e", "#a3e635"],
+  purple: ["#a855f7", "#d946ef"],
+  orange: ["#f97316", "#facc15"],
+  pixel: ["#ef4444", "#22d3ee"],
+};
 
 const random = (min: number, max: number) => min + Math.random() * (max - min);
+const pick = <T,>(list: readonly T[]) => list[Math.floor(Math.random() * list.length)];
 
 function scrambled(text: string, amount: number) {
   const chars = Array.from(text);
@@ -34,19 +59,20 @@ function scrambled(text: string, amount: number) {
   return chars.join("");
 }
 
-function GlitchText({
+function GlitchyText({
   children,
   trigger = "auto",
   interval = 3000,
   duration = 450,
-  colors = ["currentColor", "currentColor"],
+  color = "default",
+  colors,
   intensity = 1,
-  scramble = true,
+  scramble = false,
   className,
   onPointerEnter,
   onPointerLeave,
   ...props
-}: GlitchTextProps) {
+}: GlitchyTextProps) {
   const still = Boolean(useReducedMotion());
   const [glitched, setGlitched] = React.useState<{ from: string; text: string } | null>(null);
   const display = glitched?.from === children ? glitched.text : children;
@@ -54,6 +80,10 @@ function GlitchText({
   const mainRef = React.useRef<HTMLSpanElement>(null);
   const redRef = React.useRef<HTMLSpanElement>(null);
   const blueRef = React.useRef<HTMLSpanElement>(null);
+  const blocksRef = React.useRef<(HTMLSpanElement | null)[]>([]);
+  const pixel = color === "pixel";
+  const tint = pixel && !colors;
+  const slices = colors ?? PALETTES[color] ?? PALETTES.default;
 
   const active = !still && (trigger === "always" || (trigger === "hover" && hovering));
   const bursts = !still && trigger === "auto";
@@ -74,6 +104,9 @@ function GlitchText({
         layer.style.transform = "";
         layer.style.clipPath = "";
       });
+      blocksRef.current.forEach((block) => {
+        if (block) block.style.opacity = "0";
+      });
       if (mainRef.current) mainRef.current.style.transform = "";
       setGlitched(null);
     };
@@ -89,7 +122,24 @@ function GlitchText({
         layer.style.clipPath = `inset(${top}% 0 ${Math.max(0, 100 - top - height)}% 0)`;
         const side = index === 0 ? -1 : 1;
         layer.style.transform = `translate3d(${(side * random(0.3, 1) + swing * 0.6) * reach}em, ${random(-0.02, 0.02) * intensity}em, 0)`;
+        if (tint) layer.style.color = pick(PIXELS);
       });
+      if (pixel) {
+        blocksRef.current.forEach((block) => {
+          if (!block) return;
+          if (Math.random() < 0.45) {
+            block.style.opacity = "0";
+            return;
+          }
+          const size = 0.12 * Math.max(0.5, intensity);
+          block.style.left = `${random(-2, 98)}%`;
+          block.style.top = `${random(0, 90)}%`;
+          block.style.width = `${size * Math.ceil(random(0, 4))}em`;
+          block.style.height = `${size * Math.ceil(random(0, 2))}em`;
+          block.style.backgroundColor = pick(PIXELS);
+          block.style.opacity = String(random(0.7, 1));
+        });
+      }
       if (mainRef.current) {
         const skew = Math.random() < 0.2 ? random(-8, 8) * intensity : 0;
         const shake = swing * random(0.04, 0.14) * intensity;
@@ -132,7 +182,7 @@ function GlitchText({
       window.clearTimeout(next);
       reset();
     };
-  }, [active, bursts, children, duration, interval, intensity, scramble]);
+  }, [active, bursts, children, duration, interval, intensity, scramble, pixel, tint]);
 
   const layerClass =
     "pointer-events-none absolute inset-0 whitespace-pre-wrap opacity-0 will-change-transform select-none";
@@ -155,15 +205,28 @@ function GlitchText({
         <span ref={mainRef} className="relative block whitespace-pre-wrap will-change-transform">
           {display}
         </span>
-        <span ref={redRef} className={layerClass} style={{ color: colors[0] }}>
+        <span ref={redRef} className={layerClass} style={{ color: slices[0] }}>
           {display}
         </span>
-        <span ref={blueRef} className={layerClass} style={{ color: colors[1] }}>
+        <span ref={blueRef} className={layerClass} style={{ color: slices[1] }}>
           {display}
         </span>
+        {pixel && (
+          <span className="pointer-events-none absolute inset-0 select-none">
+            {Array.from({ length: BLOCKS }, (_, index) => (
+              <span
+                key={index}
+                ref={(block) => {
+                  blocksRef.current[index] = block;
+                }}
+                className="absolute opacity-0"
+              />
+            ))}
+          </span>
+        )}
       </span>
     </span>
   );
 }
 
-export { GlitchText };
+export { GlitchyText };

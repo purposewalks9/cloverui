@@ -23,7 +23,7 @@ import { CookieConsent } from "@/components/cookie-consent";
 
 A cookie banner for any site. Put it once in your root layout. A moment after the page loads it slides up into the bottom right corner. Its heading has a rich gradient and the key words in the message are highlighted. The buttons are your own shadcn `Button`, so they match the rest of your site.
 
-**Accept all** turns every category on. **Reject all** keeps only the strictly necessary cookies. **Manage** opens a list of categories with a black GlossySwitch for each, and **Save choices** keeps exactly what was picked. Strictly necessary cookies are always on and can't be switched off. The registry installs GlossySwitch alongside the banner; manual installs need that component too.
+**Accept all** turns every category on. **Reject all** keeps only the strictly necessary cookies. **Manage** opens a list of categories with a black Switch for each, and **Save choices** keeps exactly what was picked. Strictly necessary cookies are always on and can't be switched off. The registry installs Switch alongside the banner; manual installs need that component too.
 
 The choice is saved in `localStorage` under `storageKey`, so the banner doesn't come back on the next visit. Read it anywhere with `getCookieConsent()` before loading a script:
 
