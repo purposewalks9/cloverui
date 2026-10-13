@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "switch",
   "title": "Switch",
-  "description": "A glossy black ON/OFF switch with a big domed knob that switches instantly across a colored track, with labels on each side.",
+  "description": "A glossy black ON/OFF switch with a big domed knob across a colored track.",
   "dependencies": [
     "class-variance-authority"
   ],

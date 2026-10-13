@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "sign-pad",
   "title": "Sign Pad",
-  "description": "A compact signature surface with pressure-aware ink, smooth drawing, undo and clear controls, animated completion, and cropped PNG/SVG exports.",
+  "description": "A signature pad with pressure-aware ink, undo and clear, and cropped PNG/SVG exports.",
   "dependencies": [
     "lucide-react"
   ],

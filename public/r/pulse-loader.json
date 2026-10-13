@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "pulse-loader",
   "title": "Pulse Loader",
-  "description": "A breathing concentric-ring loader that pulses in and out on a loop, with a customizable base color, ring count, size, and speed.",
+  "description": "A breathing loader of concentric rings that pulse in and out with your own color.",
   "dependencies": [
     "motion"
   ],

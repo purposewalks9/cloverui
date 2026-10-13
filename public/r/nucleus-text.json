@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "nucleus-text",
   "title": "Nucleus Text",
-  "description": "Text assembled from particles that fly inward, settle into the letterforms, and keep a subtle jitter.",
+  "description": "Text assembled from particles that fly inward, settle into letters and gently jitter.",
   "dependencies": [],
   "registryDependencies": [],
   "files": [

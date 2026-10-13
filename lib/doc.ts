@@ -6,13 +6,12 @@ const CATEGORY_LABELS: Record<string, string> = {
   button: "Buttons",
   control: "Form Controls",
   text: "Text",
-  loader: "Loaders & Progress",
+  loader: "Loaders",
   cursor: "Cursors",
   effect: "Effects",
-  logo: "Logos",
-  background: "Backgrounds & 3D",
-  data: "Charts & Cards",
-  block: "Page Blocks",
+  background: "Backgrounds",
+  asset: "Assets",
+  block: "Blocks",
 };
 
 const CATEGORY_ORDER = [
@@ -22,9 +21,8 @@ const CATEGORY_ORDER = [
   "loader",
   "cursor",
   "effect",
-  "logo",
   "background",
-  "data",
+  "asset",
   "block",
 ];
 

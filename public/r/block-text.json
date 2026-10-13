@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "block-text",
   "title": "Block Text",
-  "description": "A colored 3D block that keeps rolling forward, bringing the next word up from the bottom as the current one tips away over the top.",
+  "description": "A colored 3D block that keeps rolling forward, bringing up the next word as it tips.",
   "dependencies": [
     "motion"
   ],

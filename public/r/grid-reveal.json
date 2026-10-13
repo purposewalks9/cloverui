@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "grid-reveal",
   "title": "Grid Reveal",
-  "description": "A configurable grid of blocks that dissolves away to reveal content underneath, with random, wave, diagonal, and center patterns.",
+  "description": "A grid of blocks that dissolves to reveal content, in random, wave or diagonal patterns.",
   "dependencies": [
     "motion"
   ],

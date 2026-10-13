@@ -31,10 +31,7 @@
     "https://cloverui.vercel.app/r/glitchy-text.json",
     "https://cloverui.vercel.app/r/404-block.json",
     "https://cloverui.vercel.app/r/liquid-button.json",
-    "https://cloverui.vercel.app/r/stack-marquee.json",
-    "https://cloverui.vercel.app/r/cookie-consent.json",
-    "https://cloverui.vercel.app/r/switch.json",
-    "https://cloverui.vercel.app/r/search.json"
+    "https://cloverui.vercel.app/r/switch.json"
   ],
   "type": "registry:item"
 }

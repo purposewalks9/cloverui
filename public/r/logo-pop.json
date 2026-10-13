@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "logo-pop",
   "title": "Logo Pop",
-  "description": "A tidy grid of company logos that pop in one by one in random order, tilt and settle, then stay with an occasional bounce.",
+  "description": "A tidy grid of company logos that pop in one by one, tilt, settle and bounce.",
   "dependencies": [
     "motion"
   ],

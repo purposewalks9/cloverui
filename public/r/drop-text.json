@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "drop-text",
   "title": "Drop Text",
-  "description": "Text that drops into place under gravity and settles with a bounce, word by word or character by character.",
+  "description": "Text that drops into place under gravity and settles with a bounce, word by word.",
   "dependencies": [
     "motion"
   ],

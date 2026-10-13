@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { CloverLogo } from "@/components/seed/clover-logo";
 import { GlitchGroup, GlitchName } from "@/components/stem/glitch-brand";
 import type { DocSchema } from "@/lib/types";
+import { cn } from "@/lib/utils";
 import {
   Sidebar,
   SidebarContent,
@@ -64,7 +65,9 @@ export function AppSidebar({ docSchema }: { docSchema: DocSchema }) {
                         className="text-muted-foreground hover:text-foreground data-[active=true]:bg-sidebar-accent data-[active=true]:text-foreground h-9 rounded-none text-[15px] font-normal transition-all duration-200 hover:bg-transparent data-[active=true]:border-[var(--brand)]"
                       >
                         <Link href={href}>
-                          <span>{item.title}</span>
+                          <span className={cn(isActive && "sponsor-gradient font-medium")}>
+                            {item.title}
+                          </span>
                         </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>

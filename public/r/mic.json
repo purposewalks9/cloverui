@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "mic",
   "title": "Mic",
-  "description": "A microphone button that shows a mute slash when off and a live input level from the real microphone when on.",
+  "description": "A microphone button with a mute slash when off and a live input level when on.",
   "dependencies": [
     "motion",
     "class-variance-authority"

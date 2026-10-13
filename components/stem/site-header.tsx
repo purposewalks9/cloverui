@@ -16,13 +16,7 @@ function titleFromSlug(slug: string) {
     .join(" ");
 }
 
-export function SiteHeader({
-  docSchema,
-  githubStars,
-}: {
-  docSchema: DocSchema;
-  githubStars: React.ReactNode;
-}) {
+export function SiteHeader({ docSchema }: { docSchema: DocSchema }) {
   const pathname = usePathname();
 
   let title = "Components";
@@ -38,7 +32,7 @@ export function SiteHeader({
   return (
     <header className="border-border bg-sidebar text-foreground sticky top-0 z-30 flex h-12 shrink-0 items-center justify-between gap-3 border-b px-4">
       <div className="flex min-w-0 items-center gap-2">
-        <MobileMenu docSchema={docSchema} githubStars={githubStars} />
+        <MobileMenu docSchema={docSchema} />
         <SidebarTrigger className="-ml-1 hidden md:inline-flex" />
         <Separator orientation="vertical" className="h-4" />
         <h1 className="min-w-0 truncate text-[15px] font-semibold whitespace-nowrap sm:text-[16px] md:shrink-0">
@@ -56,8 +50,9 @@ export function SiteHeader({
 
       <div className="flex shrink-0 items-center gap-1.5">
         <SearchForm docSchema={docSchema} nav className="hidden w-40 sm:inline-flex" />
+        <SearchForm docSchema={docSchema} nav compact shortcut={false} className="sm:hidden" />
 
-        <div className="hidden md:block">
+        <div className="mt-1">
           <ThemeToggle />
         </div>
       </div>

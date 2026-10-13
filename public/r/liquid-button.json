@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "liquid-button",
   "title": "Liquid Button",
-  "description": "A button filled with a live, flowing liquid (lava, ocean, stone, sky or obsidian) drawn by a tiny WebGL shader. It speeds up on hover and presses in on click.",
+  "description": "A button filled with live flowing liquid that speeds up on hover and presses in.",
   "dependencies": [
     "motion",
     "@radix-ui/react-slot",

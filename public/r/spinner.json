@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "spinner",
   "title": "Spinner",
-  "description": "A 12-dot circular loader where the dots stay fixed in place and only their color shade cycles around the ring, instead of the ring rotating.",
+  "description": "A 12-dot loader where the dots stay in place and only their color shade cycles around.",
   "dependencies": [
     "motion"
   ],

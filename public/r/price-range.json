@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "price-range",
   "title": "Price Range",
-  "description": "A two-handle budget slider with springy handles, value labels that slide apart when they meet, and tick marks that light up inside the chosen range.",
+  "description": "A two-handle budget slider with springy handles, sliding labels and lit-up ticks.",
   "dependencies": [
     "motion",
     "class-variance-authority"

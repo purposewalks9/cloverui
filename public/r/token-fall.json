@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "token-fall",
   "title": "Token Fall",
-  "description": "Physics-based tokens that fall with gravity, bounce, and scatter away from the cursor, with a customizable spawn rate, palette, and per-token render.",
+  "description": "Physics tokens that fall with gravity, bounce and scatter away from the cursor.",
   "dependencies": [
     "matter-js",
     "@types/matter-js"
