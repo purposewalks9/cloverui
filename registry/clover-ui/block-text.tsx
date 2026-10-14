@@ -61,7 +61,7 @@ function Face({
 
   return (
     <span
-      className="absolute inset-0 flex items-center justify-center overflow-hidden px-[0.55em] backface-hidden"
+      className="absolute inset-0 flex items-center justify-center overflow-hidden px-[var(--block-px,0.55em)] backface-hidden"
       style={{
         backgroundImage: `radial-gradient(120% 140% at 50% 0%, color-mix(in oklab, ${color} 62%, white) 0%, ${color} 42%, color-mix(in oklab, ${color} 66%, black) 100%)`,
         transform: `rotateX(${face * -90}deg) translateZ(calc(var(--block-h) / 2))`,
@@ -178,7 +178,7 @@ function BlockText({
         {list.map((word, index) => (
           <span
             key={`${word}-${index}`}
-            className="col-start-1 row-start-1 flex h-(--block-h) items-center px-[0.55em] whitespace-nowrap"
+            className="col-start-1 row-start-1 flex h-(--block-h) items-center px-[var(--block-px,0.55em)] whitespace-nowrap"
           >
             {word}
           </span>

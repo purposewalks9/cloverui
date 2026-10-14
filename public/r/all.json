@@ -31,7 +31,8 @@
     "https://cloverui.vercel.app/r/glitchy-text.json",
     "https://cloverui.vercel.app/r/404-block.json",
     "https://cloverui.vercel.app/r/liquid-button.json",
-    "https://cloverui.vercel.app/r/switch.json"
+    "https://cloverui.vercel.app/r/switch.json",
+    "https://cloverui.vercel.app/r/thinking-state.json"
   ],
   "type": "registry:item"
 }

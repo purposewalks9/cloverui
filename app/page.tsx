@@ -86,7 +86,7 @@ export default function Home() {
                 words={HERO_WORDS}
                 colors={["#9333ea", "#dc2626", "#db2777"]}
                 textColor="#fafafa"
-                className="mx-1 text-[length:inherit] font-semibold [--block-h:1.6em]"
+                className="mx-1 text-[length:inherit] font-semibold [--block-h:1.6em] [--block-px:0.3em]"
               />{" "}
               for thoughtful interfaces.
             </h1>
