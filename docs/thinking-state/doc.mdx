@@ -1,0 +1,58 @@
+import { ThinkingStatePlayground } from "./playground"
+
+<ThinkingStatePlayground />
+
+## Installation
+
+<InstallationTabs item="thinking-state">
+```tsx file=../../registry/clover-ui/thinking-state.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { ThinkingState } from "@/components/thinking-state";
+
+<ThinkingState />
+```
+
+A small pixel animation right next to a word, with no box around it, for showing what an agent or app is doing. The lit pixels draw each state's shape over a light gray grid that follows your theme, and a soft shimmer sweeps across the text, which uses your theme's text color. Each state has its own animation and color:
+
+- `thinking`: a green trail of dots chasing in a loop.
+- `analyzing`: light blue arcs scanning around a circle.
+- `debugging`: a blue diagonal wave sweeping across.
+- `searching`: a violet dot looping around with a trail.
+- `building`: orange pixels stacking up row by row.
+- `pondering`: pink ripples spreading out from the center.
+
+```tsx
+<ThinkingState state="debugging" />
+```
+
+The text defaults to the state's name. Pass children to change it, and `color` to change the pixels:
+
+```tsx
+<ThinkingState state="thinking" color="#a855f7">
+  Galavanting
+</ThinkingState>
+```
+
+Set `color="loop"` to cycle smoothly through all the state colors. Set `pixel="circle"` for round dots arranged in a circle instead of a square grid, and `grid={false}` to hide the gray grid so only the lit pixels show on a transparent background.
+
+Set the size with a text class in `className`. The pixels scale with the text. Set `shimmer={false}` to turn off the shimmer, and `speed` to make the animation faster or slower. When reduced motion is on, the pixels hold still and the text doesn't shimmer.
+
+It has `role="status"`, so screen readers announce the text when it changes.
+
+## Props
+
+<PropsTable data={[
+  { name: "state", type: '"thinking" | "analyzing" | "debugging" | "searching" | "building" | "pondering"', default: '"thinking"', description: "Picks the animation, color and default text." },
+  { name: "children", type: "ReactNode", description: "The text. Defaults to the state's name." },
+  { name: "color", type: 'string | "loop"', description: "Any CSS color for the lit pixels, or \"loop\" to cycle through the state colors. Defaults to the state's color." },
+  { name: "pixel", type: '"square" | "circle"', default: '"square"', description: "Square pixels in a square grid, or round dots in a circle." },
+  { name: "grid", type: "boolean", default: "true", description: "Shows the gray grid behind the lit pixels." },
+  { name: "speed", type: "number", default: "1", description: "Multiplies the animation speed." },
+  { name: "shimmer", type: "boolean", default: "true", description: "Sweeps a soft shimmer across the text." },
+  { name: "className", type: "string" },
+]} />

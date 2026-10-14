@@ -12,9 +12,6 @@ import type { DocSchema } from "@/lib/types";
 export function MobileMenu({ docSchema }: { docSchema: DocSchema }) {
   const [open, setOpen] = React.useState(false);
   const pathname = usePathname();
-  const components = docSchema
-    .flatMap((group) => group.items)
-    .filter((item) => item.href.startsWith("/components/"));
   const close = () => setOpen(false);
 
   React.useEffect(() => {
@@ -58,43 +55,21 @@ export function MobileMenu({ docSchema }: { docSchema: DocSchema }) {
               <span className="sponsor-gradient">Sponsor</span>
             </Link>
           </div>
-          <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 pt-8 pb-[max(2rem,env(safe-area-inset-bottom))] sm:px-8">
-            <nav aria-label="Main navigation" className="mb-12">
-              <p className="text-muted-foreground mb-4 text-sm">Menu</p>
-              <div className="flex flex-col items-start gap-3">
-                {[
-                  { title: "Home", href: "/" },
-                  { title: "Docs", href: "/docs/introduction" },
-                  { title: "Components", href: components[0]?.href ?? "/docs/introduction" },
-                ].map((item) => (
-                  <Link
-                    key={item.title}
-                    href={item.href}
-                    onClick={close}
-                    aria-current={pathname === item.href ? "page" : undefined}
-                    className="max-w-full py-1 text-[clamp(1.75rem,8vw,2.5rem)] leading-tight tracking-tight focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
-                  >
-                    <span className={cn(pathname === item.href && "sponsor-gradient")}>
-                      {item.title}
-                    </span>
-                  </Link>
-                ))}
-              </div>
-            </nav>
-            <nav aria-label="Documentation sections" className="space-y-10">
+          <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 pt-6 pb-[max(2rem,env(safe-area-inset-bottom))] sm:px-8">
+            <nav aria-label="Documentation sections" className="space-y-7">
               {docSchema
                 .filter((group) => group.items.length)
                 .map((group) => (
                   <div key={group.title}>
-                    <h2 className="text-muted-foreground mb-3 text-sm">{group.title}</h2>
-                    <div className="flex flex-col items-start gap-1">
+                    <h2 className="text-muted-foreground mb-1.5 text-sm">{group.title}</h2>
+                    <div className="flex flex-col items-start">
                       {group.items.map((item) => (
                         <Link
                           key={item.id}
                           href={item.href}
                           onClick={close}
                           aria-current={pathname === item.href ? "page" : undefined}
-                          className="max-w-full rounded-none py-2 text-2xl leading-tight tracking-tight focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
+                          className="max-w-full rounded-none py-1.5 text-xl leading-tight tracking-tight focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
                         >
                           <span className={cn(pathname === item.href && "sponsor-gradient")}>
                             {item.title}

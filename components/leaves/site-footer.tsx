@@ -15,10 +15,10 @@ export function SiteFooter() {
     <footer className="text-muted-foreground relative isolate w-full overflow-clip text-sm font-medium">
       <div
         aria-hidden
-        className="footer-glow pointer-events-none absolute top-0 -bottom-24 left-1/2 -z-10 w-[calc(min(100%,72rem)-2rem)] -translate-x-1/2 sm:w-[calc(min(100%,72rem)-3rem)]"
+        className="footer-glow pointer-events-none absolute top-0 -bottom-24 left-1/2 -z-10 w-full -translate-x-1/2 sm:w-[calc(min(100%,72rem)-3rem)]"
       />
-      <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-x-8 gap-y-3 px-4 pt-16 pb-6 sm:px-6">
-        <p className="flex flex-wrap items-center gap-x-4 gap-y-1">
+      <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-4 px-4 pt-12 pb-8 text-center sm:flex-row sm:flex-wrap sm:justify-between sm:gap-x-8 sm:gap-y-3 sm:px-6 sm:pt-16 sm:pb-6 sm:text-left">
+        <p className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 sm:justify-start">
           <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
             Made with care by
             <Link
@@ -42,7 +42,10 @@ export function SiteFooter() {
             © {new Date().getFullYear()}. All rights reserved.
           </span>
         </p>
-        <nav aria-label="Footer" className="flex flex-wrap items-center gap-x-5 gap-y-2">
+        <nav
+          aria-label="Footer"
+          className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2"
+        >
           <Link
             href={siteConfig.links.github}
             target="_blank"

@@ -15,7 +15,10 @@ export async function RootHeader() {
   return (
     <header className="bg-background/80 text-foreground sticky top-0 z-40 w-full backdrop-blur">
       <div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
-        <div className="flex min-w-0 items-center gap-6">
+        <div className="flex min-w-0 items-center gap-2 md:gap-6">
+          <div className="-ml-2 md:hidden">
+            <MobileMenu docSchema={docSchema} />
+          </div>
           <GlitchGroup className="shrink-0">
             <Link href="/" className="flex shrink-0 items-center gap-1.5">
               <CloverLogo size={22} />
@@ -40,7 +43,6 @@ export async function RootHeader() {
           <SearchForm docSchema={docSchema} nav className="hidden w-40 md:inline-flex" />
           <SearchForm docSchema={docSchema} nav compact shortcut={false} className="md:hidden" />
           <ThemeToggle />
-          <MobileMenu docSchema={docSchema} />
         </div>
       </div>
     </header>

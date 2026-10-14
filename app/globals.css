@@ -359,7 +359,7 @@ summary {
   --glow-c: color-mix(in oklab, #f472b6 80%, transparent);
   -webkit-mask-image:
     radial-gradient(
-      72% 38% at 50% calc(100% - 6rem),
+      72% 7rem at 50% calc(100% - 6rem),
       #000 20%,
       rgb(0 0 0 / 0.8) 35%,
       rgb(0 0 0 / 0.55) 50%,
@@ -372,7 +372,7 @@ summary {
   -webkit-mask-composite: source-in;
   mask-image:
     radial-gradient(
-      72% 38% at 50% calc(100% - 6rem),
+      72% 7rem at 50% calc(100% - 6rem),
       #000 20%,
       rgb(0 0 0 / 0.8) 35%,
       rgb(0 0 0 / 0.55) 50%,

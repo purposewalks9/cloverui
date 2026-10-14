@@ -37,7 +37,8 @@
         "https://cloverui.vercel.app/r/glitchy-text.json",
         "https://cloverui.vercel.app/r/404-block.json",
         "https://cloverui.vercel.app/r/liquid-button.json",
-        "https://cloverui.vercel.app/r/switch.json"
+        "https://cloverui.vercel.app/r/switch.json",
+        "https://cloverui.vercel.app/r/thinking-state.json"
       ]
     },
     {
@@ -459,6 +460,22 @@
       "dependencies": ["class-variance-authority"],
       "registryDependencies": [],
       "category": "control"
+    },
+    {
+      "name": "thinking-state",
+      "type": "registry:component",
+      "title": "Thinking State",
+      "description": "A tiny pixel animation beside a word, with thinking, debugging and more states.",
+      "files": [
+        {
+          "path": "registry/clover-ui/thinking-state.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": ["motion"],
+      "registryDependencies": [],
+      "category": "loader",
+      "meta": { "addedAt": "2026-10-14" }
     }
   ]
 }
