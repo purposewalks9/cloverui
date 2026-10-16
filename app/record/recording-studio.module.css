@@ -1,0 +1,251 @@
+.studio {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  overflow: auto;
+  background: color-mix(in srgb, var(--background), var(--foreground) 3%);
+  color: var(--foreground);
+}
+
+.workspace {
+  position: relative;
+  width: min(880px, calc(100vw - 32px));
+  margin-block: 88px;
+}
+
+.stage {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: clamp(300px, 62.5vw, 550px);
+  max-height: calc(100dvh - 176px);
+  min-height: 220px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid color-mix(in srgb, var(--foreground), transparent 92%);
+  border-radius: 24px;
+  background: var(--background);
+  outline: none;
+}
+
+.stage:fullscreen {
+  width: 100vw;
+  height: 100dvh;
+  max-height: none;
+  border: 0;
+  border-radius: 0;
+}
+
+.scene {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.controls {
+  position: absolute;
+  top: calc(100% + 20px);
+  right: 0;
+  left: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+
+.controls[data-hidden="true"] {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.control {
+  display: inline-flex;
+  min-width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border-radius: 10px;
+  padding: 0 10px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.control:hover {
+  background: color-mix(in srgb, var(--foreground), transparent 94%);
+  color: var(--foreground);
+}
+
+.control:focus-visible {
+  outline: 2px solid var(--foreground);
+  outline-offset: 2px;
+}
+
+.control:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.control svg {
+  width: 15px;
+  height: 15px;
+}
+
+.control kbd {
+  font-family: inherit;
+  opacity: 0.65;
+  font-size: 10px;
+}
+
+.count {
+  min-width: 58px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.divider {
+  height: 16px;
+  width: 1px;
+  margin-inline: 4px;
+  background: var(--border);
+}
+
+.hint {
+  width: 100%;
+  text-align: center;
+  font-size: 11px;
+  opacity: 0.65;
+}
+
+.pair {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(24px, 5vw, 48px);
+}
+
+.ranges {
+  display: grid;
+  width: min(100%, 380px);
+  gap: 40px;
+}
+
+.textStack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 44px;
+}
+
+.displayText {
+  font-size: clamp(28px, 5.5vw, 56px);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.055em;
+  white-space: nowrap;
+}
+
+.clickText {
+  font-size: clamp(26px, 4.5vw, 38px);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.04em;
+}
+
+.squares {
+  display: grid;
+  width: min(100%, 480px);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  justify-items: center;
+  gap: 24px;
+}
+
+.squares > :only-child {
+  grid-column: 1 / -1;
+  max-width: 260px;
+}
+
+.ghosts {
+  display: grid;
+  width: min(100%, 620px);
+  height: 100%;
+  max-height: 340px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.ghostArea {
+  position: relative;
+  min-width: 0;
+}
+
+.cursorScene {
+  position: relative;
+  display: grid;
+  width: min(100%, 440px);
+  height: 230px;
+  place-items: center;
+}
+
+.cursorOne {
+  position: absolute;
+  top: 18px;
+  left: 12%;
+}
+
+.cursorTwo {
+  position: absolute;
+  top: 73px;
+  right: 0;
+}
+
+.cursorThree {
+  position: absolute;
+  bottom: 14px;
+  left: 28%;
+}
+
+@media (max-width: 600px) {
+  .scene {
+    padding: 20px;
+  }
+  .controls {
+    gap: 4px;
+  }
+  .control {
+    padding-inline: 8px;
+  }
+  .control kbd,
+  .divider {
+    display: none;
+  }
+  .squares {
+    gap: 12px;
+  }
+  .cursorTwo {
+    top: 48px;
+  }
+}
+
+@media (max-height: 520px) {
+  .workspace {
+    width: min(760px, calc(100vw - 32px));
+    margin-block: 24px 100px;
+  }
+  .stage {
+    max-height: none;
+    height: 300px;
+  }
+}
