@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "soft-button",
   "title": "Soft Button",
-  "description": "A locked glossy pill button with a small set of hand-tuned color styles and sizes.",
+  "description": "A glossy pill button with a small set of hand-tuned color styles and sizes.",
   "dependencies": [
     "@radix-ui/react-slot"
   ],

@@ -27,9 +27,23 @@ Pass a song or album link from music.apple.com. The title, artist and artwork lo
 </div>
 ```
 
+The card has two views. `full` shows the artwork, title and artist. `mini` shows only the artwork and the Music tag, at a smaller width. Switching `view` animates the card between the two, so you can toggle it from your own button:
+
+```tsx
+import { AppleMusicCard, type AppleMusicCardView } from "@/components/apple-music-card";
+
+const [view, setView] = useState<AppleMusicCardView>("mini");
+
+<button onClick={() => setView((v) => (v === "mini" ? "full" : "mini"))}>Toggle details</button>
+<AppleMusicCard url={url} view={view} />
+```
+
+The whole card links to the song on Apple Music and opens in a new tab.
+
 ## Props
 
 <PropsTable data={[
   { name: "url", type: "string", description: "A song or album link from music.apple.com." },
+  { name: "view", type: '"mini" | "full"', default: '"full"', description: "Mini shows the artwork and Music tag at 152px. Full adds the title and artist at 200px." },
   { name: "className", type: "string" },
 ]} />

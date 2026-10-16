@@ -19,7 +19,7 @@ export async function generateMetadata({
   const guide = guides.find((item) => item.id === slug);
 
   return constructMetadata({
-    title: guide ? `${guide.title} · ${siteConfig.name}` : siteConfig.name,
+    title: guide ? `${guide.title} | ${siteConfig.name}` : siteConfig.name,
     description: guide?.description,
     path: `/docs/${slug}`,
   });

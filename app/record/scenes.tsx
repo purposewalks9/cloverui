@@ -8,12 +8,12 @@ import { SoftButton, type SoftColor } from "@/registry/clover-ui/soft-button";
 import { ThemeToggle, type ThemeToggleTheme } from "@/registry/clover-ui/theme-toggle";
 import { PriceRange, type PriceRangeKnob } from "@/registry/clover-ui/price-range";
 import { SignPad } from "@/registry/clover-ui/sign-pad";
-import { GlossySwitch } from "@/registry/clover-ui/glossy-switch";
+import { Switch } from "@/registry/clover-ui/switch";
 import { Mic, type MicColor } from "@/registry/clover-ui/mic";
 import { BlockText, type BlockTextTheme } from "@/registry/clover-ui/block-text";
 import { RichText, type RichTextColor } from "@/registry/clover-ui/rich-text";
 import { NucleusText } from "@/registry/clover-ui/nucleus-text";
-import { GlitchText } from "@/registry/clover-ui/glitch-text";
+import { GlitchyText } from "@/registry/clover-ui/glitchy-text";
 import { Clicky, type ClickyColor } from "@/registry/clover-ui/clicky";
 import { Ghost, GhostProvider, type GhostColor } from "@/registry/clover-ui/ghost";
 import {
@@ -217,13 +217,13 @@ export const recordingScenes: {
     render: () => <SignPad />,
   },
   {
-    id: "glossy-switch",
-    name: "Glossy Switch",
+    id: "switch",
+    name: "Switch",
     variants: switchColors.length,
     render: (v) => (
       <Pair>
         {switchColors[v].map((color, i) => (
-          <GlossySwitch
+          <Switch
             key={color}
             color={color}
             size="lg"
@@ -288,16 +288,16 @@ export const recordingScenes: {
     ),
   },
   {
-    id: "glitch-text",
-    name: "Glitch Text",
+    id: "glitchy-text",
+    name: "Glitchy Text",
     variants: 2,
     render: (v) => (
-      <GlitchText
+      <GlitchyText
         colors={v ? ["#a3e635", "#a78bfa"] : ["#ff3355", "#22d3ee"]}
         className={styles.displayText}
       >
         SIGNAL LOST
-      </GlitchText>
+      </GlitchyText>
     ),
   },
   {

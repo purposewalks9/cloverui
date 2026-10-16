@@ -22,7 +22,7 @@ export async function generateMetadata({
   const item = await getRegistryItem(slug);
 
   return constructMetadata({
-    title: item ? `${item.title} · ${siteConfig.name}` : siteConfig.name,
+    title: item ? `${item.title} | ${siteConfig.name}` : siteConfig.name,
     description: item?.description,
     image: buildOgUrl(slug),
     path: `/components/${slug}`,

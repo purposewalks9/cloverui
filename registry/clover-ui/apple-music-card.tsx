@@ -4,8 +4,11 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-export interface AppleMusicCardProps extends Omit<React.ComponentProps<"div">, "children"> {
+export type AppleMusicCardView = "mini" | "full";
+
+export interface AppleMusicCardProps extends Omit<React.ComponentProps<"a">, "children" | "href"> {
   url: string;
+  view?: AppleMusicCardView;
 }
 
 interface TrackData {
@@ -18,7 +21,8 @@ interface TrackData {
 function extractAppleMusicId(rawUrl: string): { id: string; kind: "song" | "album" } | null {
   try {
     const url = new URL(rawUrl);
-    if (url.hostname !== "music.apple.com" || !["https:", "http:"].includes(url.protocol)) return null;
+    if (url.hostname !== "music.apple.com" || !["https:", "http:"].includes(url.protocol))
+      return null;
 
     const trackId = url.searchParams.get("i");
     if (trackId) return /^\d+$/.test(trackId) ? { id: trackId, kind: "song" } : null;
@@ -33,25 +37,30 @@ function extractAppleMusicId(rawUrl: string): { id: string; kind: "song" | "albu
   }
 }
 
+const artwork = (url: string, size: number) => url.replace(/\d+x\d+bb/, `${size}x${size}bb`);
+
 async function fetchTrackData(url: string, signal: AbortSignal): Promise<TrackData> {
   const parsed = extractAppleMusicId(url);
   if (!parsed) throw new Error("Not a valid music.apple.com link");
 
-  const res = await fetch(`https://itunes.apple.com/lookup?id=${parsed.id}&entity=song`, { signal });
+  const res = await fetch(`https://itunes.apple.com/lookup?id=${parsed.id}&entity=song`, {
+    signal,
+  });
   if (!res.ok) throw new Error("iTunes lookup failed");
 
   const data = await res.json();
   if (!data.resultCount) throw new Error("No results for that link");
 
   const result =
-    data.results.find((r: { wrapperType: string }) =>
-      r.wrapperType === (parsed.kind === "song" ? "track" : "collection"),
+    data.results.find(
+      (r: { wrapperType: string }) =>
+        r.wrapperType === (parsed.kind === "song" ? "track" : "collection"),
     ) ?? data.results[0];
 
   return {
     title: result.trackName ?? result.collectionName ?? "Unknown title",
     artist: result.artistName,
-    image: (result.artworkUrl100 as string).replace("100x100bb", "600x600bb"),
+    image: result.artworkUrl100 as string,
     link: result.trackViewUrl ?? result.collectionViewUrl ?? url,
   };
 }
@@ -71,48 +80,59 @@ const AppleMusicGlyph = ({ className }: { className?: string }) => (
   </svg>
 );
 
-const CardFrame = ({ className, children, ...props }: React.ComponentProps<"div">) => (
+const frameClass = (view: AppleMusicCardView) =>
+  cn(
+    "relative isolate block shrink-0 overflow-hidden rounded-[20px] transition-[width] duration-300 ease-out motion-reduce:transition-none",
+    view === "full" ? "w-[200px]" : "w-[152px]",
+  );
+
+const MusicTag = () => (
+  <p className="px-1 pt-2 pb-0.5 text-[12px] leading-none font-semibold whitespace-nowrap text-white/55">
+    <AppleMusicGlyph className="mr-[0.08em] inline-block h-[0.8em] w-[0.67em] align-baseline" />
+    Music
+  </p>
+);
+
+const AppleMusicCardSkeleton = ({
+  view,
+  className,
+}: {
+  view: AppleMusicCardView;
+  className?: string;
+}) => (
   <div
-    className={cn(
-      "relative isolate w-full max-w-[240px] overflow-hidden rounded-[28px]",
-      className,
-    )}
-    {...props}
+    className={cn(frameClass(view), "bg-muted/50 ring-border ring-1 ring-inset", className)}
+    aria-busy="true"
+    aria-label="Loading Apple Music track"
   >
-    {children}
+    <div className="p-2">
+      <div className="bg-muted aspect-square w-full animate-pulse rounded-[13px]" />
+      {view === "full" && (
+        <div className="px-1 pt-2.5">
+          <div className="bg-muted my-[3px] h-4 w-3/4 animate-pulse rounded" />
+          <div className="bg-muted my-[3px] h-3.5 w-1/2 animate-pulse rounded" />
+        </div>
+      )}
+      <div className="bg-muted mx-1 mt-2 mb-0.5 h-3 w-12 animate-pulse rounded" />
+    </div>
   </div>
 );
 
-const NeutralBackdrop = () => (
-  <div
-    className="absolute inset-0"
-    style={{ background: "linear-gradient(165deg, #3a3a3c 0%, #1c1c1e 100%)" }}
-  />
-);
-
-const AppleMusicCardSkeleton = ({ className, ...props }: React.ComponentProps<"div">) => (
-  <CardFrame className={cn("bg-muted/50 ring-border ring-1 ring-inset", className)} {...props}>
-    <div className="relative p-4" aria-busy="true" aria-label="Loading Apple Music track">
-      <div className="bg-muted aspect-square w-full animate-pulse rounded-2xl" />
-
-      <div className="mt-4 flex flex-col gap-2 px-0.5">
-        <div>
-          <div className="bg-muted my-1 h-4 w-3/4 animate-pulse rounded" />
-          <div className="bg-muted my-[3px] h-3.5 w-1/2 animate-pulse rounded" />
-        </div>
-        <div className="bg-muted my-[3px] h-3.5 w-14 animate-pulse rounded" />
+const AppleMusicCardError = ({
+  view,
+  className,
+}: {
+  view: AppleMusicCardView;
+  className?: string;
+}) => (
+  <div className={cn(frameClass(view), "bg-neutral-900", className)}>
+    <div className="p-2">
+      <div className="flex aspect-square w-full items-center justify-center rounded-[13px] bg-neutral-800">
+        <p className="px-3 text-center text-xs text-white/60">Failed to load Apple Music data</p>
       </div>
+      <MusicTag />
     </div>
-  </CardFrame>
-);
-
-const AppleMusicCardError = ({ className, ...props }: React.ComponentProps<"div">) => (
-  <CardFrame className={className} {...props}>
-    <NeutralBackdrop />
-    <div className="relative flex aspect-square w-full items-center justify-center p-4">
-      <p className="px-4 text-center text-sm text-white/60">Failed to load Apple Music data</p>
-    </div>
-  </CardFrame>
+  </div>
 );
 
 function useTrack(url: string) {
@@ -135,66 +155,70 @@ function useTrack(url: string) {
   return state.data;
 }
 
-function AppleMusicCard({ url, className, ...props }: AppleMusicCardProps) {
+function AppleMusicCard({ url, view = "full", className, ...props }: AppleMusicCardProps) {
   const data = useTrack(url);
+  const expanded = view === "full";
 
-  if (data === undefined) return <AppleMusicCardSkeleton className={className} {...props} />;
-  if (!data) return <AppleMusicCardError className={className} {...props} />;
+  if (data === undefined) return <AppleMusicCardSkeleton view={view} className={className} />;
+  if (!data) return <AppleMusicCardError view={view} className={className} />;
 
   return (
-    <CardFrame className={className} {...props}>
-      <style>{`
-        @keyframes appleMusicDrift {
-          0%   { transform: scale(1.28) translate(0%, 0%) rotate(0deg); }
-          33%  { transform: scale(1.36) translate(-3%, 2%) rotate(1.5deg); }
-          66%  { transform: scale(1.32) translate(2%, -3%) rotate(-1.5deg); }
-          100% { transform: scale(1.28) translate(0%, 0%) rotate(0deg); }
-        }
-        @keyframes appleMusicSheenDrift {
-          0%   { background-position: 20% 10%; }
-          50%  { background-position: 80% 90%; }
-          100% { background-position: 20% 10%; }
-        }
-      `}</style>
-
-      <div className="absolute inset-0">
+    <a
+      href={data.link}
+      target="_blank"
+      rel="noopener noreferrer"
+      draggable={false}
+      aria-label={`Open ${data.title} by ${data.artist} in Apple Music`}
+      className={cn(
+        frameClass(view),
+        "group focus-visible:ring-ring bg-neutral-900 focus-visible:ring-2 focus-visible:outline-none",
+        className,
+      )}
+      {...props}
+    >
+      <div className="absolute inset-0 -z-10 overflow-hidden">
         <img
-          src={data.image}
+          src={artwork(data.image, 100)}
           alt=""
-          className="h-full w-full object-cover blur-3xl brightness-125 saturate-[1.8] motion-safe:animate-[appleMusicDrift_22s_ease-in-out_infinite]"
+          aria-hidden
+          draggable={false}
+          decoding="async"
+          className="h-full w-full scale-125 transform-gpu object-cover blur-3xl brightness-125 saturate-[1.7] transition-transform duration-700 group-hover:scale-[1.32] motion-reduce:transition-none"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/25 to-black/75" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-black/20 to-black/75" />
       </div>
 
-      <div
-        className="pointer-events-none absolute inset-0 opacity-30 mix-blend-overlay motion-safe:animate-[appleMusicSheenDrift_14s_ease-in-out_infinite]"
-        style={{
-          backgroundImage:
-            "linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 30%, rgba(255,255,255,0) 100%)",
-          backgroundSize: "200% 200%",
-        }}
-      />
-
-      <div className="relative p-4">
-        <img
-          src={data.image}
-          alt={`${data.title} artwork`}
-          className="aspect-square w-full rounded-2xl object-cover shadow-[0_10px_24px_-8px_rgba(0,0,0,0.6)] select-none"
-        />
-
-        <div className="mt-4 px-0.5">
-          <h2 className="truncate text-base font-bold tracking-[-.01em] text-white/95">
-            {data.title}
-          </h2>
-          <h3 className="truncate text-sm font-medium text-white/60">{data.artist}</h3>
+      <div className="p-2">
+        <div className="aspect-square overflow-hidden rounded-[13px] shadow-lg">
+          <img
+            src={artwork(data.image, 400)}
+            alt={`${data.title} artwork`}
+            draggable={false}
+            decoding="async"
+            className="h-full w-full bg-neutral-800 object-cover select-none"
+          />
         </div>
 
-        <p className="mt-2 px-0.5 text-[13px] leading-none font-semibold whitespace-nowrap text-white/60">
-          <AppleMusicGlyph className="mr-[0.08em] inline-block h-[0.8em] w-[0.67em] align-baseline" />
-          Music
-        </p>
+        <div
+          aria-hidden={!expanded}
+          className={cn(
+            "grid grid-cols-[minmax(0,1fr)] transition-[grid-template-rows,opacity] duration-300 ease-out motion-reduce:transition-none",
+            expanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0",
+          )}
+        >
+          <div className="min-h-0 min-w-0 overflow-hidden">
+            <div className="px-1 pt-2.5">
+              <p className="truncate text-[15px] font-semibold tracking-[-0.02em] text-white">
+                {data.title}
+              </p>
+              <p className="truncate text-[13px] text-white/60">{data.artist}</p>
+            </div>
+          </div>
+        </div>
+
+        <MusicTag />
       </div>
-    </CardFrame>
+    </a>
   );
 }
 

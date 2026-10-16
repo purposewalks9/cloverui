@@ -1,0 +1,48 @@
+import { SwitchPlayground } from "./playground"
+
+<SwitchPlayground />
+
+## Installation
+
+<InstallationTabs item="switch">
+```tsx file=../../registry/clover-ui/switch.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { Switch } from "@/components/switch";
+
+<Switch aria-label="Notifications" />
+```
+
+A chunky switch with a polished black glass frame and a domed black glass knob. Thin curved reflections catch the beveled edges, while the green track sits recessed beneath the knob. Clicking it switches instantly: the knob and the track color jump straight to the new side, with no slide. **ON** and **OFF** are fixed labels, uncovered by the moving knob.
+
+It works like a normal switch: Tab to it and press Space or Enter to flip it. Give it an `aria-label` so screen readers know what it turns on and off.
+
+Leave it uncontrolled with `defaultChecked`, or control it with `checked` and `onCheckedChange`:
+
+```tsx
+const [enabled, setEnabled] = React.useState(true);
+
+<Switch aria-label="Wi-Fi" checked={enabled} onCheckedChange={setEnabled} />
+```
+
+Pass any CSS color to `color` to change the on color. The switch stays black in light and dark mode.
+
+The playground offers black in place of white so the white labels stay visible. Use the **Show labels** control, or `showLabels={false}`, to hide both labels. Their wording is fixed; `onLabel` and `offLabel` are no longer supported. Keep an `aria-label` that describes what the switch controls even when the visible labels are hidden.
+
+## Props
+
+<PropsTable data={[
+  { name: "checked", type: "boolean", description: "Controls the switch yourself." },
+  { name: "defaultChecked", type: "boolean", default: "true", description: "Starting state when uncontrolled." },
+  { name: "onCheckedChange", type: "(checked: boolean) => void", description: "Called with the new state." },
+  { name: "color", type: "string", default: '"#42aa78"', description: "The track color when on." },
+  { name: "size", type: '"sm" | "default" | "lg"', default: '"default"' },
+  { name: "showLabels", type: "boolean", default: "true", description: "Show or hide the fixed ON and OFF labels." },
+  { name: "disabled", type: "boolean", default: "false" },
+  { name: "aria-label", type: "string", description: "What the switch controls. Falls back to the current label." },
+  { name: "className", type: "string" },
+]} />

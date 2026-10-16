@@ -20,7 +20,7 @@
         "https://cloverui.vercel.app/r/ghost.json",
         "https://cloverui.vercel.app/r/grain-cube.json",
         "https://cloverui.vercel.app/r/grid-reveal.json",
-        "https://cloverui.vercel.app/r/logo-storm.json",
+        "https://cloverui.vercel.app/r/logo-pop.json",
         "https://cloverui.vercel.app/r/mic.json",
         "https://cloverui.vercel.app/r/nucleus-text.json",
         "https://cloverui.vercel.app/r/price-range.json",
@@ -34,20 +34,18 @@
         "https://cloverui.vercel.app/r/thermal-flow.json",
         "https://cloverui.vercel.app/r/token-fall.json",
         "https://cloverui.vercel.app/r/theme-toggle.json",
-        "https://cloverui.vercel.app/r/glitch-text.json",
+        "https://cloverui.vercel.app/r/glitchy-text.json",
         "https://cloverui.vercel.app/r/404-block.json",
         "https://cloverui.vercel.app/r/liquid-button.json",
-        "https://cloverui.vercel.app/r/stack-marquee.json",
-        "https://cloverui.vercel.app/r/cookie-consent.json",
-        "https://cloverui.vercel.app/r/glossy-switch.json",
-        "https://cloverui.vercel.app/r/search.json"
+        "https://cloverui.vercel.app/r/switch.json",
+        "https://cloverui.vercel.app/r/thinking-state.json"
       ]
     },
     {
       "name": "grain-cube",
       "type": "registry:component",
       "title": "Grain Cube",
-      "description": "A grainy, isometric 3D cube rendered on the GPU with a flowing gradient on each face. Drag to spin it.",
+      "description": "A grainy isometric 3D cube with a flowing gradient on each face. Drag to spin it.",
       "files": [
         {
           "path": "registry/clover-ui/grain-cube.tsx",
@@ -56,22 +54,20 @@
       ],
       "dependencies": [],
       "registryDependencies": [],
-      "category": "background"
+      "category": "asset"
     },
     {
       "name": "grid-reveal",
       "type": "registry:component",
       "title": "Grid Reveal",
-      "description": "A configurable grid of blocks that dissolves away to reveal content underneath, with random, wave, diagonal, and center patterns.",
+      "description": "A grid of blocks that dissolves to reveal content, in random, wave or diagonal patterns.",
       "files": [
         {
           "path": "registry/clover-ui/grid-reveal.tsx",
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "registryDependencies": [],
       "category": "effect"
     },
@@ -79,7 +75,7 @@
       "name": "thermal-flow",
       "type": "registry:component",
       "title": "Thermal Flow",
-      "description": "A smooth, rich thermal-gradient background rendered on the GPU. Seven themes or your own palette, no dependencies.",
+      "description": "A smooth, rich thermal-gradient background rendered on the GPU, with seven themes.",
       "files": [
         {
           "path": "registry/clover-ui/thermal-flow.tsx",
@@ -94,16 +90,14 @@
       "name": "gauge-text",
       "type": "registry:component",
       "title": "Gauge Text",
-      "description": "An animated stat that counts up to a number next to a fixed gauge icon, e.g. \"89x faster\".",
+      "description": "An animated stat that counts up to a number next to a gauge icon, like \"89x faster\".",
       "files": [
         {
           "path": "registry/clover-ui/gauge-text.tsx",
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": ["lucide-react"],
       "registryDependencies": [],
       "category": "text"
     },
@@ -111,16 +105,14 @@
       "name": "spinner",
       "type": "registry:component",
       "title": "Spinner",
-      "description": "A 12-dot circular loader where the dots stay fixed in place and only their color shade cycles around the ring, instead of the ring rotating.",
+      "description": "A 12-dot loader where the dots stay in place and only their color shade cycles around.",
       "files": [
         {
           "path": "registry/clover-ui/spinner.tsx",
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "registryDependencies": [],
       "category": "loader"
     },
@@ -128,16 +120,14 @@
       "name": "pulse-loader",
       "type": "registry:component",
       "title": "Pulse Loader",
-      "description": "A breathing concentric-ring loader that pulses in and out on a loop, with a customizable base color, ring count, size, and speed.",
+      "description": "A breathing loader of concentric rings that pulse in and out with your own color.",
       "files": [
         {
           "path": "registry/clover-ui/pulse-loader.tsx",
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "registryDependencies": [],
       "category": "loader"
     },
@@ -160,16 +150,14 @@
       "name": "soft-button",
       "type": "registry:component",
       "title": "Soft Button",
-      "description": "A locked glossy pill button with a small set of hand-tuned color styles and sizes.",
+      "description": "A glossy pill button with a small set of hand-tuned color styles and sizes.",
       "files": [
         {
           "path": "registry/clover-ui/soft-button.tsx",
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "@radix-ui/react-slot"
-      ],
+      "dependencies": ["@radix-ui/react-slot"],
       "registryDependencies": [],
       "category": "button"
     },
@@ -177,17 +165,14 @@
       "name": "token-fall",
       "type": "registry:component",
       "title": "Token Fall",
-      "description": "Physics-based tokens that fall with gravity, bounce, and scatter away from the cursor, with a customizable spawn rate, palette, and per-token render.",
+      "description": "Physics tokens that fall with gravity, bounce and scatter away from the cursor.",
       "files": [
         {
           "path": "registry/clover-ui/token-fall.tsx",
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "matter-js",
-        "@types/matter-js"
-      ],
+      "dependencies": ["matter-js", "@types/matter-js"],
       "registryDependencies": [],
       "category": "effect"
     },
@@ -195,7 +180,7 @@
       "name": "candlestick-chart",
       "type": "registry:component",
       "title": "Candlestick Chart",
-      "description": "A responsive candlestick chart with drag-to-pan, wheel-to-zoom, an animated cursor, and an OHLC tooltip.",
+      "description": "A responsive candlestick chart with drag-to-pan, zoom and an OHLC tooltip.",
       "files": [
         {
           "path": "registry/clover-ui/candlestick-chart.tsx",
@@ -204,22 +189,20 @@
       ],
       "dependencies": [],
       "registryDependencies": [],
-      "category": "data"
+      "category": "asset"
     },
     {
       "name": "drop-text",
       "type": "registry:component",
       "title": "Drop Text",
-      "description": "Text that drops into place under gravity and settles with a bounce, word by word or character by character.",
+      "description": "Text that drops into place under gravity and settles with a bounce, word by word.",
       "files": [
         {
           "path": "registry/clover-ui/drop-text.tsx",
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "registryDependencies": [],
       "category": "text"
     },
@@ -227,7 +210,7 @@
       "name": "text-gif",
       "type": "registry:component",
       "title": "Text GIF",
-      "description": "Animated text filled with a GIF, creating a moving visual effect inside the letter shapes.",
+      "description": "Animated text filled with a GIF, so the letters show a moving picture inside.",
       "files": [
         {
           "path": "registry/clover-ui/text-gif.tsx",
@@ -242,17 +225,14 @@
       "name": "price-range",
       "type": "registry:component",
       "title": "Price Range",
-      "description": "A two-handle budget slider with springy handles, value labels that slide apart when they meet, and tick marks that light up inside the chosen range.",
+      "description": "A two-handle budget slider with springy handles, sliding labels and lit-up ticks.",
       "files": [
         {
           "path": "registry/clover-ui/price-range.tsx",
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion",
-        "class-variance-authority"
-      ],
+      "dependencies": ["motion", "class-variance-authority"],
       "registryDependencies": [],
       "category": "control"
     },
@@ -260,33 +240,29 @@
       "name": "rich-progress",
       "type": "registry:component",
       "title": "Rich Progress",
-      "description": "A glossy progress bar with spring-smoothed fill, a moving sheen, a knob riding the fill edge, and an optional rough synthesized loading sound.",
+      "description": "A sharp, glossy progress bar with a springy square knob you can drag.",
       "files": [
         {
           "path": "registry/clover-ui/rich-progress.tsx",
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion", "class-variance-authority"],
       "registryDependencies": [],
-      "category": "loader"
+      "category": "control"
     },
     {
       "name": "sign-pad",
       "type": "registry:component",
       "title": "Sign Pad",
-      "description": "A compact signature surface with pressure-aware ink, smooth drawing, undo and clear controls, animated completion, and cropped PNG/SVG exports.",
+      "description": "A signature pad with pressure-aware ink, undo and clear, and cropped PNG/SVG exports.",
       "files": [
         {
           "path": "registry/clover-ui/sign-pad.tsx",
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": ["lucide-react"],
       "registryDependencies": [],
       "category": "control"
     },
@@ -294,7 +270,7 @@
       "name": "apple-music-card",
       "type": "registry:component",
       "title": "Apple Music Card",
-      "description": "A track card that loads the title, artist and artwork from an Apple Music link. No API key needed.",
+      "description": "A track card loaded from an Apple Music link, with mini and full views.",
       "files": [
         {
           "path": "registry/clover-ui/apple-music-card.tsx",
@@ -303,13 +279,13 @@
       ],
       "dependencies": [],
       "registryDependencies": [],
-      "category": "data"
+      "category": "asset"
     },
     {
       "name": "nucleus-text",
       "type": "registry:component",
       "title": "Nucleus Text",
-      "description": "Text assembled from particles that fly inward, settle into the letterforms, and keep a subtle jitter.",
+      "description": "Text assembled from particles that fly inward, settle into letters and gently jitter.",
       "files": [
         {
           "path": "registry/clover-ui/nucleus-text.tsx",
@@ -324,17 +300,14 @@
       "name": "cursor-tag",
       "type": "registry:component",
       "title": "Cursor Tag",
-      "description": "A sharp multiplayer-style cursor with a name tag that can face left or right and gently drift like a live collaborator.",
+      "description": "A multiplayer-style cursor with a name tag that faces left or right and gently drifts.",
       "files": [
         {
           "path": "registry/clover-ui/cursor-tag.tsx",
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion",
-        "class-variance-authority"
-      ],
+      "dependencies": ["motion", "class-variance-authority"],
       "registryDependencies": [],
       "category": "cursor"
     },
@@ -342,16 +315,14 @@
       "name": "clicky",
       "type": "registry:component",
       "title": "Clicky",
-      "description": "A 3D hand cursor that pops in on any element and presses it with a soft glow to show people where to click.",
+      "description": "A 3D hand cursor that pops in and presses any element to show people where to click.",
       "files": [
         {
           "path": "registry/clover-ui/clicky.tsx",
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "registryDependencies": [],
       "category": "cursor"
     },
@@ -359,17 +330,14 @@
       "name": "mic",
       "type": "registry:component",
       "title": "Mic",
-      "description": "A microphone button that shows a mute slash when off and a live input level from the real microphone when on.",
+      "description": "A microphone button with a mute slash when off and a live input level when on.",
       "files": [
         {
           "path": "registry/clover-ui/mic.tsx",
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion",
-        "class-variance-authority"
-      ],
+      "dependencies": ["motion", "class-variance-authority"],
       "registryDependencies": [],
       "category": "button"
     },
@@ -377,51 +345,44 @@
       "name": "block-text",
       "type": "registry:component",
       "title": "Block Text",
-      "description": "A colored 3D block that keeps rolling forward, bringing the next word up from the bottom as the current one tips away over the top.",
+      "description": "A colored 3D block that keeps rolling forward, bringing up the next word as it tips.",
       "files": [
         {
           "path": "registry/clover-ui/block-text.tsx",
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "registryDependencies": [],
       "category": "text"
     },
     {
-      "name": "logo-storm",
+      "name": "logo-pop",
       "type": "registry:component",
-      "title": "Logo Storm",
-      "description": "A tidy grid of company logos that pop in one by one in random order, tilt and settle, then stay with an occasional bounce.",
+      "title": "Logo Pop",
+      "description": "A tidy grid of company logos that pop in one by one, tilt, settle and bounce.",
       "files": [
         {
-          "path": "registry/clover-ui/logo-storm.tsx",
+          "path": "registry/clover-ui/logo-pop.tsx",
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "registryDependencies": [],
-      "category": "logo"
+      "category": "asset"
     },
     {
       "name": "ghost",
       "type": "registry:component",
       "title": "Ghost Guide",
-      "description": "A tiny tour guide for your design system. It floats by the cursor and reacts to every part of your UI in one word.",
+      "description": "A tiny tour guide that floats by the cursor and reacts to your UI in one word.",
       "files": [
         {
           "path": "registry/clover-ui/ghost.tsx",
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion",
-        "class-variance-authority"
-      ],
+      "dependencies": ["motion", "class-variance-authority"],
       "registryDependencies": [],
       "category": "cursor"
     },
@@ -429,34 +390,29 @@
       "name": "theme-toggle",
       "type": "registry:component",
       "title": "Theme Toggle",
-      "description": "A round, glossy theme button that presses like a small push switch and flips the theme instantly. It is dark in light mode and latches down light in dark mode.",
+      "description": "A round, glossy push button that latches down and flips the theme instantly.",
       "files": [
         {
           "path": "registry/clover-ui/theme-toggle.tsx",
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "class-variance-authority",
-        "next-themes"
-      ],
+      "dependencies": ["class-variance-authority", "next-themes"],
       "registryDependencies": [],
       "category": "button"
     },
     {
-      "name": "glitch-text",
+      "name": "glitchy-text",
       "type": "registry:component",
-      "title": "Glitch Text",
-      "description": "Text that glitches like a broken screen, tearing into faded slices, shaking left and right and flickering random symbols on its own, on hover or all the time.",
+      "title": "Glitchy Text",
+      "description": "Text that glitches like a broken screen, tearing into slices and flickering symbols.",
       "files": [
         {
-          "path": "registry/clover-ui/glitch-text.tsx",
+          "path": "registry/clover-ui/glitchy-text.tsx",
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "registryDependencies": [],
       "category": "text"
     },
@@ -471,109 +427,55 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion"
-      ],
-      "registryDependencies": [
-        "https://cloverui.vercel.app/r/liquid-button.json"
-      ],
+      "dependencies": ["motion"],
+      "registryDependencies": ["https://cloverui.vercel.app/r/liquid-button.json"],
       "category": "block"
     },
     {
       "name": "liquid-button",
       "type": "registry:component",
       "title": "Liquid Button",
-      "description": "A button filled with a live, flowing liquid (lava, ocean, stone, sky or obsidian) drawn by a tiny WebGL shader. It speeds up on hover and presses in on click.",
+      "description": "A button filled with live flowing liquid that speeds up on hover and presses in.",
       "files": [
         {
           "path": "registry/clover-ui/liquid-button.tsx",
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "motion",
-        "@radix-ui/react-slot",
-        "class-variance-authority"
-      ],
+      "dependencies": ["motion", "@radix-ui/react-slot", "class-variance-authority"],
       "registryDependencies": [],
       "category": "button"
     },
     {
-      "name": "stack-marquee",
+      "name": "switch",
       "type": "registry:component",
-      "title": "Stack Marquee",
-      "description": "A compact scrolling strip of AI and developer tool logos with a seamless loop and faded ends.",
+      "title": "Switch",
+      "description": "A glossy black ON/OFF switch with a big domed knob across a colored track.",
       "files": [
         {
-          "path": "registry/clover-ui/stack-marquee.tsx",
+          "path": "registry/clover-ui/switch.tsx",
           "type": "registry:component"
         }
       ],
-      "dependencies": [],
-      "registryDependencies": [],
-      "category": "logo"
-    },
-    {
-      "name": "cookie-consent",
-      "type": "registry:component",
-      "title": "Cookie Consent",
-      "description": "A cookie banner that slides up and follows your theme, with a rich heading and real per-category choices.",
-      "files": [
-        {
-          "path": "registry/clover-ui/cookie-consent.tsx",
-          "type": "registry:component"
-        }
-      ],
-      "dependencies": [
-        "motion",
-        "lucide-react",
-        "class-variance-authority"
-      ],
-      "registryDependencies": [
-        "button",
-        "https://cloverui.vercel.app/r/glossy-switch.json"
-      ],
-      "category": "block"
-    },
-    {
-      "name": "glossy-switch",
-      "type": "registry:component",
-      "title": "Glossy Switch",
-      "description": "A glossy black ON/OFF switch with a big domed knob that snaps across a colored track, with labels on each side.",
-      "files": [
-        {
-          "path": "registry/clover-ui/glossy-switch.tsx",
-          "type": "registry:component"
-        }
-      ],
-      "dependencies": [
-        "class-variance-authority"
-      ],
+      "dependencies": ["class-variance-authority"],
       "registryDependencies": [],
       "category": "control"
     },
     {
-      "name": "search",
+      "name": "thinking-state",
       "type": "registry:component",
-      "title": "Search",
-      "description": "A smooth, matte search trigger and responsive command menu with grouped results, category filters, and keyboard navigation.",
+      "title": "Thinking State",
+      "description": "A tiny pixel animation beside a word, with thinking, debugging and more states.",
       "files": [
         {
-          "path": "registry/clover-ui/search.tsx",
+          "path": "registry/clover-ui/thinking-state.tsx",
           "type": "registry:component"
         }
       ],
-      "dependencies": [
-        "@radix-ui/react-dialog",
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "utils"
-      ],
-      "category": "control",
-      "meta": {
-        "addedAt": "2026-10-12"
-      }
+      "dependencies": ["motion"],
+      "registryDependencies": [],
+      "category": "loader",
+      "meta": { "addedAt": "2026-10-14" }
     }
   ]
 }

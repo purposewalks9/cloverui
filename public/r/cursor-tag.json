@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "cursor-tag",
   "title": "Cursor Tag",
-  "description": "A sharp multiplayer-style cursor with a name tag that can face left or right and gently drift like a live collaborator.",
+  "description": "A multiplayer-style cursor with a name tag that faces left or right and gently drifts.",
   "dependencies": [
     "motion",
     "class-variance-authority"

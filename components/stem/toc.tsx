@@ -16,7 +16,7 @@ import { GhostToggle } from "@/components/stem/ghost-toggle";
 
 const ACTIVE_OFFSET = 112;
 const ROW_CLASS =
-  "text-muted-foreground hover:text-foreground focus-visible:ring-ring flex items-center gap-2 rounded-sm text-sm transition-colors duration-200 focus-visible:ring-2 focus-visible:outline-none [&_svg]:size-3.5";
+  "text-muted-foreground hover:text-foreground focus-visible:ring-ring flex items-center gap-2 rounded-none text-sm transition-colors duration-200 focus-visible:ring-2 focus-visible:outline-none [&_svg]:size-3.5";
 
 interface TocItem {
   title?: React.ReactNode;
@@ -68,19 +68,27 @@ function useScrollState(itemIds: string[]) {
 }
 
 function ProgressRing({ progress }: { progress: number }) {
-  const radius = 7;
+  const id = React.useId();
+  const radius = 10;
   const circumference = 2 * Math.PI * radius;
 
   return (
-    <svg viewBox="0 0 18 18" className="size-[18px] -rotate-90" aria-hidden="true">
-      <circle cx="9" cy="9" r={radius} fill="none" stroke="var(--border)" strokeWidth="2" />
+    <svg viewBox="0 0 26 26" className="size-[26px] -rotate-90 overflow-visible" aria-hidden="true">
+      <defs>
+        <linearGradient id={id} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" className="[stop-color:#a855f7] dark:[stop-color:#c084fc]" />
+          <stop offset="50%" className="[stop-color:#ef4444] dark:[stop-color:#fb7185]" />
+          <stop offset="100%" className="[stop-color:#ec4899] dark:[stop-color:#f472b6]" />
+        </linearGradient>
+      </defs>
+      <circle cx="13" cy="13" r={radius} fill="none" stroke="var(--border)" strokeWidth="3" />
       <circle
-        cx="9"
-        cy="9"
+        cx="13"
+        cy="13"
         r={radius}
         fill="none"
-        stroke="var(--brand)"
-        strokeWidth="2"
+        stroke={`url(#${id})`}
+        strokeWidth="3"
         strokeLinecap="round"
         strokeDasharray={circumference}
         strokeDashoffset={circumference * (1 - progress)}
@@ -215,10 +223,7 @@ export function DocsTableOfContents({
     <div className="flex h-full flex-col">
       <div className="border-border flex h-12 shrink-0 items-center justify-between px-4">
         <p className="text-foreground text-[15px] font-medium">On this page</p>
-        <div className="text-muted-foreground flex items-center gap-2 text-xs tabular-nums">
-          {Math.round(progress * 100)}%
-          <ProgressRing progress={progress} />
-        </div>
+        <ProgressRing progress={progress} />
       </div>
 
       <div className="min-h-0 flex-1 overflow-y-auto px-4 py-5">
@@ -243,7 +248,7 @@ export function DocsTableOfContents({
                       }}
                       aria-current={isActive ? "location" : undefined}
                       className={cn(
-                        "focus-visible:ring-ring block rounded-sm py-1.5 text-[15px] leading-snug no-underline transition-colors duration-200 focus-visible:ring-2 focus-visible:outline-none motion-reduce:transition-none",
+                        "focus-visible:ring-ring block py-1.5 text-[15px] leading-snug no-underline transition-colors duration-200 focus-visible:ring-2 focus-visible:outline-none motion-reduce:transition-none",
                         item.depth >= 3 && "pl-3 text-sm",
                         isActive
                           ? "text-foreground font-medium"

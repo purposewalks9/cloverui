@@ -49,8 +49,7 @@ const flavors: Record<string, string[]> = {
   cursor: ["pointy", "buddy"],
   effect: ["magic", "sparkly"],
   background: ["dreamy", "pretty"],
-  logo: ["brandy", "famous"],
-  data: ["smart", "numbers"],
+  asset: ["shiny", "neat"],
   block: ["handy", "ready"],
 };
 
@@ -120,7 +119,7 @@ function greeting(pathname: string) {
 
 type Look = { color: GhostColor; size: GhostSize };
 
-const DEFAULT_LOOK: Look = { color: "lime", size: "lg" };
+const DEFAULT_LOOK: Look = { color: "lilac", size: "lg" };
 
 const LookContext = React.createContext<(look: Look | null) => void>(() => {});
 

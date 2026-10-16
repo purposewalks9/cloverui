@@ -30,11 +30,12 @@ export function GhostToggle({ className }: { className?: string }) {
       className={cn(
         "cursor-pointer whitespace-nowrap",
         className,
-        shown && "text-lime-600 hover:text-lime-600 dark:text-lime-400 dark:hover:text-lime-400",
+        shown &&
+          "text-[#a855f7] hover:text-[#a855f7] dark:text-[#c084fc] dark:hover:text-[#c084fc]",
       )}
     >
       <GraduationCap />
-      Guide
+      <span className={cn(shown && "sponsor-gradient")}>Guide</span>
     </button>
   );
 }
