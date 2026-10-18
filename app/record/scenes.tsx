@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import dynamic from "next/dynamic";
 import { useReducedMotion } from "motion/react";
-import { CloverLogo } from "@/components/seed/clover-logo";
 import { LiquidButton, type ElementName } from "@/registry/clover-ui/liquid-button";
 import { SoftButton, type SoftColor } from "@/registry/clover-ui/soft-button";
 import { ThemeToggle, type ThemeToggleTheme } from "@/registry/clover-ui/theme-toggle";
@@ -13,7 +13,10 @@ import { Mic, type MicColor } from "@/registry/clover-ui/mic";
 import { BlockText, type BlockTextTheme } from "@/registry/clover-ui/block-text";
 import { RichText, type RichTextColor } from "@/registry/clover-ui/rich-text";
 import { NucleusText } from "@/registry/clover-ui/nucleus-text";
+import { DropText } from "@/registry/clover-ui/drop-text";
 import { GlitchyText } from "@/registry/clover-ui/glitchy-text";
+import { GaugeText } from "@/registry/clover-ui/gauge-text";
+import { TextGif } from "@/registry/clover-ui/text-gif";
 import { Clicky, type ClickyColor } from "@/registry/clover-ui/clicky";
 import { Ghost, GhostProvider, type GhostColor } from "@/registry/clover-ui/ghost";
 import {
@@ -23,64 +26,78 @@ import {
 } from "@/registry/clover-ui/grid-reveal";
 import { GrainCube, type GrainCubeTheme } from "@/registry/clover-ui/grain-cube";
 import { CursorTag } from "@/registry/clover-ui/cursor-tag";
+import { Spinner } from "@/registry/clover-ui/spinner";
+import { PulseLoader } from "@/registry/clover-ui/pulse-loader";
+import { ThinkingState, type ThinkingStateKind } from "@/registry/clover-ui/thinking-state";
+import { RichProgress, type RichProgressColor } from "@/registry/clover-ui/rich-progress";
+import { ReasoningEffort, type ReasoningEffortTheme } from "@/registry/clover-ui/reasoning-effort";
+import { AppleMusicCard, type AppleMusicCardView } from "@/registry/clover-ui/apple-music-card";
 import styles from "./recording-studio.module.css";
+
+const TokenFall = dynamic(
+  () => import("@/registry/clover-ui/token-fall").then((m) => m.TokenFall),
+  { ssr: false },
+);
 
 function Pair({ children }: { children: ReactNode }) {
   return <div className={styles.pair}>{children}</div>;
 }
 
-function TogglePair() {
-  const [first, setFirst] = useState<ThemeToggleTheme>("light");
-  const [second, setSecond] = useState<ThemeToggleTheme>("dark");
+function SingleToggle() {
+  const [theme, setTheme] = useState<ThemeToggleTheme>("light");
+  return <ThemeToggle size="lg" theme={theme} onThemeChange={setTheme} />;
+}
+
+function ThinkingCycle() {
+  const [index, setIndex] = useState(0);
+  useEffect(() => {
+    const timer = window.setInterval(
+      () => setIndex((value) => (value + 1) % thinking.length),
+      1800,
+    );
+    return () => window.clearInterval(timer);
+  }, []);
+  return <ThinkingState state={thinking[index]} pixel="circle" className={styles.clickText} />;
+}
+
+function Progress({ color }: { color: RichProgressColor }) {
+  const [value, setValue] = useState(65);
   return (
-    <Pair>
-      <ThemeToggle size="lg" theme={first} onThemeChange={setFirst} />
-      <ThemeToggle size="lg" theme={second} onThemeChange={setSecond} />
-    </Pair>
+    <div className={styles.ranges}>
+      <RichProgress value={value} onChange={setValue} color={color} label="Rainbow glow" />
+    </div>
   );
 }
 
-function Grids({ variant }: { variant: number }) {
+function Grid({ color, pattern }: { color: GridRevealColor; pattern: GridRevealPattern }) {
   const still = Boolean(useReducedMotion());
-  const looks: [GridRevealColor, GridRevealPattern][][] = [
-    [
-      ["yellow", "random"],
-      ["violet", "wave"],
-    ],
-    [
-      ["blue", "diagonal"],
-      ["pink", "center"],
-    ],
-    [
-      ["red", "random"],
-      ["green", "wave"],
-    ],
-    [
-      ["orange", "diagonal"],
-      ["white", "center"],
-    ],
-  ];
   return (
     <div className={styles.squares}>
-      {looks[variant].map(([color, pattern]) => (
-        <GridReveal
-          key={color}
-          color={color}
-          pattern={pattern}
-          rows={8}
-          cols={8}
-          blockDuration={still ? 0 : 0.28}
-          stagger={still ? 0 : 0.018}
-          loop={!still}
-          loopDelay={1.8}
-          className="aspect-square w-full"
-        >
-          <div className="flex aspect-square items-center justify-center rounded-2xl bg-neutral-950">
-            <CloverLogo size={64} />
-          </div>
-        </GridReveal>
-      ))}
+      <GridReveal
+        color={color}
+        pattern={pattern}
+        rows={8}
+        cols={8}
+        blockDuration={still ? 0 : 0.28}
+        stagger={still ? 0 : 0.018}
+        loop={!still}
+        loopDelay={0.4}
+        className="aspect-square w-full"
+      >
+        <div className="aspect-square" />
+      </GridReveal>
     </div>
+  );
+}
+
+function ShrinkingMusicCard() {
+  const [view, setView] = useState<AppleMusicCardView>("full");
+  useEffect(() => {
+    const timer = window.setTimeout(() => setView("mini"), 1600);
+    return () => window.clearTimeout(timer);
+  }, []);
+  return (
+    <AppleMusicCard url="https://music.apple.com/us/song/blinding-lights/1499378607" view={view} />
   );
 }
 
@@ -109,26 +126,36 @@ function Ghosts({ colors }: { colors: GhostColor[] }) {
   );
 }
 
-const liquid: ElementName[][] = [["lava", "ocean"], ["stone", "sky"], ["obsidian"]];
-const soft: SoftColor[][] = [
-  ["lime", "purple"],
-  ["blue", "pink"],
-  ["red", "green"],
-  ["orange", "cyan"],
-  ["darkRed", "yellow"],
-  ["white", "black"],
+const liquid: ElementName[] = ["lava", "ocean", "stone", "sky", "obsidian"];
+const soft: SoftColor[] = [
+  "lime",
+  "purple",
+  "blue",
+  "pink",
+  "red",
+  "green",
+  "orange",
+  "cyan",
+  "darkRed",
+  "yellow",
+  "white",
+  "black",
 ];
 const microphones: MicColor[][] = [
   ["blue", "purple"],
   ["pink", "emerald"],
   ["orange", "default"],
 ];
-const blocks: BlockTextTheme[][] = [["halloween", "ocean"], ["classic", "candy"], ["sunset"]];
-const rich: RichTextColor[][] = [
-  ["blue", "accent"],
-  ["purple", "pink"],
-  ["emerald", "orange"],
-  ["default", "rose"],
+const blocks: BlockTextTheme[] = ["halloween", "ocean", "classic", "candy", "sunset"];
+const rich: RichTextColor[] = [
+  "blue",
+  "accent",
+  "purple",
+  "pink",
+  "emerald",
+  "orange",
+  "default",
+  "rose",
 ];
 const clicky: ClickyColor[][] = [
   ["purple", "blue"],
@@ -141,56 +168,115 @@ const ghosts: GhostColor[][] = [
   ["peach", "lemon"],
   ["mint", "sky"],
 ];
-const cubes: GrainCubeTheme[][] = [["green", "violet"], ["ember", "ice"], ["mono"]];
-const switchColors = [
-  ["#42aa78", "#8b5cf6"],
-  ["#111111", "#e75a3c"],
-  ["#d6a93f", "#3488da"],
-];
+const cubes: GrainCubeTheme[][] = [["green"]];
+const switchColors = ["#42aa78", "#8b5cf6", "#111111", "#e75a3c", "#d6a93f", "#3488da"];
 const knobs: PriceRangeKnob[][] = [
   ["circle", "ring"],
   ["pill", "line"],
 ];
 
-export const recordingScenes: {
+const thinking: ThinkingStateKind[] = ["pondering", "building"];
+const progress: RichProgressColor[] = ["default", "blue", "pink", "emerald", "orange", "violet"];
+const efforts: ReasoningEffortTheme[] = ["aurora", "ocean", "ember", "forest", "mono"];
+const gifs = ["/fire.gif", "/aurora.gif", "/ocean.gif", "/seal.gif"];
+const grids: [GridRevealColor, GridRevealPattern][] = [
+  ["yellow", "random"],
+  ["violet", "wave"],
+];
+
+type RecordingScene = {
   id: string;
   name: string;
   variants: number;
   render: (variant: number) => ReactNode;
-}[] = [
+};
+
+const scenes: RecordingScene[] = [
+  {
+    id: "nucleus-text",
+    name: "Nucleus Text",
+    variants: 2,
+    render: (v) => (
+      <NucleusText color={v ? "#ff9f6b" : "#7cc4ff"} className={styles.displayText}>
+        generates
+      </NucleusText>
+    ),
+  },
+  {
+    id: "drop-text",
+    name: "Drop Text",
+    variants: 1,
+    render: () => (
+      <DropText delay={0.3} className={styles.displayText}>
+        Ready to drop in.
+      </DropText>
+    ),
+  },
+  {
+    id: "block-text",
+    name: "Block Text",
+    variants: blocks.length,
+    render: (v) => (
+      <BlockText
+        theme={blocks[v]}
+        words={["Build", "Play", "Ship"]}
+        interval={0.5}
+        duration={0.5}
+        className={styles.displayText}
+      />
+    ),
+  },
+  {
+    id: "spinner",
+    name: "Spinner",
+    variants: 1,
+    render: () => <Spinner color="#0B87DA" size={64} tailLength={0.4} />,
+  },
+  {
+    id: "rich-progress",
+    name: "Rich Progress",
+    variants: progress.length,
+    render: (v) => <Progress color={progress[v]} />,
+  },
+  {
+    id: "thinking-state",
+    name: "Thinking State",
+    variants: 1,
+    render: () => <ThinkingCycle />,
+  },
+  {
+    id: "reasoning-effort",
+    name: "Reasoning Effort",
+    variants: efforts.length,
+    render: (v) => <ReasoningEffort theme={efforts[v]} recommended={2} />,
+  },
+  {
+    id: "pulse-loader",
+    name: "Pulse Loader",
+    variants: 1,
+    render: () => <PulseLoader size={96} />,
+  },
   {
     id: "liquid-button",
     name: "Liquid Button",
     variants: liquid.length,
     render: (v) => (
-      <Pair>
-        {liquid[v].map((element) => (
-          <LiquidButton key={element} element={element} size="lg">
-            Get started
-          </LiquidButton>
-        ))}
-      </Pair>
+      <LiquidButton element={liquid[v]} size="lg">
+        Get started
+      </LiquidButton>
     ),
   },
   {
     id: "soft-button",
     name: "Soft Button",
     variants: soft.length,
-    render: (v) => (
-      <Pair>
-        {soft[v].map((color) => (
-          <SoftButton key={color} color={color} size="lg">
-            Explore Clover
-          </SoftButton>
-        ))}
-      </Pair>
-    ),
+    render: (v) => <SoftButton color={soft[v]}>Get started</SoftButton>,
   },
   {
     id: "theme-toggle",
     name: "Theme Toggle",
     variants: 1,
-    render: () => <TogglePair />,
+    render: () => <SingleToggle />,
   },
   {
     id: "price-range",
@@ -220,19 +306,7 @@ export const recordingScenes: {
     id: "switch",
     name: "Switch",
     variants: switchColors.length,
-    render: (v) => (
-      <Pair>
-        {switchColors[v].map((color, i) => (
-          <Switch
-            key={color}
-            color={color}
-            size="lg"
-            defaultChecked={!i}
-            aria-label={i ? "Secondary switch" : "Primary switch"}
-          />
-        ))}
-      </Pair>
-    ),
+    render: (v) => <Switch color={switchColors[v]} size="lg" defaultChecked aria-label="Switch" />,
   },
   {
     id: "mic",
@@ -247,57 +321,47 @@ export const recordingScenes: {
     ),
   },
   {
-    id: "block-text",
-    name: "Block Text",
-    variants: blocks.length,
-    render: (v) => (
-      <div className={styles.textStack}>
-        {blocks[v].map((theme) => (
-          <BlockText
-            key={theme}
-            theme={theme}
-            words={["Build", "Play", "Ship"]}
-            className={styles.displayText}
-          />
-        ))}
-      </div>
-    ),
-  },
-  {
     id: "rich-text",
     name: "Rich Text",
     variants: rich.length,
     render: (v) => (
-      <div className={styles.textStack}>
-        {rich[v].map((color, i) => (
-          <RichText key={color} color={color} className={styles.displayText}>
-            {i ? "Made to feel." : "Built with care."}
-          </RichText>
-        ))}
-      </div>
-    ),
-  },
-  {
-    id: "nucleus-text",
-    name: "Nucleus Text",
-    variants: 2,
-    render: (v) => (
-      <NucleusText color={v ? "#c4a1ff" : "#b8ff8b"} className={styles.displayText}>
-        generates
-      </NucleusText>
+      <RichText color={rich[v]} className={styles.displayText}>
+        Built with care.
+      </RichText>
     ),
   },
   {
     id: "glitchy-text",
     name: "Glitchy Text",
-    variants: 2,
-    render: (v) => (
-      <GlitchyText
-        colors={v ? ["#a3e635", "#a78bfa"] : ["#ff3355", "#22d3ee"]}
-        className={styles.displayText}
-      >
+    variants: 1,
+    render: () => (
+      <GlitchyText color="pixel" trigger="always" intensity={0.7} className={styles.displayText}>
         SIGNAL LOST
       </GlitchyText>
+    ),
+  },
+  {
+    id: "gauge-text",
+    name: "Gauge Text",
+    variants: 1,
+    render: () => (
+      <GaugeText
+        value={89}
+        suffix="x"
+        label="faster"
+        color="#E1E900"
+        className={styles.displayText}
+      />
+    ),
+  },
+  {
+    id: "text-gif",
+    name: "Text GIF",
+    variants: gifs.length,
+    render: (v) => (
+      <TextGif src={gifs[v]} className={`${styles.displayText} font-black`}>
+        CLOVER
+      </TextGif>
     ),
   },
   {
@@ -323,8 +387,8 @@ export const recordingScenes: {
   {
     id: "grid-reveal",
     name: "Grid Reveal",
-    variants: 4,
-    render: (v) => <Grids variant={v} />,
+    variants: grids.length,
+    render: (v) => <Grid color={grids[v][0]} pattern={grids[v][1]} />,
   },
   {
     id: "grain-cube",
@@ -333,25 +397,41 @@ export const recordingScenes: {
     render: (v) => <Cubes themes={cubes[v]} />,
   },
   {
-    id: "cursor-tag",
-    name: "Cursor Tag",
-    variants: 2,
-    render: (v) => (
-      <div className={styles.cursorScene}>
-        <span className={styles.clickText}>Made to move.</span>
-        <CursorTag label="Purpose" color={v ? "#e85b3e" : "#7c3aed"} className={styles.cursorOne} />
-        <CursorTag
-          label="You"
-          color={v ? "#0284c7" : "#db2777"}
-          side="left"
-          className={styles.cursorTwo}
-        />
-        <CursorTag
-          label="Clover"
-          color={v ? "#9e7b16" : "#16a34a"}
-          className={styles.cursorThree}
-        />
+    id: "apple-music-card",
+    name: "Apple Music Card",
+    variants: 1,
+    render: () => <ShrinkingMusicCard />,
+  },
+  {
+    id: "token-fall",
+    name: "Token Fall",
+    variants: 1,
+    render: () => (
+      <div className={styles.fill}>
+        <TokenFall count={55} minSize={12} maxSize={25} />
       </div>
     ),
   },
+  {
+    id: "cursor-tag",
+    name: "Cursor Tag",
+    variants: 1,
+    render: () => <CursorTag label="Designer" color="#7c3aed" size="lg" />,
+  },
 ];
+
+const order = [
+  "soft-button",
+  "block-text",
+  "reasoning-effort",
+  "grain-cube",
+  "liquid-button",
+  "nucleus-text",
+  "cursor-tag",
+  "gauge-text",
+  "grid-reveal",
+  "thinking-state",
+  "token-fall",
+];
+
+export const recordingScenes = order.map((id) => scenes.find((scene) => scene.id === id)!);
