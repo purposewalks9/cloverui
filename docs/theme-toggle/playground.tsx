@@ -28,10 +28,8 @@ const defaultProps = {
 export function ThemeTogglePlayground() {
   return (
     <PlaygroundShell
-      componentName="ThemeToggle"
       controls={controls}
       defaultProps={defaultProps}
-      codeNote="click it to switch this site's theme"
       render={(values) => (
         <div className="flex min-h-[220px] w-full items-center justify-center">
           <ThemeToggle

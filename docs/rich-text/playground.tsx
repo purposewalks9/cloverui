@@ -80,7 +80,6 @@ const defaultProps = {
 export function RichTextPlayground() {
   return (
     <PlaygroundShell
-      componentName="RichText"
       controls={controls}
       defaultProps={defaultProps}
       render={(values) => (

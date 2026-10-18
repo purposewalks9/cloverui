@@ -4,7 +4,7 @@ import { getRegistry } from "./registry";
 
 const DOCS_DIR = join(process.cwd(), "docs");
 
-export function getDocSlugs(): string[] {
+function getDocSlugs(): string[] {
   if (!existsSync(DOCS_DIR)) return [];
 
   return readdirSync(DOCS_DIR, { withFileTypes: true })

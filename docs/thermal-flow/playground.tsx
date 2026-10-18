@@ -48,10 +48,8 @@ const defaultProps = {
 export function ThermalFlowPlayground() {
   return (
     <PlaygroundShell
-      componentName="ThermalFlow"
       controls={controls}
       defaultProps={defaultProps}
-      codeNote="fills its relative parent. Pass colors={[...]} for a custom palette"
 
       render={(values) => (
         <ThermalFlow

@@ -27,7 +27,6 @@ const defaultProps = {
 export function SpinnerPlayground() {
   return (
     <PlaygroundShell
-      componentName="Spinner"
       controls={controls}
       defaultProps={defaultProps}
       render={(values) => (

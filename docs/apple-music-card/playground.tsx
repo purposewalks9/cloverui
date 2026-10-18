@@ -29,10 +29,8 @@ const defaultProps = {
 export function AppleMusicCardPlayground() {
   return (
     <PlaygroundShell
-      componentName="AppleMusicCard"
       controls={controls}
       defaultProps={defaultProps}
-      fixedProps={{ url: songs[0] }}
       render={(values) => (
         <div className="flex flex-wrap items-start justify-center gap-3">
           {songs.map((url) => (

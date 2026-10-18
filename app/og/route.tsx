@@ -10,9 +10,11 @@ const colors = {
   background: "#0a0a0a",
   foreground: "#fafafa",
   muted: "#a1a1aa",
-  line: "#262626",
-  brand: "#e1e900",
 };
+
+const stroke = ["#6b21a8", "#991b1b", "#9d174d"];
+const strokeGradient = (angle: number) =>
+  `linear-gradient(${angle}deg, ${stroke[0]} 0%, ${stroke[1]} 33%, ${stroke[2]} 66%, ${stroke[0]} 100%)`;
 
 const INSET = 64;
 
@@ -71,7 +73,7 @@ export async function GET(request: NextRequest) {
           bottom: 0,
           left: INSET,
           width: 1,
-          borderLeft: `1px dashed ${colors.line}`,
+          backgroundImage: strokeGradient(180),
         }}
       />
       <div
@@ -82,7 +84,7 @@ export async function GET(request: NextRequest) {
           bottom: 0,
           right: INSET,
           width: 1,
-          borderLeft: `1px dashed ${colors.line}`,
+          backgroundImage: strokeGradient(180),
         }}
       />
       <div
@@ -93,7 +95,7 @@ export async function GET(request: NextRequest) {
           right: 0,
           top: INSET,
           height: 1,
-          backgroundColor: colors.line,
+          backgroundImage: strokeGradient(90),
         }}
       />
       <div
@@ -104,7 +106,7 @@ export async function GET(request: NextRequest) {
           right: 0,
           bottom: INSET,
           height: 1,
-          backgroundColor: colors.line,
+          backgroundImage: strokeGradient(90),
         }}
       />
 
@@ -122,7 +124,7 @@ export async function GET(request: NextRequest) {
         }}
       >
         <svg width="68" height="68" viewBox="0 0 16 16" fill="none">
-          <path d={CLOVER_PATH} fill={colors.brand} />
+          <path d={CLOVER_PATH} fill={colors.foreground} />
         </svg>
 
         <div style={{ display: "flex", flexDirection: "column" }}>

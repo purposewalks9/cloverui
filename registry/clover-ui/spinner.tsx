@@ -1,12 +1,15 @@
 "use client";
 
+import { motion, useMotionValue, useTransform, type MotionValue } from "motion/react";
 import {
-  motion,
-  useMotionValue,
-  useTransform,
-  type MotionValue,
-} from "motion/react";
-import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -60,10 +63,12 @@ const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 function colorMixer(c1: string, c2: string) {
   const a = parseColor(c1);
   const b = parseColor(c2);
-  if (!a || !b) return (t: number) => `color-mix(in srgb, ${c1} ${(1 - t) * 100}%, ${c2} ${t * 100}%)`;
-  return (t: number) => `rgba(${Math.round(lerp(a[0], b[0], t))}, ${Math.round(lerp(a[1], b[1], t))}, ${Math.round(
-    lerp(a[2], b[2], t),
-  )}, ${Number(lerp(a[3], b[3], t).toFixed(3))})`;
+  if (!a || !b)
+    return (t: number) => `color-mix(in srgb, ${c1} ${(1 - t) * 100}%, ${c2} ${t * 100}%)`;
+  return (t: number) =>
+    `rgba(${Math.round(lerp(a[0], b[0], t))}, ${Math.round(lerp(a[1], b[1], t))}, ${Math.round(
+      lerp(a[2], b[2], t),
+    )}, ${Number(lerp(a[3], b[3], t).toFixed(3))})`;
 }
 
 function trailDistance(head: number, dotFraction: number) {

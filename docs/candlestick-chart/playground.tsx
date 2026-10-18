@@ -33,10 +33,8 @@ const defaultProps = {
 export function CandlestickPlayground() {
   return (
     <PlaygroundShell
-      componentName="CandleChartStick"
       controls={controls}
       defaultProps={defaultProps}
-      codeNote="data omitted here — see Usage below for the Candle[] shape"
       stageClassName="w-full"
       render={(values) => (
         <div className="flex w-full justify-center">

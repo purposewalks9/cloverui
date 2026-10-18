@@ -20,7 +20,6 @@ const nextConfig = {
       "lucide-react",
       "motion",
       "framer-motion",
-      "radix-ui",
       "@base-ui/react",
       "@icons-pack/react-simple-icons",
     ],

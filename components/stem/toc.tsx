@@ -269,7 +269,7 @@ export function DocsTableOfContents({
             {copied ? <ThumbsUp /> : <Copy />}
           </ActionButton>
           <ActionButton
-            label="Share on X"
+            label="Share"
             href={shareUrl}
             onClick={() => {
               trackEvent("share_on_x", { url });

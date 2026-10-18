@@ -4,7 +4,7 @@ import * as React from "react";
 import { Copy, RefreshCw, RotateCcw, ThumbsUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { generateCode, type ControlDef } from "@/lib/playground";
+import type { ControlDef } from "@/lib/playground";
 import { ControlPanel } from "@/components/garden/control-panel";
 
 function ToolbarButton({
@@ -31,35 +31,21 @@ function ToolbarButton({
 }
 
 interface PlaygroundShellProps {
-  componentName: string;
   controls: ControlDef[];
   defaultProps: Record<string, unknown>;
-  fixedProps?: Record<string, unknown>;
-  codeNote?: string;
   stageClassName?: string;
   render: (values: Record<string, unknown>) => React.ReactNode;
 }
 
 export function PlaygroundShell({
-  componentName,
   controls,
   defaultProps,
-  fixedProps,
-  codeNote,
   stageClassName,
   render,
 }: PlaygroundShellProps) {
   const [values, setValues] = React.useState(defaultProps);
-  const [copied, setCopied] = React.useState(false);
   const [settingsCopied, setSettingsCopied] = React.useState(false);
   const [replayKey, setReplayKey] = React.useState(0);
-
-  const code = React.useMemo(
-    () => generateCode(componentName, controls, values, fixedProps),
-    [componentName, controls, values, fixedProps],
-  );
-
-  const fullCode = codeNote ? `// ${codeNote}\n${code}` : code;
 
   function setValue(prop: string, value: unknown) {
     setValues((prev) => ({ ...prev, [prop]: value }));
@@ -72,12 +58,6 @@ export function PlaygroundShell({
 
   function replay() {
     setReplayKey((k) => k + 1);
-  }
-
-  function copy() {
-    navigator.clipboard.writeText(fullCode);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
   }
 
   function copySettings() {

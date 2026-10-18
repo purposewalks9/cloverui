@@ -38,18 +38,31 @@ The text defaults to the state's name. Pass children to change it, and `color` t
 </ThinkingState>
 ```
 
+Set `status` to show how the work ended. `"complete"` fades the lit pixels out and leaves the grid still. `"error"` settles into a red cross. Both turn the shimmer off. Switching `state` blends one animation into the next instead of jumping. Changing the text crossfades to the new word, so you can drive the label from your agent's progress:
+
+```tsx
+<ThinkingState state="building" status={done ? "complete" : "active"}>
+  {done ? "Built" : "Building"}
+</ThinkingState>
+```
+
+The labels describe what the app is doing in general terms. They are not the model's private reasoning, so only show a reasoning summary when your AI provider actually returns one.
+
 Set `color="loop"` to cycle smoothly through all the state colors. Set `pixel="circle"` for round dots arranged in a circle instead of a square grid, and `grid={false}` to hide the gray grid so only the lit pixels show on a transparent background.
 
 Set the size with a text class in `className`. The pixels scale with the text. Set `shimmer={false}` to turn off the shimmer, and `speed` to make the animation faster or slower. When reduced motion is on, the pixels hold still and the text doesn't shimmer.
 
-It has `role="status"`, so screen readers announce the text when it changes.
+To color something else to match, like a timer, `thinkingStateColors(state, status)` returns the light and dark colors the pixels are using.
+
+It has `role="status"`, so screen readers announce the text when it changes. The pixel grid is hidden from screen readers. When reduced motion is on, the label swaps without sliding, and status changes jump straight to the still grid or the cross.
 
 ## Props
 
 <PropsTable data={[
   { name: "state", type: '"thinking" | "analyzing" | "debugging" | "searching" | "building" | "pondering"', default: '"thinking"', description: "Picks the animation, color and default text." },
+  { name: "status", type: '"active" | "complete" | "error"', default: '"active"', description: "Active animates. Complete goes still, error shows a red cross, and both stop the shimmer." },
   { name: "children", type: "ReactNode", description: "The text. Defaults to the state's name." },
-  { name: "color", type: 'string | "loop"', description: "Any CSS color for the lit pixels, or \"loop\" to cycle through the state colors. Defaults to the state's color." },
+  { name: "color", type: 'string | "loop"', description: "Any CSS color for the lit pixels, or \"loop\" to cycle through the state colors. Defaults to the state's color. The error status always uses red." },
   { name: "pixel", type: '"square" | "circle"', default: '"square"', description: "Square pixels in a square grid, or round dots in a circle." },
   { name: "grid", type: "boolean", default: "true", description: "Shows the gray grid behind the lit pixels." },
   { name: "speed", type: "number", default: "1", description: "Multiplies the animation speed." },

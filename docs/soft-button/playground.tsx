@@ -46,7 +46,6 @@ const defaultProps = {
 export function SoftButtonPlayground() {
   return (
     <PlaygroundShell
-      componentName="SoftButton"
       controls={controls}
       defaultProps={defaultProps}
       render={(values) => (

@@ -33,7 +33,6 @@ const defaultProps = {
 export function DropTextPlayground() {
   return (
     <PlaygroundShell
-      componentName="DropText"
       controls={controls}
       defaultProps={defaultProps}
       render={(values) => (

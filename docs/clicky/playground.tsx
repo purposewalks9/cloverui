@@ -41,7 +41,6 @@ const defaultProps = {
 export function ClickyPlayground() {
   return (
     <PlaygroundShell
-      componentName="Clicky"
       controls={controls}
       defaultProps={defaultProps}
       render={(values) => (

@@ -38,7 +38,9 @@
         "https://cloverui.vercel.app/r/404-block.json",
         "https://cloverui.vercel.app/r/liquid-button.json",
         "https://cloverui.vercel.app/r/switch.json",
-        "https://cloverui.vercel.app/r/thinking-state.json"
+        "https://cloverui.vercel.app/r/thinking-state.json",
+        "https://cloverui.vercel.app/r/response-block.json",
+        "https://cloverui.vercel.app/r/reasoning-effort.json"
       ]
     },
     {
@@ -465,7 +467,7 @@
       "name": "thinking-state",
       "type": "registry:component",
       "title": "Thinking State",
-      "description": "A tiny pixel animation beside a word, with thinking, debugging and more states.",
+      "description": "A tiny pixel animation beside a word, with thinking, debugging and more states, plus done and error.",
       "files": [
         {
           "path": "registry/clover-ui/thinking-state.tsx",
@@ -476,6 +478,46 @@
       "registryDependencies": [],
       "category": "loader",
       "meta": { "addedAt": "2026-10-14" }
+    },
+    {
+      "name": "response-block",
+      "type": "registry:component",
+      "title": "Response Block",
+      "description": "A customizable reply block for LLMs and agents that plugs into any chat UI.",
+      "files": [
+        {
+          "path": "registry/clover-ui/response-block.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/clover-ui/response-block-markdown.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": ["motion", "lucide-react"],
+      "registryDependencies": ["https://cloverui.vercel.app/r/thinking-state.json"],
+      "category": "block",
+      "meta": {
+        "addedAt": "2026-10-14"
+      }
+    },
+    {
+      "name": "reasoning-effort",
+      "type": "registry:component",
+      "title": "Reasoning Effort",
+      "description": "A slider for picking how hard an AI should reason, with a brain knob, flowing reasoning sparkles and color themes.",
+      "files": [
+        {
+          "path": "registry/clover-ui/reasoning-effort.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": ["motion", "lucide-react"],
+      "registryDependencies": [],
+      "category": "control",
+      "meta": {
+        "addedAt": "2026-10-16"
+      }
     }
   ]
 }

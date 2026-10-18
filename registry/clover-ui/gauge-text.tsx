@@ -16,7 +16,10 @@ import { cn } from "@/lib/utils";
 
 export type GaugeSpeed = "slow" | "normal" | "fast";
 
-export interface GaugeTextProps extends Omit<ComponentPropsWithoutRef<"span">, "children" | "color"> {
+export interface GaugeTextProps extends Omit<
+  ComponentPropsWithoutRef<"span">,
+  "children" | "color"
+> {
   value: number;
 
   suffix?: string;
@@ -162,7 +165,9 @@ const GaugeText = forwardRef<GaugeTextRef, GaugeTextProps>(
       play();
     }, [once, play]);
 
-    const precision = Number.isFinite(decimals) ? Math.max(0, Math.min(100, Math.trunc(decimals))) : 0;
+    const precision = Number.isFinite(decimals)
+      ? Math.max(0, Math.min(100, Math.trunc(decimals)))
+      : 0;
     const formatted = useMemo(() => display.toFixed(precision), [display, precision]);
 
     return (

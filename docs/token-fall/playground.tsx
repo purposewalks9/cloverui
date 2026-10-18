@@ -32,7 +32,6 @@ const defaultProps = {
 export function TokenFallPlayground() {
   return (
     <PlaygroundShell
-      componentName="TokenFall"
       controls={controls}
       defaultProps={defaultProps}
       stageClassName="w-full"

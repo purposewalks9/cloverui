@@ -16,8 +16,6 @@ export function DemoCanvas({
   className?: string;
   center?: boolean;
 }) {
-  const [key, setKey] = React.useState(0);
-
   return (
     <Tabs defaultValue="preview">
       <div className="not-prose flex items-end justify-end">
@@ -40,7 +38,7 @@ export function DemoCanvas({
         </TabsList>
       </div>
 
-      <div key={key}>{children}</div>
+      <div>{children}</div>
     </Tabs>
   );
 }

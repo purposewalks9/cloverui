@@ -44,10 +44,8 @@ const defaultProps = {
 export function SwitchPlayground() {
   return (
     <PlaygroundShell
-      componentName="Switch"
       controls={controls}
       defaultProps={defaultProps}
-      fixedProps={{ "aria-label": "Power" }}
       render={(values) => (
         <div className="flex min-h-[220px] w-full items-center justify-center">
           <Switch

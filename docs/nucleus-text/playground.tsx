@@ -27,7 +27,6 @@ const defaultProps = {
 export function NucleusTextPlayground() {
   return (
     <PlaygroundShell
-      componentName="NucleusText"
       controls={controls}
       defaultProps={defaultProps}
       render={(values) => (

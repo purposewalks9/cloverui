@@ -7,7 +7,6 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/roots/theme-provider";
-import { JotaiProvider } from "@/components/roots/providers";
 import { SiteGhostProvider } from "@/components/leaves/site-ghost";
 
 const instrumentSerif = localFont({
@@ -41,19 +40,17 @@ export default function RootLayout({
         className={`${GeistSans.variable} ${GeistMono.variable} ${instrumentSerif.variable} ${dynaPuff.variable} bg-background text-foreground relative isolate min-h-dvh overflow-x-hidden font-sans antialiased`}
         suppressHydrationWarning
       >
-        <JotaiProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            enableColorScheme
-            disableTransitionOnChange
-          >
-            <SiteGhostProvider>
-              <div className="relative z-10 min-h-dvh">{children}</div>
-            </SiteGhostProvider>
-          </ThemeProvider>
-        </JotaiProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          enableColorScheme
+          disableTransitionOnChange
+        >
+          <SiteGhostProvider>
+            <div className="relative z-10 min-h-dvh">{children}</div>
+          </SiteGhostProvider>
+        </ThemeProvider>
 
         <SpeedInsights />
         <Analytics />

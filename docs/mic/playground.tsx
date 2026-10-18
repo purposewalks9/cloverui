@@ -46,7 +46,6 @@ const defaultProps = {
 export function MicPlayground() {
   return (
     <PlaygroundShell
-      componentName="Mic"
       controls={controls}
       defaultProps={defaultProps}
       render={(values) => (

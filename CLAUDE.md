@@ -11,6 +11,7 @@ Stack: Next.js 16 (webpack), React 19, Tailwind CSS v4, `motion`, shadcn, pnpm.
 - `pnpm registry:check`: verify imports, client boundaries, docs, and generated registry content.
 - `pnpm registry:typecheck`: type-check the distributed components independently of the docs app.
 - `pnpm lint` and `pnpm exec tsc --noEmit`: check the full app too and report baseline failures accurately. The OpenAI mark is preserved locally in `components/seed/openai-logo.tsx`, since newer icon-package releases removed its export.
+- `pnpm test`: Node's built-in test runner over `tests/*.test.mjs`. `tests/tsx-loader.mjs` compiles TSX with the installed TypeScript, so no test packages are needed.
 - `pnpm format`: Prettier. `.prettierignore` skips `*.mdx`, `registry/clover-ui/soft-button.tsx` and `docs/soft-button`.
 
 ## Layout

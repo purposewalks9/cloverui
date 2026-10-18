@@ -32,7 +32,9 @@
     "https://cloverui.vercel.app/r/404-block.json",
     "https://cloverui.vercel.app/r/liquid-button.json",
     "https://cloverui.vercel.app/r/switch.json",
-    "https://cloverui.vercel.app/r/thinking-state.json"
+    "https://cloverui.vercel.app/r/thinking-state.json",
+    "https://cloverui.vercel.app/r/response-block.json",
+    "https://cloverui.vercel.app/r/reasoning-effort.json"
   ],
   "type": "registry:item"
 }

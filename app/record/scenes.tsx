@@ -28,7 +28,7 @@ import { GrainCube, type GrainCubeTheme } from "@/registry/clover-ui/grain-cube"
 import { CursorTag } from "@/registry/clover-ui/cursor-tag";
 import { Spinner } from "@/registry/clover-ui/spinner";
 import { PulseLoader } from "@/registry/clover-ui/pulse-loader";
-import { ThinkingState, type ThinkingStateKind } from "@/registry/clover-ui/thinking-state";
+import { ThinkingState } from "@/registry/clover-ui/thinking-state";
 import { RichProgress, type RichProgressColor } from "@/registry/clover-ui/rich-progress";
 import { ReasoningEffort, type ReasoningEffortTheme } from "@/registry/clover-ui/reasoning-effort";
 import { AppleMusicCard, type AppleMusicCardView } from "@/registry/clover-ui/apple-music-card";
@@ -49,15 +49,9 @@ function SingleToggle() {
 }
 
 function ThinkingCycle() {
-  const [index, setIndex] = useState(0);
-  useEffect(() => {
-    const timer = window.setInterval(
-      () => setIndex((value) => (value + 1) % thinking.length),
-      1800,
-    );
-    return () => window.clearInterval(timer);
-  }, []);
-  return <ThinkingState state={thinking[index]} pixel="circle" className={styles.clickText} />;
+  return (
+    <ThinkingState state="pondering" pixel="circle" className={`${styles.clickText} gap-[0.2em]`} />
+  );
 }
 
 function Progress({ color }: { color: RichProgressColor }) {
@@ -175,7 +169,6 @@ const knobs: PriceRangeKnob[][] = [
   ["pill", "line"],
 ];
 
-const thinking: ThinkingStateKind[] = ["pondering", "building"];
 const progress: RichProgressColor[] = ["default", "blue", "pink", "emerald", "orange", "violet"];
 const efforts: ReasoningEffortTheme[] = ["aurora", "ocean", "ember", "forest", "mono"];
 const gifs = ["/fire.gif", "/aurora.gif", "/ocean.gif", "/seal.gif"];
@@ -430,6 +423,7 @@ const order = [
   "cursor-tag",
   "gauge-text",
   "grid-reveal",
+  "glitchy-text",
   "thinking-state",
   "token-fall",
 ];

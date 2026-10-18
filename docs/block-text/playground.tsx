@@ -55,7 +55,6 @@ function filled(values: Record<string, unknown>, props: string[]) {
 export function BlockTextPlayground() {
   return (
     <PlaygroundShell
-      componentName="BlockText"
       controls={controls}
       defaultProps={defaultProps}
       render={(values) => (

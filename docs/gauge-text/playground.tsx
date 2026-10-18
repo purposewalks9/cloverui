@@ -36,7 +36,6 @@ const defaultProps = {
 export function GaugeTextPlayground() {
   return (
     <PlaygroundShell
-      componentName="GaugeText"
       controls={controls}
       defaultProps={defaultProps}
       render={(values) => (
