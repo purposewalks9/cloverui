@@ -44,10 +44,8 @@ const defaultProps = {
 export function GrainCubePlayground() {
   return (
     <PlaygroundShell
-      componentName="GrainCube"
       controls={controls}
       defaultProps={defaultProps}
-      codeNote="drag to spin, it settles back to the resting angle. pass colors={[...]} for a custom palette"
       render={(values) => (
         <div className="mx-auto w-full max-w-[280px]">
           <GrainCube

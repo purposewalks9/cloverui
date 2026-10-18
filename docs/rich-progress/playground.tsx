@@ -73,7 +73,6 @@ export function RichProgressPlayground() {
 
   return (
     <PlaygroundShell
-      componentName="RichProgress"
       controls={controls}
       defaultProps={defaultProps}
       render={(values) => (

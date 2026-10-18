@@ -60,7 +60,6 @@ function SiteGhostStage({ color, size }: { color: GhostColor; size: GhostSize })
 export function GhostPlayground() {
   return (
     <PlaygroundShell
-      componentName="Ghost"
       controls={controls}
       defaultProps={defaultProps}
       render={(values) => (

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useReducedMotion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
 
 export type ThinkingStateKind =
@@ -9,8 +9,11 @@ export type ThinkingStateKind =
 
 export type ThinkingStatePixel = "square" | "circle";
 
+export type ThinkingStateStatus = "active" | "complete" | "error";
+
 export interface ThinkingStateProps extends Omit<React.ComponentProps<"span">, "color"> {
   state?: ThinkingStateKind;
+  status?: ThinkingStateStatus;
   color?: string;
   pixel?: ThinkingStatePixel;
   grid?: boolean;
@@ -29,6 +32,16 @@ const STATES: Record<ThinkingStateKind, { label: string; light: string; dark: st
   building: { label: "Building", light: "#ea580c", dark: "#fb923c" },
   pondering: { label: "Pondering", light: "#db2777", dark: "#f472b6" },
 };
+
+const STATUS_COLORS: Record<
+  Exclude<ThinkingStateStatus, "active">,
+  { light: string; dark: string }
+> = {
+  complete: { light: "#16a34a", dark: "#4ade80" },
+  error: { light: "#dc2626", dark: "#f87171" },
+};
+
+const ERROR_CELLS = [6, 12, 18, 8, 16];
 
 const clamp = (value: number) => Math.min(1, Math.max(0, value));
 
@@ -123,6 +136,7 @@ const LOOP_CSS = `@property --thinking-color{syntax:"<color>";inherits:true;init
 
 function ThinkingState({
   state = "thinking",
+  status = "active",
   color,
   pixel = "square",
   grid = true,
@@ -135,15 +149,59 @@ function ThinkingState({
 }: ThinkingStateProps) {
   const reduceMotion = useReducedMotion();
   const cellsRef = React.useRef<(SVGRectElement | null)[]>([]);
+  const levelsRef = React.useRef<Float32Array | null>(null);
   const preset = STATES[state] ?? STATES.thinking;
+  const active = status === "active" || !(status in STATUS_COLORS);
+  const tone = active ? preset : STATUS_COLORS[status as keyof typeof STATUS_COLORS];
 
   React.useEffect(() => {
-    const levels = new Float32Array(GRID * GRID);
+    const levels = (levelsRef.current ??= new Float32Array(GRID * GRID));
     const apply = () => {
       cellsRef.current.forEach((cell, i) => {
         if (cell) cell.style.opacity = String(levels[i] < 0.05 ? 0 : levels[i]);
       });
     };
+
+    const from = levels.slice();
+    const begin = performance.now();
+    let frame = 0;
+    const ease = (t: number) => 1 - (1 - Math.min(1, Math.max(0, t))) ** 3;
+
+    if (status === "error") {
+      const target = new Float32Array(GRID * GRID);
+      for (const i of ERROR_CELLS) target[i] = 1;
+      if (reduceMotion) {
+        levels.set(target);
+        apply();
+        return;
+      }
+      const settle = (now: number) => {
+        const eased = ease((now - begin) / 320);
+        for (let i = 0; i < levels.length; i++) {
+          levels[i] = from[i] + (target[i] - from[i]) * eased;
+        }
+        apply();
+        if (eased < 1) frame = requestAnimationFrame(settle);
+      };
+      frame = requestAnimationFrame(settle);
+      return () => cancelAnimationFrame(frame);
+    }
+
+    if (!active) {
+      if (reduceMotion) {
+        levels.fill(0);
+        apply();
+        return;
+      }
+      const settle = (now: number) => {
+        const eased = ease((now - begin) / 420);
+        for (let i = 0; i < levels.length; i++) levels[i] = from[i] * (1 - eased);
+        apply();
+        if (eased < 1) frame = requestAnimationFrame(settle);
+      };
+      frame = requestAnimationFrame(settle);
+      return () => cancelAnimationFrame(frame);
+    }
 
     if (reduceMotion) {
       paint(state, 0.9, levels);
@@ -151,21 +209,43 @@ function ThinkingState({
       return;
     }
 
-    let frame = 0;
-    const start = performance.now();
+    const next = new Float32Array(GRID * GRID);
     const loop = (now: number) => {
-      paint(state, ((now - start) / 1000) * Math.max(0.1, speed), levels);
+      paint(state, ((now - begin) / 1000) * Math.max(0.1, speed), next);
+      const mix = ease((now - begin) / 420);
+      for (let i = 0; i < levels.length; i++) {
+        levels[i] = from[i] + (next[i] - from[i]) * mix;
+      }
       apply();
       frame = requestAnimationFrame(loop);
     };
     frame = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(frame);
-  }, [state, speed, reduceMotion]);
+  }, [state, status, active, speed, reduceMotion]);
 
-  const animateText = shimmer && !reduceMotion;
-  const loopColors = color === "loop" && !reduceMotion;
-  const fixed = color && color !== "loop" ? color : undefined;
+  const animateText = shimmer && !reduceMotion && active;
+  const loopColors = color === "loop" && !reduceMotion && active;
+  const fixed = color && color !== "loop" && status !== "error" ? color : undefined;
+  const label = children ?? preset.label;
+  const labelKey =
+    typeof label === "string" || typeof label === "number" ? String(label) : `node-${state}`;
   const radius = pixel === "circle" ? 0.4 : 0.12;
+  const labelRef = React.useRef<HTMLSpanElement | null>(null);
+  const [labelWidth, setLabelWidth] = React.useState<number | null>(null);
+  const measuredRef = React.useRef(false);
+
+  React.useLayoutEffect(() => {
+    const node = labelRef.current;
+    if (!node) return;
+    const measure = () => setLabelWidth(node.getBoundingClientRect().width);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [labelKey]);
+
+  const glide = measuredRef.current && !reduceMotion;
+  if (labelWidth !== null) measuredRef.current = true;
 
   return (
     <span
@@ -179,8 +259,8 @@ function ThinkingState({
       )}
       style={
         {
-          "--thinking-light": fixed ?? preset.light,
-          "--thinking-dark": fixed ?? preset.dark,
+          "--thinking-light": fixed ?? tone.light,
+          "--thinking-dark": fixed ?? tone.dark,
           ...style,
         } as React.CSSProperties
       }
@@ -229,19 +309,47 @@ function ThinkingState({
           ),
         )}
       </svg>
-      <span
-        className={cn(
-          "text-foreground whitespace-nowrap",
-          animateText &&
-            "[animation:thinking-state-shimmer_3s_ease-in-out_infinite] bg-[linear-gradient(90deg,var(--foreground)_0%,var(--foreground)_30%,var(--muted-foreground)_50%,var(--foreground)_70%,var(--foreground)_100%)] bg-[length:300%_100%] bg-clip-text text-transparent",
-        )}
+      <motion.span
+        className="inline-grid"
+        initial={false}
+        animate={labelWidth === null ? undefined : { width: labelWidth }}
+        transition={{ duration: glide ? 0.3 : 0, ease: [0.4, 0, 0.2, 1] }}
       >
-        {children ?? preset.label}
-      </span>
+        <AnimatePresence initial={false}>
+          <motion.span
+            key={labelKey}
+            ref={(node: HTMLSpanElement | null) => {
+              if (node) labelRef.current = node;
+            }}
+            initial={
+              reduceMotion ? { opacity: 0 } : { opacity: 0, y: "0.35em", filter: "blur(2px)" }
+            }
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: "-0.35em", filter: "blur(2px)" }}
+            transition={{ duration: reduceMotion ? 0 : 0.22, ease: [0.22, 1, 0.36, 1] }}
+            className={cn(
+              "text-foreground w-max justify-self-start whitespace-nowrap [grid-area:1/1]",
+              animateText &&
+                "[animation:thinking-state-shimmer_3s_ease-in-out_infinite] bg-[linear-gradient(90deg,var(--foreground)_0%,var(--foreground)_30%,var(--muted-foreground)_50%,var(--foreground)_70%,var(--foreground)_100%)] bg-[length:300%_100%] bg-clip-text text-transparent",
+            )}
+          >
+            {label}
+          </motion.span>
+        </AnimatePresence>
+      </motion.span>
     </span>
   );
 }
 
 ThinkingState.displayName = "ThinkingState";
+
+export function thinkingStateColors(
+  state: ThinkingStateKind,
+  status: ThinkingStateStatus = "active",
+): { light: string; dark: string } {
+  if (status === "complete" || status === "error") return STATUS_COLORS[status];
+  const { light, dark } = STATES[state] ?? STATES.thinking;
+  return { light, dark };
+}
 
 export { ThinkingState };

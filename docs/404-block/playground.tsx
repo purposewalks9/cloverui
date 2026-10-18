@@ -17,7 +17,6 @@ const defaultProps = {
 export function Block404Playground() {
   return (
     <PlaygroundShell
-      componentName="Block404"
       controls={controls}
       defaultProps={defaultProps}
       render={(values) => (

@@ -20,10 +20,8 @@ const defaultProps = {
 export function LogoPopPlayground() {
   return (
     <PlaygroundShell
-      componentName="LogoPop"
       controls={controls}
       defaultProps={defaultProps}
-      codeNote="pass logos={[{ name, src, ratio }]} for your own logos"
       render={(values) => (
         <div className="flex min-h-[320px] w-full items-center justify-center px-6">
           <LogoPop

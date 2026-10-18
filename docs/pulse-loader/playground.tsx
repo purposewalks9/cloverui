@@ -23,7 +23,6 @@ const defaultProps = {
 export function PulseLoaderPlayground() {
   return (
     <PlaygroundShell
-      componentName="PulseLoader"
       controls={controls}
       defaultProps={defaultProps}
       render={(values) => (

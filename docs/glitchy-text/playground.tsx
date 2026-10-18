@@ -54,15 +54,11 @@ const defaultProps = {
   color: "default",
 };
 
-const fixedProps = { children: "SIGNAL LOST" };
-
 export function GlitchyTextPlayground() {
   return (
     <PlaygroundShell
-      componentName="GlitchyText"
       controls={controls}
       defaultProps={defaultProps}
-      fixedProps={fixedProps}
       render={(values) => (
         <div className="flex w-full justify-center px-4">
           <GlitchyText

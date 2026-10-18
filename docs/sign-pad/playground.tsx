@@ -36,7 +36,6 @@ export function SignPadPlayground() {
 
   return (
     <PlaygroundShell
-      componentName="SignPad"
       controls={controls}
       defaultProps={defaultProps}
       render={(values) => (

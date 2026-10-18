@@ -45,7 +45,6 @@ const defaultProps = {
 export function LiquidButtonPlayground() {
   return (
     <PlaygroundShell
-      componentName="LiquidButton"
       controls={controls}
       defaultProps={defaultProps}
       render={(values) => (

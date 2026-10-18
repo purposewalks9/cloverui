@@ -61,7 +61,6 @@ export function PriceRangePlayground() {
 
   return (
     <PlaygroundShell
-      componentName="PriceRange"
       controls={controls}
       defaultProps={defaultProps}
       render={(values) => (

@@ -42,7 +42,6 @@ const defaultProps = {
 export function CursorTagPlayground() {
   return (
     <PlaygroundShell
-      componentName="CursorTag"
       controls={controls}
       defaultProps={defaultProps}
       render={(values) => (

@@ -65,7 +65,7 @@ export const getDocSchema = async () => {
   return [...basicDoc, ...componentGroups];
 };
 
-export const allDocItems = async () => {
+const allDocItems = async () => {
   const schema = await getDocSchema();
   return schema.flatMap((section) => section.items);
 };

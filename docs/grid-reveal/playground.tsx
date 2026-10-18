@@ -58,10 +58,8 @@ const defaultProps = {
 export function GridRevealPlayground() {
   return (
     <PlaygroundShell
-      componentName="GridReveal"
       controls={controls}
       defaultProps={defaultProps}
-      codeNote="children omitted here — pass whatever content sits behind the grid"
       render={(values) => (
         <div className="flex w-full justify-center">
           <GridReveal

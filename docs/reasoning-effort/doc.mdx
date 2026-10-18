@@ -1,0 +1,65 @@
+import { ReasoningEffortPlayground } from "./playground"
+
+<ReasoningEffortPlayground />
+
+## Installation
+
+<InstallationTabs item="reasoning-effort">
+```tsx file=../../registry/clover-ui/reasoning-effort.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { ReasoningEffort } from "@/components/reasoning-effort";
+
+<ReasoningEffort />
+```
+
+A slider for picking how hard an AI model should think, with four levels by default: Low, Medium, High and Max. The knob is the `lucide-react` brain icon with a dark outline, a little taller than the track, and it sits right where the fill ends. The fill is one smooth tone whose opacity rises from about half at the start to full at the brain, and a faint, wide glow slides slowly through it so it never sits completely still. Small sparkles of reasoning, in the level's own shade so they stand apart from the white level marks, flow through the fill toward the brain, and they move faster the higher the effort, easing to the new speed instead of jumping. While the brain moves, a light streak in the level's color trails behind it, with soft motion-blur lines. The faster it moves, the longer the streak, and it shrinks away once the brain stops.
+
+The lowest level shows no fill and a gray brain. After that, the fill and the brain change color together, from indigo to violet to pink, with a lighter body and a deeper outline on the brain. The level name takes the current level's color too, and changes with a soft crossfade. On the deepest level the fill shows that it's maxed out, with color only and no movement. Each part of the bar keeps its own level's color with a light tint of the theme's max color, and only the last part, leading into the brain, turns fully to that max color with a soft glow behind the brain.
+
+Pick a color theme with `theme`: `"aurora"` (indigo, violet and pink, the default), `"ocean"` (blues and teal), `"ember"` (amber, orange and red), `"forest"` (greens and lime) or `"mono"` (grays). Each theme sets the fill, brain, level name and max colors, with light and dark versions.
+
+```tsx
+<ReasoningEffort theme="ocean" />
+```
+
+Click anywhere on the track and the brain glides to the level mark nearest your click. Drag it and it follows your cursor exactly, then glides to the nearest level when you let go. It settles without any wobble. The deepest level is faster and harder: the brain speeds up into the end of the track and stops dead. The level name, tag and colors stay put while you drag and update when you let go.
+
+Pass `levels` to use your own names. Pass `value` and `onValueChange` to control it. The value is the index of the level, starting at 0:
+
+```tsx
+const [effort, setEffort] = React.useState(2);
+
+<ReasoningEffort
+  levels={["Fast", "Balanced", "Thorough", "Deep"]}
+  value={effort}
+  onValueChange={(index, level) => setEffort(index)}
+/>
+```
+
+Small bars inside the track mark each level, with a shorter one at the start.
+
+Each level has a tag in the top corner on a small gray pill: Fastest, Faster, Smarter and Smartest by default. Pass `tags` to use your own words, one per level. Set `recommended` to a level's index to show "Recommended" as that level's tag instead and make its bar taller, wider and brighter. Change it and the bars swap sizes quickly.
+
+The card is flat, with your theme's card and text colors and a thick border just a shade off the card color so it blends in. In dark mode the card is lifted slightly with a touch of your text color so it doesn't sit as pure black, and the empty track uses your muted color. The level colors have light and dark versions.
+
+It's a keyboard slider: the arrow keys move one level, and Home and End jump to the ends. Screen readers read the level name. When reduced motion is on, the knob jumps instead of sliding, there's no streak, drifting shade or sparkles and the level name swaps without sliding.
+
+## Props
+
+<PropsTable data={[
+  { name: "levels", type: "string[]", default: '["Low", "Medium", "High", "Max"]', description: "The level names, from quickest to deepest." },
+  { name: "value", type: "number", description: "The picked level's index, for a controlled slider." },
+  { name: "defaultValue", type: "number", description: "The starting level's index. Defaults to 1, the Medium level tagged Faster." },
+  { name: "onValueChange", type: "(value: number, level: string) => void", description: "Called with the new index and level name whenever the level changes." },
+  { name: "recommended", type: "number", description: "Marks one level with a taller, wider and brighter bar and a Recommended label." },
+  { name: "tags", type: "string[]", default: '["Fastest", "Faster", "Smarter", "Smartest"]', description: "A short tag for each level, shown in the top corner. The recommended level shows Recommended instead." },
+  { name: "theme", type: '"aurora" | "ocean" | "ember" | "forest" | "mono"', default: '"aurora"', description: "The color theme for the fill, brain, level name and max level." },
+  { name: "label", type: "string", default: '"Effort"', description: "The text before the level name. Also the slider's accessible name." },
+  { name: "disabled", type: "boolean", default: "false", description: "Fades the slider and ignores input." },
+  { name: "className", type: "string" },
+]} />

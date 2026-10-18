@@ -49,15 +49,15 @@ If your host uses a data attribute, define the Tailwind `dark` variant against t
 
 ## Preserve artwork while customizing
 
-| Surface                                                         | Integration approach                                                                                                                                            |
-| --------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Body text, chart labels, consent descriptions, focus rings      | Map semantic host tokens and inherited typography.                                                                                                              |
-| Switch, SoftButton, ThemeToggle, Ghost, embossed RichText | Preserve their material palettes, gradients, shadows, and geometry. Use the component's existing variants and override props intentionally.                     |
-| Spinner and PulseLoader colors                                  | CSS colors can come from host variables. Spinner now supports CSS color expressions through color mixing without replacing unrecognized colors with white.      |
-| GrainCube and ThermalFlow shader palettes                       | Pass literal hex or comma-separated numeric RGB colors. CSS variables, named colors, HSL, and OKLCH are not resolved by these shader parsers.                   |
-| LiquidButton shader palette                                     | Pass literal hex colors. DOM theme variables are not resolved by its shader parser.                                                                             |
-| NucleusText particles                                           | Supply a concrete canvas-compatible color; do not assume a DOM CSS variable is resolved by the canvas.                                                          |
-| LogoPop, TextGif, AppleMusicCard                              | Supply accessible assets where supported. LogoPop's defaults use Clover-hosted URLs; GIFs and Apple artwork/metadata have external availability requirements. |
+| Surface                                                    | Integration approach                                                                                                                                          |
+| ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Body text, chart labels, consent descriptions, focus rings | Map semantic host tokens and inherited typography.                                                                                                            |
+| Switch, SoftButton, ThemeToggle, Ghost, embossed RichText  | Preserve their material palettes, gradients, shadows, and geometry. Use the component's existing variants and override props intentionally.                   |
+| Spinner and PulseLoader colors                             | CSS colors can come from host variables. Spinner now supports CSS color expressions through color mixing without replacing unrecognized colors with white.    |
+| GrainCube and ThermalFlow shader palettes                  | Pass literal hex or comma-separated numeric RGB colors. CSS variables, named colors, HSL, and OKLCH are not resolved by these shader parsers.                 |
+| LiquidButton shader palette                                | Pass literal hex colors. DOM theme variables are not resolved by its shader parser.                                                                           |
+| NucleusText particles                                      | Supply a concrete canvas-compatible color; do not assume a DOM CSS variable is resolved by the canvas.                                                        |
+| LogoPop, TextGif, AppleMusicCard                           | Supply accessible assets where supported. LogoPop's defaults use Clover-hosted URLs; GIFs and Apple artwork/metadata have external availability requirements. |
 
 Native props are supported where the exported type declares them. Do not assume every artistic component accepts every DOM attribute. Use `className`, specialized class props, labels, formatters, and controlled props exposed by that particular component. Some inline artwork styles intentionally take precedence over generic style overrides.
 

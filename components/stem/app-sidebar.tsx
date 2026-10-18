@@ -30,13 +30,13 @@ export function AppSidebar({ docSchema }: { docSchema: DocSchema }) {
 
   return (
     <Sidebar collapsible="offcanvas" className="border-sidebar-border bg-sidebar border-r">
-      <SidebarHeader className="gap-0 px-3 pt-4 pb-3">
+      <SidebarHeader className="h-12 shrink-0 justify-center gap-0 px-4 py-0">
         <GlitchGroup>
           <Link
             href="/"
-            className="group/logo flex items-center px-1 transition-opacity duration-200"
+            className="group/logo flex items-center gap-2 px-2 transition-opacity duration-200"
           >
-            <span className="mb-1 flex size-7 shrink-0 items-center justify-center">
+            <span className="flex shrink-0 items-center justify-center">
               <CloverLogo size={20} />
             </span>
             <span className="text-[16px] tracking-tight">
