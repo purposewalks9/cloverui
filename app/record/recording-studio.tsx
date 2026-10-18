@@ -1,16 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import {
-  ArrowLeft,
-  ArrowRight,
-  EyeOff,
-  Maximize,
-  RotateCcw,
-  SunMoon,
-  SwatchBook,
-} from "lucide-react";
-import { useTheme } from "next-themes";
+import { ArrowLeft, ArrowRight, EyeOff, Maximize, RotateCcw, SwatchBook } from "lucide-react";
 import { recordingScenes } from "./scenes";
 import styles from "./recording-studio.module.css";
 
@@ -21,7 +12,6 @@ export function RecordingStudio() {
   const [controlsVisible, setControlsVisible] = useState(true);
   const [notice, setNotice] = useState("");
   const stageRef = useRef<HTMLDivElement>(null);
-  const { resolvedTheme, setTheme } = useTheme();
   const scene = recordingScenes[index];
 
   const select = useCallback((next: number) => {
@@ -60,10 +50,6 @@ export function RecordingStudio() {
     setTake((value) => value + 1);
     stageRef.current?.focus({ preventScroll: true });
   }, [scene.variants]);
-
-  const toggleTheme = useCallback(() => {
-    setTheme(resolvedTheme === "dark" ? "light" : "dark");
-  }, [resolvedTheme, setTheme]);
 
   const toggleControls = useCallback(() => {
     setControlsVisible((visible) => !visible);
@@ -105,7 +91,6 @@ export function RecordingStudio() {
         end: () => select(recordingScenes.length - 1),
         r: replay,
         v: nextVariant,
-        t: toggleTheme,
         h: toggleControls,
         f: fullscreen,
       };
@@ -115,11 +100,11 @@ export function RecordingStudio() {
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [index, select, replay, nextVariant, toggleTheme, toggleControls, fullscreen]);
+  }, [index, select, replay, nextVariant, toggleControls, fullscreen]);
 
   return (
     <main
-      className={styles.studio}
+      className={`dark ${styles.studio}`}
       aria-label="Component recording studio"
       onPointerDown={(event) => {
         if (!controlsVisible && !(event.target as Element).closest("[data-recording-stage]"))
@@ -128,10 +113,9 @@ export function RecordingStudio() {
     >
       <h1 className="sr-only">Clover UI recording studio</h1>
       <p id="recording-help" className="sr-only">
-        Left and right arrows, or N and P, switch components. V changes variants, R replays, T
-        changes the background theme, H hides controls, and F enters fullscreen. Tap outside the
-        stage to restore hidden controls. Use N and P after adjusting a slider; its arrow keys keep
-        adjusting the value.
+        Left and right arrows, or N and P, switch components. V changes variants, R replays, H hides
+        controls, and F enters fullscreen. Tap outside the stage to restore hidden controls. Use N
+        and P after adjusting a slider; its arrow keys keep adjusting the value.
       </p>
       <div className={styles.workspace}>
         <div
@@ -150,7 +134,10 @@ export function RecordingStudio() {
             data-variant={variant}
             data-take={take}
           >
-            {scene.render(variant)}
+            <figure className={styles.card} data-recording-card>
+              <div className={styles.cardDisplay}>{scene.render(variant)}</div>
+              <figcaption className={styles.cardName}>{scene.name}</figcaption>
+            </figure>
           </div>
         </div>
         <div className={styles.controls} data-hidden={!controlsVisible} inert={!controlsVisible}>
@@ -193,15 +180,6 @@ export function RecordingStudio() {
           >
             <RotateCcw />
             <kbd>R</kbd>
-          </button>
-          <button
-            className={styles.control}
-            onClick={toggleTheme}
-            aria-label="Toggle stage theme"
-            title="Light / dark (T)"
-          >
-            <SunMoon />
-            <kbd>T</kbd>
           </button>
           <button
             className={styles.control}
