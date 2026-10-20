@@ -1,21 +1,21 @@
-import { ConfettiCheckboxPlayground } from "./playground"
+import { CheckboxPlayground } from "./playground"
 
-<ConfettiCheckboxPlayground />
+<CheckboxPlayground />
 
 ## Installation
 
-<InstallationTabs item="confetti-checkbox">
-```tsx file=../../registry/clover-ui/confetti-checkbox.tsx
+<InstallationTabs item="checkbox">
+```tsx file=../../registry/clover-ui/checkbox.tsx
 ```
 </InstallationTabs>
 
 ## Usage
 
 ```tsx
-import { ConfettiCheckbox } from "@/components/confetti-checkbox";
+import { Checkbox } from "@/components/checkbox";
 
 <label className="flex items-center gap-2">
-  <ConfettiCheckbox name="updates" value="yes" />
+  <Checkbox name="updates" value="yes" />
   Send me product updates
 </label>
 ```
@@ -29,7 +29,7 @@ For a controlled checkbox:
 ```tsx
 const [checked, setChecked] = React.useState(false);
 
-<ConfettiCheckbox
+<Checkbox
   aria-label="Accept terms"
   checked={checked}
   onCheckedChange={setChecked}

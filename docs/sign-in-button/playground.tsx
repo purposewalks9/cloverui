@@ -23,6 +23,7 @@ const controls: ControlDef[] = [
       { label: "X", value: "x" },
       { label: "Facebook", value: "facebook" },
       { label: "Spotify", value: "spotify" },
+      { label: "Custom", value: "custom" },
     ],
   },
   {
@@ -45,6 +46,8 @@ const controls: ControlDef[] = [
       { label: "Large", value: "lg" },
     ],
   },
+  { type: "text", prop: "brandName", label: "Custom name" },
+  { type: "text", prop: "brandLogo", label: "Custom logo URL" },
   { type: "boolean", prop: "loading", label: "Loading" },
   { type: "boolean", prop: "disabled", label: "Disabled" },
 ];
@@ -53,6 +56,8 @@ const defaultProps = {
   provider: "google",
   intent: "continue",
   size: "default",
+  brandName: "Clover",
+  brandLogo: `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path fill="#3aad65" d="M16 15C1-2-7 19 14 17 1 32 25 39 18 19 36 30 39 4 19 14 30-6 7-5 16 15Z"/><circle cx="16" cy="16" r="4" fill="#e5d36a"/></svg>')}`,
   loading: false,
   disabled: false,
 };
@@ -64,7 +69,14 @@ export function SignInButtonPlayground() {
       defaultProps={defaultProps}
       render={(values) => (
         <SignInButton
-          provider={values.provider as SignInProvider}
+          provider={
+            values.provider === "custom"
+              ? {
+                  name: (values.brandName as string) || "Your company",
+                  logo: values.brandLogo as string,
+                }
+              : (values.provider as SignInProvider)
+          }
           intent={values.intent as SignInButtonIntent}
           size={values.size as SignInButtonSize}
           loading={values.loading as boolean}
