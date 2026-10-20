@@ -41,7 +41,6 @@
         "https://cloverui.vercel.app/r/response-block.json",
         "https://cloverui.vercel.app/r/effort-slider.json",
         "https://cloverui.vercel.app/r/auth-button.json",
-        "https://cloverui.vercel.app/r/press-button.json",
         "https://cloverui.vercel.app/r/checkbox.json",
         "https://cloverui.vercel.app/r/model-picker.json",
         "https://cloverui.vercel.app/r/spectrum-bars.json"
@@ -522,24 +521,6 @@
         }
       ],
       "dependencies": ["class-variance-authority"],
-      "registryDependencies": [],
-      "category": "button",
-      "meta": {
-        "addedAt": "2026-10-20"
-      }
-    },
-    {
-      "name": "press-button",
-      "type": "registry:component",
-      "title": "Press Button",
-      "description": "A curved press button with a smooth bevel, light and dark materials, and customizable color.",
-      "files": [
-        {
-          "path": "registry/clover-ui/press-button.tsx",
-          "type": "registry:component"
-        }
-      ],
-      "dependencies": ["class-variance-authority", "motion"],
       "registryDependencies": [],
       "category": "button",
       "meta": {
