@@ -55,7 +55,6 @@ Every row received source inspection, registry checks, and consumer type checkin
 | GridReveal       | Inherited child content, fixed reveal presets                         | Bounded timer tracking and current callbacks; screenshot comparison; long-running loops source-reviewed. |
 | LiquidButton     | Shader artwork and fixed material treatment                           | Source; color-format and hidden-loop limits below.                                                       |
 | LogoPop          | Inherits semantic foreground; masks use asset URLs                    | Ref and animation cleanup fixes; browser appearance/ref cleanup.                                         |
-| Mic              | Semantic/variant controls; browser microphone APIs                    | Source; live microphone acquisition not exercised.                                                       |
 | NucleusText      | Explicit text color and concrete canvas particle color                | Shake-animation cleanup; source.                                                                         |
 | PriceRange       | Semantic labels and variants                                          | Source; existing controlled/keyboard and reduced-motion paths inspected.                                 |
 | PulseLoader      | Explicit CSS color and class overrides                                | Source; automatic reduced-motion gap below.                                                              |
