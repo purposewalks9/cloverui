@@ -61,7 +61,7 @@ export function MobileMenu({ docSchema }: { docSchema: DocSchema }) {
                 .filter((group) => group.items.length)
                 .map((group) => (
                   <div key={group.title}>
-                    <h2 className="text-muted-foreground mb-1.5 text-sm">{group.title}</h2>
+                    <h2 className="text-foreground mb-1.5 text-sm">{group.title}</h2>
                     <div className="flex flex-col items-start">
                       {group.items.map((item) => (
                         <Link
@@ -69,7 +69,7 @@ export function MobileMenu({ docSchema }: { docSchema: DocSchema }) {
                           href={item.href}
                           onClick={close}
                           aria-current={pathname === item.href ? "page" : undefined}
-                          className="max-w-full rounded-none py-1.5 text-xl leading-tight tracking-tight focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
+                          className="text-muted-foreground hover:text-foreground max-w-full rounded-none py-1.5 text-xl leading-tight tracking-tight focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
                         >
                           <span className={cn(pathname === item.href && "sponsor-gradient")}>
                             {item.title}

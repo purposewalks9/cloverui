@@ -9,7 +9,6 @@ import { ThemeToggle, type ThemeToggleTheme } from "@/registry/clover-ui/theme-t
 import { PriceRange, type PriceRangeKnob } from "@/registry/clover-ui/price-range";
 import { SignPad } from "@/registry/clover-ui/sign-pad";
 import { Switch } from "@/registry/clover-ui/switch";
-import { Mic, type MicColor } from "@/registry/clover-ui/mic";
 import { BlockText, type BlockTextTheme } from "@/registry/clover-ui/block-text";
 import { RichText, type RichTextColor } from "@/registry/clover-ui/rich-text";
 import { NucleusText } from "@/registry/clover-ui/nucleus-text";
@@ -38,10 +37,6 @@ const TokenFall = dynamic(
   () => import("@/registry/clover-ui/token-fall").then((m) => m.TokenFall),
   { ssr: false },
 );
-
-function Pair({ children }: { children: ReactNode }) {
-  return <div className={styles.pair}>{children}</div>;
-}
 
 function SingleToggle() {
   const [theme, setTheme] = useState<ThemeToggleTheme>("light");
@@ -134,11 +129,6 @@ const soft: SoftColor[] = [
   "yellow",
   "white",
   "black",
-];
-const microphones: MicColor[][] = [
-  ["blue", "purple"],
-  ["pink", "emerald"],
-  ["orange", "default"],
 ];
 const blocks: BlockTextTheme[] = ["halloween", "ocean", "classic", "candy", "sunset"];
 const rich: RichTextColor[] = [
@@ -300,18 +290,6 @@ const scenes: RecordingScene[] = [
     name: "Switch",
     variants: switchColors.length,
     render: (v) => <Switch color={switchColors[v]} size="lg" defaultChecked aria-label="Switch" />,
-  },
-  {
-    id: "mic",
-    name: "Mic",
-    variants: microphones.length,
-    render: (v) => (
-      <Pair>
-        {microphones[v].map((color) => (
-          <Mic key={color} color={color} size="lg" />
-        ))}
-      </Pair>
-    ),
   },
   {
     id: "rich-text",
