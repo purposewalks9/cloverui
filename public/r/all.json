@@ -36,6 +36,7 @@
     "https://cloverui.vercel.app/r/response-block.json",
     "https://cloverui.vercel.app/r/reasoning-effort.json",
     "https://cloverui.vercel.app/r/sign-in-button.json",
+    "https://cloverui.vercel.app/r/sculpted-button.json",
     "https://cloverui.vercel.app/r/confetti-checkbox.json"
   ],
   "type": "registry:item"
