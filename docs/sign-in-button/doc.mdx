@@ -1,0 +1,81 @@
+import { SignInButtonPlayground } from "./playground"
+import { SignInProviderGallery, SignInCustomDemo } from "./demo"
+
+<SignInButtonPlayground />
+
+A sign-in button with a diffused color surface made from the provider's own logo. The crisp mark sits in a small inset lens while its colors spread through the button. Hover or focus to gently shift the color field; press to settle it down.
+
+## Providers
+
+Google, Apple, GitHub, Microsoft, Discord, X, Facebook, and Spotify are included. Try a button to preview its loading state.
+
+<SignInProviderGallery />
+
+## Installation
+
+<InstallationTabs item="sign-in-button">
+```tsx file=../../registry/clover-ui/sign-in-button.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { SignInButton } from "@/components/sign-in-button";
+
+<SignInButton provider="google" onClick={handleGoogleSignIn} />
+<SignInButton provider="github" intent="signin" />
+<SignInButton provider="apple" intent="signup" size="lg" />
+```
+
+This is a button primitive. Connect `onClick` to your authentication client and pass `loading` while that request is pending. It does not start OAuth, collect credentials, or keep authentication state itself. The documentation buttons only preview the interaction.
+
+```tsx
+<SignInButton
+  provider="google"
+  loading={isSigningIn}
+  loadingLabel="Opening Google…"
+  onClick={handleGoogleSignIn}
+  className="w-full"
+/>
+```
+
+`loading` disables repeat clicks and sets `aria-busy`. It shows a spinner and “Connecting to [provider]…” unless you provide `loadingLabel`. Use your form's status or alert region to announce authentication results and errors. The native button defaults to `type="button"` and accepts a React 19 `ref` plus standard button attributes.
+
+## Custom logo
+
+Pass an object with `name` and `logo`. The same SVG or image is used for the foreground mark and the blurred background, so replacing the asset changes the colors automatically. There is no separate palette to maintain, canvas sampling, or extra logo service.
+
+```tsx
+import { SignInButton, type SignInBrand } from "@/components/sign-in-button";
+
+const brand: SignInBrand = {
+  name: "Your company",
+  logo: "/your-logo.svg",
+};
+
+<SignInButton provider={brand}>Continue with your company</SignInButton>
+```
+
+<SignInCustomDemo />
+
+Use a transparent logo with explicit fill colors; `currentColor` in an external SVG cannot inherit the button's text color. SVG data URLs, local paths, and remote image URLs work. Self-host custom images for predictable availability, and allow their source in your site's image policy. The bundled logos use `data:` images. If an image fails to load, the button keeps its label and shows the brand's first letter on a neutral surface.
+
+## Motion and themes
+
+The surface has no continuous animation when idle. Color movement is triggered by hover or keyboard focus, and reduced motion disables the movement and spinner rotation. The material keeps its artwork colors on light, dark, and custom host backgrounds. The focus outline uses the host's `--ring` token with a fallback, and forced-colors mode uses system button colors.
+
+## Props
+
+<PropsTable data={[
+  { name: "provider", type: "SignInProvider | SignInBrand", default: '"google"', description: "A bundled provider name, or an object with a name and logo image URL." },
+  { name: "intent", type: '"continue" | "signin" | "signup"', default: '"continue"', description: "Chooses Continue with, Sign in with, or Sign up with." },
+  { name: "size", type: '"sm" | "default" | "lg"', default: '"default"' },
+  { name: "loading", type: "boolean", default: "false", description: "Shows the pending state and disables the button." },
+  { name: "loadingLabel", type: "string", description: "Overrides the Connecting to [provider]… label." },
+  { name: "disabled", type: "boolean", default: "false" },
+  { name: "children", type: "React.ReactNode", description: "Overrides the normal button label. Use text or other non-interactive content." },
+  { name: "type", type: '"button" | "submit" | "reset"', default: '"button"' },
+  { name: "className", type: "string", description: "Use w-full to fill the available width." },
+  { name: "ref", type: "React.Ref<HTMLButtonElement>" },
+]} />
