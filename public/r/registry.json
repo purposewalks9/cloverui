@@ -20,7 +20,7 @@
         "https://cloverui.vercel.app/r/ghost.json",
         "https://cloverui.vercel.app/r/grain-cube.json",
         "https://cloverui.vercel.app/r/grid-reveal.json",
-        "https://cloverui.vercel.app/r/logo-pop.json",
+        "https://cloverui.vercel.app/r/logo-marquee.json",
         "https://cloverui.vercel.app/r/nucleus-text.json",
         "https://cloverui.vercel.app/r/price-range.json",
         "https://cloverui.vercel.app/r/pulse-loader.json",
@@ -39,10 +39,12 @@
         "https://cloverui.vercel.app/r/switch.json",
         "https://cloverui.vercel.app/r/thinking-state.json",
         "https://cloverui.vercel.app/r/response-block.json",
-        "https://cloverui.vercel.app/r/reasoning-effort.json",
-        "https://cloverui.vercel.app/r/sign-in-button.json",
+        "https://cloverui.vercel.app/r/effort-slider.json",
+        "https://cloverui.vercel.app/r/auth-button.json",
         "https://cloverui.vercel.app/r/press-button.json",
-        "https://cloverui.vercel.app/r/checkbox.json"
+        "https://cloverui.vercel.app/r/checkbox.json",
+        "https://cloverui.vercel.app/r/model-picker.json",
+        "https://cloverui.vercel.app/r/spectrum-bars.json"
       ]
     },
     {
@@ -376,13 +378,13 @@
       "category": "text"
     },
     {
-      "name": "logo-pop",
+      "name": "logo-marquee",
       "type": "registry:component",
-      "title": "Logo Pop",
-      "description": "A tidy grid of company logos that pop in one by one, tilt, settle and bounce.",
+      "title": "Logo Marquee",
+      "description": "A rolling strip of company logos on an arc, with the middle one big and sharp and the sides small and blurred.",
       "files": [
         {
-          "path": "registry/clover-ui/logo-pop.tsx",
+          "path": "registry/clover-ui/logo-marquee.tsx",
           "type": "registry:component"
         }
       ],
@@ -548,13 +550,13 @@
       }
     },
     {
-      "name": "reasoning-effort",
+      "name": "effort-slider",
       "type": "registry:component",
-      "title": "Reasoning Effort",
+      "title": "Effort Slider",
       "description": "A slider for picking how hard an AI should reason, with a brain knob, flowing reasoning sparkles and color themes.",
       "files": [
         {
-          "path": "registry/clover-ui/reasoning-effort.tsx",
+          "path": "registry/clover-ui/effort-slider.tsx",
           "type": "registry:component"
         }
       ],
@@ -569,18 +571,17 @@
       }
     },
     {
-      "name": "sign-in-button",
+      "name": "auth-button",
       "type": "registry:component",
-      "title": "Sign In Button",
-      "description": "A sign-in button with a smooth color surface drawn from each provider's logo, with eight providers and custom brands.",
+      "title": "Auth Button",
+      "description": "A sign-in button for 12 providers with a soft tint of each brand's colors.",
       "files": [
         {
-          "path": "registry/clover-ui/sign-in-button.tsx",
+          "path": "registry/clover-ui/auth-button.tsx",
           "type": "registry:component"
         }
       ],
       "dependencies": [
-        "motion",
         "class-variance-authority"
       ],
       "registryDependencies": [],
@@ -613,8 +614,8 @@
     {
       "name": "checkbox",
       "type": "registry:component",
-      "title": "Checkbox",
-      "description": "A rounded checkbox with a colorful pop, confetti burst, and springing check.",
+      "title": "Check Box",
+      "description": "A rounded checkbox where the color grows from the center and the check draws in, with a quick burst of colorful sparkles.",
       "files": [
         {
           "path": "registry/clover-ui/checkbox.tsx",
@@ -631,6 +632,42 @@
       "category": "control",
       "meta": {
         "addedAt": "2026-10-20"
+      }
+    },
+    {
+      "name": "model-picker",
+      "type": "registry:component",
+      "title": "Model Picker",
+      "description": "A small dropdown for choosing an AI model and effort, with a Model menu, one-color logos and a built-in Effort Slider.",
+      "files": [
+        {
+          "path": "registry/clover-ui/model-picker.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["https://cloverui.vercel.app/r/effort-slider.json"],
+      "category": "control",
+      "meta": {
+        "addedAt": "2026-10-18"
+      }
+    },
+    {
+      "name": "spectrum-bars",
+      "type": "registry:component",
+      "title": "Spectrum Bars",
+      "description": "A signal background of smoothly sliding color stripes that fill the block and fade into your page background, with four themes.",
+      "files": [
+        {
+          "path": "registry/clover-ui/spectrum-bars.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "category": "background",
+      "meta": {
+        "addedAt": "2026-10-18"
       }
     }
   ]

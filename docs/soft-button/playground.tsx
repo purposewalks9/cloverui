@@ -2,7 +2,7 @@
 
 import { SoftButton } from "@/registry/clover-ui/soft-button";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
-import type { ControlDef } from "@/lib/playground";
+import { jsx, type ControlDef } from "@/lib/playground";
 
 type SoftButtonProps = React.ComponentProps<typeof SoftButton>;
 
@@ -48,6 +48,9 @@ export function SoftButtonPlayground() {
     <PlaygroundShell
       controls={controls}
       defaultProps={defaultProps}
+      code={(values) =>
+        jsx("SoftButton", { color: values.color, size: values.size }, values.children as string)
+      }
       render={(values) => (
       <div className="flex w-full justify-center">
         <SoftButton color={values.color as SoftButtonProps["color"]} size={values.size as SoftButtonProps["size"]}>

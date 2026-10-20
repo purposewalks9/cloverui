@@ -3,7 +3,7 @@
 import { ThermalFlow } from "@/registry/clover-ui/thermal-flow";
 import { THERMAL_FLOW_THEMES, type ThermalFlowTheme } from "@/registry/clover-ui/thermal-flow";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
-import type { ControlDef } from "@/lib/playground";
+import { jsx, type ControlDef } from "@/lib/playground";
 
 const themeSwatch = (theme: ThermalFlowTheme) =>
   `linear-gradient(135deg, ${THERMAL_FLOW_THEMES[theme].join(", ")})`;
@@ -51,6 +51,19 @@ export function ThermalFlowPlayground() {
       controls={controls}
       defaultProps={defaultProps}
 
+      code={(values) =>
+        jsx("ThermalFlow", {
+          theme: values.theme,
+          bands: values.bands,
+          scale: values.scale,
+          warp: values.warp,
+          softness: values.softness,
+          grain: values.grain,
+          speed: values.speed,
+          resolution: values.resolution,
+          animate: values.animate,
+        })
+      }
       render={(values) => (
         <ThermalFlow
           theme={values.theme as ThermalFlowTheme}

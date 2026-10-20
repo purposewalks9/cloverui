@@ -8,7 +8,7 @@ import {
   type PriceRangeValue,
 } from "@/registry/clover-ui/price-range";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
-import type { ControlDef } from "@/lib/playground";
+import { expr, jsx, type ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [
   {
@@ -63,6 +63,18 @@ export function PriceRangePlayground() {
     <PlaygroundShell
       controls={controls}
       defaultProps={defaultProps}
+      code={(values) =>
+        jsx("PriceRange", {
+          value: expr("value"),
+          onValueChange: expr("setValue"),
+          currency: values.currency,
+          color: values.color,
+          knob: values.knob,
+          ticks: values.ticks,
+          showTicks: values.showTicks,
+          disabled: values.disabled,
+        })
+      }
       render={(values) => (
         <div className="flex w-full items-center justify-center px-4 py-10">
           <PriceRange

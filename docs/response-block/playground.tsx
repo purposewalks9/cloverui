@@ -2,7 +2,7 @@
 
 import { ResponseBlock } from "@/registry/clover-ui/response-block";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
-import type { ControlDef } from "@/lib/playground";
+import { expr, jsx, type ControlDef } from "@/lib/playground";
 import { useResponseSimulation, type DemoName } from "./simulation";
 
 const controls: ControlDef[] = [
@@ -13,6 +13,7 @@ const controls: ControlDef[] = [
     options: [
       { label: "Research", value: "research" },
       { label: "Coding task", value: "coding" },
+      { label: "Pull request", value: "pull-request" },
     ],
   },
   { type: "boolean", prop: "collapseWhenDone", label: "Collapse when done" },
@@ -41,6 +42,16 @@ export function ResponseBlockPlayground() {
       controls={controls}
       defaultProps={defaultProps}
       stageClassName="items-start pt-10 sm:pt-14 lg:min-h-[36rem]"
+      code={(values) =>
+        jsx("ResponseBlock", {
+          status: expr("status"),
+          steps: expr("steps"),
+          answer: expr("answer"),
+          elapsed: expr("elapsed"),
+          collapseWhenDone: values.collapseWhenDone,
+          onRetry: expr("retry"),
+        })
+      }
       render={(values) => {
         const demo = values.demo as DemoName;
         return <Simulation key={demo} demo={demo} values={values} />;

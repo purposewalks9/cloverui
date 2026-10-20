@@ -80,11 +80,7 @@ const AppleMusicGlyph = ({ className }: { className?: string }) => (
   </svg>
 );
 
-const frameClass = (view: AppleMusicCardView) =>
-  cn(
-    "relative isolate block shrink-0 overflow-hidden rounded-[20px] transition-[width] duration-300 ease-out motion-reduce:transition-none",
-    view === "full" ? "w-[200px]" : "w-[152px]",
-  );
+const frameClass = "relative isolate block w-[200px] shrink-0 overflow-hidden rounded-[20px]";
 
 const MusicTag = () => (
   <p className="px-1 pt-2 pb-0.5 text-[12px] leading-none font-semibold whitespace-nowrap text-white/55">
@@ -101,7 +97,7 @@ const AppleMusicCardSkeleton = ({
   className?: string;
 }) => (
   <div
-    className={cn(frameClass(view), "bg-muted/50 ring-border ring-1 ring-inset", className)}
+    className={cn(frameClass, "bg-muted/50 ring-border ring-1 ring-inset", className)}
     aria-busy="true"
     aria-label="Loading Apple Music track"
   >
@@ -118,14 +114,8 @@ const AppleMusicCardSkeleton = ({
   </div>
 );
 
-const AppleMusicCardError = ({
-  view,
-  className,
-}: {
-  view: AppleMusicCardView;
-  className?: string;
-}) => (
-  <div className={cn(frameClass(view), "bg-neutral-900", className)}>
+const AppleMusicCardError = ({ className }: { className?: string }) => (
+  <div className={cn(frameClass, "bg-neutral-900", className)}>
     <div className="p-2">
       <div className="flex aspect-square w-full items-center justify-center rounded-[13px] bg-neutral-800">
         <p className="px-3 text-center text-xs text-white/60">Failed to load Apple Music data</p>
@@ -160,7 +150,7 @@ function AppleMusicCard({ url, view = "full", className, ...props }: AppleMusicC
   const expanded = view === "full";
 
   if (data === undefined) return <AppleMusicCardSkeleton view={view} className={className} />;
-  if (!data) return <AppleMusicCardError view={view} className={className} />;
+  if (!data) return <AppleMusicCardError className={className} />;
 
   return (
     <a
@@ -170,7 +160,7 @@ function AppleMusicCard({ url, view = "full", className, ...props }: AppleMusicC
       draggable={false}
       aria-label={`Open ${data.title} by ${data.artist} in Apple Music`}
       className={cn(
-        frameClass(view),
+        frameClass,
         "group focus-visible:ring-ring bg-neutral-900 focus-visible:ring-2 focus-visible:outline-none",
         className,
       )}
@@ -202,12 +192,17 @@ function AppleMusicCard({ url, view = "full", className, ...props }: AppleMusicC
         <div
           aria-hidden={!expanded}
           className={cn(
-            "grid grid-cols-[minmax(0,1fr)] transition-[grid-template-rows,opacity] duration-300 ease-out motion-reduce:transition-none",
+            "grid grid-cols-[minmax(0,1fr)] transition-[grid-template-rows,opacity] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none",
             expanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0",
           )}
         >
           <div className="min-h-0 min-w-0 overflow-hidden">
-            <div className="px-1 pt-2.5">
+            <div
+              className={cn(
+                "px-1 pt-2.5 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none",
+                !expanded && "-translate-y-3",
+              )}
+            >
               <p className="truncate text-[15px] font-semibold tracking-[-0.02em] text-white">
                 {data.title}
               </p>

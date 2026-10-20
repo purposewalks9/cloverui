@@ -3,7 +3,7 @@ export const siteConfig = {
   url: "https://cloverui.vercel.app",
   ogImage: "https://cloverui.vercel.app/og",
   description:
-    "Beautiful, sophisticated UI components designed for modern React and Tailwind CSS applications.",
+    "Animated React and Tailwind CSS components, from shaders and motion primitives to AI chat pieces like model pickers and thinking states.",
   carbon: {
     serve: "",
     placement: "cloverui",

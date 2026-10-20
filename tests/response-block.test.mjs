@@ -526,3 +526,24 @@ test("a logo right before a link chip that already shows it is skipped", () => {
   assert.ok(html.includes("example.com/o.png"));
   assert.match(text(html), /Following the docs/);
 });
+
+test("git and other agent steps get their own summary words", () => {
+  const tool = (id, kind) => ({ id, type: "tool", kind, title: id, status: "done" });
+  assert.equal(responseLabel("done", [tool("m", "merge")]), "Merged 1 pull request");
+  assert.equal(
+    responseLabel("done", [tool("c1", "commit"), tool("c2", "commit"), tool("p", "push")]),
+    "Made 2 commits, pushed 1 branch",
+  );
+  assert.equal(
+    responseLabel("done", [tool("b", "branch"), tool("pr", "pull-request"), tool("m", "merge")]),
+    "Used 3 tools",
+  );
+  assert.equal(responseLabel("done", [tool("x", "made-up")]), "Used 1 tool");
+});
+
+test("a running merge shows its title and a known icon", () => {
+  const steps = [{ id: "m", type: "tool", kind: "merge", title: "Merging #42", status: "running" }];
+  assert.equal(responseLabel("searching", steps), "Merging #42");
+  const html = renderToStaticMarkup(h(ResponseBlock, { status: "searching", steps }));
+  assert.match(html, /lucide-git-merge/);
+});

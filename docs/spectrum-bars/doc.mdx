@@ -1,0 +1,53 @@
+import { SpectrumBarsPlayground } from "./playground"
+
+<SpectrumBarsPlayground />
+
+## Installation
+
+<InstallationTabs item="spectrum-bars">
+```tsx file=../../registry/clover-ui/spectrum-bars.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { SpectrumBars } from "@/components/spectrum-bars";
+
+<div className="relative h-96 overflow-hidden rounded-2xl">
+  <SpectrumBars />
+  <div className="relative">Your content</div>
+</div>
+```
+
+A signal background of bright vertical color stripes that fill the whole block, like a TV test pattern. The stripes slowly slide sideways while their colors drift and blend into each other, some dim down between them and the brightest ones glow toward white. Everything moves smoothly, with no jumps.
+
+It fills its parent, so give the parent `position: relative` and a size, and put your content after it. It ignores the mouse, so clicks go through to your content.
+
+Pick colors with `theme`: `"signal"` (green, cyan, blue, pink, red, orange and yellow, the default), `"neon"`, `"sunset"` or `"mono"`. Or pass your own list:
+
+```tsx
+<SpectrumBars colors={["#00a3ff", "#7df9ff", "#ff2d75", "#ffb3d1"]} />
+```
+
+By default the stripes fill the whole block. Make `bandWidth` and `bandHeight` smaller (from 0 to 1) to shrink them into a band in the middle. Its left and right ends then fade softly into the background. `columns` sets how many stripes fit across, `glow` how much soft light spreads from them (0 turns it off), `glitch` how far everything sways sideways, smoothly, and `speed` how fast they slide and change; it goes up to 10 in the playground and has no upper limit.
+
+It's drawn on a canvas and pauses when it's off screen or the tab is hidden. The stripe colors are its own and stay the same in light and dark mode. The dimmed stripes fade into your theme's background color, so it blends with the page. Pass `backgroundColor` to use another color behind them. When reduced motion is on, or `animate` is false, it draws one still frame.
+
+## Props
+
+<PropsTable data={[
+  { name: "theme", type: '"signal" | "neon" | "sunset" | "mono"', default: '"signal"', description: "The color theme." },
+  { name: "colors", type: "string[]", description: "Your own colors. Overrides theme." },
+  { name: "bandWidth", type: "number", default: "1", description: "How wide the stripes are, as a share of the area. 1 fills it." },
+  { name: "bandHeight", type: "number", default: "1", description: "How tall the stripes are, as a share of the area. 1 fills it." },
+  { name: "columns", type: "number", default: "56", description: "How many stripes fit across, from 4 to 256." },
+  { name: "glow", type: "number", default: "0.6", description: "How much soft light spreads from the stripes. 0 turns it off." },
+  { name: "glitch", type: "number", default: "0.5", description: "How far the stripes sway sideways. 0 turns it off." },
+  { name: "speed", type: "number", default: "1", description: "How fast the stripes slide and change color." },
+  { name: "animate", type: "boolean", default: "true", description: "Set to false to show one still frame." },
+  { name: "backgroundColor", type: "string", description: "The color the dimmed stripes fade into. Defaults to your theme background." },
+  { name: "radius", type: "string", description: "Rounds the corners, e.g. \"1rem\"." },
+  { name: "className", type: "string" },
+  { name: "style", type: "CSSProperties" },
+]} />

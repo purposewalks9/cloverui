@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Copy, RefreshCw, RotateCcw, ThumbsUp } from "lucide-react";
+import { Copy, RotateCcw, ThumbsUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { ControlDef } from "@/lib/playground";
@@ -20,12 +20,11 @@ function ToolbarButton({
     <Button
       type="button"
       variant="ghost"
-      size="icon"
       onClick={onClick}
-      aria-label={label}
-      className="text-muted-foreground hover:text-foreground size-8 cursor-pointer rounded-none [&_svg]:size-4"
+      className="text-muted-foreground hover:text-foreground h-8 shrink-0 cursor-pointer gap-1.5 rounded-none px-2 text-xs font-medium whitespace-nowrap [&_svg]:size-3.5"
     >
       {children}
+      <span>{label}</span>
     </Button>
   );
 }
@@ -35,6 +34,7 @@ interface PlaygroundShellProps {
   defaultProps: Record<string, unknown>;
   stageClassName?: string;
   render: (values: Record<string, unknown>) => React.ReactNode;
+  code?: (values: Record<string, unknown>) => string;
 }
 
 export function PlaygroundShell({
@@ -42,6 +42,7 @@ export function PlaygroundShell({
   defaultProps,
   stageClassName,
   render,
+  code,
 }: PlaygroundShellProps) {
   const [values, setValues] = React.useState(defaultProps);
   const [settingsCopied, setSettingsCopied] = React.useState(false);
@@ -56,12 +57,8 @@ export function PlaygroundShell({
     setReplayKey((k) => k + 1);
   }
 
-  function replay() {
-    setReplayKey((k) => k + 1);
-  }
-
   function copySettings() {
-    navigator.clipboard.writeText(JSON.stringify(values, null, 2));
+    navigator.clipboard.writeText(code ? code(values) : JSON.stringify(values, null, 2));
     setSettingsCopied(true);
     setTimeout(() => setSettingsCopied(false), 1500);
   }
@@ -83,19 +80,15 @@ export function PlaygroundShell({
 
       {controls.length > 0 && (
         <div className="border-border w-full shrink-0 border-t lg:w-72 lg:border-t-0 lg:border-l">
-          <div className="border-border flex h-12 items-center justify-between border-b pr-2 pl-4">
-            <span className="text-foreground text-sm font-medium">Customize</span>
-            <div className="flex items-center gap-0.5">
-              <ToolbarButton label="Replay" onClick={replay}>
-                <RefreshCw />
-              </ToolbarButton>
+          <div className="border-border flex h-12 items-center justify-between gap-2 border-b pr-2 pl-4">
+            <span className="text-foreground shrink-0 text-sm font-medium whitespace-nowrap">
+              Customize
+            </span>
+            <div className="flex shrink-0 items-center">
               <ToolbarButton label="Reset" onClick={reset}>
                 <RotateCcw />
               </ToolbarButton>
-              <ToolbarButton
-                label={settingsCopied ? "Copied" : "Copy settings"}
-                onClick={copySettings}
-              >
+              <ToolbarButton label={settingsCopied ? "Copied" : "Code"} onClick={copySettings}>
                 {settingsCopied ? <ThumbsUp /> : <Copy />}
               </ToolbarButton>
             </div>

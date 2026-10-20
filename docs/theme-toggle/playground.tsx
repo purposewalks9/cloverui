@@ -2,7 +2,7 @@
 
 import { ThemeToggle, type ThemeToggleSize } from "@/registry/clover-ui/theme-toggle";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
-import type { ControlDef } from "@/lib/playground";
+import { jsx, type ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [
   { type: "color", prop: "sunColor", label: "Sun" },
@@ -30,6 +30,13 @@ export function ThemeTogglePlayground() {
     <PlaygroundShell
       controls={controls}
       defaultProps={defaultProps}
+      code={(values) =>
+        jsx("ThemeToggle", {
+          sunColor: values.sunColor,
+          moonColor: values.moonColor,
+          size: values.size,
+        })
+      }
       render={(values) => (
         <div className="flex min-h-[220px] w-full items-center justify-center">
           <ThemeToggle

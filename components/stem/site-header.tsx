@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { usePathname } from "next/navigation";
-import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { ThemeToggle } from "@/components/stem/theme-toggle";
 import { MobileMenu } from "@/components/stem/mobile-menu";
@@ -30,18 +29,17 @@ export function SiteHeader({ docSchema }: { docSchema: DocSchema }) {
   }
 
   return (
-    <header className="border-border bg-sidebar text-foreground sticky top-0 z-30 flex h-12 shrink-0 items-center justify-between gap-3 border-b px-4">
-      <div className="flex min-w-0 items-center gap-2">
+    <header className="border-border bg-sidebar text-foreground sticky top-0 z-30 flex h-14 shrink-0 items-center justify-between gap-3 border-b px-4 md:px-12">
+      <div className="flex min-w-0 items-center gap-3">
         <MobileMenu docSchema={docSchema} />
-        <SidebarTrigger className="-ml-1 hidden md:inline-flex" />
-        <Separator orientation="vertical" className="h-4" />
-        <h1 className="min-w-0 truncate text-[15px] font-semibold whitespace-nowrap sm:text-[16px] md:shrink-0">
+        <Separator orientation="vertical" className="h-4 md:hidden" />
+        <h1 className="min-w-0 truncate text-[16px] font-bold tracking-tight whitespace-nowrap sm:text-[17px] md:shrink-0">
           {title}
         </h1>
         {description && (
           <>
-            <Separator orientation="vertical" className="hidden h-4 md:block" />
-            <p className="text-muted-foreground hidden min-w-0 flex-[1_1_0] truncate text-[14px] font-medium md:block">
+            <Separator orientation="vertical" className="hidden h-5 md:block" />
+            <p className="text-foreground/70 hidden min-w-0 flex-[1_1_0] truncate text-[15px] font-medium md:block">
               {description}
             </p>
           </>

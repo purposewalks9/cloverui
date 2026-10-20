@@ -2,7 +2,7 @@
 
 import { NucleusText } from "@/registry/clover-ui/nucleus-text";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
-import type { ControlDef } from "@/lib/playground";
+import { jsx, type ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [
   { type: "text", prop: "children", label: "Text" },
@@ -29,6 +29,21 @@ export function NucleusTextPlayground() {
     <PlaygroundShell
       controls={controls}
       defaultProps={defaultProps}
+      code={(values) =>
+        jsx(
+          "NucleusText",
+          {
+            color: values.color,
+            particleColor: values.particleColor,
+            particleCount: values.particleCount,
+            particleSize: values.particleSize,
+            gatherSpeed: values.gatherSpeed,
+            shake: values.shake,
+            className: "text-center text-5xl font-semibold tracking-[-0.055em] sm:text-7xl",
+          },
+          values.children as string,
+        )
+      }
       render={(values) => (
         <div className="flex min-h-[280px] w-full items-center justify-center overflow-hidden px-4">
           <NucleusText

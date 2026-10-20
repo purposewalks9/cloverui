@@ -2,7 +2,7 @@
 
 import { AppleMusicCard, type AppleMusicCardView } from "@/registry/clover-ui/apple-music-card";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
-import type { ControlDef } from "@/lib/playground";
+import { jsx, type ControlDef } from "@/lib/playground";
 
 const songs = [
   "https://music.apple.com/us/song/blinding-lights/1499378607",
@@ -31,6 +31,7 @@ export function AppleMusicCardPlayground() {
     <PlaygroundShell
       controls={controls}
       defaultProps={defaultProps}
+      code={(values) => jsx("AppleMusicCard", { url: songs[0], view: values.view })}
       render={(values) => (
         <div className="flex flex-wrap items-start justify-center gap-3">
           {songs.map((url) => (

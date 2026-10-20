@@ -1,0 +1,97 @@
+import { AuthButtonPlayground } from "./playground"
+
+<AuthButtonPlayground />
+
+## Installation
+
+<InstallationTabs item="auth-button">
+```tsx file=../../registry/clover-ui/auth-button.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { AuthButton } from "@/components/auth-button";
+
+<AuthButton provider="google" onClick={handleGoogleSignIn} />
+<AuthButton provider="github" intent="signup" />
+<AuthButton provider="chatgpt" size="lg" className="w-full" />
+```
+
+The label reads "Sign in with Google" or "Sign up with GitHub", based on `intent` and the provider. Pass children to write your own.
+
+Each button sits on a frosted surface with a faint tint of the brand's colors. It moves down 1px when clicked, like a normal button press.
+
+## Providers
+
+Google, GitHub, Microsoft, ChatGPT, Discord, Spotify, GitLab, LinkedIn, Slack, Twitch, Notion and Dropbox. Black logos like GitHub and ChatGPT turn white in dark mode.
+
+## Connecting your auth
+
+The button doesn't sign anyone in by itself. Call your auth library in `onClick`:
+
+```tsx
+// Auth.js (NextAuth)
+import { signIn } from "next-auth/react";
+
+<AuthButton provider="github" onClick={() => signIn("github")} />
+```
+
+```tsx
+// Better Auth
+<AuthButton
+  provider="google"
+  onClick={() => authClient.signIn.social({ provider: "google" })}
+/>
+```
+
+```tsx
+// Supabase
+<AuthButton
+  provider="discord"
+  onClick={() => supabase.auth.signInWithOAuth({ provider: "discord" })}
+/>
+```
+
+Set `disabled` while sign-in is running to stop double clicks.
+
+## Custom brand
+
+Pass an object instead of a provider name:
+
+```tsx
+import { AuthButton, type AuthBrand } from "@/components/auth-button";
+
+const brand: AuthBrand = {
+  name: "Acme",
+  logo: "/acme-logo.svg",
+  colors: ["#3aad65", "#e5d36a"],
+};
+
+<AuthButton provider={brand} />
+```
+
+- `name` goes in the label.
+- `logo` is any image URL, path or SVG data URL.
+- `colors` sets the tint. Leave it out for a plain button.
+- `mono: true` turns a black logo white in dark mode.
+
+If the logo fails to load, the first letter of the name shows instead.
+
+## Themes
+
+It follows light and dark mode through the `dark` class. The focus outline uses your `--ring` color. The click effect is turned off when reduced motion is on.
+
+## Props
+
+<PropsTable data={[
+  { name: "provider", type: "AuthProvider | AuthBrand", default: '"google"', description: "One of the 12 built-in providers, or your own brand object." },
+  { name: "intent", type: '"signin" | "signup"', default: '"signin"', description: "Shows Sign in with or Sign up with." },
+  { name: "size", type: '"sm" | "default" | "lg"', default: '"default"', description: "36px, 44px or 48px tall." },
+  { name: "disabled", type: "boolean", default: "false", description: "Fades the button and stops clicks." },
+  { name: "children", type: "React.ReactNode", description: "Replaces the built-in label." },
+  { name: "type", type: '"button" | "submit" | "reset"', default: '"button"' },
+  { name: "className", type: "string", description: "Use w-full to fill the available width." },
+  { name: "ref", type: "React.Ref<HTMLButtonElement>" },
+]} />

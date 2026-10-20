@@ -136,7 +136,7 @@ export function RecordingStudio() {
           >
             <figure className={styles.card} data-recording-card>
               <div className={styles.cardDisplay}>{scene.render(variant)}</div>
-              <figcaption className={styles.cardName}>{scene.name}</figcaption>
+              <figcaption className={`gradient-ring ${styles.cardName}`}>{scene.name}</figcaption>
             </figure>
           </div>
         </div>

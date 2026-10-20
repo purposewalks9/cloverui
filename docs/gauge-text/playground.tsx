@@ -2,7 +2,7 @@
 
 import { GaugeText } from "@/registry/clover-ui/gauge-text";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
-import type { ControlDef } from "@/lib/playground";
+import { jsx, type ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [
   { type: "number", prop: "value", label: "Value", min: 0, max: 500, step: 1 },
@@ -38,6 +38,18 @@ export function GaugeTextPlayground() {
     <PlaygroundShell
       controls={controls}
       defaultProps={defaultProps}
+      code={(values) =>
+        jsx("GaugeText", {
+          value: values.value,
+          suffix: values.suffix,
+          label: values.label,
+          speed: values.speed,
+          color: values.color,
+          decimals: values.decimals,
+          showIcon: values.showIcon,
+          className: "text-2xl font-semibold",
+        })
+      }
       render={(values) => (
         <div className="flex w-full justify-center">
           <GaugeText

@@ -12,13 +12,9 @@ const xUsername = siteConfig.links.x.split("/").filter(Boolean).pop();
 
 export function SiteFooter() {
   return (
-    <footer className="text-muted-foreground relative isolate w-full overflow-clip text-sm font-medium">
-      <div
-        aria-hidden
-        className="footer-glow pointer-events-none absolute top-0 -bottom-24 left-1/2 -z-10 w-full -translate-x-1/2 sm:w-[calc(min(100%,72rem)-3rem)]"
-      />
-      <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-4 px-4 pt-12 pb-8 text-center sm:flex-row sm:flex-wrap sm:justify-between sm:gap-x-8 sm:gap-y-3 sm:px-6 sm:pt-16 sm:pb-6 sm:text-left">
-        <p className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 sm:justify-start">
+    <footer className="text-muted-foreground w-full text-sm font-medium">
+      <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-center gap-4 px-4 pt-12 pb-8 text-center sm:px-6 md:flex-row md:justify-between md:gap-8 md:pt-16 md:pb-6 md:text-left">
+        <p className="flex flex-col items-center gap-1.5 md:flex-row md:gap-4">
           <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
             Made with care by
             <Link
@@ -29,7 +25,7 @@ export function SiteFooter() {
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={`https://unavatar.io/x/${xUsername}`}
+                src={`https://unavatar.io/x/${xUsername}?v=2`}
                 alt=""
                 width={20}
                 height={20}

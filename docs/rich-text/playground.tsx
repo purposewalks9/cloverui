@@ -2,7 +2,7 @@
 
 import { RichText } from "@/registry/clover-ui/rich-text";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
-import type { ControlDef } from "@/lib/playground";
+import { jsx, type ControlDef } from "@/lib/playground";
 
 const colors = [
   "default",
@@ -82,6 +82,7 @@ export function RichTextPlayground() {
     <PlaygroundShell
       controls={controls}
       defaultProps={defaultProps}
+      code={(values) => jsx("RichText", { color: values.color }, values.children as string)}
       render={(values) => (
         <p className="text-center text-4xl font-semibold tracking-tight">
           <RichText color={values.color as (typeof colors)[number]}>

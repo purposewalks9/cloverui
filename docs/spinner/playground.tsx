@@ -2,7 +2,7 @@
 
 import { Spinner } from "@/registry/clover-ui/spinner";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
-import type { ControlDef } from "@/lib/playground";
+import { jsx, type ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [
   { type: "color", prop: "color", label: "Color" },
@@ -29,6 +29,17 @@ export function SpinnerPlayground() {
     <PlaygroundShell
       controls={controls}
       defaultProps={defaultProps}
+      code={(values) =>
+        jsx("Spinner", {
+          color: values.color,
+          trackColor: values.trackColor,
+          dots: values.dots,
+          size: values.size,
+          duration: values.duration,
+          tailLength: values.tailLength,
+          interactive: values.interactive,
+        })
+      }
       render={(values) => (
         <div className="flex w-full justify-center">
           <Spinner

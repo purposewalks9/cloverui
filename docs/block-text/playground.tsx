@@ -2,7 +2,7 @@
 
 import { BLOCK_TEXT_THEMES, BlockText, type BlockTextTheme } from "@/registry/clover-ui/block-text";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
-import type { ControlDef } from "@/lib/playground";
+import { jsx, type ControlDef } from "@/lib/playground";
 
 function bands([a, b, c]: readonly string[]) {
   return `linear-gradient(135deg, ${a} 0 40%, ${b} 40% 70%, ${c} 70%)`;
@@ -57,6 +57,17 @@ export function BlockTextPlayground() {
     <PlaygroundShell
       controls={controls}
       defaultProps={defaultProps}
+      code={(values) =>
+        jsx("BlockText", {
+          theme: values.theme,
+          words: filled(values, ["word1", "word2", "word3"]),
+          interval: values.interval,
+          duration: values.duration,
+          shimmer: values.shimmer,
+          paused: values.paused,
+          className: "text-5xl sm:text-6xl",
+        })
+      }
       render={(values) => (
         <div className="flex min-h-[260px] w-full items-center justify-center">
           <BlockText

@@ -1,20 +1,20 @@
-import { ReasoningEffortPlayground } from "./playground"
+import { EffortSliderPlayground } from "./playground"
 
-<ReasoningEffortPlayground />
+<EffortSliderPlayground />
 
 ## Installation
 
-<InstallationTabs item="reasoning-effort">
-```tsx file=../../registry/clover-ui/reasoning-effort.tsx
+<InstallationTabs item="effort-slider">
+```tsx file=../../registry/clover-ui/effort-slider.tsx
 ```
 </InstallationTabs>
 
 ## Usage
 
 ```tsx
-import { ReasoningEffort } from "@/components/reasoning-effort";
+import { EffortSlider } from "@/components/effort-slider";
 
-<ReasoningEffort />
+<EffortSlider />
 ```
 
 A slider for picking how hard an AI model should think, with four levels by default: Low, Medium, High and Max. The knob is the `lucide-react` brain icon with a dark outline, a little taller than the track, and it sits right where the fill ends. The fill is one smooth tone whose opacity rises from about half at the start to full at the brain, and a faint, wide glow slides slowly through it so it never sits completely still. Small sparkles of reasoning, in the level's own shade so they stand apart from the white level marks, flow through the fill toward the brain, and they move faster the higher the effort, easing to the new speed instead of jumping. While the brain moves, a light streak in the level's color trails behind it, with soft motion-blur lines. The faster it moves, the longer the streak, and it shrinks away once the brain stops.
@@ -24,7 +24,7 @@ The lowest level shows no fill and a gray brain. After that, the fill and the br
 Pick a color theme with `theme`: `"aurora"` (indigo, violet and pink, the default), `"ocean"` (blues and teal), `"ember"` (amber, orange and red), `"forest"` (greens and lime) or `"mono"` (grays). Each theme sets the fill, brain, level name and max colors, with light and dark versions.
 
 ```tsx
-<ReasoningEffort theme="ocean" />
+<EffortSlider theme="ocean" />
 ```
 
 Click anywhere on the track and the brain glides to the level mark nearest your click. Drag it and it follows your cursor exactly, then glides to the nearest level when you let go. It settles without any wobble. The deepest level is faster and harder: the brain speeds up into the end of the track and stops dead. The level name, tag and colors stay put while you drag and update when you let go.
@@ -34,7 +34,7 @@ Pass `levels` to use your own names. Pass `value` and `onValueChange` to control
 ```tsx
 const [effort, setEffort] = React.useState(2);
 
-<ReasoningEffort
+<EffortSlider
   levels={["Fast", "Balanced", "Thorough", "Deep"]}
   value={effort}
   onValueChange={(index, level) => setEffort(index)}

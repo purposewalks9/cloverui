@@ -91,8 +91,8 @@ export default function Home() {
               for thoughtful interfaces.
             </h1>
             <p className="text-muted-foreground max-w-md text-base leading-relaxed text-pretty sm:text-lg">
-              Shaders, physics and motion primitives for React and Tailwind CSS. Open source and
-              ready to drop in.
+              Shaders, physics, motion primitives and AI chat pieces for React and Tailwind CSS.
+              Open source and ready to drop in.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3">
               <Link

@@ -221,7 +221,7 @@ export function DocsTableOfContents({
 
   return (
     <div className="flex h-full flex-col">
-      <div className="border-border flex h-12 shrink-0 items-center justify-between px-4">
+      <div className="border-border flex h-14 shrink-0 items-center justify-between px-4">
         <p className="text-foreground text-[15px] font-medium">On this page</p>
         <ProgressRing progress={progress} />
       </div>

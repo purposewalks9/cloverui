@@ -2,7 +2,7 @@
 
 import { DropText } from "@/registry/clover-ui/drop-text";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
-import type { ControlDef } from "@/lib/playground";
+import { jsx, type ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [
   { type: "text", prop: "children", label: "Text" },
@@ -35,6 +35,20 @@ export function DropTextPlayground() {
     <PlaygroundShell
       controls={controls}
       defaultProps={defaultProps}
+      code={(values) =>
+        jsx(
+          "DropText",
+          {
+            splitBy: values.splitBy,
+            speed: values.speed,
+            stagger: values.stagger,
+            bounce: values.bounce,
+            dropDistance: values.dropDistance,
+            className: "text-center text-3xl font-semibold tracking-tight",
+          },
+          values.children as string,
+        )
+      }
       render={(values) => (
         <div className="flex w-full justify-center">
           <DropText

@@ -7,7 +7,7 @@ import {
   type GridRevealPattern,
 } from "@/registry/clover-ui/grid-reveal";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
-import type { ControlDef } from "@/lib/playground";
+import { jsx, type ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [
   {
@@ -60,6 +60,22 @@ export function GridRevealPlayground() {
     <PlaygroundShell
       controls={controls}
       defaultProps={defaultProps}
+      code={(values) =>
+        jsx(
+          "GridReveal",
+          {
+            pattern: values.pattern,
+            color: values.color,
+            rows: values.rows,
+            cols: values.cols,
+            blockDuration: values.blockDuration,
+            stagger: values.stagger,
+            loop: values.loop,
+            className: "aspect-square w-full max-w-[220px]",
+          },
+          "{children}",
+        )
+      }
       render={(values) => (
         <div className="flex w-full justify-center">
           <GridReveal

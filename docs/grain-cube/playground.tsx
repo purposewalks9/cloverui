@@ -3,7 +3,7 @@
 import { GrainCube } from "@/registry/clover-ui/grain-cube";
 import { GRAIN_CUBE_THEMES, type GrainCubeTheme } from "@/registry/clover-ui/grain-cube";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
-import type { ControlDef } from "@/lib/playground";
+import { jsx, type ControlDef } from "@/lib/playground";
 
 const themeSwatch = (theme: GrainCubeTheme) =>
   `linear-gradient(135deg, ${GRAIN_CUBE_THEMES[theme].join(", ")})`;
@@ -46,6 +46,18 @@ export function GrainCubePlayground() {
     <PlaygroundShell
       controls={controls}
       defaultProps={defaultProps}
+      code={(values) =>
+        jsx("GrainCube", {
+          theme: values.theme,
+          size: values.size,
+          scale: values.scale,
+          warp: values.warp,
+          grain: values.grain,
+          speed: values.speed,
+          animate: values.animate,
+          interactive: values.interactive,
+        })
+      }
       render={(values) => (
         <div className="mx-auto w-full max-w-[280px]">
           <GrainCube

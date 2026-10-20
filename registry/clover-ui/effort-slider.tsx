@@ -5,7 +5,7 @@ import { AnimatePresence, animate, motion, useMotionValue, useReducedMotion } fr
 import { Brain } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export interface ReasoningEffortProps extends Omit<
+export interface EffortSliderProps extends Omit<
   React.ComponentProps<"div">,
   "defaultValue" | "onChange" | "children"
 > {
@@ -15,7 +15,7 @@ export interface ReasoningEffortProps extends Omit<
   onValueChange?: (value: number, level: string) => void;
   recommended?: number;
   tags?: string[];
-  theme?: ReasoningEffortTheme;
+  theme?: EffortSliderTheme;
   label?: string;
   disabled?: boolean;
 }
@@ -47,7 +47,7 @@ const PARTICLES = [
   { top: 56, size: 1.5, delay: -5.6, twinkle: 1.2 },
 ];
 
-export type ReasoningEffortTheme = "aurora" | "ocean" | "ember" | "forest" | "mono";
+export type EffortSliderTheme = "aurora" | "ocean" | "ember" | "forest" | "mono";
 
 type Tone = { light: string; dark: string; brain: string; line: string };
 
@@ -56,7 +56,7 @@ type Palette = {
   max: { light: string; dark: string; glowLight: string; glowDark: string };
 };
 
-const THEMES: Record<ReasoningEffortTheme, Palette> = {
+const THEMES: Record<EffortSliderTheme, Palette> = {
   aurora: {
     tones: [
       { light: "#9a9cc8", dark: "#3b3d63", brain: "#b4b7ee", line: "#262850" },
@@ -160,9 +160,9 @@ const clamp = (value: number, min = 0, max = 1) => Math.min(max, Math.max(min, v
 const TRAIL = 140;
 
 const DRIFT_CSS =
-  "@keyframes reasoning-effort-drift-a{from{transform:translate3d(-20%,0,0)}to{transform:translate3d(20%,0,0)}}" +
-  "@keyframes reasoning-effort-flow{0%{transform:translate3d(0,0,0);opacity:0}12%{opacity:1}88%{opacity:1}100%{transform:translate3d(100%,0,0);opacity:0}}" +
-  "@keyframes reasoning-effort-twinkle{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.35;transform:scale(0.6)}}";
+  "@keyframes effort-slider-drift-a{from{transform:translate3d(-20%,0,0)}to{transform:translate3d(20%,0,0)}}" +
+  "@keyframes effort-slider-flow{0%{transform:translate3d(0,0,0);opacity:0}12%{opacity:1}88%{opacity:1}100%{transform:translate3d(100%,0,0);opacity:0}}" +
+  "@keyframes effort-slider-twinkle{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.35;transform:scale(0.6)}}";
 
 const stopAt = (index: number, count: number) => (count <= 1 ? 1 : index / (count - 1));
 
@@ -174,6 +174,10 @@ const toneFor = (index: number, count: number, tones: Tone[]) => {
   const step = Math.round(((clamp(index, 1, top) - 1) / Math.max(1, top - 1)) * (tones.length - 1));
   return tones[step];
 };
+
+function effortTone(index: number, count: number, theme: EffortSliderTheme = "aurora") {
+  return toneFor(index, count, (THEMES[theme] ?? THEMES.aurora).tones);
+}
 
 const maxGradient = (palette: Palette, count: number, mode: "light" | "dark") => {
   const segments = Math.max(1, count - 1);
@@ -192,7 +196,7 @@ const maxGradient = (palette: Palette, count: number, mode: "light" | "dark") =>
 
 const leftAt = (fraction: number) => `calc(${INSET}px + (100% - ${INSET * 2}px) * ${fraction})`;
 
-function ReasoningEffort({
+function EffortSlider({
   levels = DEFAULT_LEVELS,
   value,
   defaultValue,
@@ -205,7 +209,7 @@ function ReasoningEffort({
   className,
   style,
   ...props
-}: ReasoningEffortProps) {
+}: EffortSliderProps) {
   const reduceMotion = useReducedMotion();
   const count = Math.max(1, levels.length);
   const last = count - 1;
@@ -226,7 +230,7 @@ function ReasoningEffort({
     if (!host || typeof host.getAnimations !== "function") return;
     const rate = 0.5 + stopAt(current, count) * 2.5;
     for (const animation of host.getAnimations({ subtree: true })) {
-      if ("animationName" in animation && animation.animationName === "reasoning-effort-flow") {
+      if ("animationName" in animation && animation.animationName === "effort-slider-flow") {
         animation.updatePlaybackRate(rate);
       }
     }
@@ -391,7 +395,7 @@ function ReasoningEffort({
 
   return (
     <div
-      data-slot="reasoning-effort"
+      data-slot="effort-slider"
       data-disabled={disabled || undefined}
       className={cn(
         "bg-card text-card-foreground w-full max-w-xs rounded-lg border-2 border-[color-mix(in_oklab,var(--card),var(--foreground)_8%)] p-4 select-none dark:border-[color-mix(in_oklab,var(--card),var(--foreground)_12%)] dark:bg-[color-mix(in_oklab,var(--card),var(--foreground)_6%)]",
@@ -414,7 +418,7 @@ function ReasoningEffort({
       {...props}
     >
       {!reduceMotion && (
-        <style href="reasoning-effort-drift" precedence="default">
+        <style href="effort-slider-drift" precedence="default">
           {DRIFT_CSS}
         </style>
       )}
@@ -496,7 +500,7 @@ function ReasoningEffort({
                 <span
                   className="absolute inset-y-0 -left-1/2 w-[200%] bg-[linear-gradient(90deg,transparent_20%,color-mix(in_oklab,var(--effort-brain)_14%,transparent)_50%,transparent_80%)] will-change-transform"
                   style={{
-                    animation: "reasoning-effort-drift-a 6s ease-in-out infinite alternate",
+                    animation: "effort-slider-drift-a 6s ease-in-out infinite alternate",
                     animationPlayState: current === 0 ? "paused" : "running",
                   }}
                 />
@@ -508,7 +512,7 @@ function ReasoningEffort({
                       key={index}
                       className="absolute inset-0 will-change-transform"
                       style={{
-                        animation: `reasoning-effort-flow 6s linear ${particle.delay}s infinite`,
+                        animation: `effort-slider-flow 6s linear ${particle.delay}s infinite`,
                         animationPlayState: current === 0 ? "paused" : "running",
                       }}
                     >
@@ -518,7 +522,7 @@ function ReasoningEffort({
                           top: `${particle.top}%`,
                           width: particle.size,
                           height: particle.size,
-                          animation: `reasoning-effort-twinkle ${particle.twinkle}s ease-in-out infinite`,
+                          animation: `effort-slider-twinkle ${particle.twinkle}s ease-in-out infinite`,
                         }}
                       />
                     </span>
@@ -577,6 +581,6 @@ function ReasoningEffort({
   );
 }
 
-ReasoningEffort.displayName = "ReasoningEffort";
+EffortSlider.displayName = "EffortSlider";
 
-export { ReasoningEffort };
+export { EffortSlider, BrainKnob, effortTone };

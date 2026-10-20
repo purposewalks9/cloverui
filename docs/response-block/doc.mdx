@@ -73,7 +73,35 @@ Each step has an `id` and a `type`:
 | `search` | The query, and its `results` as a list you can open. |
 | `read` | A page it opened, with the site's icon and domain. |
 | `note` | A short line from the model, like "I'll read the docs first." |
-| `tool` | A command, file edit or task, with an icon, a label and optional `output` in a code block that opens on click (not on phones, to save space). Only add these when the model really ran something. |
+| `tool` | Anything the model ran, like a command, a file edit or a merged pull request. It shows the `kind`'s icon, a `title`, an optional `meta` chip and optional `output` in a code block that opens on click (not on phones, to save space). Only add these when the model really ran something. |
+
+A tool's `kind` picks its icon and how it's counted in the finished header, like "Merged 1 pull request". Leave it out, or pass one that isn't listed, and it counts as `tool`.
+
+| Kind | Counted as |
+| --- | --- |
+| `command` | ran 2 commands |
+| `edit`, `create`, `delete` | edited, created or deleted 2 files |
+| `view` | read 2 files |
+| `code-search` | ran 2 code searches |
+| `test`, `build` | ran 2 test runs, ran 2 builds |
+| `install` | installed 2 packages |
+| `debug` | fixed 2 bugs |
+| `branch`, `push` | created 2 branches, pushed 2 branches |
+| `commit` | made 2 commits |
+| `pull-request`, `review`, `merge` | opened, reviewed or merged 2 pull requests |
+| `deploy` | shipped 2 deploys |
+| `api` | called 2 APIs |
+| `database` | ran 2 queries |
+| `browser` | took 2 browser actions |
+| `email`, `message` | sent 2 emails, sent 2 messages |
+| `calendar` | scheduled 2 events |
+| `image` | generated 2 images |
+| `memory` | saved 2 memories |
+| `agent` | started 2 agents |
+| `task` | updated 2 tasks |
+| `tool` | used 2 tools |
+
+When more than two kinds of tools ran, the header folds them into "used 5 tools" so it stays short.
 
 `search`, `read` and `tool` steps take a `status` of `"running"`, `"done"` or `"failed"`. A failed tool turns its icon red, and the orb switches to debugging until a later step of the same kind succeeds.
 

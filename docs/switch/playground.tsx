@@ -2,7 +2,7 @@
 
 import { Switch, type SwitchSize } from "@/registry/clover-ui/switch";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
-import type { ControlDef } from "@/lib/playground";
+import { jsx, type ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [
   {
@@ -46,6 +46,15 @@ export function SwitchPlayground() {
     <PlaygroundShell
       controls={controls}
       defaultProps={defaultProps}
+      code={(values) =>
+        jsx("Switch", {
+          "aria-label": "Power",
+          color: values.color,
+          size: values.size,
+          showLabels: values.showLabels,
+          disabled: values.disabled,
+        })
+      }
       render={(values) => (
         <div className="flex min-h-[220px] w-full items-center justify-center">
           <Switch

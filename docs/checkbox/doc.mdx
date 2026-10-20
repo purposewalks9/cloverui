@@ -20,7 +20,7 @@ import { Checkbox } from "@/components/checkbox";
 </label>
 ```
 
-A rounded checkbox with a colorful pop, a ring of confetti, and a white check that springs into place. The large size matches the original 80px design. Each checkbox toggles independently. Initial checked states render immediately; the celebration begins after interaction. Reduced motion removes the animation.
+A rounded checkbox. Click it and the color grows from a dot in the center to fill the box, then the check draws in and colorful sparkles burst out from inside. The whole thing takes about a third of a second. Unchecking runs it backwards: the check pulls back, then the color slides up and away toward the top. Boxes that start checked show right away without sparkles, and reduced motion turns all the motion off. By default it uses your theme's text, background and border colors, so it fits light and dark mode. Unchecking clears it right away.
 
 Use a visible label, `aria-label`, or `aria-labelledby`. Tab focuses the checkbox and Space toggles it. Native form submission, `required`, `disabled`, and form reset work without extra wiring. `ref` points to the input. `className` and `style` customize the outer wrapper; other native input props go to the checkbox.
 
@@ -44,7 +44,7 @@ const [checked, setChecked] = React.useState(false);
   { name: "onCheckedChange", type: "(checked: boolean) => void", description: "Called after native change events." },
   { name: "onChange", type: "ChangeEventHandler<HTMLInputElement>", description: "Native input change handler." },
   { name: "size", type: '"sm" | "default" | "lg"', default: '"default"', description: "24px, 32px, or 80px artwork. Small sizes retain a 44px hit target." },
-  { name: "color", type: "string", default: '"#3d46ff"', description: "Checked surface and focus ring color. Choose a color with enough contrast for the white check." },
+  { name: "color", type: "string", description: "Color of the checked box and the focus ring. Leave it out to use your theme: a dark box with a light check in light mode, and the opposite in dark mode. With a color set, the check is white." },
   { name: "disabled", type: "boolean", default: "false" },
   { name: "className", type: "string", description: "Outer wrapper classes." },
 ]} />

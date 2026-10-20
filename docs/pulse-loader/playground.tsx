@@ -2,7 +2,7 @@
 
 import { PulseLoader } from "@/registry/clover-ui/pulse-loader";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
-import type { ControlDef } from "@/lib/playground";
+import { jsx, type ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [
   { type: "color", prop: "color", label: "Color" },
@@ -25,6 +25,15 @@ export function PulseLoaderPlayground() {
     <PlaygroundShell
       controls={controls}
       defaultProps={defaultProps}
+      code={(values) =>
+        jsx("PulseLoader", {
+          color: values.color,
+          rings: values.rings,
+          size: values.size,
+          duration: values.duration,
+          stagger: values.stagger,
+        })
+      }
       render={(values) => (
         <div className="flex w-full justify-center">
           <PulseLoader

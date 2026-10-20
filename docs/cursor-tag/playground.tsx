@@ -2,7 +2,7 @@
 
 import { CursorTag, type CursorTagSide, type CursorTagSize } from "@/registry/clover-ui/cursor-tag";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
-import type { ControlDef } from "@/lib/playground";
+import { jsx, type ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [
   { type: "text", prop: "label", label: "Label" },
@@ -44,6 +44,16 @@ export function CursorTagPlayground() {
     <PlaygroundShell
       controls={controls}
       defaultProps={defaultProps}
+      code={(values) =>
+        jsx("CursorTag", {
+          label: values.label,
+          side: values.side,
+          size: values.size,
+          color: values.color,
+          textColor: values.textColor,
+          float: values.float,
+        })
+      }
       render={(values) => (
         <div className="flex min-h-[260px] w-full items-center justify-center">
           <CursorTag

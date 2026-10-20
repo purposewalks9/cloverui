@@ -307,7 +307,7 @@ export function Search({
             />
             <Dialog.Close
               aria-label="Close search"
-              className="text-muted-foreground hover:bg-accent hover:text-accent-foreground focus-visible:outline-ring flex size-10 shrink-0 cursor-pointer items-center justify-center focus-visible:outline-2"
+              className="text-muted-foreground hover:bg-accent hover:text-accent-foreground focus-visible:outline-ring flex size-7 shrink-0 cursor-pointer items-center justify-center focus-visible:outline-2"
             >
               <X aria-hidden className="size-4" />
             </Dialog.Close>

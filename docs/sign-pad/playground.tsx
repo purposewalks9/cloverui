@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { SignPad, type SignPadValue } from "@/registry/clover-ui/sign-pad";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
-import type { ControlDef } from "@/lib/playground";
+import { expr, jsx, type ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [
   { type: "color", prop: "accent", label: "Accent" },
@@ -38,6 +38,14 @@ export function SignPadPlayground() {
     <PlaygroundShell
       controls={controls}
       defaultProps={defaultProps}
+      code={(values) =>
+        jsx("SignPad", {
+          accent: values.accent,
+          strokeWidth: values.strokeWidth,
+          minInk: values.minInk,
+          onChange: expr("setSignature"),
+        })
+      }
       render={(values) => (
         <div className="flex min-h-64 w-full flex-col items-center justify-center gap-5 px-6 py-10">
           <SignPad

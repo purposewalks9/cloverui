@@ -8,7 +8,7 @@ import {
   type ThinkingStateStatus,
 } from "@/registry/clover-ui/thinking-state";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
-import type { ControlDef } from "@/lib/playground";
+import { expr, jsx, type ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [
   {
@@ -117,6 +117,18 @@ export function ThinkingStatePlayground() {
     <PlaygroundShell
       controls={controls}
       defaultProps={defaultProps}
+      code={(values) =>
+        jsx("ThinkingState", {
+          state: values.state === "auto" ? expr("state") : values.state,
+          status: values.status,
+          color: values.color,
+          pixel: values.pixel,
+          grid: values.grid,
+          speed: values.speed,
+          shimmer: values.shimmer,
+          className: "text-lg",
+        })
+      }
       render={(values) => <CyclingThinkingState values={values} />}
     />
   );

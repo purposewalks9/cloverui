@@ -6,7 +6,7 @@ import {
   type ElementName,
 } from "@/registry/clover-ui/liquid-button";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
-import type { ControlDef } from "@/lib/playground";
+import { jsx, type ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [
   { type: "text", prop: "children", label: "Label" },
@@ -47,6 +47,13 @@ export function LiquidButtonPlayground() {
     <PlaygroundShell
       controls={controls}
       defaultProps={defaultProps}
+      code={(values) =>
+        jsx(
+          "LiquidButton",
+          { element: values.element, size: values.size, disabled: values.disabled },
+          values.children as string,
+        )
+      }
       render={(values) => (
         <LiquidButton
           element={values.element as ElementName}

@@ -14,7 +14,7 @@
     "https://cloverui.vercel.app/r/ghost.json",
     "https://cloverui.vercel.app/r/grain-cube.json",
     "https://cloverui.vercel.app/r/grid-reveal.json",
-    "https://cloverui.vercel.app/r/logo-pop.json",
+    "https://cloverui.vercel.app/r/logo-marquee.json",
     "https://cloverui.vercel.app/r/nucleus-text.json",
     "https://cloverui.vercel.app/r/price-range.json",
     "https://cloverui.vercel.app/r/pulse-loader.json",
@@ -33,10 +33,12 @@
     "https://cloverui.vercel.app/r/switch.json",
     "https://cloverui.vercel.app/r/thinking-state.json",
     "https://cloverui.vercel.app/r/response-block.json",
-    "https://cloverui.vercel.app/r/reasoning-effort.json",
-    "https://cloverui.vercel.app/r/sign-in-button.json",
+    "https://cloverui.vercel.app/r/effort-slider.json",
+    "https://cloverui.vercel.app/r/auth-button.json",
     "https://cloverui.vercel.app/r/press-button.json",
-    "https://cloverui.vercel.app/r/checkbox.json"
+    "https://cloverui.vercel.app/r/checkbox.json",
+    "https://cloverui.vercel.app/r/model-picker.json",
+    "https://cloverui.vercel.app/r/spectrum-bars.json"
   ],
   "type": "registry:item"
 }

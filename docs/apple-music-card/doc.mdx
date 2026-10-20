@@ -27,7 +27,7 @@ Pass a song or album link from music.apple.com. The title, artist and artwork lo
 </div>
 ```
 
-The card has two views. `full` shows the artwork, title and artist. `mini` shows only the artwork and the Music tag, at a smaller width. Switching `view` animates the card between the two, so you can toggle it from your own button:
+The card has two views. `full` shows the artwork, title and artist. `mini` shows only the artwork and the Music tag. Both are 200px wide. Switching `view` smoothly slides the title and artist up out of sight or back down into place, while the artwork stays the same size, so you can toggle it from your own button:
 
 ```tsx
 import { AppleMusicCard, type AppleMusicCardView } from "@/components/apple-music-card";
@@ -44,6 +44,6 @@ The whole card links to the song on Apple Music and opens in a new tab.
 
 <PropsTable data={[
   { name: "url", type: "string", description: "A song or album link from music.apple.com." },
-  { name: "view", type: '"mini" | "full"', default: '"full"', description: "Mini shows the artwork and Music tag at 152px. Full adds the title and artist at 200px." },
+  { name: "view", type: '"mini" | "full"', default: '"full"', description: "Mini shows the artwork and Music tag. Full adds the title and artist. Both are 200px wide." },
   { name: "className", type: "string" },
 ]} />

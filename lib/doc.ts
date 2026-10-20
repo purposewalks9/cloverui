@@ -4,7 +4,7 @@ import { DocItem, DocSchema, RegistryItem } from "./types";
 
 const CATEGORY_LABELS: Record<string, string> = {
   button: "Buttons",
-  control: "Form Controls",
+  control: "Controls",
   text: "Text",
   loader: "Loaders",
   cursor: "Cursors",

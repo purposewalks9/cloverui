@@ -8,7 +8,7 @@ import {
   type RichProgressSize,
 } from "@/registry/clover-ui/rich-progress";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
-import type { ControlDef } from "@/lib/playground";
+import { expr, jsx, type ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [
   { type: "text", prop: "label", label: "Label" },
@@ -75,6 +75,17 @@ export function RichProgressPlayground() {
     <PlaygroundShell
       controls={controls}
       defaultProps={defaultProps}
+      code={(values) =>
+        jsx("RichProgress", {
+          value: expr("value"),
+          onChange: expr("setValue"),
+          label: values.label,
+          color: values.color,
+          size: values.size,
+          showValue: values.showValue,
+          knob: values.knob,
+        })
+      }
       render={(values) => (
         <div className="flex w-full items-center justify-center px-6 py-8">
           <RichProgress

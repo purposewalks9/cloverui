@@ -17,34 +17,22 @@ import { PressButton } from "@/components/press-button";
 <PressButton onClick={() => console.log("Run")}>Run</PressButton>
 ```
 
-A rounded press button with a softly curved bevel, a smooth concave face and a visible base. Pressing lowers the whole top into the base, using the same lift depth as Theme Toggle. The press is immediate; release gently returns the top to its resting height. The neutral material follows your site’s light or dark theme. Choose a custom color to tint the whole surface.
-
-Use the circle shape for a round icon button. Give icon-only buttons an accessible name:
-
-```tsx
-import { Play } from "lucide-react";
-
-<PressButton shape="circle" aria-label="Run">
-  <Play aria-hidden fill="currentColor" />
-</PressButton>
-```
+A soft, rounded press button in one solid color, with a thin rim at the top and bottom, wider curved sides, a lightly shaded face with a softly stretched oval edge, and a soft shadow underneath. Pressing lowers the whole top into the base, using the same lift depth as Theme Toggle. The press is immediate; release gently returns the top to its resting height. The neutral material follows your site’s light or dark theme. Pick a color and the whole button turns that color, with white text, in both light and dark mode.
 
 Mouse, touch, Enter and Space activate the native button. It defaults to `type="button"`; pass `type="submit"` to submit a form. Disabled buttons cannot activate. Reduced motion removes the return transition while preserving immediate pressed feedback. Standard button attributes, event handlers, `ref`, `className` and `style` reach the root button.
 
-The component uses React 19, Tailwind CSS v4, the usual shadcn `cn` helper, and your host’s `ring` and `background` tokens for keyboard focus. Auto theme follows a `.dark` ancestor; use `theme="light"` or `theme="dark"` with other theme systems. `color` accepts a CSS color and is mixed into the rim, face and base. Circle buttons are for icons; use the pill shape for text labels.
+The component uses React 19, Tailwind CSS v4, the usual shadcn `cn` helper, and your host’s `ring` and `background` tokens for keyboard focus. It follows your site's light and dark mode through the `dark` class. `color` accepts a CSS color and is mixed into the rim, face and base.
 
 ```tsx
-<PressButton color="#8b5cf6" theme="auto">Run</PressButton>
+<PressButton color="#8b5cf6">Run</PressButton>
 ```
 
 ## Props
 
 <PropsTable data={[
-  { name: "children", type: "React.ReactNode", description: "Text and optional icons, or a single icon for the circle shape." },
-  { name: "shape", type: '"pill" | "circle"', default: '"pill"', description: "Rounded text button or circular icon button." },
+  { name: "children", type: "React.ReactNode", description: "Text and optional icons." },
   { name: "size", type: '"sm" | "default" | "lg"', default: '"default"' },
-  { name: "theme", type: '"auto" | "light" | "dark"', default: '"auto"', description: "Follow the host dark class, or choose a fixed material." },
-  { name: "color", type: "string", description: "Optional CSS color to tint the curved material. Omit for the neutral theme." },
+  { name: "color", type: "string", description: "Optional CSS color to tint the curved material. Leave it out for the neutral white or dark material." },
   { name: "disabled", type: "boolean", default: "false" },
   { name: "type", type: '"button" | "submit" | "reset"', default: '"button"' },
   { name: "className", type: "string" },

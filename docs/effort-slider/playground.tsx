@@ -1,8 +1,8 @@
 "use client";
 
-import { ReasoningEffort, type ReasoningEffortTheme } from "@/registry/clover-ui/reasoning-effort";
+import { EffortSlider, type EffortSliderTheme } from "@/registry/clover-ui/effort-slider";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
-import type { ControlDef } from "@/lib/playground";
+import { jsx, type ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [
   {
@@ -45,14 +45,22 @@ const defaultProps = {
   disabled: false,
 };
 
-export function ReasoningEffortPlayground() {
+export function EffortSliderPlayground() {
   return (
     <PlaygroundShell
       controls={controls}
       defaultProps={defaultProps}
+      code={(values) =>
+        jsx("EffortSlider", {
+          theme: values.theme,
+          label: values.label,
+          recommended: values.recommended,
+          disabled: values.disabled,
+        })
+      }
       render={(values) => (
-        <ReasoningEffort
-          theme={values.theme as ReasoningEffortTheme}
+        <EffortSlider
+          theme={values.theme as EffortSliderTheme}
           label={values.label as string}
           recommended={values.recommended as number}
           disabled={values.disabled as boolean}

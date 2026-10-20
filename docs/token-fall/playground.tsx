@@ -9,7 +9,7 @@ const TokenFall = dynamic(
   },
 );
 import { PlaygroundShell } from "@/components/garden/playground-shell";
-import type { ControlDef } from "@/lib/playground";
+import { jsx, type ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [
   { type: "number", prop: "count", label: "Count", min: 5, max: 150, step: 1 },
@@ -35,6 +35,16 @@ export function TokenFallPlayground() {
       controls={controls}
       defaultProps={defaultProps}
       stageClassName="w-full"
+      code={(values) =>
+        jsx("TokenFall", {
+          count: values.count,
+          minSize: values.minSize,
+          maxSize: values.maxSize,
+          gravity: values.gravity,
+          restitution: values.restitution,
+          spawnInterval: values.spawnInterval,
+        })
+      }
       render={(values) => (
         <div className="flex w-full justify-center">
           <div

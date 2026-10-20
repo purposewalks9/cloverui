@@ -2,7 +2,7 @@
 
 import { Block404 } from "@/registry/clover-ui/404-block";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
-import type { ControlDef } from "@/lib/playground";
+import { expr, jsx, type ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [
   { type: "text", prop: "title", label: "Error text" },
@@ -19,6 +19,13 @@ export function Block404Playground() {
     <PlaygroundShell
       controls={controls}
       defaultProps={defaultProps}
+      code={(values) =>
+        jsx("Block404", {
+          title: values.title,
+          actionLabel: values.actionLabel,
+          onAction: expr('() => router.push("/")'),
+        })
+      }
       render={(values) => (
         <Block404
           title={(values.title as string) || undefined}

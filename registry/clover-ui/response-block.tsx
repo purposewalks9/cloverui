@@ -3,15 +3,39 @@
 import * as React from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
+  ArrowUpFromLine,
+  BookmarkPlus,
+  Bot,
+  Bug,
+  CalendarPlus,
   ChevronDown,
   ChevronRight,
   Copy,
+  Database,
   FilePen,
+  FilePlus2,
+  FileSearch,
+  FileText,
+  FlaskConical,
+  GitBranch,
+  GitCommitHorizontal,
+  GitMerge,
+  GitPullRequestArrow,
   Globe,
+  Hammer,
+  Image as ImageIcon,
   ListTodo,
+  Mail,
+  MessageSquareCode,
+  MousePointerClick,
+  Package,
+  Plug,
+  Rocket,
   RotateCcw,
+  Send,
   SquareTerminal,
   ThumbsUp,
+  Trash2,
   Wrench,
   type LucideIcon,
 } from "lucide-react";
@@ -66,7 +90,116 @@ export type ResponseStep =
       output?: { code: string; language?: string };
     };
 
-export type ResponseToolKind = "command" | "edit" | "task" | "tool";
+export type ResponseToolKind =
+  | "command"
+  | "edit"
+  | "create"
+  | "delete"
+  | "view"
+  | "code-search"
+  | "test"
+  | "build"
+  | "install"
+  | "debug"
+  | "branch"
+  | "commit"
+  | "push"
+  | "pull-request"
+  | "review"
+  | "merge"
+  | "deploy"
+  | "api"
+  | "database"
+  | "browser"
+  | "email"
+  | "message"
+  | "calendar"
+  | "image"
+  | "memory"
+  | "agent"
+  | "task"
+  | "tool";
+
+interface ToolKindInfo {
+  icon: LucideIcon;
+  verb: string;
+  one: string;
+  many: string;
+  orb: ThinkingStateKind;
+}
+
+const TOOL_KINDS: Record<ResponseToolKind, ToolKindInfo> = {
+  command: { icon: SquareTerminal, verb: "ran", one: "command", many: "commands", orb: "building" },
+  edit: { icon: FilePen, verb: "edited", one: "file", many: "files", orb: "building" },
+  create: { icon: FilePlus2, verb: "created", one: "file", many: "files", orb: "building" },
+  delete: { icon: Trash2, verb: "deleted", one: "file", many: "files", orb: "building" },
+  view: { icon: FileText, verb: "read", one: "file", many: "files", orb: "analyzing" },
+  "code-search": {
+    icon: FileSearch,
+    verb: "ran",
+    one: "code search",
+    many: "code searches",
+    orb: "searching",
+  },
+  test: { icon: FlaskConical, verb: "ran", one: "test run", many: "test runs", orb: "building" },
+  build: { icon: Hammer, verb: "ran", one: "build", many: "builds", orb: "building" },
+  install: { icon: Package, verb: "installed", one: "package", many: "packages", orb: "building" },
+  debug: { icon: Bug, verb: "fixed", one: "bug", many: "bugs", orb: "debugging" },
+  branch: { icon: GitBranch, verb: "created", one: "branch", many: "branches", orb: "building" },
+  commit: {
+    icon: GitCommitHorizontal,
+    verb: "made",
+    one: "commit",
+    many: "commits",
+    orb: "building",
+  },
+  push: { icon: ArrowUpFromLine, verb: "pushed", one: "branch", many: "branches", orb: "building" },
+  "pull-request": {
+    icon: GitPullRequestArrow,
+    verb: "opened",
+    one: "pull request",
+    many: "pull requests",
+    orb: "building",
+  },
+  review: {
+    icon: MessageSquareCode,
+    verb: "reviewed",
+    one: "pull request",
+    many: "pull requests",
+    orb: "analyzing",
+  },
+  merge: {
+    icon: GitMerge,
+    verb: "merged",
+    one: "pull request",
+    many: "pull requests",
+    orb: "building",
+  },
+  deploy: { icon: Rocket, verb: "shipped", one: "deploy", many: "deploys", orb: "building" },
+  api: { icon: Plug, verb: "called", one: "API", many: "APIs", orb: "building" },
+  database: { icon: Database, verb: "ran", one: "query", many: "queries", orb: "analyzing" },
+  browser: {
+    icon: MousePointerClick,
+    verb: "took",
+    one: "browser action",
+    many: "browser actions",
+    orb: "building",
+  },
+  email: { icon: Mail, verb: "sent", one: "email", many: "emails", orb: "building" },
+  message: { icon: Send, verb: "sent", one: "message", many: "messages", orb: "building" },
+  calendar: {
+    icon: CalendarPlus,
+    verb: "scheduled",
+    one: "event",
+    many: "events",
+    orb: "building",
+  },
+  image: { icon: ImageIcon, verb: "generated", one: "image", many: "images", orb: "building" },
+  memory: { icon: BookmarkPlus, verb: "saved", one: "memory", many: "memories", orb: "thinking" },
+  agent: { icon: Bot, verb: "started", one: "agent", many: "agents", orb: "thinking" },
+  task: { icon: ListTodo, verb: "updated", one: "task", many: "tasks", orb: "thinking" },
+  tool: { icon: Wrench, verb: "used", one: "tool", many: "tools", orb: "building" },
+};
 
 export interface ResponseBlockProps extends Omit<React.ComponentProps<"div">, "children"> {
   status: ResponseStatus;
@@ -123,24 +256,27 @@ function hostOf(url: string) {
 
 const plural = (count: number, one: string, many: string) => `${count} ${count === 1 ? one : many}`;
 
+const toolKind = (kind: ResponseToolKind | undefined): ResponseToolKind =>
+  kind && kind in TOOL_KINDS ? kind : "tool";
+
 export function responseLabel(status: ResponseStatus, steps: ResponseStep[]) {
   if (status === "failed") return "Couldn't finish";
   if (status === "done") {
     const count = (match: (step: ResponseStep) => boolean) => steps.filter(match).length;
-    const tools = (kind: ResponseToolKind) =>
-      count((s) => s.type === "tool" && (s.kind ?? "tool") === kind);
     const searches = count((s) => s.type === "search");
     const reads = count((s) => s.type === "read");
+    const toolLabels = (Object.keys(TOOL_KINDS) as ResponseToolKind[]).flatMap((kind) => {
+      const used = count((s) => s.type === "tool" && toolKind(s.kind) === kind);
+      const { verb, one, many } = TOOL_KINDS[kind];
+      return used ? [`${verb} ${plural(used, one, many)}`] : [];
+    });
     const parts = [
       searches ? "searched the web" : "",
       reads ? `read ${plural(reads, "page", "pages")}` : "",
-      tools("command") ? `ran ${plural(tools("command"), "command", "commands")}` : "",
-      tools("edit") ? `edited ${plural(tools("edit"), "file", "files")}` : "",
-      tools("task") ? `updated ${plural(tools("task"), "task", "tasks")}` : "",
-      tools("tool") ? `used ${plural(tools("tool"), "tool", "tools")}` : "",
+      ...toolLabels,
     ].filter(Boolean);
     const toolCount = count((s) => s.type === "tool");
-    const toolParts = parts.filter((part) => /^(ran|edited|updated|used) /.test(part)).length;
+    const toolParts = toolLabels.length;
     if (parts.length > 2 && toolParts > 1) {
       parts.splice(
         parts.length - toolParts,
@@ -168,10 +304,10 @@ function unresolvedFailure(steps: ResponseStep[]) {
     if (s.type === "tool" && s.status === "failed") failed = i;
   });
   if (failed < 0) return false;
-  const kind = (steps[failed] as Extract<ResponseStep, { type: "tool" }>).kind ?? "tool";
+  const kind = toolKind((steps[failed] as Extract<ResponseStep, { type: "tool" }>).kind);
   return !steps
     .slice(failed + 1)
-    .some((s) => s.type === "tool" && (s.kind ?? "tool") === kind && s.status === "done");
+    .some((s) => s.type === "tool" && toolKind(s.kind) === kind && s.status === "done");
 }
 
 function orbState(status: ResponseStatus, steps: ResponseStep[]): ThinkingStateKind {
@@ -181,7 +317,7 @@ function orbState(status: ResponseStatus, steps: ResponseStep[]): ThinkingStateK
   if (current?.type === "read") return "analyzing";
   if (current?.type === "tool") {
     if (unresolvedFailure(steps)) return "debugging";
-    return current.kind === "task" ? "thinking" : "building";
+    return TOOL_KINDS[toolKind(current.kind)].orb;
   }
   return "thinking";
 }
@@ -384,13 +520,6 @@ function Reveal({ show, children, id }: { show: boolean; children: React.ReactNo
   );
 }
 
-const TOOL_ICONS: Record<ResponseToolKind, LucideIcon> = {
-  command: SquareTerminal,
-  edit: FilePen,
-  task: ListTodo,
-  tool: Wrench,
-};
-
 const CHIP = cn(
   CHIP_SURFACE,
   "text-foreground/70 shrink-0 rounded-full px-[0.6em] py-[0.1em] text-[0.8em] leading-normal",
@@ -415,7 +544,7 @@ function useNarrow() {
 function ToolRow({ step }: { step: Extract<ResponseStep, { type: "tool" }> }) {
   const [open, setOpen] = React.useState(false);
   const panelId = React.useId();
-  const Icon = TOOL_ICONS[step.kind ?? "tool"] ?? Wrench;
+  const Icon = TOOL_KINDS[toolKind(step.kind)].icon;
   const running = step.status === "running";
   const output = useNarrow() ? undefined : step.output;
   const content = (

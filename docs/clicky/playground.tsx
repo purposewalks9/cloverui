@@ -2,7 +2,7 @@
 
 import { Clicky, type ClickyColor } from "@/registry/clover-ui/clicky";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
-import type { ControlDef } from "@/lib/playground";
+import { jsx, type ControlDef } from "@/lib/playground";
 
 const colors: { value: ClickyColor; swatch: string }[] = [
   { value: "purple", swatch: "#8b5cf6" },
@@ -43,6 +43,19 @@ export function ClickyPlayground() {
     <PlaygroundShell
       controls={controls}
       defaultProps={defaultProps}
+      code={(values) =>
+        jsx(
+          "Clicky",
+          {
+            color: values.color,
+            size: values.size,
+            delay: values.delay,
+            loop: values.loop,
+            interval: values.interval,
+          },
+          '<span className="text-3xl font-semibold tracking-tight">Click here</span>',
+        )
+      }
       render={(values) => (
         <div className="flex min-h-[240px] items-center justify-center">
           <Clicky

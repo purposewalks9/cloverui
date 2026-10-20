@@ -29,7 +29,7 @@ import { Spinner } from "@/registry/clover-ui/spinner";
 import { PulseLoader } from "@/registry/clover-ui/pulse-loader";
 import { ThinkingState } from "@/registry/clover-ui/thinking-state";
 import { RichProgress, type RichProgressColor } from "@/registry/clover-ui/rich-progress";
-import { ReasoningEffort, type ReasoningEffortTheme } from "@/registry/clover-ui/reasoning-effort";
+import { EffortSlider, type EffortSliderTheme } from "@/registry/clover-ui/effort-slider";
 import { AppleMusicCard, type AppleMusicCardView } from "@/registry/clover-ui/apple-music-card";
 import styles from "./recording-studio.module.css";
 
@@ -160,7 +160,7 @@ const knobs: PriceRangeKnob[][] = [
 ];
 
 const progress: RichProgressColor[] = ["default", "blue", "pink", "emerald", "orange", "violet"];
-const efforts: ReasoningEffortTheme[] = ["aurora", "ocean", "ember", "forest", "mono"];
+const efforts: EffortSliderTheme[] = ["aurora", "ocean", "ember", "forest", "mono"];
 const gifs = ["/fire.gif", "/aurora.gif", "/ocean.gif", "/seal.gif"];
 const grids: [GridRevealColor, GridRevealPattern][] = [
   ["yellow", "random"],
@@ -228,10 +228,10 @@ const scenes: RecordingScene[] = [
     render: () => <ThinkingCycle />,
   },
   {
-    id: "reasoning-effort",
-    name: "Reasoning Effort",
+    id: "effort-slider",
+    name: "Effort Slider",
     variants: efforts.length,
-    render: (v) => <ReasoningEffort theme={efforts[v]} recommended={2} />,
+    render: (v) => <EffortSlider theme={efforts[v]} recommended={2} />,
   },
   {
     id: "pulse-loader",
@@ -394,7 +394,7 @@ const scenes: RecordingScene[] = [
 const order = [
   "soft-button",
   "block-text",
-  "reasoning-effort",
+  "effort-slider",
   "grain-cube",
   "liquid-button",
   "nucleus-text",

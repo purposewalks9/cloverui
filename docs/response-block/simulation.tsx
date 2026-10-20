@@ -6,9 +6,10 @@ import type {
   ResponseSource,
   ResponseStatus,
   ResponseStep,
+  ResponseToolKind,
 } from "@/registry/clover-ui/response-block";
 
-export type DemoName = "research" | "coding";
+export type DemoName = "research" | "coding" | "pull-request";
 
 const ASSETS = "/docs-assets/response-block";
 
@@ -162,7 +163,77 @@ const CODING_ANSWER = [
   `\`\`\`ts\n${SCHEMA}\n\`\`\``,
 ];
 
+function git(
+  id: string,
+  at: number,
+  kind: ResponseToolKind,
+  run: string,
+  done: string,
+  meta: string,
+  output?: string,
+) {
+  return [
+    { at, apply: add({ id, type: "tool", kind, title: run, meta, status: "running" }) },
+    {
+      at: at + 3,
+      apply: set(id, {
+        status: "done",
+        title: done,
+        ...(output ? { output: { code: output, language: "bash" } } : {}),
+      }),
+    },
+  ];
+}
+
+const PR_ANSWER = [
+  "Pull request **#42** is merged into `main`. It adds the `messages` table, and the checks passed before the merge.",
+  "What happened:\n\n1. Made a `feat/messages` branch and committed the schema change.\n2. Pushed it and opened **#42**.\n3. Reviewed the diff, then squashed and merged it.",
+];
+
 const DEMOS: Record<DemoName, Beat[]> = {
+  "pull-request": [
+    { at: 0, apply: note("n1", "I'll put the schema change on a branch and open a pull request.") },
+    ...git("b1", 2, "branch", "Creating feat/messages", "Created feat/messages", "branch"),
+    ...git(
+      "c1",
+      6,
+      "commit",
+      "Committing changes",
+      "Committed: add messages table",
+      "commit",
+      'git commit -m "Add messages table"\n\n[feat/messages 3f9c2a1] Add messages table\n 1 file changed, 6 insertions(+)',
+    ),
+    ...git("p1", 10, "push", "Pushing feat/messages", "Pushed feat/messages", "push"),
+    ...git(
+      "pr1",
+      14,
+      "pull-request",
+      "Opening pull request",
+      "Opened #42: Add messages table",
+      "PR",
+    ),
+    ...git(
+      "t1",
+      18,
+      "test",
+      "Running checks",
+      "Checks passed",
+      "CI",
+      "✓ lint\n✓ typecheck\n✓ build",
+    ),
+    { at: 22, apply: note("n2", "Checks are green, so I'll review the diff and merge it.") },
+    ...git("rv1", 24, "review", "Reviewing #42", "Reviewed #42", "review"),
+    ...git(
+      "m1",
+      28,
+      "merge",
+      "Merging #42",
+      "Merged #42 into main",
+      "merge",
+      "gh pr merge 42 --squash\n\n✓ Squashed and merged pull request #42",
+    ),
+    ...answer(PR_ANSWER, 35),
+  ],
   research: [
     { at: 0, apply: note("n1", "I'll look up what Vercel AI Gateway is and how to use it.") },
     {

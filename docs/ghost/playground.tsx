@@ -4,7 +4,7 @@ import * as React from "react";
 import { useGhost, type GhostColor, type GhostSize } from "@/registry/clover-ui/ghost";
 import { useSiteGhostLook } from "@/components/leaves/site-ghost";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
-import type { ControlDef } from "@/lib/playground";
+import { jsx, type ControlDef } from "@/lib/playground";
 
 const colors: { value: GhostColor; swatch: string }[] = [
   { value: "lime", swatch: "#84cc16" },
@@ -62,6 +62,7 @@ export function GhostPlayground() {
     <PlaygroundShell
       controls={controls}
       defaultProps={defaultProps}
+      code={(values) => jsx("Ghost", { color: values.color, size: values.size })}
       render={(values) => (
         <SiteGhostStage color={values.color as GhostColor} size={values.size as GhostSize} />
       )}

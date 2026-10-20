@@ -6,7 +6,7 @@ import {
   type GlitchyTextTrigger,
 } from "@/registry/clover-ui/glitchy-text";
 import { PlaygroundShell } from "@/components/garden/playground-shell";
-import type { ControlDef } from "@/lib/playground";
+import { jsx, type ControlDef } from "@/lib/playground";
 
 const pixelSwatch = [
   "#ef4444",
@@ -59,6 +59,18 @@ export function GlitchyTextPlayground() {
     <PlaygroundShell
       controls={controls}
       defaultProps={defaultProps}
+      code={(values) =>
+        jsx(
+          "GlitchyText",
+          {
+            trigger: values.trigger,
+            color: values.color,
+            interval: 2400,
+            className: "text-center text-4xl font-bold tracking-tight sm:text-5xl",
+          },
+          "SIGNAL LOST",
+        )
+      }
       render={(values) => (
         <div className="flex w-full justify-center px-4">
           <GlitchyText
