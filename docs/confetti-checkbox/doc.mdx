@@ -1,0 +1,50 @@
+import { ConfettiCheckboxPlayground } from "./playground"
+
+<ConfettiCheckboxPlayground />
+
+## Installation
+
+<InstallationTabs item="confetti-checkbox">
+```tsx file=../../registry/clover-ui/confetti-checkbox.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { ConfettiCheckbox } from "@/components/confetti-checkbox";
+
+<label className="flex items-center gap-2">
+  <ConfettiCheckbox name="updates" value="yes" />
+  Send me product updates
+</label>
+```
+
+A rounded checkbox with a colorful pop, a ring of confetti, and a white check that springs into place. The large size matches the original 80px design. Each checkbox toggles independently. Initial checked states render immediately; the celebration begins after interaction. Reduced motion removes the animation.
+
+Use a visible label, `aria-label`, or `aria-labelledby`. Tab focuses the checkbox and Space toggles it. Native form submission, `required`, `disabled`, and form reset work without extra wiring. `ref` points to the input. `className` and `style` customize the outer wrapper; other native input props go to the checkbox.
+
+For a controlled checkbox:
+
+```tsx
+const [checked, setChecked] = React.useState(false);
+
+<ConfettiCheckbox
+  aria-label="Accept terms"
+  checked={checked}
+  onCheckedChange={setChecked}
+/>
+```
+
+## Props
+
+<PropsTable data={[
+  { name: "checked", type: "boolean", description: "Controlled checked state." },
+  { name: "defaultChecked", type: "boolean", default: "false", description: "Initial uncontrolled state." },
+  { name: "onCheckedChange", type: "(checked: boolean) => void", description: "Called after native change events." },
+  { name: "onChange", type: "ChangeEventHandler<HTMLInputElement>", description: "Native input change handler." },
+  { name: "size", type: '"sm" | "default" | "lg"', default: '"default"', description: "24px, 32px, or 80px artwork. Small sizes retain a 44px hit target." },
+  { name: "color", type: "string", default: '"#3d46ff"', description: "Checked surface and focus ring color. Choose a color with enough contrast for the white check." },
+  { name: "disabled", type: "boolean", default: "false" },
+  { name: "className", type: "string", description: "Outer wrapper classes." },
+]} />
