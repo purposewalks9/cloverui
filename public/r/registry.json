@@ -41,7 +41,8 @@
         "https://cloverui.vercel.app/r/thinking-state.json",
         "https://cloverui.vercel.app/r/response-block.json",
         "https://cloverui.vercel.app/r/reasoning-effort.json",
-        "https://cloverui.vercel.app/r/sign-in-button.json"
+        "https://cloverui.vercel.app/r/sign-in-button.json",
+        "https://cloverui.vercel.app/r/sculpted-button.json"
       ]
     },
     {
@@ -532,6 +533,24 @@
         }
       ],
       "dependencies": ["motion", "class-variance-authority"],
+      "registryDependencies": [],
+      "category": "button",
+      "meta": {
+        "addedAt": "2026-10-20"
+      }
+    },
+    {
+      "name": "sculpted-button",
+      "type": "registry:component",
+      "title": "Sculpted Button",
+      "description": "A white sculpted button with a rounded rim, a recessed face and a physical press into its base.",
+      "files": [
+        {
+          "path": "registry/clover-ui/sculpted-button.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": ["class-variance-authority", "motion"],
       "registryDependencies": [],
       "category": "button",
       "meta": {
