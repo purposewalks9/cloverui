@@ -41,7 +41,8 @@
         "https://cloverui.vercel.app/r/response-block.json",
         "https://cloverui.vercel.app/r/reasoning-effort.json",
         "https://cloverui.vercel.app/r/sign-in-button.json",
-        "https://cloverui.vercel.app/r/sculpted-button.json"
+        "https://cloverui.vercel.app/r/sculpted-button.json",
+        "https://cloverui.vercel.app/r/confetti-checkbox.json"
       ]
     },
     {
@@ -70,7 +71,9 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion"],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [],
       "category": "effect"
     },
@@ -100,7 +103,9 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["lucide-react"],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "category": "text"
     },
@@ -115,7 +120,9 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion"],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [],
       "category": "loader"
     },
@@ -130,7 +137,9 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion"],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [],
       "category": "loader"
     },
@@ -160,7 +169,9 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["@radix-ui/react-slot"],
+      "dependencies": [
+        "@radix-ui/react-slot"
+      ],
       "registryDependencies": [],
       "category": "button"
     },
@@ -175,7 +186,10 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["matter-js", "@types/matter-js"],
+      "dependencies": [
+        "matter-js",
+        "@types/matter-js"
+      ],
       "registryDependencies": [],
       "category": "effect"
     },
@@ -205,7 +219,9 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion"],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [],
       "category": "text"
     },
@@ -235,7 +251,10 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion", "class-variance-authority"],
+      "dependencies": [
+        "motion",
+        "class-variance-authority"
+      ],
       "registryDependencies": [],
       "category": "control"
     },
@@ -250,7 +269,10 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion", "class-variance-authority"],
+      "dependencies": [
+        "motion",
+        "class-variance-authority"
+      ],
       "registryDependencies": [],
       "category": "control"
     },
@@ -265,7 +287,9 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["lucide-react"],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "category": "control"
     },
@@ -310,7 +334,10 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion", "class-variance-authority"],
+      "dependencies": [
+        "motion",
+        "class-variance-authority"
+      ],
       "registryDependencies": [],
       "category": "cursor"
     },
@@ -325,7 +352,9 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion"],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [],
       "category": "cursor"
     },
@@ -340,7 +369,9 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion"],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [],
       "category": "text"
     },
@@ -355,7 +386,9 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion"],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [],
       "category": "asset"
     },
@@ -370,7 +403,10 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion", "class-variance-authority"],
+      "dependencies": [
+        "motion",
+        "class-variance-authority"
+      ],
       "registryDependencies": [],
       "category": "cursor"
     },
@@ -385,7 +421,10 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["class-variance-authority", "next-themes"],
+      "dependencies": [
+        "class-variance-authority",
+        "next-themes"
+      ],
       "registryDependencies": [],
       "category": "button"
     },
@@ -400,7 +439,9 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion"],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [],
       "category": "text"
     },
@@ -415,8 +456,12 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion"],
-      "registryDependencies": ["https://cloverui.vercel.app/r/liquid-button.json"],
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://cloverui.vercel.app/r/liquid-button.json"
+      ],
       "category": "block"
     },
     {
@@ -430,7 +475,11 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion", "@radix-ui/react-slot", "class-variance-authority"],
+      "dependencies": [
+        "motion",
+        "@radix-ui/react-slot",
+        "class-variance-authority"
+      ],
       "registryDependencies": [],
       "category": "button"
     },
@@ -445,7 +494,9 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["class-variance-authority"],
+      "dependencies": [
+        "class-variance-authority"
+      ],
       "registryDependencies": [],
       "category": "control"
     },
@@ -460,10 +511,14 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion"],
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [],
       "category": "loader",
-      "meta": { "addedAt": "2026-10-14" }
+      "meta": {
+        "addedAt": "2026-10-14"
+      }
     },
     {
       "name": "response-block",
@@ -480,8 +535,13 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion", "lucide-react"],
-      "registryDependencies": ["https://cloverui.vercel.app/r/thinking-state.json"],
+      "dependencies": [
+        "motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://cloverui.vercel.app/r/thinking-state.json"
+      ],
       "category": "block",
       "meta": {
         "addedAt": "2026-10-14"
@@ -498,7 +558,10 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion", "lucide-react"],
+      "dependencies": [
+        "motion",
+        "lucide-react"
+      ],
       "registryDependencies": [],
       "category": "control",
       "meta": {
@@ -516,7 +579,10 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["motion", "class-variance-authority"],
+      "dependencies": [
+        "motion",
+        "class-variance-authority"
+      ],
       "registryDependencies": [],
       "category": "button",
       "meta": {
@@ -534,9 +600,35 @@
           "type": "registry:component"
         }
       ],
-      "dependencies": ["class-variance-authority", "motion"],
+      "dependencies": [
+        "class-variance-authority",
+        "motion"
+      ],
       "registryDependencies": [],
       "category": "button",
+      "meta": {
+        "addedAt": "2026-10-20"
+      }
+    },
+    {
+      "name": "confetti-checkbox",
+      "type": "registry:component",
+      "title": "Confetti Checkbox",
+      "description": "A rounded checkbox with a colorful pop, confetti burst, and springing check.",
+      "files": [
+        {
+          "path": "registry/clover-ui/confetti-checkbox.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "class-variance-authority",
+        "motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "category": "control",
       "meta": {
         "addedAt": "2026-10-20"
       }
