@@ -41,7 +41,8 @@
         "https://cloverui.vercel.app/r/thinking-state.json",
         "https://cloverui.vercel.app/r/response-block.json",
         "https://cloverui.vercel.app/r/reasoning-effort.json",
-        "https://cloverui.vercel.app/r/sign-in-button.json"
+        "https://cloverui.vercel.app/r/sign-in-button.json",
+        "https://cloverui.vercel.app/r/confetti-checkbox.json"
       ]
     },
     {
@@ -498,9 +499,7 @@
       "dependencies": ["motion", "lucide-react"],
       "registryDependencies": ["https://cloverui.vercel.app/r/thinking-state.json"],
       "category": "block",
-      "meta": {
-        "addedAt": "2026-10-14"
-      }
+      "meta": { "addedAt": "2026-10-14" }
     },
     {
       "name": "reasoning-effort",
@@ -534,6 +533,24 @@
       "dependencies": ["motion", "class-variance-authority"],
       "registryDependencies": [],
       "category": "button",
+      "meta": {
+        "addedAt": "2026-10-20"
+      }
+    },
+    {
+      "name": "confetti-checkbox",
+      "type": "registry:component",
+      "title": "Confetti Checkbox",
+      "description": "A rounded checkbox with a colorful pop, confetti burst, and springing check.",
+      "files": [
+        {
+          "path": "registry/clover-ui/confetti-checkbox.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": ["class-variance-authority", "motion"],
+      "registryDependencies": ["utils"],
+      "category": "control",
       "meta": {
         "addedAt": "2026-10-20"
       }
