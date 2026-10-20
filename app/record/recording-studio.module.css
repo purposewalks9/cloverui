@@ -177,14 +177,6 @@
   opacity: 0.65;
 }
 
-.pair {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(24px, 5vw, 48px);
-}
-
 .ranges {
   display: grid;
   width: min(100%, 380px);
