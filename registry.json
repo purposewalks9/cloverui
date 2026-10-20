@@ -40,7 +40,8 @@
         "https://cloverui.vercel.app/r/switch.json",
         "https://cloverui.vercel.app/r/thinking-state.json",
         "https://cloverui.vercel.app/r/response-block.json",
-        "https://cloverui.vercel.app/r/reasoning-effort.json"
+        "https://cloverui.vercel.app/r/reasoning-effort.json",
+        "https://cloverui.vercel.app/r/sign-in-button.json"
       ]
     },
     {
@@ -517,6 +518,24 @@
       "category": "control",
       "meta": {
         "addedAt": "2026-10-16"
+      }
+    },
+    {
+      "name": "sign-in-button",
+      "type": "registry:component",
+      "title": "Sign In Button",
+      "description": "A sign-in button with a smooth color surface drawn from each provider's logo, with eight providers and custom brands.",
+      "files": [
+        {
+          "path": "registry/clover-ui/sign-in-button.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": ["motion", "class-variance-authority"],
+      "registryDependencies": [],
+      "category": "button",
+      "meta": {
+        "addedAt": "2026-10-20"
       }
     }
   ]
