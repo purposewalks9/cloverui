@@ -1,15 +1,8 @@
 import { SignInButtonPlayground } from "./playground"
-import { SignInProviderGallery, SignInCustomDemo } from "./demo"
 
 <SignInButtonPlayground />
 
 A sign-in button with a diffused color surface made from the provider's own logo. The crisp mark sits in a small inset lens while its colors spread through the button. Hover or focus to gently shift the color field; press to settle it down.
-
-## Providers
-
-Google, Apple, GitHub, Microsoft, Discord, X, Facebook, and Spotify are included. Try a button to preview its loading state.
-
-<SignInProviderGallery />
 
 ## Installation
 
@@ -28,7 +21,7 @@ import { SignInButton } from "@/components/sign-in-button";
 <SignInButton provider="apple" intent="signup" size="lg" />
 ```
 
-This is a button primitive. Connect `onClick` to your authentication client and pass `loading` while that request is pending. It does not start OAuth, collect credentials, or keep authentication state itself. The documentation buttons only preview the interaction.
+This is a button primitive. Connect `onClick` to your authentication client and pass `loading` while that request is pending. It does not start OAuth, collect credentials, or keep authentication state itself. Choose a provider or select Custom and edit the brand name and logo URL in the playground.
 
 ```tsx
 <SignInButton
@@ -56,8 +49,6 @@ const brand: SignInBrand = {
 
 <SignInButton provider={brand}>Continue with your company</SignInButton>
 ```
-
-<SignInCustomDemo />
 
 Use a transparent logo with explicit fill colors; `currentColor` in an external SVG cannot inherit the button's text color. SVG data URLs, local paths, and remote image URLs work. Self-host custom images for predictable availability, and allow their source in your site's image policy. The bundled logos use `data:` images. If an image fails to load, the button keeps its label and shows the brand's first letter on a neutral surface.
 
