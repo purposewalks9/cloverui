@@ -7,7 +7,7 @@
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
-    "registry:build": "pnpm dlx shadcn@4.21.0 build -o registry/output",
+    "registry:build": "pnpm dlx shadcn@4.21.0 build",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "registry:check": "node scripts/check-registry.mjs",

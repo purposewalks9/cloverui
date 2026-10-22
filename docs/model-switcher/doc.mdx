@@ -9,7 +9,7 @@ import { ModelSwitcherPlayground } from "./playground"
 ```
 </InstallationTabs>
 
-This also installs [Effort Slider](/docs/effort-slider), which the Effort menu uses.
+This also installs [Effort Slider](/docs/effort-slider), which the Effort menu uses, and [Thinking State](/docs/thinking-state), whose orb marks the picked model.
 
 ## Usage
 
@@ -19,13 +19,18 @@ import { ModelSwitcher } from "@/components/model-switcher";
 <ModelSwitcher />
 ```
 
-A small dropdown for choosing which AI model to use and how hard it thinks. Closed, it's a pill with the model name, the Effort Slider's brain colored for the current level, and the level, like "GPT-6 Medium".
+A small menu for your chat input. It picks which AI model to use and how hard it thinks. Closed, it's a pill that shows the model and level, like "Opus 5.5 Medium".
 
-Click it and a menu opens below, no wider than the pill, with two rows: Model and Effort. Hover or click a row and its own menu opens to the right. Model shows a short list with each model's logo, name and company. The picked model's logo is bright and gets a check, and the rest are dimmed. Effort shows the Effort Slider, so you can click or drag the brain. The pill only changes to the new level when you leave the Effort menu, so dragging doesn't flicker the rest of the switcher. When there isn't room on the right, it opens on the left.
+Click it to open a menu with two rows:
+
+- **Model:** a list of models with their logos. The picked one shows a small animated orb.
+- **Effort:** an [Effort Slider](/docs/effort-slider) you can click or drag.
+
+The pill updates when you leave a submenu, so it doesn't flicker while you choose. If there isn't room on the right, submenus open on the left.
 
 ### Syncing with Effort Slider
 
-Give the picker and an Effort Slider the same state and they move together. Changing either one updates the other:
+Give it and an Effort Slider the same state, and they stay in sync:
 
 ```tsx
 import { EffortSlider } from "@/components/effort-slider";
@@ -40,40 +45,42 @@ Use the same `effortLevels` and `effortTheme` on both so they match.
 
 ### Models and logos
 
-It comes with GPT-6, Claude Opus 5.5, Grok 4.7, DeepSeek V4.1 and Kimi K3. The logos are one color and follow your text color in light and dark mode. Only the brain has color.
+It comes with Opus 5.5, Grok 4.7, GPT-6, Astra and Muse Spark. Black and white logos follow your text color.
 
-Pass your own list to change them. `ModelLogo` draws the built-in logos (`openai`, `claude`, `grok`, `deepseek` and `kimi`), or pass any icon:
+Pass your own list to change them. Use `ModelLogo` for the built-in logos (`openai`, `claude`, `grok` and `meta`), or pass any icon:
 
 ```tsx
 import { ModelLogo, ModelSwitcher } from "@/components/model-switcher";
 
 <ModelSwitcher
   models={[
-    { value: "gpt-6", label: "GPT-6", description: "OpenAI", icon: <ModelLogo name="openai" /> },
-    { value: "opus-5.5", label: "Opus 5.5", description: "Anthropic", icon: <ModelLogo name="claude" /> },
-    { value: "my-model", label: "My Model", description: "My company", icon: <MyIcon /> },
+    { value: "gpt-6", label: "GPT-6", icon: <ModelLogo name="openai" /> },
+    { value: "opus-5.5", label: "Opus 5.5", icon: <ModelLogo name="claude" /> },
+    { value: "my-model", label: "My Model", icon: <MyIcon /> },
   ]}
   effortLevels={["Quick", "Balanced", "Deep"]}
   onModelChange={(model) => console.log(model)}
 />
 ```
 
-The menu opens below the pill. Pass `side="top"` to open it above, for a box at the bottom of the screen.
+The menu opens below the pill. Pass `side="top"` to open it above.
 
-It works with the keyboard: arrow up or down on the pill opens it, the arrow keys move between rows, Right or Enter opens a row's menu, and Left or Escape goes back. In the Effort menu the arrow keys move the slider. Escape on the main menu closes it and returns focus to the pill, and clicking outside closes it. It uses your theme's card, popover, muted and foreground colors, with a soft gradient edge mixed from the foreground.
+Keyboard: arrow keys move around, Enter or Right opens a submenu, and Left or Escape goes back. Clicking outside closes it.
 
 ## Props
 
 <PropsTable data={[
-  { name: "models", type: "{ value: string; label: string; description?: string; icon?: ReactNode }[]", default: "defaultModels", description: "The models to pick from." },
+  { name: "models", type: "{ value: string; label: string; icon?: ReactNode }[]", default: "defaultModels", description: "The models to pick from." },
   { name: "model", type: "string", description: "The picked model's value, for a controlled picker." },
   { name: "defaultModel", type: "string", description: "The starting model. Defaults to the first one." },
-  { name: "onModelChange", type: "(model: string, option) => void", description: "Called when a model is picked." },
+  { name: "onModelChange", type: "(model: string, option) => void", description: "Called with the picked model when you leave the Model menu." },
   { name: "effort", type: "number", description: "The effort level's index, for a controlled picker. Share it with an Effort Slider to sync them." },
   { name: "defaultEffort", type: "number", default: "1", description: "The starting effort level's index." },
   { name: "onEffortChange", type: "(effort: number, level: string) => void", description: "Called with the new index and level name when you leave the Effort menu." },
   { name: "effortLevels", type: "string[]", default: '["Low", "Medium", "High", "Max"]', description: "The effort level names." },
   { name: "effortTheme", type: '"aurora" | "ocean" | "ember" | "forest" | "mono"', default: '"aurora"', description: "The Effort Slider color theme, also used for the brain in the pill." },
+  { name: "orbStates", type: "ThinkingStateKind[]", default: '["thinking", "pondering", "building"]', description: "The Thinking State animations the picked model's orb cycles through." },
+  { name: "orbInterval", type: "number", default: "2200", description: "Base milliseconds before the orb moves to its next state. Higher effort shortens it." },
   { name: "side", type: '"top" | "bottom"', default: '"bottom"', description: "Opens the dropdown below or above the pill." },
   { name: "disabled", type: "boolean", default: "false", description: "Fades the pill and stops it opening." },
   { name: "className", type: "string" },

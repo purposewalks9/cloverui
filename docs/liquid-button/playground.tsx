@@ -13,7 +13,7 @@ const controls: ControlDef[] = [
   {
     type: "select",
     prop: "element",
-    label: "Element",
+    label: "Theme",
     options: [
       { label: "Lava", value: "lava", swatch: "#d42a1a" },
       { label: "Ocean", value: "ocean", swatch: "#1d6fc4" },

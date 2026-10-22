@@ -30,7 +30,12 @@ Pick colors with `theme`: `"signal"` (green, cyan, blue, pink, red, orange and y
 <SpectrumBars colors={["#00a3ff", "#7df9ff", "#ff2d75", "#ffb3d1"]} />
 ```
 
-By default the stripes fill the full height and most of the width (`bandWidth` 0.86), so their left and right ends fade softly into the background. Set `bandWidth` to 1 to fill the whole block, or make `bandWidth` and `bandHeight` smaller (from 0 to 1) to shrink them into a band in the middle. `columns` sets how many stripes fit across, `glow` how much soft light spreads from them (0 turns it off), `glitch` how far everything sways sideways, smoothly, and `speed` how fast they slide and change; it goes up to 10 in the playground and has no upper limit.
+By default the stripes fill most of the width (`bandWidth` 0.86), and their edges fade out. Set `bandWidth` to 1 to fill the whole block, or lower `bandWidth` and `bandHeight` (0 to 1) to make a smaller band in the middle.
+
+- `columns`: how many stripes fit across.
+- `glow`: how much soft light they give off. 0 turns it off.
+- `glitch`: how far they sway sideways.
+- `speed`: how fast they move. There's no upper limit.
 
 It's drawn on a canvas and pauses when it's off screen or the tab is hidden. The stripe colors are its own and stay the same in light and dark mode. The dimmed stripes fade into your theme's background color, so it blends with the page. Pass `backgroundColor` to use another color behind them. When reduced motion is on, or `animate` is false, it draws one still frame.
 

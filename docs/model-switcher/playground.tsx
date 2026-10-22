@@ -9,13 +9,29 @@ const controls: ControlDef[] = [
   {
     type: "select",
     prop: "effortTheme",
-    label: "Effort theme",
+    label: "Theme",
     options: [
-      { label: "Aurora", value: "aurora" },
-      { label: "Ocean", value: "ocean" },
-      { label: "Ember", value: "ember" },
-      { label: "Forest", value: "forest" },
-      { label: "Mono", value: "mono" },
+      {
+        label: "Aurora",
+        value: "aurora",
+        swatch: "linear-gradient(90deg, #b4b7ee, #c3aef0, #f9a8d4)",
+      },
+      {
+        label: "Ocean",
+        value: "ocean",
+        swatch: "linear-gradient(90deg, #a9d8f0, #9cc9f5, #8fe3dc)",
+      },
+      {
+        label: "Ember",
+        value: "ember",
+        swatch: "linear-gradient(90deg, #f5c99a, #f7b48f, #ff9e9e)",
+      },
+      {
+        label: "Forest",
+        value: "forest",
+        swatch: "linear-gradient(90deg, #b6e3ad, #a8e6a8, #e2f09a)",
+      },
+      { label: "Mono", value: "mono", swatch: "linear-gradient(90deg, #d4d4d8, #a1a1aa, #fafafa)" },
     ],
   },
   { type: "boolean", prop: "disabled", label: "Disabled" },

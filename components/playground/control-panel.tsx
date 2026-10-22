@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 import type { ControlDef } from "@/lib/playground";
 import { ColorField } from "@/components/playground/color-field";
 import { ColorSelector } from "@/components/ui/color-selector";
-import { SelectField } from "@/components/playground/select-field";
 
 interface ControlPanelProps {
   controls: ControlDef[];
@@ -14,13 +13,25 @@ interface ControlPanelProps {
 }
 
 const TILE_CLASS =
-  "border-border bg-muted/40 focus-within:ring-ring relative flex min-h-11 min-w-0 items-center justify-between gap-3 overflow-hidden rounded-none border px-3 focus-within:ring-2";
+  "border-border bg-background has-[:focus-visible]:ring-ring relative flex min-h-11 min-w-0 items-center justify-between gap-3 overflow-hidden rounded-none border px-3 has-[:focus-visible]:ring-2";
 
 const LABEL_CLASS = "text-muted-foreground relative min-w-0 truncate text-sm whitespace-nowrap";
 
-const COLOR_TILE_CLASS = cn(TILE_CLASS, "col-span-full");
+const MAX_SWATCHES = 5;
 
-const MAX_SWATCHES = 8;
+const SWATCHES_CLASS = "min-w-0 justify-end gap-2 overflow-x-auto p-1";
+
+const TILE_WIDTH = 208;
+const WIDE_TILE_WIDTH = 256;
+
+function optionSpan(label: string, options: { label: string }[]) {
+  const optionsWidth = options.reduce((total, option) => total + option.label.length * 6.5 + 24, 6);
+  const needed = 36 + label.length * 7.5 + optionsWidth;
+  if (needed <= TILE_WIDTH) return "";
+  if (needed <= WIDE_TILE_WIDTH) return "@md:col-span-2 @3xl:col-span-1";
+  if (needed <= TILE_WIDTH * 2) return "@md:col-span-2";
+  return "col-span-full";
+}
 
 function limitSwatches<T extends { value: string }>(options: T[], value: unknown) {
   if (options.length <= MAX_SWATCHES) return options;
@@ -40,7 +51,7 @@ function controlRank(control: ControlDef) {
   if (isColorControl(control)) return 0;
   if (control.type === "select") return 1;
   if (control.type === "text" || control.type === "text-list") return 2;
-  if (control.type === "number") return 3;
+  if (control.type === "number") return 5;
   return 4;
 }
 
@@ -57,38 +68,40 @@ function sortControls(controls: ControlDef[]) {
 
 function ControlPanel({ controls, values, onChange }: ControlPanelProps) {
   return (
-    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3">
-      {sortControls(controls).flatMap((control) => {
-        if (control.type === "text-list") {
-          return control.items.map((item) => (
-            <TextTile
-              key={item.prop}
-              id={item.prop}
-              label={item.label}
-              value={values[item.prop] as string}
-              onChange={(next) => onChange(item.prop, next)}
+    <div className="@container">
+      <div className="grid grid-flow-dense grid-cols-1 gap-2 @md:grid-cols-2 @3xl:grid-cols-3">
+        {sortControls(controls).flatMap((control) => {
+          if (control.type === "text-list") {
+            return control.items.map((item) => (
+              <TextTile
+                key={item.prop}
+                id={item.prop}
+                label={item.label}
+                value={values[item.prop] as string}
+                onChange={(next) => onChange(item.prop, next)}
+              />
+            ));
+          }
+          if (control.type === "color-list") {
+            return control.items.map((item) => (
+              <ColorTile
+                key={item.prop}
+                label={item.label}
+                value={values[item.prop] as string}
+                onChange={(next) => onChange(item.prop, next)}
+              />
+            ));
+          }
+          return (
+            <Tile
+              key={control.prop}
+              control={control}
+              value={values[control.prop]}
+              onChange={(next) => onChange(control.prop, next)}
             />
-          ));
-        }
-        if (control.type === "color-list") {
-          return control.items.map((item) => (
-            <ColorTile
-              key={item.prop}
-              label={item.label}
-              value={values[item.prop] as string}
-              onChange={(next) => onChange(item.prop, next)}
-            />
-          ));
-        }
-        return (
-          <Tile
-            key={control.prop}
-            control={control}
-            value={values[control.prop]}
-            onChange={(next) => onChange(control.prop, next)}
-          />
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -105,7 +118,7 @@ function TextTile({
   onChange: (value: string) => void;
 }) {
   return (
-    <div className={TILE_CLASS}>
+    <div className={cn(TILE_CLASS, "has-[:focus-visible]:ring-0")}>
       <label htmlFor={id} className={cn(LABEL_CLASS, "shrink-0")}>
         {label}
       </label>
@@ -113,7 +126,7 @@ function TextTile({
         id={id}
         value={value ?? ""}
         onChange={(e) => onChange(e.target.value)}
-        className="text-foreground min-w-0 flex-1 bg-transparent text-right text-sm outline-none"
+        className="border-border bg-background text-foreground hover:border-foreground/30 focus-visible:border-foreground/40 focus-visible:ring-ring/40 h-7 w-full max-w-[65%] min-w-0 cursor-text rounded-none border px-2 text-sm transition-colors outline-none focus-visible:ring-2"
       />
     </div>
   );
@@ -129,7 +142,7 @@ function ColorTile({
   onChange: (value: string) => void;
 }) {
   return (
-    <div className={COLOR_TILE_CLASS}>
+    <div className={TILE_CLASS}>
       <span className={cn(LABEL_CLASS, "shrink-0")}>{label}</span>
       <ColorField value={value} onChange={onChange} />
     </div>
@@ -174,7 +187,7 @@ function SwitchTile({
   );
 }
 
-function SelectTile({
+function OptionsTile({
   id,
   label,
   options,
@@ -187,12 +200,57 @@ function SelectTile({
   value: string;
   onChange: (value: string) => void;
 }) {
+  const span = optionSpan(label, options);
+  const selected = Math.max(
+    0,
+    options.findIndex((option) => option.value === value),
+  );
+
+  function onKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
+    const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[event.key];
+    if (!step) return;
+    event.preventDefault();
+    const next = (selected + step + options.length) % options.length;
+    onChange(options[next].value);
+    event.currentTarget.querySelectorAll<HTMLButtonElement>('[role="radio"]')[next]?.focus();
+  }
+
   return (
-    <div className={cn(TILE_CLASS, "overflow-visible")}>
-      <label htmlFor={id} className={cn(LABEL_CLASS, "shrink-0")}>
+    <div className={cn(TILE_CLASS, "has-[:focus-visible]:ring-0", span, span && "flex-wrap py-2")}>
+      <span id={`${id}-label`} className={cn(LABEL_CLASS, "shrink-0")}>
         {label}
-      </label>
-      <SelectField id={id} options={options} value={value} onChange={onChange} />
+      </span>
+      <div
+        role="radiogroup"
+        aria-labelledby={`${id}-label`}
+        onKeyDown={onKeyDown}
+        className={cn(
+          "bg-foreground/[0.06] flex min-w-0 flex-wrap gap-0.5 p-0.5",
+          span === "col-span-full" ? "w-full justify-start" : "justify-end",
+        )}
+      >
+        {options.map((option, index) => {
+          const checked = index === selected;
+          return (
+            <button
+              key={option.value}
+              type="button"
+              role="radio"
+              aria-checked={checked}
+              tabIndex={checked ? 0 : -1}
+              onClick={() => onChange(option.value)}
+              className={cn(
+                "focus-visible:ring-ring h-7 shrink-0 cursor-pointer rounded-none border px-2.5 text-xs whitespace-nowrap transition-colors outline-none focus-visible:ring-2",
+                checked
+                  ? "border-border bg-background text-foreground"
+                  : "text-muted-foreground hover:text-foreground border-transparent",
+              )}
+            >
+              {option.label}
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -286,7 +344,7 @@ function Tile({
       if (isColorControl(control)) {
         const swatches = limitSwatches(control.options, value);
         return (
-          <div className={COLOR_TILE_CLASS}>
+          <div className={TILE_CLASS}>
             <span className={cn(LABEL_CLASS, "shrink-0")}>{control.label}</span>
             <ColorSelector
               size="sm"
@@ -298,13 +356,13 @@ function Tile({
               )}
               value={value as string}
               onColorSelect={onChange}
-              className="min-w-0 justify-end gap-2.5 overflow-x-auto p-1"
+              className={SWATCHES_CLASS}
             />
           </div>
         );
       }
       return (
-        <SelectTile
+        <OptionsTile
           id={control.prop}
           label={control.label}
           options={control.options}

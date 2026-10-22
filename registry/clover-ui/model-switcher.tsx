@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Check, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
+import { useReducedMotion } from "motion/react";
+import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import {
@@ -10,11 +11,11 @@ import {
   effortTone,
   type EffortSliderTheme,
 } from "@/registry/clover-ui/effort-slider";
+import { ThinkingState, type ThinkingStateKind } from "@/registry/clover-ui/thinking-state";
 
 export type ModelSwitcherOption = {
   value: string;
   label: string;
-  description?: string;
   icon?: React.ReactNode;
 };
 
@@ -37,6 +38,8 @@ export interface ModelSwitcherProps extends Omit<
   onEffortChange?: (effort: number, level: string) => void;
   effortLevels?: string[];
   effortTheme?: EffortSliderTheme;
+  orbStates?: ThinkingStateKind[];
+  orbInterval?: number;
   side?: ModelSwitcherSide;
   disabled?: boolean;
 }
@@ -51,20 +54,22 @@ const LOGOS = {
   grok: [
     "M9.27 15.29l7.978-5.897c.391-.29.95-.177 1.137.272.98 2.369.542 5.215-1.41 7.169-1.951 1.954-4.667 2.382-7.149 1.406l-2.711 1.257c3.889 2.661 8.611 2.003 11.562-.953 2.341-2.344 3.066-5.539 2.388-8.42l.006.007c-.983-4.232.242-5.924 2.75-9.383.06-.082.12-.164.179-.248l-3.301 3.305v-.01L9.267 15.292M7.623 16.723c-2.792-2.67-2.31-6.801.071-9.184 1.761-1.763 4.647-2.483 7.166-1.425l2.705-1.25a7.808 7.808 0 00-1.829-1A8.975 8.975 0 005.984 5.83c-2.533 2.536-3.33 6.436-1.962 9.764 1.022 2.487-.653 4.246-2.34 6.022-.599.63-1.199 1.259-1.682 1.925l7.62-6.815",
   ],
-  kimi: [
-    "M21.846 0a1.923 1.923 0 110 3.846H20.15a.226.226 0 01-.227-.226V1.923C19.923.861 20.784 0 21.846 0z",
-    "M11.065 11.199l7.257-7.2c.137-.136.06-.41-.116-.41H14.3a.164.164 0 00-.117.051l-7.82 7.756c-.122.12-.302.013-.302-.179V3.82c0-.127-.083-.23-.185-.23H3.186c-.103 0-.186.103-.186.23V19.77c0 .128.083.23.186.23h2.69c.103 0 .186-.102.186-.23v-3.25c0-.069.025-.135.069-.178l2.424-2.406a.158.158 0 01.205-.023l6.484 4.772a7.677 7.677 0 003.453 1.283c.108.012.2-.095.2-.23v-3.06c0-.117-.07-.212-.164-.227a5.028 5.028 0 01-2.027-.807l-5.613-4.064c-.117-.078-.132-.279-.028-.381z",
-  ],
-  deepseek: [
-    "M23.748 4.482c-.254-.124-.364.113-.512.234-.051.039-.094.09-.137.136-.372.397-.806.657-1.373.626-.829-.046-1.537.214-2.163.848-.133-.782-.575-1.248-1.247-1.548-.352-.156-.708-.311-.955-.65-.172-.241-.219-.51-.305-.774-.055-.16-.11-.323-.293-.35-.2-.031-.278.136-.356.276-.313.572-.434 1.202-.422 1.84.027 1.436.633 2.58 1.838 3.393.137.093.172.187.129.323-.082.28-.18.552-.266.833-.055.179-.137.217-.329.14a5.526 5.526 0 01-1.736-1.18c-.857-.828-1.631-1.742-2.597-2.458a11.365 11.365 0 00-.689-.471c-.985-.957.13-1.743.388-1.836.27-.098.093-.432-.779-.428-.872.004-1.67.295-2.687.684a3.055 3.055 0 01-.465.137 9.597 9.597 0 00-2.883-.102c-1.885.21-3.39 1.102-4.497 2.623C.082 8.606-.231 10.684.152 12.85c.403 2.284 1.569 4.175 3.36 5.653 1.858 1.533 3.997 2.284 6.438 2.14 1.482-.085 3.133-.284 4.994-1.86.47.234.962.327 1.78.397.63.059 1.236-.03 1.705-.128.735-.156.684-.837.419-.961-2.155-1.004-1.682-.595-2.113-.926 1.096-1.296 2.746-2.642 3.392-7.003.05-.347.007-.565 0-.845-.004-.17.035-.237.23-.256a4.173 4.173 0 001.545-.475c1.396-.763 1.96-2.015 2.093-3.517.02-.23-.004-.467-.247-.588zM11.581 18c-2.089-1.642-3.102-2.183-3.52-2.16-.392.024-.321.471-.235.763.09.288.207.486.371.739.114.167.192.416-.113.603-.673.416-1.842-.14-1.897-.167-1.361-.802-2.5-1.86-3.301-3.307-.774-1.393-1.224-2.887-1.298-4.482-.02-.386.093-.522.477-.592a4.696 4.696 0 011.529-.039c2.132.312 3.946 1.265 5.468 2.774.868.86 1.525 1.887 2.202 2.891.72 1.066 1.494 2.082 2.48 2.914.348.292.625.514.891.677-.802.09-2.14.11-3.054-.614zm1-6.44a.306.306 0 01.415-.287.302.302 0 01.2.288.306.306 0 01-.31.307.303.303 0 01-.304-.308zm3.11 1.596c-.2.081-.399.151-.59.16a1.245 1.245 0 01-.798-.254c-.274-.23-.47-.358-.552-.758a1.73 1.73 0 01.016-.588c.07-.327-.008-.537-.239-.727-.187-.156-.426-.199-.688-.199a.559.559 0 01-.254-.078c-.11-.054-.2-.19-.114-.358.028-.054.16-.186.192-.21.356-.202.767-.136 1.146.016.352.144.618.408 1.001.782.391.451.462.576.685.914.176.265.336.537.445.848.067.195-.019.354-.25.452z",
+  meta: [
+    "M6.915 4.03c-1.968 0-3.683 1.28-4.871 3.113C.704 9.208 0 11.883 0 14.449c0 .706.07 1.369.21 1.973a6.624 6.624 0 0 0 .265.86 5.297 5.297 0 0 0 .371.761c.696 1.159 1.818 1.927 3.593 1.927 1.497 0 2.633-.671 3.965-2.444.76-1.012 1.144-1.626 2.663-4.32l.756-1.339.186-.325c.061.1.121.196.183.3l2.152 3.595c.724 1.21 1.665 2.556 2.47 3.314 1.046.987 1.992 1.22 3.06 1.22 1.075 0 1.876-.355 2.455-.843a3.743 3.743 0 0 0 .81-.973c.542-.939.861-2.127.861-3.745 0-2.72-.681-5.357-2.084-7.45-1.282-1.912-2.957-2.93-4.716-2.93-1.047 0-2.088.467-3.053 1.308-.652.57-1.257 1.29-1.82 2.05-.69-.875-1.335-1.547-1.958-2.056-1.182-.966-2.315-1.303-3.454-1.303zm10.16 2.053c1.147 0 2.188.758 2.992 1.999 1.132 1.748 1.647 4.195 1.647 6.4 0 1.548-.368 2.9-1.839 2.9-.58 0-1.027-.23-1.664-1.004-.496-.601-1.343-1.878-2.832-4.358l-.617-1.028a44.908 44.908 0 0 0-1.255-1.98c.07-.109.141-.224.211-.327 1.12-1.667 2.118-2.602 3.358-2.602zm-10.201.553c1.265 0 2.058.791 2.675 1.446.307.327.737.871 1.234 1.579l-1.02 1.566c-.757 1.163-1.882 3.017-2.837 4.338-1.191 1.649-1.81 1.817-2.486 1.817-.524 0-1.038-.237-1.383-.794-.263-.426-.464-1.13-.464-2.046 0-2.221.63-4.535 1.66-6.088.454-.687.964-1.226 1.533-1.533a2.264 2.264 0 0 1 1.088-.285z",
   ],
 } satisfies Record<string, string[]>;
 
 export type ModelLogoName = keyof typeof LOGOS;
 
+const BRAND_COLORS: Partial<Record<ModelLogoName, string>> = {
+  claude: "#D97757",
+  meta: "#0467DF",
+};
+
 function ModelLogo({
   name,
   className,
+  style,
   ...props
 }: React.ComponentProps<"svg"> & { name: ModelLogoName }) {
   return (
@@ -74,6 +79,7 @@ function ModelLogo({
       fill="currentColor"
       fillRule="evenodd"
       className={cn("size-4 shrink-0", className)}
+      style={{ color: BRAND_COLORS[name], ...style }}
       {...props}
     >
       {LOGOS[name].map((d) => (
@@ -83,32 +89,31 @@ function ModelLogo({
   );
 }
 
+const DEFAULT_ORB_STATES: ThinkingStateKind[] = ["thinking", "pondering", "building"];
+
+function OptionIcon({ option }: { option: ModelSwitcherOption }) {
+  if (option.icon) return option.icon;
+  return (
+    <span
+      aria-hidden
+      className="bg-muted text-muted-foreground flex size-4 items-center justify-center rounded-[5px] text-[10px] leading-none font-semibold"
+    >
+      {option.label.charAt(0)}
+    </span>
+  );
+}
+
 export const defaultModels: ModelSwitcherOption[] = [
-  { value: "gpt-6", label: "GPT-6", description: "OpenAI", icon: <ModelLogo name="openai" /> },
-  {
-    value: "claude-opus-5.5",
-    label: "Claude Opus 5.5",
-    description: "Anthropic",
-    icon: <ModelLogo name="claude" />,
-  },
-  { value: "grok-4.7", label: "Grok 4.7", description: "xAI", icon: <ModelLogo name="grok" /> },
-  {
-    value: "deepseek-v4.1",
-    label: "DeepSeek V4.1",
-    description: "DeepSeek",
-    icon: <ModelLogo name="deepseek" />,
-  },
-  {
-    value: "kimi-k3",
-    label: "Kimi K3",
-    description: "Moonshot AI",
-    icon: <ModelLogo name="kimi" />,
-  },
+  { value: "opus-5.5", label: "Opus 5.5", icon: <ModelLogo name="claude" /> },
+  { value: "grok-4.7", label: "Grok 4.7", icon: <ModelLogo name="grok" /> },
+  { value: "gpt-6", label: "GPT-6", icon: <ModelLogo name="openai" /> },
+  { value: "gpt-6-astra", label: "Astra", icon: <ModelLogo name="openai" /> },
+  { value: "muse-spark", label: "Muse Spark", icon: <ModelLogo name="meta" /> },
 ];
 
 const SECTIONS: Section[] = ["model", "effort"];
 const TITLES: Record<Section, string> = { model: "Model", effort: "Effort" };
-const PANEL_WIDTH = 232;
+const PANEL_WIDTH = 184;
 
 const surface = cn(
   "border border-transparent [background:linear-gradient(var(--switcher-fill),var(--switcher-fill))_padding-box,linear-gradient(180deg,var(--switcher-edge-top),var(--switcher-edge-mid)_50%,var(--switcher-edge-bottom))_border-box]",
@@ -119,11 +124,11 @@ const surface = cn(
 const panel = cn(
   surface,
   "text-popover-foreground rounded-2xl p-1 [--switcher-fill:var(--popover)]",
-  "origin-top transition-[opacity,scale] duration-150 ease-out starting:scale-[0.97] starting:opacity-0 motion-reduce:transition-none",
+  "origin-top transition-[opacity,scale] duration-100 ease-out starting:scale-[0.97] starting:opacity-0 motion-reduce:transition-none",
 );
 
 const row =
-  "relative flex h-8 w-full cursor-pointer items-center gap-2 rounded-xl px-2 text-left text-sm whitespace-nowrap outline-none transition-colors duration-150";
+  "relative flex h-8 w-full cursor-pointer items-center gap-2 rounded-xl px-2 text-left text-sm whitespace-nowrap outline-none transition-colors duration-75";
 
 function useControllable<T>(value: T | undefined, defaultValue: T, onChange?: (next: T) => void) {
   const [inner, setInner] = React.useState(defaultValue);
@@ -158,6 +163,8 @@ function ModelSwitcher({
   onEffortChange,
   effortLevels = ["Low", "Medium", "High", "Max"],
   effortTheme = "aurora",
+  orbStates = DEFAULT_ORB_STATES,
+  orbInterval = 2200,
   side = "bottom",
   disabled = false,
   className,
@@ -172,14 +179,18 @@ function ModelSwitcher({
     },
   );
   const levelCount = Math.max(1, effortLevels.length);
+  const reduceMotion = useReducedMotion();
   const [rawEffort, setEffort] = useControllable(effort, defaultEffort, (next) =>
     onEffortChange?.(next, effortLevels[next] ?? ""),
   );
   const effortIndex = Math.min(Math.max(0, Math.round(rawEffort)), levelCount - 1);
+  const orbSpeed = 0.6 + (levelCount > 1 ? effortIndex / (levelCount - 1) : 0) * 1.2;
 
   const [open, setOpen] = React.useState(false);
   const [section, setSectionState] = React.useState<Section | null>(null);
   const [draftEffort, setDraftEffort] = React.useState<number | null>(null);
+  const [draftModel, setDraftModel] = React.useState<string | null>(null);
+  const [orbStep, setOrbStep] = React.useState(0);
   const [hover, setHover] = React.useState(-1);
   const [subHover, setSubHover] = React.useState(-1);
   const [place, setPlace] = React.useState<Place>("right");
@@ -195,7 +206,7 @@ function ModelSwitcher({
   const currentModel = models.find((item) => item.value === modelValue) ?? models[0];
   const activeModel = Math.max(
     0,
-    models.findIndex((item) => item.value === currentModel?.value),
+    models.findIndex((item) => item.value === (draftModel ?? currentModel?.value)),
   );
   const level = effortLevels[effortIndex] ?? "";
   const tone = effortTone(effortIndex, levelCount, effortTheme);
@@ -209,8 +220,14 @@ function ModelSwitcher({
     setDraftEffort(null);
   };
 
+  const commitModel = () => {
+    if (draftModel !== null && draftModel !== currentModel?.value) setModel(draftModel);
+    setDraftModel(null);
+  };
+
   const setSection = (next: Section | null) => {
     if (section === "effort" && next !== "effort") commitEffort();
+    if (section === "model" && next !== "model") commitModel();
     setSectionState(next);
   };
 
@@ -227,6 +244,14 @@ function ModelSwitcher({
   React.useEffect(() => {
     closeRef.current = close;
   });
+
+  const cycling = open && section === "model" && !reduceMotion && orbStates.length > 1;
+
+  React.useEffect(() => {
+    if (!cycling) return;
+    const timer = window.setInterval(() => setOrbStep((step) => step + 1), orbInterval / orbSpeed);
+    return () => window.clearInterval(timer);
+  }, [cycling, orbInterval, orbSpeed]);
 
   React.useEffect(() => {
     if (!open) return;
@@ -359,16 +384,18 @@ function ModelSwitcher({
         className={cn(
           surface,
           "text-card-foreground focus-visible:ring-ring inline-flex h-8 shrink-0 cursor-pointer items-center gap-1.5 rounded-full pr-2 pl-3 text-sm whitespace-nowrap outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-50",
-          "transition-[scale] duration-150 [--switcher-fill:var(--card)] hover:[--switcher-fill:var(--muted)] active:scale-[0.97]",
+          "[--switcher-fill:var(--card)] hover:[--switcher-fill:var(--muted)]",
           open && "[--switcher-fill:var(--muted)]",
         )}
         style={toneStyle}
       >
         <span className="font-medium">{currentModel?.label}</span>
-        <span className="size-4 shrink-0">
-          <BrainKnob />
+        <span className="flex items-center gap-0.5">
+          <span className="size-4 shrink-0">
+            <BrainKnob />
+          </span>
+          <span className="text-muted-foreground">{level}</span>
         </span>
-        <span className="text-muted-foreground">{level}</span>
         <ChevronDown aria-hidden className="text-muted-foreground size-4 shrink-0" />
       </button>
 
@@ -404,22 +431,18 @@ function ModelSwitcher({
                   onPointerEnter={() => (hoverOpens.current ? enter(index) : setHover(index))}
                   onFocus={() => setHover(index)}
                   onClick={() => enter(index)}
-                  className={cn(row, (hover === index || active) && "bg-muted")}
-                >
-                  {item === "model" ? (
-                    <span className="flex size-4 shrink-0 items-center justify-center [&_svg]:size-4">
-                      {currentModel?.icon}
-                    </span>
-                  ) : (
-                    <span className="size-4 shrink-0" style={toneStyle}>
-                      <BrainKnob />
-                    </span>
+                  className={cn(
+                    row,
+                    hover === index || active
+                      ? "bg-muted text-foreground"
+                      : "text-muted-foreground",
                   )}
+                >
                   <span className="flex-1">{TITLES[item]}</span>
                   <ChevronRight
                     aria-hidden
                     className={cn(
-                      "text-muted-foreground size-4 shrink-0 transition-colors duration-150",
+                      "text-muted-foreground size-4 shrink-0 transition-colors duration-75",
                       active && "text-foreground",
                     )}
                   />
@@ -474,31 +497,38 @@ function ModelSwitcher({
                         tabIndex={-1}
                         onPointerEnter={() => setSubHover(index)}
                         onFocus={() => setSubHover(index)}
-                        onClick={() => {
-                          setModel(option.value);
-                          close(true);
-                        }}
-                        className={cn(row, "h-auto py-1.5", subHover === index && "bg-muted")}
+                        onClick={() => setDraftModel(option.value)}
+                        className={cn(
+                          row,
+                          subHover === index && "bg-muted",
+                          active || subHover === index
+                            ? "text-foreground"
+                            : "text-muted-foreground",
+                        )}
                       >
                         <span
                           className={cn(
-                            "flex size-4 shrink-0 items-center justify-center transition-colors duration-150 [&_svg]:size-4",
-                            active ? "text-foreground" : "text-muted-foreground",
+                            "text-foreground flex size-4 shrink-0 items-center justify-center [&_svg]:size-4",
                           )}
                         >
-                          {option.icon}
+                          <OptionIcon option={option} />
                         </span>
-                        <span className="flex min-w-0 flex-1 flex-col leading-tight">
-                          <span className={cn("truncate", active && "font-medium")}>
-                            {option.label}
-                          </span>
-                          {option.description && (
-                            <span className="text-muted-foreground truncate text-xs">
-                              {option.description}
-                            </span>
-                          )}
+                        <span className={cn("min-w-0 flex-1 truncate", active && "font-medium")}>
+                          {option.label}
                         </span>
-                        {active && <Check aria-hidden className="size-4 shrink-0" />}
+                        {active && (
+                          <ThinkingState
+                            aria-hidden
+                            state={
+                              orbStates[(cycling ? orbStep : 0) % orbStates.length] ?? "thinking"
+                            }
+                            speed={orbSpeed}
+                            pixel="circle"
+                            className="shrink-0 gap-0 text-base"
+                          >
+                            {""}
+                          </ThinkingState>
+                        )}
                       </button>
                     );
                   })}
@@ -520,7 +550,9 @@ function ModelSwitcher({
                     theme={effortTheme}
                     value={draftEffort ?? effortIndex}
                     onValueChange={(index) => setDraftEffort(index)}
-                    className="text-popover-foreground max-w-none rounded-2xl border-0 p-3 [background:none]"
+                    size="sm"
+                    label=""
+                    className="text-popover-foreground max-w-none rounded-2xl border-0 px-3 py-3 [background:none]"
                   />
                 </div>
               )}

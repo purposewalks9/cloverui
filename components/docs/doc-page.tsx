@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { DocItem } from "@/lib/types";
+import { DocNavProvider } from "@/components/docs/doc-nav";
 
 interface DocPageProps {
   previous?: DocItem;
@@ -15,8 +16,10 @@ const NAV_LINK_CLASS =
 
 function DocPage({ previous, next, children }: DocPageProps) {
   return (
-    <div className="min-w-0 flex-1 p-6 sm:p-12">
-      <article className="prose dark:prose-invert max-w-none">{children}</article>
+    <div className="min-w-0 flex-1 p-6 sm:px-12 sm:pt-8 sm:pb-12">
+      <DocNavProvider previous={previous} next={next}>
+        <article className="prose dark:prose-invert max-w-none">{children}</article>
+      </DocNavProvider>
       {(previous || next) && (
         <nav
           aria-label="Previous and next pages"

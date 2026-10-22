@@ -11,9 +11,7 @@ const registry = JSON.parse(read("registry.json"));
 const errors = [];
 const fail = (name, message) => errors.push(`${name}: ${message}`);
 try {
-  if (
-    JSON.stringify(JSON.parse(read("registry/output/registry.json"))) !== JSON.stringify(registry)
-  ) {
+  if (JSON.stringify(JSON.parse(read("public/r/registry.json"))) !== JSON.stringify(registry)) {
     fail("registry", "published index is stale; run pnpm registry:build");
   }
 } catch {
@@ -36,7 +34,7 @@ for (const item of registry.items) {
   names.add(item.name);
   let generated;
   try {
-    generated = JSON.parse(read(`registry/output/${item.name}.json`));
+    generated = JSON.parse(read(`public/r/${item.name}.json`));
   } catch {
     fail(item.name, "missing or invalid generated JSON; run pnpm registry:build");
   }

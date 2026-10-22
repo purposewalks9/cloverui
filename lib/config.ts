@@ -2,7 +2,6 @@ export const siteConfig = {
   name: "Clover UI",
   url: "https://cloverui.xyz",
   ogImage: "https://cloverui.xyz/og",
-  installs: false,
   description:
     "Animated React and Tailwind CSS components, from shaders and motion primitives to AI chat pieces like model switchers and thinking states.",
   carbon: {

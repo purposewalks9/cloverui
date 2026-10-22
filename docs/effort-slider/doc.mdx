@@ -17,17 +17,25 @@ import { EffortSlider } from "@/components/effort-slider";
 <EffortSlider />
 ```
 
-A slider for picking how hard an AI model should think, with four levels by default: Low, Medium, High and Max. The knob is the `lucide-react` brain icon with a dark outline, a little taller than the track, and it sits right where the fill ends. The fill is one smooth tone whose opacity rises from about half at the start to full at the brain, and a faint, wide glow slides slowly through it so it never sits completely still. Small sparkles of reasoning, in the level's own shade so they stand apart from the white level marks, flow through the fill toward the brain, and they move faster the higher the effort, easing to the new speed instead of jumping. While the brain moves, a light streak in the level's color trails behind it, with soft motion-blur lines. The faster it moves, the longer the streak, and it shrinks away once the brain stops.
+A slider for choosing how hard an AI model should think. It has four levels by default: Low, Medium, High and Max. The knob is a brain icon.
 
-The lowest level shows no fill and a gray brain. After that, the fill and the brain change color together, from indigo to violet to pink, with a lighter body and a deeper outline on the brain. The level name takes the current level's color too, and changes with a soft crossfade. On the deepest level the fill shows that it's maxed out, with color only and no movement. Each part of the bar keeps its own level's color with a light tint of the theme's max color, and only the last part, leading into the brain, turns fully to that max color with a soft glow behind the brain.
+The fill and the brain change color as the level goes up, and small sparkles flow toward the brain. Higher levels move faster. The lowest level has no fill and a gray brain. The highest level glows.
 
-Pick a color theme with `theme`: `"aurora"` (indigo, violet and pink, the default), `"ocean"` (blues and teal), `"ember"` (amber, orange and red), `"forest"` (greens and lime) or `"mono"` (grays). Each theme sets the fill, brain, level name and max colors, with light and dark versions.
+Pick colors with `theme`:
+
+- `"aurora"`: indigo, violet and pink (default)
+- `"ocean"`: blues and teal
+- `"ember"`: amber, orange and red
+- `"forest"`: greens and lime
+- `"mono"`: grays
+
+Each theme works in light and dark mode.
 
 ```tsx
 <EffortSlider theme="ocean" />
 ```
 
-Click anywhere on the track and the brain glides to the level mark nearest your click. Drag it and it follows your cursor exactly, then glides to the nearest level when you let go. It settles without any wobble. The deepest level is faster and harder: the brain speeds up into the end of the track and stops dead. The level name, tag and colors stay put while you drag and update when you let go.
+Click the track or drag the brain. When you let go, it snaps to the nearest level.
 
 Pass `levels` to use your own names. Pass `value` and `onValueChange` to control it. The value is the index of the level, starting at 0:
 
@@ -41,13 +49,11 @@ const [effort, setEffort] = React.useState(2);
 />
 ```
 
-Small bars inside the track mark each level, with a shorter one at the start.
+Each level has a small tag in the corner: Fastest, Faster, Smarter and Smartest by default. Pass `tags` to use your own words. Set `recommended` to a level's index to tag that level "Recommended".
 
-Each level has a tag in the top corner on a small gray pill: Fastest, Faster, Smarter and Smartest by default. Pass `tags` to use your own words, one per level. Set `recommended` to a level's index to show "Recommended" as that level's tag instead and make its bar taller, wider and brighter. Change it and the bars swap sizes quickly.
+It uses your theme's card and text colors, so it fits light and dark mode.
 
-The card is flat, with no shadow, your theme's card and text colors, and a thin gradient edge mixed from your text color: brighter at the top, softer down the sides. In dark mode the card is lifted slightly with a touch of your text color so it doesn't sit as pure black, and the empty track uses your muted color. The level colors have light and dark versions.
-
-It's a keyboard slider: the arrow keys move one level, and Home and End jump to the ends. Screen readers read the level name. When reduced motion is on, the knob jumps instead of sliding, there's no streak, drifting shade or sparkles and the level name swaps without sliding.
+Keyboard: the arrow keys move one level, and Home and End jump to the ends. Screen readers read the level name. With reduced motion on, nothing slides or sparkles.
 
 ## Props
 
@@ -59,7 +65,8 @@ It's a keyboard slider: the arrow keys move one level, and Home and End jump to 
   { name: "recommended", type: "number", description: "Marks one level with a taller, wider and brighter bar and a Recommended label." },
   { name: "tags", type: "string[]", default: '["Fastest", "Faster", "Smarter", "Smartest"]', description: "A short tag for each level, shown in the top corner. The recommended level shows Recommended instead." },
   { name: "theme", type: '"aurora" | "ocean" | "ember" | "forest" | "mono"', default: '"aurora"', description: "The color theme for the fill, brain, level name and max level." },
-  { name: "label", type: "string", default: '"Effort"', description: "The text before the level name. Also the slider's accessible name." },
+  { name: "label", type: "string", default: '"Effort"', description: "The text before the level name. Also the slider's accessible name. Pass an empty string to hide it; screen readers still hear \"Effort\"." },
+  { name: "size", type: '"default" | "sm"', default: '"default"', description: "The track and brain size. Model Switcher uses the smaller one in its Effort menu." },
   { name: "disabled", type: "boolean", default: "false", description: "Fades the slider and ignores input." },
   { name: "className", type: "string" },
 ]} />

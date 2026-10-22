@@ -53,7 +53,7 @@ If your host uses a data attribute, define the Tailwind `dark` variant against t
 | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Body text, chart labels, consent descriptions, focus rings | Map semantic host tokens and inherited typography.                                                                                                                |
 | Switch, SoftButton, ThemeToggle, Ghost, embossed RichText  | Preserve their material palettes, gradients, shadows, and geometry. Use the component's existing variants and override props intentionally.                       |
-| Spinner and PulseLoader colors                             | CSS colors can come from host variables. Spinner now supports CSS color expressions through color mixing without replacing unrecognized colors with white.        |
+| PulseLoader colors                                         | CSS colors can come from host variables.                                                                                                                          |
 | GrainCube and ThermalFlow shader palettes                  | Pass literal hex or comma-separated numeric RGB colors. CSS variables, named colors, HSL, and OKLCH are not resolved by these shader parsers.                     |
 | LiquidButton shader palette                                | Pass literal hex colors. DOM theme variables are not resolved by its shader parser.                                                                               |
 | NucleusText particles                                      | Supply a concrete canvas-compatible color; do not assume a DOM CSS variable is resolved by the canvas.                                                            |
@@ -63,15 +63,7 @@ Native props are supported where the exported type declares them. Do not assume 
 
 For forms, SoftButton now defaults to `type="button"`; pass `type="submit"` explicitly when intended. Controlled inputs still require their documented change callback. Provide an accessible label for switches and other controls whose visible artwork does not name their purpose.
 
-## Maintaining components and skills
-
-The portable skill packages are in `.agents/skills/`:
-
-- `review-ui`: audit installation, APIs, themes, behavior, performance, and evidence.
-- `preserve-ui-design`: protect the approved component and demo designs during internal work.
-- `commit-verified-changes`: verify and publish only the intended files, preserving unrelated work.
-
-Each package has `SKILL.md` and `agents/openai.yaml`. The existing reviewer keeps its icon asset and identity. AGENTS.md and CLAUDE.md point to these packages. Tools that support personal skills can install the package; other agents can read the same files directly. These rules guide changes; they do not make an automated guarantee of pixel equivalence.
+## Maintaining components
 
 After source or metadata changes:
 
@@ -83,4 +75,4 @@ pnpm exec eslint registry/clover-ui scripts/check-registry.mjs
 pnpm exec tsc --noEmit
 ```
 
-The registry checker inspects static imports, client APIs, generated source and metadata, docs presence, and the aggregate installer. It does not execute the component, resolve every possible dynamic import, measure contrast, or replace browser checks. See `component-audit.md` for verified results and remaining issues.
+The registry checker inspects static imports, client APIs, generated source and metadata, docs presence, and the aggregate installer. It does not execute the component, resolve every possible dynamic import, measure contrast, or replace browser checks.

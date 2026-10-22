@@ -28,7 +28,6 @@
         "https://cloverui.xyz/r/rich-text.json",
         "https://cloverui.xyz/r/sign-pad.json",
         "https://cloverui.xyz/r/soft-button.json",
-        "https://cloverui.xyz/r/spinner.json",
         "https://cloverui.xyz/r/text-gif.json",
         "https://cloverui.xyz/r/thermal-flow.json",
         "https://cloverui.xyz/r/token-fall.json",
@@ -38,7 +37,6 @@
         "https://cloverui.xyz/r/liquid-button.json",
         "https://cloverui.xyz/r/switch.json",
         "https://cloverui.xyz/r/thinking-state.json",
-        "https://cloverui.xyz/r/response-block.json",
         "https://cloverui.xyz/r/effort-slider.json",
         "https://cloverui.xyz/r/auth-button.json",
         "https://cloverui.xyz/r/model-switcher.json",
@@ -105,21 +103,6 @@
       "dependencies": ["lucide-react"],
       "registryDependencies": [],
       "category": "text"
-    },
-    {
-      "name": "spinner",
-      "type": "registry:component",
-      "title": "Spinner",
-      "description": "A 12-dot loader where the dots stay in place and only their color shade cycles around.",
-      "files": [
-        {
-          "path": "registry/clover-ui/spinner.tsx",
-          "type": "registry:component"
-        }
-      ],
-      "dependencies": ["motion"],
-      "registryDependencies": [],
-      "category": "loader"
     },
     {
       "name": "pulse-loader",
@@ -419,7 +402,7 @@
       ],
       "dependencies": ["motion"],
       "registryDependencies": ["https://cloverui.xyz/r/liquid-button.json"],
-      "category": "block"
+      "category": "asset"
     },
     {
       "name": "liquid-button",
@@ -470,28 +453,6 @@
       }
     },
     {
-      "name": "response-block",
-      "type": "registry:component",
-      "title": "Response Block",
-      "description": "A customizable reply block for LLMs and agents that plugs into any chat UI.",
-      "files": [
-        {
-          "path": "registry/clover-ui/response-block.tsx",
-          "type": "registry:component"
-        },
-        {
-          "path": "registry/clover-ui/response-block-markdown.tsx",
-          "type": "registry:component"
-        }
-      ],
-      "dependencies": ["motion", "lucide-react"],
-      "registryDependencies": ["https://cloverui.xyz/r/thinking-state.json"],
-      "category": "block",
-      "meta": {
-        "addedAt": "2026-10-14"
-      }
-    },
-    {
       "name": "effort-slider",
       "type": "registry:component",
       "title": "Effort Slider",
@@ -531,15 +492,18 @@
       "name": "model-switcher",
       "type": "registry:component",
       "title": "Model Switcher",
-      "description": "A small dropdown for choosing an AI model and effort, with a Model menu, one-color logos and a built-in Effort Slider.",
+      "description": "Switch AI models and effort in your chat input.",
       "files": [
         {
           "path": "registry/clover-ui/model-switcher.tsx",
           "type": "registry:component"
         }
       ],
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["https://cloverui.xyz/r/effort-slider.json"],
+      "dependencies": ["lucide-react", "motion"],
+      "registryDependencies": [
+        "https://cloverui.xyz/r/effort-slider.json",
+        "https://cloverui.xyz/r/thinking-state.json"
+      ],
       "category": "control",
       "meta": {
         "addedAt": "2026-10-18"

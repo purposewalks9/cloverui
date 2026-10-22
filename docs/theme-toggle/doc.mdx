@@ -17,11 +17,11 @@ import { ThemeToggle } from "@/components/theme-toggle";
 <ThemeToggle />
 ```
 
-A round, glossy button that matches the opposite of your theme: dark with a gold sun in light mode, and light with a dark moon in dark mode. Tap it and the theme flips instantly. There are no animations, so it never makes you wait.
+A round, glossy button that shows the opposite theme: a gold sun in light mode, and a dark moon in dark mode. Tap it and the theme flips instantly. There are no animations, so it never makes you wait.
 
 It still feels like a small push switch. The button stands up out of its socket in light mode and sits latched lower in dark mode. Pressing sinks it almost flat, all in the same frame.
 
-It also shows the right icon on the very first frame, before the page's JavaScript loads, as long as your theme uses the `dark` class (the next-themes default for shadcn).
+It shows the right icon even before the page finishes loading, as long as your theme uses the `dark` class (the default in shadcn).
 
 It switches your site's theme through [next-themes](https://github.com/pacocoursey/next-themes), the same setup as the shadcn dark mode guide. Wrap your app in its `ThemeProvider` with `attribute="class"` and the toggle works with no props. Add `disableTransitionOnChange` to the provider too, so the rest of your page flips in the same frame instead of fading its colors.
 

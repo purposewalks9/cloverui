@@ -11,7 +11,7 @@ import { GhostPlayground } from "./playground"
 
 ## Usage
 
-The ghost is a little slime buddy that floats over your page, stays near the cursor and reacts to what people point at with a single word in a cartoon thought cloud. Setting it up takes three steps.
+The ghost is a little slime buddy that floats near the cursor. When people point at things, it reacts with one word in a thought cloud.
 
 ### 1. Add it once
 
@@ -32,7 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
-That's enough to bring it to life. It says "boo" when it arrives, reacts to buttons and links with "ooh", "bye" when the cursor leaves the page, "yay" when it comes back, and "zzz" when nothing moves for a while.
+That's enough to bring it to life. It already reacts on its own: "boo" when it arrives, "ooh" on buttons and links, "bye" and "yay" when the cursor leaves and comes back, and "zzz" when nothing moves.
 
 ### 2. Label parts of your page
 
@@ -130,15 +130,13 @@ export function SaveButton({ onSave }: { onSave: () => Promise<void> }) {
 
 It's safe to call anywhere. Outside a `GhostProvider` the calls do nothing and `state` stays idle, so library components can use it without breaking apps that don't have a ghost. Pass `ghost={false}` to the provider to keep the API working while not showing a ghost on a page.
 
-On this site, the copy buttons and the theme toggle are linked this way: copy something and it says "copied", switch themes and it says "spooky" or "bright", every time. The playground above uses `visit` to bring the site's own ghost into the preview, and its controls change that ghost's color and size.
-
-This site has a large one living in its layout. Through its `reactions` function it knows every Clover UI component and what kind it is ("fancy" for text, "spinny" for loaders, "magic" for effects), plus the install commands, copy buttons, search, the theme toggle and the code blocks.
+This site uses it too. Copy some code and the ghost says "copied". Switch themes and it says "spooky" or "bright".
 
 ## How it behaves
 
 - **Stays near you:** it never slides across the page. While you're close it stays put, bobbing and turning to look at you. When you move away and stop, it melts into a little puddle and pops back up right beside the cursor.
-- **Can't be caught:** click it, or keep the cursor right next to it for about 3 seconds, and it melts away with a "hehe" and pops up a little way off. It never blocks clicks on your page.
-- **One word only:** it only reacts, it never asks questions, and it waits until the cursor rests on something for a moment, so sweeping across a menu doesn't make it chatter.
+- **Can't be caught:** click it, or hover next to it for about 3 seconds, and it melts away with a "hehe". It never blocks clicks on your page.
+- **One word only:** it waits until the cursor rests for a moment, so moving across a menu doesn't make it chatter.
 - **Calm:** it only reacts when the cursor really moves, never while you scroll.
 - **Slimy:** thick, glossy colors, slime drips that slowly stretch from its bottom, a curly tail and a gentle jelly wobble. Its eyes sparkle, follow the pointer and blink.
 

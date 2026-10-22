@@ -22,14 +22,15 @@ export function ColorField({
   onChange: (value: string) => void;
 }) {
   const [initial] = React.useState(() => (value ?? "").toLowerCase());
-  const colors = PRESETS.includes(initial) ? PRESETS : [initial, ...PRESETS.slice(0, 7)];
+  const presets = PRESETS.slice(0, 5);
+  const colors = presets.includes(initial) ? presets : [initial, ...presets.slice(0, 4)];
 
   return (
     <ColorSelector
       colors={colors}
       value={(value ?? "").toLowerCase()}
       onColorSelect={onChange}
-      className="min-w-0 justify-end gap-2.5 overflow-x-auto p-1"
+      className="min-w-0 justify-end gap-2 overflow-x-auto p-1"
     />
   );
 }

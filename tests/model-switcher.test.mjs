@@ -15,7 +15,7 @@ test("starts as a small closed pill with the model and effort", () => {
   const html = render();
   assert.match(html, /aria-haspopup="menu"/);
   assert.match(html, /aria-expanded="false"/);
-  assert.equal(text(html), "GPT-6 Medium");
+  assert.equal(text(html), "Opus 5.5 Medium");
   assert.doesNotMatch(html, /role="menu"/);
 });
 

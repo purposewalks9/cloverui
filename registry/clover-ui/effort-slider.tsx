@@ -17,12 +17,19 @@ export interface EffortSliderProps extends Omit<
   tags?: string[];
   theme?: EffortSliderTheme;
   label?: string;
+  size?: EffortSliderSize;
   disabled?: boolean;
 }
 
-const HEIGHT = 24;
-const INSET = 12;
-const KNOB = 30;
+export type EffortSliderSize = "default" | "sm";
+
+const SIZES: Record<
+  EffortSliderSize,
+  { height: number; inset: number; knob: number; gap: string }
+> = {
+  default: { height: 24, inset: 12, knob: 30, gap: "mt-4" },
+  sm: { height: 18, inset: 9, knob: 22, gap: "mt-2.5" },
+};
 
 const SNAP = { duration: 0.22, ease: [0.22, 1, 0.36, 1] } as const;
 
@@ -194,7 +201,8 @@ const maxGradient = (palette: Palette, count: number, mode: "light" | "dark") =>
   return `radial-gradient(70px 140% at 100% 50%, ${glow}, transparent), linear-gradient(90deg, ${stops.join(", ")}, ${hot} 100%)`;
 };
 
-const leftAt = (fraction: number) => `calc(${INSET}px + (100% - ${INSET * 2}px) * ${fraction})`;
+const leftAt = (fraction: number, inset: number) =>
+  `calc(${inset}px + (100% - ${inset * 2}px) * ${fraction})`;
 
 function EffortSlider({
   levels = DEFAULT_LEVELS,
@@ -205,12 +213,14 @@ function EffortSlider({
   theme = "aurora",
   tags = DEFAULT_TAGS,
   label = "Effort",
+  size = "default",
   disabled = false,
   className,
   style,
   ...props
 }: EffortSliderProps) {
   const reduceMotion = useReducedMotion();
+  const { height, inset, knob, gap } = SIZES[size];
   const count = Math.max(1, levels.length);
   const last = count - 1;
   const [inner, setInner] = React.useState(() => Math.round(clamp(defaultValue ?? 1, 0, last)));
@@ -281,7 +291,7 @@ function EffortSlider({
     const thumb = thumbRef.current;
     if (thumb) thumb.style.left = "0px";
     const streak = trailRef.current;
-    const edgeAt = () => INSET + clamp(head.get()) * (width - INSET * 2);
+    const edgeAt = () => inset + clamp(head.get()) * (width - inset * 2);
     let length = 0;
     let pace = 0;
     let side = -1;
@@ -317,9 +327,9 @@ function EffortSlider({
       const edge = edgeAt();
       if (fill) {
         fill.style.transform = `translate3d(${(edge - width).toFixed(2)}px, 0, 0)`;
-        fill.style.opacity = clamp((edge - INSET) / 10).toFixed(3);
+        fill.style.opacity = clamp((edge - inset) / 10).toFixed(3);
       }
-      if (thumb) thumb.style.transform = `translate3d(${(edge - KNOB / 2).toFixed(2)}px, 0, 0)`;
+      if (thumb) thumb.style.transform = `translate3d(${(edge - knob / 2).toFixed(2)}px, 0, 0)`;
       if (streak && !frame && !reduceMotion) frame = requestAnimationFrame(sweep);
     };
     place();
@@ -337,12 +347,12 @@ function EffortSlider({
       observer?.disconnect();
       cancelAnimationFrame(frame);
     };
-  }, [head, reduceMotion]);
+  }, [head, reduceMotion, inset, knob]);
 
   const fractionAt = (clientX: number) => {
     const rect = trackRef.current?.getBoundingClientRect();
-    if (!rect || rect.width <= INSET * 2) return head.get();
-    return clamp((clientX - rect.left - INSET) / (rect.width - INSET * 2));
+    if (!rect || rect.width <= inset * 2) return head.get();
+    return clamp((clientX - rect.left - inset) / (rect.width - inset * 2));
   };
 
   const nearestStop = (fraction: number) => (count <= 1 ? 0 : Math.round(fraction * last));
@@ -427,7 +437,7 @@ function EffortSlider({
       )}
       <div className="flex items-center justify-between gap-3 text-sm whitespace-nowrap">
         <div className="flex min-w-0 items-baseline gap-1.5">
-          <span className="text-muted-foreground shrink-0">{label}</span>
+          {label && <span className="text-muted-foreground shrink-0">{label}</span>}
           <span className="inline-grid">
             <AnimatePresence initial={false}>
               <motion.span
@@ -465,7 +475,7 @@ function EffortSlider({
         ref={trackRef}
         role="slider"
         tabIndex={disabled ? -1 : 0}
-        aria-label={label}
+        aria-label={label || "Effort"}
         aria-valuemin={0}
         aria-valuemax={last}
         aria-valuenow={current}
@@ -477,10 +487,11 @@ function EffortSlider({
         onPointerCancel={release}
         onKeyDown={onKeyDown}
         className={cn(
-          "group/effort relative mt-4 touch-none [contain:layout_style] outline-none",
+          "group/effort relative touch-none [contain:layout_style] outline-none",
+          gap,
           disabled ? "pointer-events-none" : "cursor-pointer",
         )}
-        style={{ height: HEIGHT }}
+        style={{ height }}
       >
         <div className="bg-muted absolute inset-0 overflow-hidden rounded-[5px]">
           <div aria-hidden className="absolute inset-0">
@@ -488,7 +499,7 @@ function EffortSlider({
               ref={fillRef}
               className="absolute inset-y-0 left-0 w-full [mask-image:linear-gradient(90deg,rgb(0_0_0/0.6),rgb(0_0_0/0.6)_calc(100%_-_240px),#000_100%)] will-change-transform"
               style={{
-                transform: `translateX(calc(${leftAt(start)} - 100%))`,
+                transform: `translateX(calc(${leftAt(start, inset)} - 100%))`,
                 opacity: start > 0 ? 1 : 0,
               }}
             >
@@ -558,7 +569,7 @@ function EffortSlider({
                       : "bg-muted-foreground/40",
                   index === current && "opacity-0",
                 )}
-                style={{ left: leftAt(stopAt(index, count)) }}
+                style={{ left: leftAt(stopAt(index, count), inset) }}
               />
             );
           })}
@@ -568,10 +579,10 @@ function EffortSlider({
           aria-hidden
           className="pointer-events-none absolute will-change-transform"
           style={{
-            width: KNOB,
-            height: KNOB,
-            top: (HEIGHT - KNOB) / 2,
-            left: leftAt(start),
+            width: knob,
+            height: knob,
+            top: (height - knob) / 2,
+            left: leftAt(start, inset),
             transform: "translateX(-50%)",
           }}
         >

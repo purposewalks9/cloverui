@@ -33,17 +33,19 @@ export function DocsHeader({ docSchema }: { docSchema: DocSchema }) {
       <div className="flex min-w-0 items-center gap-3">
         <MobileMenu docSchema={docSchema} />
         <Separator orientation="vertical" className="h-4 md:hidden" />
-        <h1 className="min-w-0 truncate text-[16px] font-bold tracking-tight whitespace-nowrap sm:text-[17px] md:shrink-0">
-          {title}
-        </h1>
-        {description && (
-          <>
-            <Separator orientation="vertical" className="hidden h-5 md:block" />
-            <p className="text-foreground/70 hidden min-w-0 flex-[1_1_0] truncate text-[15px] font-medium md:block">
-              {description}
-            </p>
-          </>
-        )}
+        <div className="flex min-w-0 items-center gap-2">
+          <h1 className="min-w-0 truncate text-[16px] font-semibold tracking-tight whitespace-nowrap sm:text-[17px] md:shrink-0">
+            {title}
+          </h1>
+          {description && (
+            <>
+              <Separator orientation="vertical" className="hidden h-4 md:block" />
+              <p className="text-foreground/70 hidden min-w-0 flex-[1_1_0] truncate text-[15px] font-medium md:block">
+                {description}
+              </p>
+            </>
+          )}
+        </div>
       </div>
 
       <div className="flex shrink-0 items-center gap-1.5">

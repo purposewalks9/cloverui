@@ -46,23 +46,6 @@ const BaseUiLogo: Logo = ({ className }) => (
   </svg>
 );
 
-const CossLogo: Logo = ({ className }) => (
-  <span
-    className={cn("block bg-current", className)}
-    style={{
-      maskImage: "url(/credits/coss.png)",
-      WebkitMaskImage: "url(/credits/coss.png)",
-      maskSize: "contain",
-      WebkitMaskSize: "contain",
-      maskRepeat: "no-repeat",
-      WebkitMaskRepeat: "no-repeat",
-      maskPosition: "center",
-      WebkitMaskPosition: "center",
-    }}
-    aria-hidden
-  />
-);
-
 const LOGOS = {
   spell: { Logo: SpellLogo, className: "size-[1.35em] -mx-[0.15em]" },
   shadcn: { Logo: ShadcnLogo, className: "size-[0.95em]" },
@@ -70,7 +53,6 @@ const LOGOS = {
   motion: { Logo: MotionLogo, className: "h-[0.5em] w-[1.4em]" },
   tailwind: { Logo: TailwindLogo, className: "size-[1.05em]" },
   baseui: { Logo: BaseUiLogo, className: "size-[1em]" },
-  coss: { Logo: CossLogo, className: "h-[0.6em] w-[4.3em]" },
 } as const;
 
 export function CreditLink({
@@ -95,8 +77,4 @@ export function CreditLink({
       {children}
     </a>
   );
-}
-
-export function CreditList({ children }: { children: React.ReactNode }) {
-  return <div className="[&_li]:my-2.5 [&_li]:ps-0 [&_ul]:list-none [&_ul]:ps-0">{children}</div>;
 }

@@ -77,11 +77,12 @@ export function ColorSelector({
       {name && <input type="hidden" name={name} value={selectedColor} />}
       {colors.map((color) => {
         const colorValue = getColorValue(color);
-        const ringColor = colorValue.includes("gradient(") ? "var(--foreground)" : colorValue;
+        const gradient = colorValue.includes("gradient(");
+        const ringColor = gradient ? "var(--foreground)" : colorValue;
         return (
           <div
             key={color}
-            className={`${sizeClass} shrink-0 cursor-pointer rounded-full shadow-[inset_0_0_0_1px_rgba(0,0,0,0.1)] transition-transform duration-200 active:scale-90 ${
+            className={`${sizeClass} ${gradient ? "brightness-[0.78] saturate-[1.5] dark:brightness-100 dark:saturate-100" : ""} shrink-0 cursor-pointer rounded-full shadow-[inset_0_0_0_1px_rgba(0,0,0,0.1)] ${
               selectedColor === color ? "ring-2 ring-gray-400 ring-offset-2" : ""
             }`}
             style={{

@@ -44,6 +44,16 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: "/components/model-menu",
+        destination: "/docs/model-switcher",
+        permanent: true,
+      },
+      {
+        source: "/docs/model-menu",
+        destination: "/docs/model-switcher",
+        permanent: true,
+      },
+      {
         source: "/components/:slug",
         destination: "/docs/:slug",
         permanent: true,

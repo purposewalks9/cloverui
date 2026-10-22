@@ -17,7 +17,7 @@ import { ThinkingState } from "@/components/thinking-state";
 <ThinkingState />
 ```
 
-A small pixel animation right next to a word, with no box around it, for showing what an agent or app is doing. The lit pixels draw each state's shape over a light gray grid that follows your theme, and a soft shimmer sweeps across the text, which uses your theme's text color. Each state has its own animation and color:
+A small pixel animation right next to a word, with no box around it, for showing what an agent or app is doing. Lit pixels draw a shape for each state over a light gray grid. A soft shimmer moves across the text. Each state has its own animation and color:
 
 - `thinking`: a green trail of dots chasing in a loop.
 - `analyzing`: light blue arcs scanning around a circle.
@@ -48,7 +48,7 @@ Set `status` to show how the work ended. `"complete"` fades the lit pixels out a
 
 The labels describe what the app is doing in general terms. They are not the model's private reasoning, so only show a reasoning summary when your AI provider actually returns one.
 
-Set `color="loop"` to cycle smoothly through all the state colors. Set `pixel="circle"` for round dots arranged in a circle instead of a square grid, and `grid={false}` to hide the gray grid so only the lit pixels show on a transparent background.
+Set `color="loop"` to cycle smoothly through all the state colors. Set `pixel="circle"` for round dots in a circle. Set `grid={false}` to hide the gray grid.
 
 Set the size with a text class in `className`. The pixels scale with the text. Set `shimmer={false}` to turn off the shimmer, and `speed` to make the animation faster or slower. When reduced motion is on, the pixels hold still and the text doesn't shimmer.
 

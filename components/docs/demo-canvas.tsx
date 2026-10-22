@@ -5,7 +5,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import * as React from "react";
 import { RefreshIcon } from "@/components/icons/refresh";
 import { OpenInV0Button } from "@/components/docs/open-in-v0-button";
-import { siteConfig } from "@/lib/config";
 import { LazyMount } from "@/components/shared/lazy-mount";
 import { usePathname } from "next/navigation";
 import { Code2, Monitor } from "lucide-react";
@@ -89,7 +88,7 @@ export function DemoPreview({
         </React.Suspense>
 
         <div className="bg-background absolute bottom-3 left-3 z-20 flex items-center gap-1 border p-1 shadow-md">
-          {siteConfig.installs && v0Id && <OpenInV0Button id={v0Id} />}
+          {v0Id && <OpenInV0Button id={v0Id} />}
 
           <button
             onClick={handleRefresh}

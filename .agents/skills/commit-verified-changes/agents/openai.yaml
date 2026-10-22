@@ -1,4 +1,0 @@
-interface:
-  display_name: "Commit Verified Changes"
-  short_description: "Verify, commit, and publish only the intended changes."
-  default_prompt: "Use $commit-verified-changes to verify and commit the intended repository changes."
