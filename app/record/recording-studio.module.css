@@ -58,15 +58,12 @@
   border: 1px solid transparent;
   background:
     linear-gradient(#000, #000) padding-box,
-    var(
-        --card-stroke,
-        linear-gradient(
-          110deg,
-          rgb(192 132 252 / 0.45) 0%,
-          rgb(248 113 113 / 0.45) 33%,
-          rgb(244 114 182 / 0.45) 66%,
-          rgb(192 132 252 / 0.45) 100%
-        )
+    linear-gradient(
+        110deg,
+        rgb(192 132 252 / 0.32) 0%,
+        rgb(248 113 113 / 0.32) 33%,
+        rgb(244 114 182 / 0.32) 66%,
+        rgb(192 132 252 / 0.32) 100%
       )
       border-box;
   background-size:
@@ -82,7 +79,12 @@
       0 0,
       0% 50%;
   }
-  50% {
+  35% {
+    background-position:
+      0 0,
+      50% 50%;
+  }
+  70% {
     background-position:
       0 0,
       100% 50%;

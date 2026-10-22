@@ -1,18 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, EyeOff, Maximize, RotateCcw, SwatchBook } from "lucide-react";
 import { recordingScenes } from "./scenes";
 import styles from "./recording-studio.module.css";
-
-function buildStroke(colors: string[]) {
-  const loop = [...colors, colors[0]];
-  const stops = loop.map(
-    (color, i) =>
-      `color-mix(in srgb, ${color} 45%, transparent) ${Math.round((i / (loop.length - 1)) * 100)}%`,
-  );
-  return `linear-gradient(110deg, ${stops.join(", ")})`;
-}
 
 export function RecordingStudio() {
   const [index, setIndex] = useState(0);
@@ -143,12 +134,7 @@ export function RecordingStudio() {
             data-variant={variant}
             data-take={take}
           >
-            <figure
-              className={styles.card}
-              data-recording-card
-              data-size={scene.size}
-              style={{ "--card-stroke": buildStroke(scene.stroke(variant)) } as CSSProperties}
-            >
+            <figure className={styles.card} data-recording-card data-size={scene.size}>
               <div className={styles.cardDisplay}>{scene.render(variant)}</div>
               <figcaption className={styles.cardName}>{scene.name}</figcaption>
             </figure>

@@ -1,6 +1,6 @@
 .next
 node_modules
-public/r
+registry/output
 pnpm-lock.yaml
 next-env.d.ts
 *.tsbuildinfo

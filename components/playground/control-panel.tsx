@@ -1,9 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { RichProgress } from "@/registry/clover-ui/rich-progress";
+import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { ControlDef } from "@/lib/playground";
 import { ColorField } from "@/components/playground/color-field";
@@ -15,13 +13,18 @@ interface ControlPanelProps {
   onChange: (prop: string, value: unknown) => void;
 }
 
+const TILE_CLASS =
+  "border-border bg-muted/40 focus-within:ring-ring relative flex min-h-11 min-w-0 items-center justify-between gap-3 overflow-hidden rounded-none border px-3 focus-within:ring-2";
+
+const LABEL_CLASS = "text-muted-foreground relative min-w-0 truncate text-sm whitespace-nowrap";
+
 function isColorControl(control: ControlDef) {
   if (control.type === "color" || control.type === "color-list") return true;
   if (control.type !== "select") return false;
   return control.prop === "color" || control.options.every((opt) => Boolean(opt.swatch));
 }
 
-function controlGroup(control: ControlDef) {
+function controlRank(control: ControlDef) {
   if (isColorControl(control)) return 0;
   if (control.type === "select") return 1;
   if (control.type === "text" || control.type === "text-list") return 2;
@@ -33,46 +36,137 @@ function isPatternControl(control: ControlDef) {
   return control.prop === "pattern" || control.prop === "theme";
 }
 
-function groupControls(controls: ControlDef[]) {
-  return [0, 1, 2, 3, 4]
-    .map((rank) =>
-      controls
-        .filter((control) => controlGroup(control) === rank)
-        .sort((a, b) => Number(isPatternControl(b)) - Number(isPatternControl(a))),
-    )
-    .filter((group) => group.length > 0);
+function sortControls(controls: ControlDef[]) {
+  return [...controls].sort(
+    (a, b) =>
+      controlRank(a) - controlRank(b) || Number(isPatternControl(b)) - Number(isPatternControl(a)),
+  );
 }
 
-export function ControlPanel({ controls, values, onChange }: ControlPanelProps) {
-  const groups = groupControls(controls);
+function isWide(control: ControlDef) {
+  return control.type === "select" && isColorControl(control) && control.options.length > 6;
+}
 
+function ControlPanel({ controls, values, onChange }: ControlPanelProps) {
   return (
-    <div className="divide-border/60 flex flex-col divide-y">
-      {groups.map((group) => (
-        <div
-          key={group[0].prop}
-          className={cn("flex flex-col px-4 py-4", group[0].type === "boolean" ? "gap-3" : "gap-4")}
-        >
-          {group.map((control) => (
-            <Field
-              key={control.prop}
-              control={control}
-              value={values[control.prop]}
-              values={values}
-              onChange={(value, prop = control.prop) => onChange(prop, value)}
+    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3">
+      {sortControls(controls).flatMap((control) => {
+        if (control.type === "text-list") {
+          return control.items.map((item) => (
+            <TextTile
+              key={item.prop}
+              id={item.prop}
+              label={item.label}
+              value={values[item.prop] as string}
+              onChange={(next) => onChange(item.prop, next)}
             />
-          ))}
-        </div>
-      ))}
+          ));
+        }
+        if (control.type === "color-list") {
+          return control.items.map((item) => (
+            <ColorTile
+              key={item.prop}
+              label={item.label}
+              value={values[item.prop] as string}
+              onChange={(next) => onChange(item.prop, next)}
+            />
+          ));
+        }
+        return (
+          <Tile
+            key={control.prop}
+            control={control}
+            value={values[control.prop]}
+            onChange={(next) => onChange(control.prop, next)}
+          />
+        );
+      })}
     </div>
   );
 }
 
-function FieldLabel({ children }: { children: React.ReactNode }) {
-  return <span className="text-muted-foreground text-sm font-normal">{children}</span>;
+function TextTile({
+  id,
+  label,
+  value,
+  onChange,
+}: {
+  id: string;
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  return (
+    <div className={TILE_CLASS}>
+      <label htmlFor={id} className={cn(LABEL_CLASS, "shrink-0")}>
+        {label}
+      </label>
+      <input
+        id={id}
+        value={value ?? ""}
+        onChange={(e) => onChange(e.target.value)}
+        className="text-foreground min-w-0 flex-1 bg-transparent text-right text-sm outline-none"
+      />
+    </div>
+  );
 }
 
-function OptionGroup({
+function ColorTile({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  return (
+    <div className={cn(TILE_CLASS, "flex-wrap py-2")}>
+      <span className={LABEL_CLASS}>{label}</span>
+      <ColorField value={value} onChange={onChange} />
+    </div>
+  );
+}
+
+function SwitchTile({
+  id,
+  label,
+  checked,
+  onChange,
+}: {
+  id: string;
+  label: string;
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+}) {
+  return (
+    <div className={TILE_CLASS}>
+      <label htmlFor={id} className={LABEL_CLASS}>
+        {label}
+      </label>
+      <button
+        id={id}
+        type="button"
+        role="switch"
+        aria-checked={checked}
+        onClick={() => onChange(!checked)}
+        className={cn(
+          "relative h-5 w-9 shrink-0 cursor-pointer rounded-none border transition-colors outline-none",
+          checked ? "border-foreground bg-foreground" : "border-border bg-background",
+        )}
+      >
+        <span
+          className={cn(
+            "absolute top-0.5 left-0.5 size-3.5 rounded-none transition-transform duration-150",
+            checked ? "bg-background translate-x-4" : "bg-muted-foreground",
+          )}
+        />
+      </button>
+    </div>
+  );
+}
+
+function SelectTile({
   id,
   label,
   options,
@@ -85,151 +179,122 @@ function OptionGroup({
   value: string;
   onChange: (value: string) => void;
 }) {
-  const joined = options.length <= 3;
-
   return (
-    <div
-      id={id}
-      role="radiogroup"
-      aria-label={label}
-      className={joined ? "grid w-full overflow-hidden rounded-none" : "flex flex-wrap gap-1.5"}
-      style={
-        joined ? { gridTemplateColumns: `repeat(${options.length}, minmax(0, 1fr))` } : undefined
-      }
-    >
-      {options.map((opt, i) => {
-        const active = opt.value === value;
-        return (
-          <button
-            key={opt.value}
-            type="button"
-            role="radio"
-            aria-checked={active}
-            onClick={() => onChange(opt.value)}
-            className={cn(
-              "truncate text-xs font-medium transition-colors",
-              joined
-                ? cn("px-2.5 py-1.5", i > 0 && "border-input border-l")
-                : "border-input rounded-none border px-2 py-1",
-              active ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:bg-muted",
-            )}
-          >
-            {opt.label}
-          </button>
-        );
-      })}
+    <div className={TILE_CLASS}>
+      <label htmlFor={id} className={cn(LABEL_CLASS, "shrink-0")}>
+        {label}
+      </label>
+      <div className="relative flex min-w-0 items-center">
+        <select
+          id={id}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className="text-foreground [&>option]:bg-popover [&>option]:text-popover-foreground max-w-full min-w-0 cursor-pointer appearance-none truncate bg-transparent py-1 pr-5 text-right text-sm outline-none"
+        >
+          {options.map((opt) => (
+            <option key={opt.value} value={opt.value}>
+              {opt.label}
+            </option>
+          ))}
+        </select>
+        <ChevronDown className="text-muted-foreground pointer-events-none absolute right-0 size-3.5" />
+      </div>
     </div>
   );
 }
 
-function Field({
+function SliderTile({
+  id,
+  label,
+  min,
+  max,
+  step,
+  value,
+  onChange,
+}: {
+  id: string;
+  label: string;
+  min: number;
+  max: number;
+  step: number;
+  value: number;
+  onChange: (value: number) => void;
+}) {
+  const percent = max === min ? 0 : ((value - min) / (max - min)) * 100;
+  const decimals = step < 1 ? (String(step).split(".")[1]?.length ?? 2) : 0;
+
+  return (
+    <div className={TILE_CLASS}>
+      <div
+        aria-hidden="true"
+        className="bg-foreground/10 pointer-events-none absolute inset-y-0 left-0"
+        style={{ width: `${percent}%` }}
+      />
+      <div
+        aria-hidden="true"
+        className="bg-foreground/60 pointer-events-none absolute inset-y-2.5 w-0.5"
+        style={{ left: `calc(${percent}% - ${percent / 100} * 2px)` }}
+      />
+      <label htmlFor={id} className={cn(LABEL_CLASS, "pointer-events-none")}>
+        {label}
+      </label>
+      <span className="text-foreground pointer-events-none relative shrink-0 text-sm tabular-nums">
+        {value.toFixed(decimals)}
+      </span>
+      <input
+        id={id}
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        value={value}
+        onChange={(e) => onChange(Number(Number(e.target.value).toFixed(decimals)))}
+        className="absolute inset-0 size-full cursor-ew-resize opacity-0"
+      />
+    </div>
+  );
+}
+
+function Tile({
   control,
   value,
-  values,
   onChange,
 }: {
   control: ControlDef;
   value: unknown;
-  values: Record<string, unknown>;
-  onChange: (value: unknown, prop?: string) => void;
+  onChange: (value: unknown) => void;
 }) {
   switch (control.type) {
     case "text":
       return (
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor={control.prop}>
-            <FieldLabel>{control.label}</FieldLabel>
-          </Label>
-          <Input
-            id={control.prop}
-            value={(value as string) ?? ""}
-            onChange={(e) => onChange(e.target.value)}
-            className="h-8 w-full text-xs"
-          />
-        </div>
-      );
-
-    case "text-list":
-      return (
-        <div className="flex flex-col gap-3">
-          <FieldLabel>{control.label}</FieldLabel>
-          {control.items.map((item) => (
-            <div key={item.prop} className="flex flex-col gap-1.5">
-              <Label htmlFor={item.prop}>
-                <FieldLabel>{item.label}</FieldLabel>
-              </Label>
-              <Input
-                id={item.prop}
-                value={(values[item.prop] as string) ?? ""}
-                onChange={(e) => onChange(e.target.value, item.prop)}
-                className="h-8 w-full text-xs"
-              />
-            </div>
-          ))}
-        </div>
-      );
-
-    case "color-list":
-      return (
-        <div className="flex flex-col gap-3">
-          {control.items.map((item) => (
-            <div key={item.prop} className="flex flex-col gap-2">
-              <FieldLabel>{item.label}</FieldLabel>
-              <ColorField
-                value={values[item.prop] as string}
-                onChange={(next) => onChange(next, item.prop)}
-              />
-            </div>
-          ))}
-        </div>
+        <TextTile
+          id={control.prop}
+          label={control.label}
+          value={value as string}
+          onChange={onChange}
+        />
       );
 
     case "boolean":
       return (
-        <div className="flex items-center justify-between gap-3">
-          <Label htmlFor={control.prop}>
-            <FieldLabel>{control.label}</FieldLabel>
-          </Label>
-          <div
-            id={control.prop}
-            role="group"
-            aria-label={control.label}
-            className="inline-flex overflow-hidden"
-          >
-            <button
-              type="button"
-              onClick={() => onChange(false)}
-              aria-pressed={!value}
-              className={cn(
-                "px-2.5 py-1 text-xs font-medium transition-colors",
-                !value
-                  ? "bg-accent text-accent-foreground"
-                  : "text-muted-foreground hover:bg-muted",
-              )}
-            >
-              Off
-            </button>
-            <button
-              type="button"
-              onClick={() => onChange(true)}
-              aria-pressed={Boolean(value)}
-              className={cn(
-                "border-input border-l px-2.5 py-1 text-xs font-medium transition-colors",
-                value ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:bg-muted",
-              )}
-            >
-              On
-            </button>
-          </div>
-        </div>
+        <SwitchTile
+          id={control.prop}
+          label={control.label}
+          checked={Boolean(value)}
+          onChange={onChange}
+        />
       );
 
-    case "select": {
+    case "color":
+      return <ColorTile label={control.label} value={value as string} onChange={onChange} />;
+
+    case "select":
       if (isColorControl(control)) {
         return (
-          <div className="flex flex-col gap-2">
-            <FieldLabel>{control.label}</FieldLabel>
+          <div className={cn(TILE_CLASS, "flex-wrap py-2", isWide(control) && "sm:col-span-2")}>
+            <span className={LABEL_CLASS}>{control.label}</span>
             <ColorSelector
+              size="sm"
               colors={control.options.map((opt) => opt.value)}
               swatches={Object.fromEntries(
                 control.options
@@ -238,61 +303,39 @@ function Field({
               )}
               value={value as string}
               onColorSelect={onChange}
-              className="flex-wrap p-0.5"
+              className="flex-wrap justify-end gap-2 p-0.5"
             />
           </div>
         );
       }
-
       return (
-        <div className="flex flex-col gap-2">
-          <FieldLabel>{control.label}</FieldLabel>
-          <OptionGroup
-            id={control.prop}
-            label={control.label}
-            options={control.options}
-            value={value as string}
-            onChange={onChange}
-          />
-        </div>
+        <SelectTile
+          id={control.prop}
+          label={control.label}
+          options={control.options}
+          value={value as string}
+          onChange={onChange}
+        />
       );
-    }
 
     case "number": {
       const min = control.min ?? 0;
-      const max = control.max ?? 100;
-      const step = control.step ?? 1;
-      const raw = typeof value === "number" ? value : min;
-      const percent = max === min ? 0 : ((raw - min) / (max - min)) * 100;
-      const decimals = step && step < 1 ? (String(step).split(".")[1]?.length ?? 2) : 0;
-
       return (
-        <RichProgress
-          value={percent}
-          onChange={(next) => {
-            const mapped = min + (next / 100) * (max - min);
-            const stepped = Math.round(mapped / step) * step;
-            const clamped = Math.min(max, Math.max(min, stepped));
-            onChange(Number(clamped.toFixed(decimals)));
-          }}
+        <SliderTile
+          id={control.prop}
           label={control.label}
-          valueLabel={raw.toFixed(decimals)}
-          size="sm"
-          knob
-          className="[&_span.font-medium]:text-muted-foreground [&_span.font-medium]:font-normal"
+          min={min}
+          max={control.max ?? 100}
+          step={control.step ?? 1}
+          value={typeof value === "number" ? value : min}
+          onChange={onChange}
         />
       );
     }
-
-    case "color":
-      return (
-        <div className="flex flex-col gap-2">
-          <FieldLabel>{control.label}</FieldLabel>
-          <ColorField value={value as string} onChange={onChange} />
-        </div>
-      );
 
     default:
       return null;
   }
 }
+
+export { ControlPanel };

@@ -19,6 +19,8 @@ Visit https://cloverui.xyz/docs/introduction to view the documentation.
 
 ## Installation
 
+Installs are paused for now: the site doesn't serve the registry, so the commands below fail until it's turned back on.
+
 Add the registry to your `components.json`, then install any component by name:
 
 ```json

@@ -10,6 +10,7 @@ import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { useConfig } from "@/hooks/use-config";
 import { trackEvent } from "@/lib/events";
 import { guideIds } from "@/lib/guides";
+import { siteConfig } from "@/lib/config";
 
 const navSearchClassName =
   "border-border border-[0.5px] text-muted-foreground hover:text-foreground bg-transparent hover:bg-transparent h-8 gap-1.5 rounded-none px-2.5 text-[13px] [&>kbd]:bg-transparent [&>kbd]:border-border [&>kbd]:rounded-none [&>kbd]:border [&>kbd]:px-1.5 [&>kbd]:py-px [&>kbd]:text-[11px] [&>kbd]:font-medium [&>kbd]:border-[0.5px] [&>svg]:size-3.5 [&>svg]:stroke-[1.25]";
@@ -94,7 +95,7 @@ export function CommandMenu({
         router.push(item.id);
       }}
       footer={
-        highlighted?.category === "Components" ? (
+        siteConfig.installs && highlighted?.category === "Components" ? (
           <button
             type="button"
             onClick={copyInstall}

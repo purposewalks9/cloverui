@@ -2,6 +2,7 @@ import type { MDXComponents } from "mdx/types";
 import { DemoCanvas, DemoCode, DemoPreview } from "@/components/docs/demo-canvas";
 import { CopyCodeButton } from "@/components/docs/copy-code-button";
 import { InstallationTabs } from "@/components/docs/installation-tabs";
+import { InstallNotice } from "@/components/docs/install-notice";
 import { CodeBlockCommand } from "@/components/docs/code-block-command";
 import { PropsTable } from "@/components/docs/props-table";
 import { CreditLink, CreditList } from "@/components/docs/credits";
@@ -14,6 +15,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     DemoPreview,
     DemoCode,
     InstallationTabs,
+    InstallNotice,
     CodeBlockCommand,
     PropsTable,
     CreditLink,

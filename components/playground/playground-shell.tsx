@@ -63,10 +63,10 @@ export function PlaygroundShell({
   }
 
   return (
-    <div className="not-prose border-border my-6 flex flex-col overflow-hidden rounded-none border lg:flex-row">
+    <div className="not-prose my-6 flex flex-col gap-4">
       <div
         className={cn(
-          "relative flex min-h-[22rem] min-w-0 flex-1 items-center justify-center overflow-hidden p-4 sm:p-8 lg:min-h-[28rem]",
+          "border-border relative flex min-h-[22rem] min-w-0 items-center justify-center overflow-hidden rounded-none border p-4 sm:p-8 lg:min-h-[28rem]",
           stageClassName,
         )}
       >
@@ -78,11 +78,11 @@ export function PlaygroundShell({
       </div>
 
       {controls.length > 0 && (
-        <div className="border-border w-full shrink-0 border-t lg:w-72 lg:border-t-0 lg:border-l">
-          <div className="border-border flex h-12 items-center justify-between gap-2 border-b pr-2 pl-4">
-            <span className="text-foreground shrink-0 text-sm font-medium whitespace-nowrap">
+        <section aria-label="Customize" className="border-border rounded-none border">
+          <div className="flex h-12 items-center justify-between gap-2 pr-2 pl-4">
+            <h2 className="text-foreground shrink-0 text-sm font-medium whitespace-nowrap">
               Customize
-            </span>
+            </h2>
             <div className="flex shrink-0 items-center">
               <ToolbarButton label="Reset" onClick={reset}>
                 <RotateCcw />
@@ -93,10 +93,10 @@ export function PlaygroundShell({
             </div>
           </div>
 
-          <div className="p-3">
+          <div className="px-3 pb-3">
             <ControlPanel controls={controls} values={values} onChange={setValue} />
           </div>
-        </div>
+        </section>
       )}
     </div>
   );

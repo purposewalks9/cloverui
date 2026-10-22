@@ -3,6 +3,8 @@
 import * as React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CodeBlockCommand } from "@/components/docs/code-block-command";
+import { InstallNotice } from "@/components/docs/install-notice";
+import { siteConfig } from "@/lib/config";
 
 interface InstallationTabsProps {
   item: string;
@@ -10,6 +12,8 @@ interface InstallationTabsProps {
 }
 
 export function InstallationTabs({ item, children }: InstallationTabsProps) {
+  if (!siteConfig.installs) return <InstallNotice />;
+
   return (
     <Tabs defaultValue="cli" className="w-full">
       <TabsList className="not-prose">
