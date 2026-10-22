@@ -1,35 +1,26 @@
-import { basicDoc } from "@/lib/basic-doc";
-import { getRegistry } from "./registry";
-import { DocItem, DocSchema, RegistryItem } from "./types";
+import { guideIds, guideSchema } from "@/lib/guides";
+import { getRegistry } from "@/lib/registry";
+import { getPublishedSlugs } from "@/lib/slugs";
+import type { DocItem, DocSchema, RegistryItem } from "@/lib/types";
 
-const CATEGORY_LABELS: Record<string, string> = {
-  button: "Buttons",
-  control: "Controls",
-  text: "Text",
-  loader: "Loaders",
-  cursor: "Cursors",
-  effect: "Effects",
-  background: "Backgrounds",
-  asset: "Assets",
-  block: "Blocks",
-};
-
-const CATEGORY_ORDER = [
-  "button",
-  "control",
-  "text",
-  "loader",
-  "cursor",
-  "effect",
-  "background",
-  "asset",
-  "block",
+const CATEGORIES: [string, string][] = [
+  ["button", "Buttons"],
+  ["control", "Controls"],
+  ["text", "Text"],
+  ["loader", "Loaders"],
+  ["cursor", "Cursors"],
+  ["effect", "Effects"],
+  ["background", "Backgrounds"],
+  ["asset", "Assets"],
+  ["block", "Blocks"],
 ];
+const CATEGORY_LABELS = Object.fromEntries(CATEGORIES);
+const CATEGORY_ORDER = CATEGORIES.map(([key]) => key);
 
 function toDocItem(item: RegistryItem): DocItem {
   return {
     id: item.name,
-    href: `/components/${item.name}`,
+    href: `/docs/${item.name}`,
     title: item.title,
     description: item.description,
     meta: item.meta,
@@ -45,7 +36,7 @@ function groupByCategory(items: RegistryItem[]) {
   return groups;
 }
 
-export const getDocSchema = async () => {
+export async function getDocSchema(): Promise<DocSchema> {
   const { items } = await getRegistry();
   const components = items.filter((i) => i.type === "registry:component");
   const byCategory = groupByCategory(components);
@@ -62,15 +53,29 @@ export const getDocSchema = async () => {
     }))
     .filter((g) => g.items.length > 0);
 
-  return [...basicDoc, ...componentGroups];
-};
+  return [...guideSchema, ...componentGroups];
+}
 
-const allDocItems = async () => {
+async function getAllDocItems() {
   const schema = await getDocSchema();
   return schema.flatMap((section) => section.items);
-};
+}
 
-export const getDoc = async (id: string) => {
-  const allItems = await allDocItems();
+export async function getDocIds() {
+  return [...guideIds, ...(await getPublishedSlugs())];
+}
+
+export async function getDoc(id: string) {
+  const allItems = await getAllDocItems();
   return allItems.find((item) => item.id === id);
-};
+}
+
+export async function getDocNav(id: string) {
+  const allItems = await getAllDocItems();
+  const index = allItems.findIndex((item) => item.id === id);
+
+  return {
+    previous: index > 0 ? allItems[index - 1] : undefined,
+    next: index >= 0 ? allItems[index + 1] : undefined,
+  };
+}

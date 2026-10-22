@@ -35,6 +35,7 @@ export interface SignPadLabels {
 }
 
 export interface SignPadProps {
+  ref?: React.Ref<HTMLDivElement>;
   onComplete?: (value: SignPadValue) => void;
   onCancel?: () => void;
   onChange?: (value: SignPadValue | null) => void;
@@ -446,7 +447,7 @@ function SigningPanel({
     onFinish(exportSignature(strokesRef.current, sizeRef.current.w, ink));
   };
 
-  const canFinish = inkLength(strokesRef.current) >= minInk;
+  const canFinish = stats.length >= minInk;
 
   const fillPercent = Math.min(100, (stats.length / minInk) * 100);
 
@@ -456,11 +457,13 @@ function SigningPanel({
     onCancel,
   });
 
-  latest.current = {
-    undo,
-    finish,
-    onCancel,
-  };
+  React.useLayoutEffect(() => {
+    latest.current = {
+      undo,
+      finish,
+      onCancel,
+    };
+  });
 
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -530,108 +533,102 @@ function SigningPanel({
   );
 }
 
-const SignPad = React.forwardRef<HTMLDivElement, SignPadProps>(
-  (
-    {
-      onComplete,
-      onCancel,
-      onChange,
-      defaultValue = null,
-      accent = "var(--brand, #e1e900)",
-      strokeWidth = 3,
-      minInk = 0.3,
-      labels: labelOverrides,
-      className,
-    },
-    ref,
-  ) => {
-    const labels = React.useMemo(
-      () => ({
-        ...DEFAULT_LABELS,
-        ...labelOverrides,
-      }),
-      [labelOverrides],
-    );
+function SignPad({
+  ref,
+  onComplete,
+  onCancel,
+  onChange,
+  defaultValue = null,
+  accent = "var(--brand, #e1e900)",
+  strokeWidth = 3,
+  minInk = 0.3,
+  labels: labelOverrides,
+  className,
+}: SignPadProps) {
+  const labels = React.useMemo(
+    () => ({
+      ...DEFAULT_LABELS,
+      ...labelOverrides,
+    }),
+    [labelOverrides],
+  );
 
-    const [signature, setSignature] = React.useState<SignPadValue | null>(defaultValue);
+  const [signature, setSignature] = React.useState<SignPadValue | null>(defaultValue);
 
-    const [phase, setPhase] = React.useState<Phase>(defaultValue ? "done" : "idle");
+  const [phase, setPhase] = React.useState<Phase>(defaultValue ? "done" : "idle");
 
-    const [resolvedInk, setResolvedInk] = React.useState("#111827");
+  const [resolvedInk, setResolvedInk] = React.useState("#111827");
 
-    React.useEffect(() => {
-      const root = document.documentElement;
+  React.useEffect(() => {
+    const root = document.documentElement;
 
-      const updateInk = () => {
-        setResolvedInk(root.classList.contains("dark") ? "#f5f5f5" : "#111827");
-      };
-
-      updateInk();
-
-      const observer = new MutationObserver(updateInk);
-
-      observer.observe(root, {
-        attributes: true,
-        attributeFilter: ["class"],
-      });
-
-      return () => observer.disconnect();
-    }, []);
-
-    const cancel = () => {
-      setPhase(signature ? "done" : "idle");
-      onCancel?.();
+    const updateInk = () => {
+      setResolvedInk(root.classList.contains("dark") ? "#f5f5f5" : "#111827");
     };
 
-    const finish = (value: SignPadValue) => {
-      setSignature(value);
-      setPhase("done");
-      onChange?.(value);
-      onComplete?.(value);
-    };
+    updateInk();
 
-    return (
-      <div ref={ref} className={cn("text-foreground inline-flex items-center", className)}>
-        {phase === "idle" && (
-          <button
-            type="button"
-            onClick={() => setPhase("signing")}
-            className="border-input bg-background text-foreground hover:bg-accent focus-visible:ring-ring inline-flex h-9 items-center justify-center gap-2 rounded-md border px-4 text-sm font-medium outline-none focus-visible:ring-1"
-          >
-            <Signature className="size-4" strokeWidth={2} />
-            {labels.start}
-          </button>
-        )}
+    const observer = new MutationObserver(updateInk);
 
-        {phase === "signing" && (
-          <SigningPanel
-            initial={signature?.strokes ?? []}
-            ink={resolvedInk}
-            strokeWidth={strokeWidth}
-            minInk={minInk}
-            accent={accent}
-            labels={labels}
-            onCancel={cancel}
-            onFinish={finish}
-          />
-        )}
+    observer.observe(root, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
 
-        {phase === "done" && (
-          <button
-            type="button"
-            aria-label={labels.edit}
-            onClick={() => setPhase("signing")}
-            className="border-input bg-background text-foreground hover:bg-accent focus-visible:ring-ring inline-flex h-9 items-center gap-2 rounded-md border px-4 text-sm font-medium outline-none focus-visible:ring-1"
-          >
-            <Signature className="size-4" strokeWidth={2} />
-            {labels.edit}
-          </button>
-        )}
-      </div>
-    );
-  },
-);
+    return () => observer.disconnect();
+  }, []);
 
-SignPad.displayName = "SignPad";
+  const cancel = () => {
+    setPhase(signature ? "done" : "idle");
+    onCancel?.();
+  };
+
+  const finish = (value: SignPadValue) => {
+    setSignature(value);
+    setPhase("done");
+    onChange?.(value);
+    onComplete?.(value);
+  };
+
+  return (
+    <div ref={ref} className={cn("text-foreground inline-flex items-center", className)}>
+      {phase === "idle" && (
+        <button
+          type="button"
+          onClick={() => setPhase("signing")}
+          className="border-input bg-background text-foreground hover:bg-accent focus-visible:ring-ring inline-flex h-9 items-center justify-center gap-2 rounded-md border px-4 text-sm font-medium outline-none focus-visible:ring-1"
+        >
+          <Signature className="size-4" strokeWidth={2} />
+          {labels.start}
+        </button>
+      )}
+
+      {phase === "signing" && (
+        <SigningPanel
+          initial={signature?.strokes ?? []}
+          ink={resolvedInk}
+          strokeWidth={strokeWidth}
+          minInk={minInk}
+          accent={accent}
+          labels={labels}
+          onCancel={cancel}
+          onFinish={finish}
+        />
+      )}
+
+      {phase === "done" && (
+        <button
+          type="button"
+          aria-label={labels.edit}
+          onClick={() => setPhase("signing")}
+          className="border-input bg-background text-foreground hover:bg-accent focus-visible:ring-ring inline-flex h-9 items-center gap-2 rounded-md border px-4 text-sm font-medium outline-none focus-visible:ring-1"
+        >
+          <Signature className="size-4" strokeWidth={2} />
+          {labels.edit}
+        </button>
+      )}
+    </div>
+  );
+}
 
 export { SignPad };

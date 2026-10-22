@@ -19,8 +19,7 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"],
-      "content-collections": ["./.content-collections/generated"]
+      "@/*": ["./*"]
     }
   },
   "include": [
@@ -28,9 +27,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "components/signature.tsx",
-    ".next/dev/types/**/*.ts",
-    "docs/token-fall/doc.mdx"
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }

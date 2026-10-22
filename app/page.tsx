@@ -1,9 +1,8 @@
 import Link from "next/link";
-import { Heart } from "lucide-react";
-import { LazyMount } from "@/components/leaves/lazy-mount";
-import { SiteFooter } from "@/components/leaves/site-footer";
-import { RootHeader } from "@/components/stem/root-header";
-import { siteConfig } from "@/lib/config";
+import { LazyMount } from "@/components/shared/lazy-mount";
+import { SponsorButton } from "@/components/shared/sponsor-button";
+import { SiteFooter } from "@/components/layout/site-footer";
+import { HomeHeader } from "@/components/layout/home-header";
 import { cn } from "@/lib/utils";
 import { BlockText } from "@/registry/clover-ui/block-text";
 import {
@@ -19,17 +18,17 @@ import {
   SignPadPreview,
   SoftButtonPreview,
   SwitchPreview,
-} from "@/components/leaves/bento-previews";
-import { BentoActiveCard, BentoActiveProvider } from "@/components/leaves/bento-active";
+} from "@/components/home/bento-previews";
+import { BentoActiveCard, BentoActiveProvider } from "@/components/home/bento-active";
 
 const HERO_WORDS = ["headlines", "buttons", "controls", "cursors", "loaders", "effects"];
 
-type BentoItem = {
+interface BentoItem {
   slug: string;
   title: string;
   Demo: () => React.ReactNode;
   className: string;
-};
+}
 
 const ROWS: { grid: string; items: BentoItem[] }[] = [
   {
@@ -73,10 +72,10 @@ function BentoCard({ Demo, className, index }: BentoItem & { index: number }) {
   );
 }
 
-export default function Home() {
+export default function HomePage() {
   return (
     <div className="relative flex min-h-dvh flex-col">
-      <RootHeader />
+      <HomeHeader />
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 pt-12 pb-24 sm:px-6 sm:pt-16">
         <section>
           <div className="mx-auto flex max-w-2xl flex-col items-center gap-6 text-center">
@@ -97,19 +96,11 @@ export default function Home() {
             <div className="flex flex-wrap items-center justify-center gap-3">
               <Link
                 href="/docs/introduction"
-                className="gradient-ring focus-visible:ring-ring relative inline-flex h-9 shrink-0 items-center justify-center bg-white px-4 text-sm font-medium whitespace-nowrap text-[#171717] transition-[filter] hover:brightness-95 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none dark:bg-black dark:text-white dark:hover:brightness-125"
+                className="border-border focus-visible:ring-ring inline-flex h-9 shrink-0 items-center justify-center border bg-white px-4 text-sm font-medium whitespace-nowrap text-[#171717] transition-[filter] hover:brightness-95 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none dark:bg-black dark:text-white dark:hover:brightness-125"
               >
                 Get started
               </Link>
-              <Link
-                href={siteConfig.links.sponsor}
-                target="_blank"
-                rel="noreferrer"
-                className="border-border text-foreground hover:bg-secondary focus-visible:ring-ring inline-flex h-9 shrink-0 items-center justify-center gap-2 border px-4 text-sm font-medium whitespace-nowrap transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-              >
-                <Heart aria-hidden className="size-3.5 text-[#db2777] dark:text-[#f472b6]" />
-                <span className="sponsor-gradient">Sponsor</span>
-              </Link>
+              <SponsorButton />
             </div>
           </div>
         </section>

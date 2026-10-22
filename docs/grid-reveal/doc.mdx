@@ -31,7 +31,7 @@ import { GridReveal } from "@/components/grid-reveal";
   { name: "stagger", type: "number", default: "0.03" },
   { name: "duration", type: "number", description: "Total reveal time in seconds. Overrides stagger." },
   { name: "gap", type: "number", default: "0", description: "Space between blocks in pixels." },
-  { name: "loop", type: "boolean", default: "false" },
+  { name: "loop", type: "boolean", default: "true", description: "Covers and reveals again on repeat. Plays once when reduced motion is on." },
   { name: "loopDelay", type: "number", default: "0.6" },
   { name: "autoStart", type: "boolean", default: "true" },
   { name: "inView", type: "boolean", default: "false", description: "Waits until it scrolls into view." },

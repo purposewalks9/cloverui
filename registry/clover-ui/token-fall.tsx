@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import * as React from "react";
 import Matter from "matter-js";
 
 import { cn } from "@/lib/utils";
@@ -26,7 +26,7 @@ export interface TokenFallProps {
 
   palettes?: TokenPalette[];
 
-  renderToken?: (token: TokenMeta) => ReactNode;
+  renderToken?: (token: TokenMeta) => React.ReactNode;
 
   gravity?: number;
 
@@ -63,7 +63,7 @@ function TokenGlyph({ size, palette }: { size: number; palette: TokenPalette }) 
 
 type TokenBody = TokenMeta & { body: Matter.Body };
 
-export function TokenFall({
+function TokenFall({
   count = 55,
   minSize = 14,
   maxSize = 28,
@@ -77,11 +77,11 @@ export function TokenFall({
   className,
   tokenClassName,
 }: TokenFallProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const domRefs = useRef<Record<number, HTMLDivElement | null>>({});
-  const [tokens, setTokens] = useState<TokenBody[]>([]);
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const domRefs = React.useRef<Record<number, HTMLDivElement | null>>({});
+  const [tokens, setTokens] = React.useState<TokenBody[]>([]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
@@ -246,4 +246,4 @@ export function TokenFall({
   );
 }
 
-export default TokenFall;
+export { TokenFall };

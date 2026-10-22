@@ -1,7 +1,7 @@
 "use client";
 
 import { Clicky, type ClickyColor } from "@/registry/clover-ui/clicky";
-import { PlaygroundShell } from "@/components/garden/playground-shell";
+import { PlaygroundShell } from "@/components/playground/playground-shell";
 import { jsx, type ControlDef } from "@/lib/playground";
 
 const colors: { value: ClickyColor; swatch: string }[] = [

@@ -12,14 +12,14 @@ import { CandlestickPlayground } from "./playground"
 ## Usage
 
 ```tsx
-import { CandleChartStick, type Candle } from "@/components/candlestick-chart";
+import { CandlestickChart, type Candle } from "@/components/candlestick-chart";
 
 const data: Candle[] = [
   { time: "Mon", open: 220.1, high: 226.4, low: 218.3, close: 224.8 },
   { time: "Tue", open: 224.8, high: 229.2, low: 221.6, close: 219.4 },
 ];
 
-<CandleChartStick data={data} name="AAPL" />
+<CandlestickChart data={data} name="AAPL" />
 ```
 
 Hover to see a candle's prices. Drag to pan and scroll to zoom.

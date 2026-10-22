@@ -1,7 +1,7 @@
 "use client";
 
 import { AppleMusicCard, type AppleMusicCardView } from "@/registry/clover-ui/apple-music-card";
-import { PlaygroundShell } from "@/components/garden/playground-shell";
+import { PlaygroundShell } from "@/components/playground/playground-shell";
 import { jsx, type ControlDef } from "@/lib/playground";
 
 const songs = [

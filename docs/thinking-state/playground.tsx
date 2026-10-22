@@ -7,7 +7,7 @@ import {
   type ThinkingStatePixel,
   type ThinkingStateStatus,
 } from "@/registry/clover-ui/thinking-state";
-import { PlaygroundShell } from "@/components/garden/playground-shell";
+import { PlaygroundShell } from "@/components/playground/playground-shell";
 import { expr, jsx, type ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [

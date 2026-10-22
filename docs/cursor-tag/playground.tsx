@@ -1,7 +1,7 @@
 "use client";
 
 import { CursorTag, type CursorTagSide, type CursorTagSize } from "@/registry/clover-ui/cursor-tag";
-import { PlaygroundShell } from "@/components/garden/playground-shell";
+import { PlaygroundShell } from "@/components/playground/playground-shell";
 import { jsx, type ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [

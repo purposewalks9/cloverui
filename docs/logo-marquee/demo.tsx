@@ -2,7 +2,7 @@ import { LogoMarquee, logoMarqueeLogos } from "@/registry/clover-ui/logo-marquee
 
 const logos = logoMarqueeLogos.map((logo) => ({
   ...logo,
-  src: logo.src.replace("https://cloverui.vercel.app", ""),
+  src: logo.src.replace("https://cloverui.xyz", ""),
 }));
 
 export function Demo() {

@@ -1,7 +1,7 @@
 "use client";
 
 import { BLOCK_TEXT_THEMES, BlockText, type BlockTextTheme } from "@/registry/clover-ui/block-text";
-import { PlaygroundShell } from "@/components/garden/playground-shell";
+import { PlaygroundShell } from "@/components/playground/playground-shell";
 import { jsx, type ControlDef } from "@/lib/playground";
 
 function bands([a, b, c]: readonly string[]) {

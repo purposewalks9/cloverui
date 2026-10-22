@@ -1,6 +1,6 @@
-import { existsSync, readdirSync } from "fs";
-import { join } from "path";
-import { getRegistry } from "./registry";
+import { existsSync, readdirSync } from "node:fs";
+import { join } from "node:path";
+import { getRegistry } from "@/lib/registry";
 
 const DOCS_DIR = join(process.cwd(), "docs");
 

@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import { constructMetadata } from "@/lib/utils";
+import { buildMetadata } from "@/lib/metadata";
 import localFont from "next/font/local";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
-import { ThemeProvider } from "@/components/roots/theme-provider";
-import { SiteGhostProvider } from "@/components/leaves/site-ghost";
+import { ThemeProvider } from "@/components/providers/theme-provider";
+import { SiteGhostProvider } from "@/components/layout/site-ghost";
 
 const instrumentSerif = localFont({
   src: "./fonts/InstrumentSerif-Regular.woff2",
@@ -25,7 +25,7 @@ const dynaPuff = localFont({
   preload: false,
 });
 
-export const metadata: Metadata = constructMetadata({
+export const metadata: Metadata = buildMetadata({
   title: "Clover UI",
 });
 

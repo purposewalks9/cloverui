@@ -1,7 +1,7 @@
 "use client";
 
 import { PulseLoader } from "@/registry/clover-ui/pulse-loader";
-import { PlaygroundShell } from "@/components/garden/playground-shell";
+import { PlaygroundShell } from "@/components/playground/playground-shell";
 import { jsx, type ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [

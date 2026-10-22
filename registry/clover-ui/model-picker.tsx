@@ -221,9 +221,14 @@ function ModelPicker({
     }
   }, [section]);
 
+  const [seenSection, setSeenSection] = React.useState(section);
+  if (seenSection !== section) {
+    setSeenSection(section);
+    if (section === "model") setSubHover(activeModel);
+  }
+
   React.useEffect(() => {
     if (section === "model") {
-      setSubHover(activeModel);
       modelRefs.current[activeModel]?.focus();
     } else if (section === "effort") {
       effortRef.current?.querySelector<HTMLElement>('[role="slider"]')?.focus();

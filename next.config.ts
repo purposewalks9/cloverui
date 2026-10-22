@@ -7,11 +7,18 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 
 const nextConfig = {
   trailingSlash: false,
+  outputFileTracingIncludes: {
+    "/og": ["./app/fonts/Geist-*.ttf"],
+  },
   images: {
     remotePatterns: [
       {
         protocol: "https" as const,
         hostname: "pbs.twimg.com",
+      },
+      {
+        protocol: "https" as const,
+        hostname: "avatars.githubusercontent.com",
       },
     ],
   },
@@ -19,25 +26,25 @@ const nextConfig = {
     optimizePackageImports: [
       "lucide-react",
       "motion",
-      "framer-motion",
       "@base-ui/react",
       "@icons-pack/react-simple-icons",
     ],
   },
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
+  redirects: async () => {
+    return [
+      {
+        source: "/components/:slug",
+        destination: "/docs/:slug",
+        permanent: true,
+      },
+    ];
+  },
   headers: async () => {
     return [
       {
         source: "/logos/:path*",
         headers: [{ key: "Access-Control-Allow-Origin", value: "*" }],
-      },
-    ];
-  },
-  rewrites: async () => {
-    return [
-      {
-        source: "/docs/:slug.md",
-        destination: "/docs/:slug/md",
       },
     ];
   },

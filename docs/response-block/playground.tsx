@@ -1,7 +1,7 @@
 "use client";
 
 import { ResponseBlock } from "@/registry/clover-ui/response-block";
-import { PlaygroundShell } from "@/components/garden/playground-shell";
+import { PlaygroundShell } from "@/components/playground/playground-shell";
 import { expr, jsx, type ControlDef } from "@/lib/playground";
 import { useResponseSimulation, type DemoName } from "./simulation";
 

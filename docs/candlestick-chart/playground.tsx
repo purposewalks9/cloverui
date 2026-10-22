@@ -1,7 +1,7 @@
 "use client";
 
-import { CandleChartStick } from "@/registry/clover-ui/candlestick-chart";
-import { PlaygroundShell } from "@/components/garden/playground-shell";
+import { CandlestickChart } from "@/registry/clover-ui/candlestick-chart";
+import { PlaygroundShell } from "@/components/playground/playground-shell";
 import { expr, jsx, type ControlDef } from "@/lib/playground";
 import { data } from "./demo";
 
@@ -37,7 +37,7 @@ export function CandlestickPlayground() {
       defaultProps={defaultProps}
       stageClassName="w-full"
       code={(values) =>
-        jsx("CandleChartStick", {
+        jsx("CandlestickChart", {
           data: expr("data"),
           name: "AAPL",
           upColor: values.upColor,
@@ -50,7 +50,7 @@ export function CandlestickPlayground() {
       }
       render={(values) => (
         <div className="flex w-full justify-center">
-          <CandleChartStick
+          <CandlestickChart
             data={data}
             name="AAPL"
             upColor={values.upColor as string}

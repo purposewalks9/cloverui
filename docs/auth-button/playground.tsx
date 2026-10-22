@@ -6,7 +6,7 @@ import {
   type AuthButtonSize,
   type AuthProvider,
 } from "@/registry/clover-ui/auth-button";
-import { PlaygroundShell } from "@/components/garden/playground-shell";
+import { PlaygroundShell } from "@/components/playground/playground-shell";
 import type { ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [

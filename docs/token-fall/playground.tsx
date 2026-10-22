@@ -8,7 +8,7 @@ const TokenFall = dynamic(
     ssr: false,
   },
 );
-import { PlaygroundShell } from "@/components/garden/playground-shell";
+import { PlaygroundShell } from "@/components/playground/playground-shell";
 import { jsx, type ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [

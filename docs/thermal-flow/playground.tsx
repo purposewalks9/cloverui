@@ -2,7 +2,7 @@
 
 import { ThermalFlow } from "@/registry/clover-ui/thermal-flow";
 import { THERMAL_FLOW_THEMES, type ThermalFlowTheme } from "@/registry/clover-ui/thermal-flow";
-import { PlaygroundShell } from "@/components/garden/playground-shell";
+import { PlaygroundShell } from "@/components/playground/playground-shell";
 import { jsx, type ControlDef } from "@/lib/playground";
 
 const themeSwatch = (theme: ThermalFlowTheme) =>

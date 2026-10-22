@@ -1,4 +1,5 @@
 import { SwitchPlayground } from "./playground"
+import { SwitchColorExample, SwitchControlledExample, SwitchNoLabelsExample, SwitchSizeExample } from "./examples"
 
 <SwitchPlayground />
 
@@ -9,6 +10,72 @@ import { SwitchPlayground } from "./playground"
 ```
 </InstallationTabs>
 
+## Examples
+
+### Controlled
+
+Hold the state yourself with `checked` and `onCheckedChange`. Leave both out and use `defaultChecked` to let the switch keep its own state.
+
+<DemoCanvas>
+<DemoPreview center className="min-h-64 md:min-h-72">
+<SwitchControlledExample />
+</DemoPreview>
+<DemoCode>
+```tsx
+const [enabled, setEnabled] = React.useState(true);
+
+<Switch aria-label="Wi-Fi" checked={enabled} onCheckedChange={setEnabled} />
+```
+</DemoCode>
+</DemoCanvas>
+
+### Color
+
+`color` takes any CSS color for the track when it's on. The frame and knob stay black in light and dark mode.
+
+<DemoCanvas>
+<DemoPreview center className="min-h-64 md:min-h-72">
+<SwitchColorExample />
+</DemoPreview>
+<DemoCode>
+```tsx
+<Switch aria-label="Blue" color="#0b87da" />
+<Switch aria-label="Purple" color="#7c3aed" />
+<Switch aria-label="Orange" color="#f97316" />
+```
+</DemoCode>
+</DemoCanvas>
+
+### Size
+
+<DemoCanvas>
+<DemoPreview center className="min-h-64 md:min-h-72">
+<SwitchSizeExample />
+</DemoPreview>
+<DemoCode>
+```tsx
+<Switch aria-label="Small" size="sm" />
+<Switch aria-label="Default" />
+<Switch aria-label="Large" size="lg" />
+```
+</DemoCode>
+</DemoCanvas>
+
+### Without labels
+
+`showLabels={false}` hides the fixed **ON** and **OFF** labels. Keep the `aria-label` so screen readers still know what it controls.
+
+<DemoCanvas>
+<DemoPreview center className="min-h-64 md:min-h-72">
+<SwitchNoLabelsExample />
+</DemoPreview>
+<DemoCode>
+```tsx
+<Switch aria-label="Dark mode" showLabels={false} />
+```
+</DemoCode>
+</DemoCanvas>
+
 ## Usage
 
 ```tsx
@@ -17,21 +84,7 @@ import { Switch } from "@/components/switch";
 <Switch aria-label="Notifications" />
 ```
 
-A chunky switch with a polished black glass frame and a domed black glass knob. Thin curved reflections catch the beveled edges, while the green track sits recessed beneath the knob. Clicking it switches instantly: the knob and the track color jump straight to the new side, with no slide. **ON** and **OFF** are fixed labels, uncovered by the moving knob.
-
-It works like a normal switch: Tab to it and press Space or Enter to flip it. Give it an `aria-label` so screen readers know what it turns on and off.
-
-Leave it uncontrolled with `defaultChecked`, or control it with `checked` and `onCheckedChange`:
-
-```tsx
-const [enabled, setEnabled] = React.useState(true);
-
-<Switch aria-label="Wi-Fi" checked={enabled} onCheckedChange={setEnabled} />
-```
-
-Pass any CSS color to `color` to change the on color. The switch stays black in light and dark mode.
-
-The playground offers black in place of white so the white labels stay visible. Use the **Show labels** control, or `showLabels={false}`, to hide both labels. Their wording is fixed; `onLabel` and `offLabel` are no longer supported. Keep an `aria-label` that describes what the switch controls even when the visible labels are hidden.
+Tab to it and press Space or Enter to flip it. Always give it an `aria-label`.
 
 ## Props
 

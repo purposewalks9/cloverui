@@ -1,15 +1,7 @@
 "use client";
 
-import { motion } from "motion/react";
-import {
-  forwardRef,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { motion, useReducedMotion } from "motion/react";
+import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -29,6 +21,7 @@ export const GRID_REVEAL_COLORS = {
 export type GridRevealColor = keyof typeof GRID_REVEAL_COLORS;
 
 export interface GridRevealProps {
+  ref?: React.Ref<GridRevealRef>;
   children?: React.ReactNode;
   rows?: number;
   cols?: number;
@@ -110,218 +103,213 @@ function getDelayFactor(
   }
 }
 
-const GridReveal = forwardRef<GridRevealRef, GridRevealProps>(
-  (
-    {
-      children,
-      rows = 6,
-      cols = 10,
-      color = "yellow",
-      blockDuration = 0.45,
-      stagger = 0.03,
-      duration,
-      pattern = "random",
-      loop = false,
-      loopDelay = 0.6,
-      gap = 0,
-      className,
-      gridClassName,
-      blockClassName,
-      autoStart = true,
-      inView = false,
-      once = true,
-      onStart,
-      onComplete,
-    },
-    ref,
-  ) => {
-    const [revealed, setRevealed] = useState(false);
+function GridReveal({
+  ref,
+  children,
+  rows = 6,
+  cols = 10,
+  color = "yellow",
+  blockDuration = 0.45,
+  stagger = 0.03,
+  duration,
+  pattern = "random",
+  loop = true,
+  loopDelay = 0.6,
+  gap = 0,
+  className,
+  gridClassName,
+  blockClassName,
+  autoStart = true,
+  inView = false,
+  once = true,
+  onStart,
+  onComplete,
+}: GridRevealProps) {
+  const [revealed, setRevealed] = React.useState(false);
+  const reducedMotion = useReducedMotion();
 
-    const hasPlayedRef = useRef(false);
-    const callbacks = useRef({ onStart, onComplete });
-    useEffect(() => {
-      callbacks.current = { onStart, onComplete };
-    }, [onStart, onComplete]);
-    const timers = useRef(new Set<ReturnType<typeof setTimeout>>());
-    const schedule = useCallback((callback: () => void, delay: number) => {
-      const timer = setTimeout(() => {
-        timers.current.delete(timer);
-        callback();
-      }, delay);
-      timers.current.add(timer);
-    }, []);
+  const hasPlayedRef = React.useRef(false);
+  const callbacks = React.useRef({ onStart, onComplete });
+  React.useEffect(() => {
+    callbacks.current = { onStart, onComplete };
+  }, [onStart, onComplete]);
+  const timers = React.useRef(new Set<ReturnType<typeof setTimeout>>());
+  const schedule = React.useCallback((callback: () => void, delay: number) => {
+    const timer = setTimeout(() => {
+      timers.current.delete(timer);
+      callback();
+    }, delay);
+    timers.current.add(timer);
+  }, []);
 
-    const count = rows * cols;
+  const count = rows * cols;
 
-    const shuffled = useMemo(() => shuffledIndexes(count), [count]);
+  const shuffled = React.useMemo(() => shuffledIndexes(count), [count]);
 
-    const maxFactor = useMemo(() => {
-      let max = 0;
+  const maxFactor = React.useMemo(() => {
+    let max = 0;
 
-      for (let row = 0; row < rows; row++) {
-        for (let col = 0; col < cols; col++) {
-          const index = row * cols + col;
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        const index = row * cols + col;
 
-          const factor = getDelayFactor(pattern, row, col, rows, cols, shuffled, index);
+        const factor = getDelayFactor(pattern, row, col, rows, cols, shuffled, index);
 
-          if (factor > max) {
-            max = factor;
-          }
+        if (factor > max) {
+          max = factor;
         }
       }
+    }
 
-      return max || 1;
-    }, [pattern, rows, cols, shuffled]);
+    return max || 1;
+  }, [pattern, rows, cols, shuffled]);
 
-    const perStepDelay = useMemo(
-      () => (duration ? duration / (maxFactor + 1) : stagger),
-      [duration, maxFactor, stagger],
-    );
+  const perStepDelay = React.useMemo(
+    () => (duration ? duration / (maxFactor + 1) : stagger),
+    [duration, maxFactor, stagger],
+  );
 
-    const blocks = useMemo(() => {
-      const items: {
-        key: string;
-        factor: number;
-      }[] = [];
+  const blocks = React.useMemo(() => {
+    const items: {
+      key: string;
+      factor: number;
+    }[] = [];
 
-      for (let row = 0; row < rows; row++) {
-        for (let col = 0; col < cols; col++) {
-          const index = row * cols + col;
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        const index = row * cols + col;
 
-          const factor = getDelayFactor(pattern, row, col, rows, cols, shuffled, index);
+        const factor = getDelayFactor(pattern, row, col, rows, cols, shuffled, index);
 
-          items.push({
-            key: `${row}-${col}`,
-            factor,
-          });
-        }
+        items.push({
+          key: `${row}-${col}`,
+          factor,
+        });
       }
+    }
 
-      return items;
-    }, [rows, cols, pattern, shuffled]);
+    return items;
+  }, [rows, cols, pattern, shuffled]);
 
-    const clearTimers = useCallback(() => {
-      timers.current.forEach(clearTimeout);
-      timers.current.clear();
-    }, []);
+  const clearTimers = React.useCallback(() => {
+    timers.current.forEach(clearTimeout);
+    timers.current.clear();
+  }, []);
 
-    const cycleTime = maxFactor * perStepDelay + blockDuration;
+  const cycleTime = maxFactor * perStepDelay + blockDuration;
 
-    const play = useCallback(() => {
-      clearTimers();
+  const play = React.useCallback(() => {
+    clearTimers();
 
-      const revealPhase = () => {
-        setRevealed(true);
-        callbacks.current.onStart?.();
+    const revealPhase = () => {
+      setRevealed(true);
+      callbacks.current.onStart?.();
+
+      schedule(() => {
+        callbacks.current.onComplete?.();
+
+        if (!loop || reducedMotion) return;
 
         schedule(() => {
-          callbacks.current.onComplete?.();
+          setRevealed(false);
 
-          if (!loop) return;
+          schedule(revealPhase, cycleTime * 1000 + loopDelay * 1000);
+        }, loopDelay * 1000);
+      }, cycleTime * 1000);
+    };
 
-          schedule(() => {
-            setRevealed(false);
+    revealPhase();
+  }, [clearTimers, schedule, loop, reducedMotion, loopDelay, cycleTime]);
 
-            schedule(revealPhase, cycleTime * 1000 + loopDelay * 1000);
-          }, loopDelay * 1000);
-        }, cycleTime * 1000);
-      };
+  const cover = React.useCallback(() => {
+    clearTimers();
+    setRevealed(false);
+  }, [clearTimers]);
 
-      revealPhase();
-    }, [clearTimers, schedule, loop, loopDelay, cycleTime]);
+  const reset = React.useCallback(() => {
+    cover();
+    hasPlayedRef.current = false;
+  }, [cover]);
 
-    const cover = useCallback(() => {
-      clearTimers();
-      setRevealed(false);
-    }, [clearTimers]);
+  React.useImperativeHandle(
+    ref,
+    () => ({
+      play,
+      cover,
+      reset,
+    }),
+    [play, cover, reset],
+  );
 
-    const reset = useCallback(() => {
-      cover();
-      hasPlayedRef.current = false;
-    }, [cover]);
-
-    useImperativeHandle(
-      ref,
-      () => ({
-        play,
-        cover,
-        reset,
-      }),
-      [play, cover, reset],
-    );
-
-    useEffect(() => {
-      if (autoStart && !inView) {
-        hasPlayedRef.current = true;
-        play();
-      }
-
-      return clearTimers;
-    }, [autoStart, inView, play, clearTimers]);
-
-    const handleViewportEnter = useCallback(() => {
-      if (once && hasPlayedRef.current) {
-        return;
-      }
-
+  React.useEffect(() => {
+    if (autoStart && !inView) {
       hasPlayedRef.current = true;
       play();
-    }, [once, play]);
+    }
 
-    return (
-      <motion.div
-        className={cn("relative cursor-pointer overflow-hidden", className)}
-        viewport={{
-          once,
-          margin: "-10% 0px -10% 0px",
+    return clearTimers;
+  }, [autoStart, inView, play, clearTimers]);
+
+  const handleViewportEnter = React.useCallback(() => {
+    if (once && hasPlayedRef.current) {
+      return;
+    }
+
+    hasPlayedRef.current = true;
+    play();
+  }, [once, play]);
+
+  return (
+    <motion.div
+      className={cn("relative cursor-pointer overflow-hidden", className)}
+      viewport={{
+        once,
+        margin: "-10% 0px -10% 0px",
+      }}
+      onViewportEnter={inView ? handleViewportEnter : undefined}
+    >
+      {children && <div className="relative h-full w-full">{children}</div>}
+
+      <div
+        className={cn("absolute inset-0 grid", children && "pointer-events-none", gridClassName)}
+        style={{
+          gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`,
+          gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))`,
+          gap,
         }}
-        onViewportEnter={inView ? handleViewportEnter : undefined}
+        aria-hidden="true"
       >
-        {children && <div className="relative h-full w-full">{children}</div>}
-
-        <div
-          className={cn("absolute inset-0 grid", children && "pointer-events-none", gridClassName)}
-          style={{
-            gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`,
-            gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))`,
-            gap,
-          }}
-          aria-hidden="true"
-        >
-          {blocks.map((block) => (
-            <motion.div
-              key={block.key}
-              className={blockClassName}
-              style={{
-                backgroundColor: GRID_REVEAL_COLORS[color] ?? GRID_REVEAL_COLORS.yellow,
-              }}
-              initial={false}
-              animate={
-                revealed
-                  ? {
-                      opacity: 0,
-                      scale: 0.85,
-                    }
-                  : {
-                      opacity: 1,
-                      scale: 1,
-                    }
-              }
-              transition={{
-                duration: blockDuration,
-                delay: revealed
-                  ? block.factor * perStepDelay
-                  : (maxFactor - block.factor) * perStepDelay,
-                ease: "easeInOut",
-              }}
-            />
-          ))}
-        </div>
-      </motion.div>
-    );
-  },
-);
-
-GridReveal.displayName = "GridReveal";
+        {blocks.map((block) => (
+          <motion.div
+            key={block.key}
+            className={blockClassName}
+            style={{
+              backgroundColor: GRID_REVEAL_COLORS[color] ?? GRID_REVEAL_COLORS.yellow,
+            }}
+            initial={false}
+            animate={
+              revealed
+                ? {
+                    opacity: 0,
+                    scale: 0.85,
+                  }
+                : {
+                    opacity: 1,
+                    scale: 1,
+                  }
+            }
+            transition={{
+              duration: blockDuration,
+              delay: revealed
+                ? block.factor * perStepDelay
+                : (maxFactor - block.factor) * perStepDelay,
+              ease: "easeInOut",
+            }}
+          />
+        ))}
+      </div>
+    </motion.div>
+  );
+}
 
 export { GridReveal };

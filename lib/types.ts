@@ -1,15 +1,17 @@
+export interface RegistryItemMeta {
+  addedAt?: string;
+  docs?: Array<{
+    title: string;
+    url: string;
+  }>;
+}
+
 export interface DocItem {
   id: string;
   title: string;
   description: string;
   href: string;
-  meta?: {
-    addedAt?: string;
-    docs?: Array<{
-      title: string;
-      url: string;
-    }>;
-  };
+  meta?: RegistryItemMeta;
 }
 
 export type DocSchema = Array<{
@@ -29,13 +31,7 @@ export interface RegistryItem {
   }>;
   dependencies?: string[];
   registryDependencies?: string[];
-  meta?: {
-    addedAt?: string;
-    docs?: Array<{
-      title: string;
-      url: string;
-    }>;
-  };
+  meta?: RegistryItemMeta;
 }
 
 export interface Registry {

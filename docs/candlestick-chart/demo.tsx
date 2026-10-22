@@ -1,6 +1,6 @@
 "use client";
 
-import { CandleChartStick, type Candle } from "@/registry/clover-ui/candlestick-chart";
+import { CandlestickChart, type Candle } from "@/registry/clover-ui/candlestick-chart";
 
 function mulberry32(seed: number) {
   return function () {
@@ -58,7 +58,7 @@ export const data = generateCandles(1000);
 export function Demo() {
   return (
     <div className="w-full px-6 py-10">
-      <CandleChartStick data={data} name="AAPL" />
+      <CandlestickChart data={data} name="AAPL" />
     </div>
   );
 }

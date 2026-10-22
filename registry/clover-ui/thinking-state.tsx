@@ -59,6 +59,50 @@ const RING = (() => {
   return cells;
 })();
 
+type CellPaint = (x: number, y: number, t: number) => number;
+
+const CELL_PAINTS: Record<Exclude<ThinkingStateKind, "thinking">, CellPaint> = {
+  searching: (x, y, t) => {
+    let level = 0;
+    for (let k = 0; k < 5; k++) {
+      const at = t * 1.6 - k * 0.1;
+      const px = CENTER + Math.sin(at * 1.3) * 1.8;
+      const py = CENTER + Math.sin(at * 2.6) * 1.7;
+      level = Math.max(level, clamp(1 - Math.hypot(x - px, y - py) / 0.8) * (1 - k / 5));
+    }
+    return level;
+  },
+  building: (x, y, t) => {
+    const filled = (t * 8) % (GRID * GRID + 8);
+    const order = (GRID - 1 - y) * GRID + (y % 2 ? GRID - 1 - x : x);
+    const fade = filled > GRID * GRID ? clamp((GRID * GRID + 8 - filled) / 5) : 1;
+    return order < filled - 1 ? 0.8 * fade : order < filled ? 1 : 0;
+  },
+  pondering: (x, y, t) => {
+    const distance = Math.hypot(x - CENTER, y - CENTER);
+    let level = 0;
+    for (let k = 0; k < 3; k++) {
+      const radius = (t * 1.8 + k * 1.15) % 3.4;
+      level = Math.max(level, clamp(1 - Math.abs(distance - radius) / 0.55) * (1 - radius / 3.4));
+    }
+    return level;
+  },
+  analyzing: (x, y, t) => {
+    const dx = x - CENTER;
+    const dy = y - CENTER;
+    const onRing = clamp(1 - Math.abs(Math.hypot(dx, dy) - 1.8) / 0.7);
+    const angle = Math.atan2(dy, dx);
+    const sweep = (Math.cos(angle - t * 4) + 1) / 2;
+    const echo = (Math.cos(angle - t * 4 + Math.PI) + 1) / 2;
+    return onRing * Math.max(sweep ** 4, echo ** 6 * 0.6);
+  },
+  debugging: (x, y, t) => {
+    const wave = ((t * 5) % 14) - 3;
+    const diagonal = x + (GRID - 1 - y);
+    return clamp(1 - Math.abs(diagonal - wave) / 2.4);
+  },
+};
+
 function paint(state: ThinkingStateKind, t: number, out: Float32Array) {
   out.fill(0);
 
@@ -71,50 +115,9 @@ function paint(state: ThinkingStateKind, t: number, out: Float32Array) {
     return;
   }
 
+  const cellPaint = CELL_PAINTS[state];
   for (let y = 0; y < GRID; y++) {
-    for (let x = 0; x < GRID; x++) {
-      const i = y * GRID + x;
-      const dx = x - CENTER;
-      const dy = y - CENTER;
-
-      if (state === "searching") {
-        let level = 0;
-        for (let k = 0; k < 5; k++) {
-          const at = t * 1.6 - k * 0.1;
-          const px = CENTER + Math.sin(at * 1.3) * 1.8;
-          const py = CENTER + Math.sin(at * 2.6) * 1.7;
-          level = Math.max(level, clamp(1 - Math.hypot(x - px, y - py) / 0.8) * (1 - k / 5));
-        }
-        out[i] = level;
-      } else if (state === "building") {
-        const filled = (t * 8) % (GRID * GRID + 8);
-        const order = (GRID - 1 - y) * GRID + (y % 2 ? GRID - 1 - x : x);
-        const fade = filled > GRID * GRID ? clamp((GRID * GRID + 8 - filled) / 5) : 1;
-        out[i] = order < filled - 1 ? 0.8 * fade : order < filled ? 1 : 0;
-      } else if (state === "pondering") {
-        const distance = Math.hypot(dx, dy);
-        let level = 0;
-        for (let k = 0; k < 3; k++) {
-          const radius = (t * 1.8 + k * 1.15) % 3.4;
-          level = Math.max(
-            level,
-            clamp(1 - Math.abs(distance - radius) / 0.55) * (1 - radius / 3.4),
-          );
-        }
-        out[i] = level;
-      } else if (state === "analyzing") {
-        const distance = Math.hypot(dx, dy);
-        const onRing = clamp(1 - Math.abs(distance - 1.8) / 0.7);
-        const angle = Math.atan2(dy, dx);
-        const sweep = (Math.cos(angle - t * 4) + 1) / 2;
-        const echo = (Math.cos(angle - t * 4 + Math.PI) + 1) / 2;
-        out[i] = onRing * Math.max(sweep ** 4, echo ** 6 * 0.6);
-      } else if (state === "debugging") {
-        const wave = ((t * 5) % 14) - 3;
-        const diagonal = x + (GRID - 1 - y);
-        out[i] = clamp(1 - Math.abs(diagonal - wave) / 2.4);
-      }
-    }
+    for (let x = 0; x < GRID; x++) out[y * GRID + x] = cellPaint(x, y, t);
   }
 }
 
@@ -231,21 +234,26 @@ function ThinkingState({
     typeof label === "string" || typeof label === "number" ? String(label) : `node-${state}`;
   const radius = pixel === "circle" ? 0.4 : 0.12;
   const labelRef = React.useRef<HTMLSpanElement | null>(null);
-  const [labelWidth, setLabelWidth] = React.useState<number | null>(null);
-  const measuredRef = React.useRef(false);
+  const [labelBox, setLabelBox] = React.useState<{ width: number | null; settled: boolean }>({
+    width: null,
+    settled: false,
+  });
+  const labelWidth = labelBox.width;
 
   React.useLayoutEffect(() => {
     const node = labelRef.current;
     if (!node) return;
-    const measure = () => setLabelWidth(node.getBoundingClientRect().width);
+    const measure = () => {
+      const width = node.getBoundingClientRect().width;
+      setLabelBox((prev) => ({ width, settled: prev.width !== null }));
+    };
     measure();
     const observer = new ResizeObserver(measure);
     observer.observe(node);
     return () => observer.disconnect();
   }, [labelKey]);
 
-  const glide = measuredRef.current && !reduceMotion;
-  if (labelWidth !== null) measuredRef.current = true;
+  const glide = labelBox.settled && !reduceMotion;
 
   return (
     <span

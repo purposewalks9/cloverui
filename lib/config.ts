@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: "Clover UI",
-  url: "https://cloverui.vercel.app",
-  ogImage: "https://cloverui.vercel.app/og",
+  url: "https://cloverui.xyz",
+  ogImage: "https://cloverui.xyz/og",
   description:
     "Animated React and Tailwind CSS components, from shaders and motion primitives to AI chat pieces like model pickers and thinking states.",
   carbon: {

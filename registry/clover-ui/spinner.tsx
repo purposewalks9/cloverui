@@ -1,19 +1,12 @@
 "use client";
 
 import { motion, useMotionValue, useTransform, type MotionValue } from "motion/react";
-import {
-  forwardRef,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
 export interface SpinnerProps {
+  ref?: React.Ref<SpinnerRef>;
   color?: string;
   trackColor?: string;
   dots?: number;
@@ -75,111 +68,105 @@ function trailDistance(head: number, dotFraction: number) {
   return (((head - dotFraction) % 1) + 1) % 1;
 }
 
-const Spinner = forwardRef<SpinnerRef, SpinnerProps>(
-  (
-    {
-      color = "#0B87DA",
-      trackColor = "rgba(11, 135, 218, 0.15)",
-      dots = 12,
-      size = 24,
-      dotSize,
-      duration = 1.2,
-      tailLength = 0.4,
-      interactive = true,
-      className,
-      dotClassName,
-      autoStart = true,
-    },
-    ref,
-  ) => {
-    const [running, setRunning] = useState(autoStart);
-    const elapsed = useRef(0);
-    const time = useMotionValue(0);
+function Spinner({
+  ref,
+  color = "#0B87DA",
+  trackColor = "rgba(11, 135, 218, 0.15)",
+  dots = 12,
+  size = 24,
+  dotSize,
+  duration = 1.2,
+  tailLength = 0.4,
+  interactive = true,
+  className,
+  dotClassName,
+  autoStart = true,
+}: SpinnerProps) {
+  const [running, setRunning] = React.useState(autoStart);
+  const elapsed = React.useRef(0);
+  const time = useMotionValue(0);
 
-    const play = useCallback(() => setRunning(true), []);
-    const pause = useCallback(() => setRunning(false), []);
-    const toggle = useCallback(() => setRunning((r) => !r), []);
-    useImperativeHandle(ref, () => ({ play, pause }), [play, pause]);
+  const play = React.useCallback(() => setRunning(true), []);
+  const pause = React.useCallback(() => setRunning(false), []);
+  const toggle = React.useCallback(() => setRunning((r) => !r), []);
+  React.useImperativeHandle(ref, () => ({ play, pause }), [play, pause]);
 
-    useEffect(() => {
-      if (!running) return;
-      let frame = 0;
-      let previous: number | null = null;
-      const tick = (now: number) => {
-        if (previous !== null) elapsed.current += Math.min(now - previous, 40) / 1000;
-        previous = now;
-        time.set(elapsed.current);
-        frame = requestAnimationFrame(tick);
-      };
+  React.useEffect(() => {
+    if (!running) return;
+    let frame = 0;
+    let previous: number | null = null;
+    const tick = (now: number) => {
+      if (previous !== null) elapsed.current += Math.min(now - previous, 40) / 1000;
+      previous = now;
+      time.set(elapsed.current);
       frame = requestAnimationFrame(tick);
-      return () => cancelAnimationFrame(frame);
-    }, [running, time]);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [running, time]);
 
-    const mix = useMemo(() => colorMixer(trackColor, color), [trackColor, color]);
+  const mix = React.useMemo(() => colorMixer(trackColor, color), [trackColor, color]);
 
-    const resolvedDotSize = dotSize ?? size * 0.16;
+  const resolvedDotSize = dotSize ?? size * 0.16;
 
-    const dotData = useMemo(() => {
-      return Array.from({ length: dots }, (_, i) => {
-        const fraction = i / dots;
-        const angle = fraction * 360 - 90;
-        const rad = (angle * Math.PI) / 180;
-        const radius = (size - resolvedDotSize) / 2;
-        return {
-          key: i,
-          fraction,
-          x: Math.round(Math.cos(rad) * radius * 1000) / 1000,
-          y: Math.round(Math.sin(rad) * radius * 1000) / 1000,
-        };
-      });
-    }, [dots, size, resolvedDotSize]);
+  const dotData = React.useMemo(() => {
+    return Array.from({ length: dots }, (_, i) => {
+      const fraction = i / dots;
+      const angle = fraction * 360 - 90;
+      const rad = (angle * Math.PI) / 180;
+      const radius = (size - resolvedDotSize) / 2;
+      return {
+        key: i,
+        fraction,
+        x: Math.round(Math.cos(rad) * radius * 1000) / 1000,
+        y: Math.round(Math.sin(rad) * radius * 1000) / 1000,
+      };
+    });
+  }, [dots, size, resolvedDotSize]);
 
-    return (
-      <div
-        className={cn(
-          "relative inline-flex items-center justify-center select-none",
-          interactive && "cursor-pointer",
-          className,
-        )}
-        style={{ width: size, height: size }}
-        role={interactive ? "button" : "status"}
-        aria-label={running ? "Loading, playing" : "Loading, paused"}
-        aria-pressed={interactive ? running : undefined}
-        tabIndex={interactive ? 0 : undefined}
-        onClick={interactive ? toggle : undefined}
-        onKeyDown={
-          interactive
-            ? (e) => {
-                if (e.key === " " || e.key === "Enter") {
-                  e.preventDefault();
-                  toggle();
-                }
+  return (
+    <div
+      className={cn(
+        "relative inline-flex items-center justify-center select-none",
+        interactive && "cursor-pointer",
+        className,
+      )}
+      style={{ width: size, height: size }}
+      role={interactive ? "button" : "status"}
+      aria-label={running ? "Loading, playing" : "Loading, paused"}
+      aria-pressed={interactive ? running : undefined}
+      tabIndex={interactive ? 0 : undefined}
+      onClick={interactive ? toggle : undefined}
+      onKeyDown={
+        interactive
+          ? (e) => {
+              if (e.key === " " || e.key === "Enter") {
+                e.preventDefault();
+                toggle();
               }
-            : undefined
-        }
-      >
-        {dotData.map((dot) => (
-          <SpinnerDot
-            key={dot.key}
-            time={time}
-            fraction={dot.fraction}
-            x={dot.x}
-            y={dot.y}
-            size={resolvedDotSize}
-            mix={mix}
-            trackColor={trackColor}
-            duration={duration}
-            tailLength={tailLength}
-            running={running}
-            className={dotClassName}
-          />
-        ))}
-      </div>
-    );
-  },
-);
-
-Spinner.displayName = "Spinner";
+            }
+          : undefined
+      }
+    >
+      {dotData.map((dot) => (
+        <SpinnerDot
+          key={dot.key}
+          time={time}
+          fraction={dot.fraction}
+          x={dot.x}
+          y={dot.y}
+          size={resolvedDotSize}
+          mix={mix}
+          trackColor={trackColor}
+          duration={duration}
+          tailLength={tailLength}
+          running={running}
+          className={dotClassName}
+        />
+      ))}
+    </div>
+  );
+}
 
 interface SpinnerDotProps {
   time: MotionValue<number>;

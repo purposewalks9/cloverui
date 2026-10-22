@@ -5,7 +5,7 @@ import {
   SPECTRUM_BARS_THEMES,
   type SpectrumBarsTheme,
 } from "@/registry/clover-ui/spectrum-bars";
-import { PlaygroundShell } from "@/components/garden/playground-shell";
+import { PlaygroundShell } from "@/components/playground/playground-shell";
 import { jsx, type ControlDef } from "@/lib/playground";
 
 const themeSwatch = (theme: SpectrumBarsTheme) =>
@@ -34,12 +34,12 @@ const controls: ControlDef[] = [
 
 const defaultProps = {
   theme: "signal",
-  bandWidth: 1,
+  bandWidth: 0.86,
   bandHeight: 1,
-  columns: 56,
-  glow: 0.6,
+  columns: 112,
+  glow: 2,
   glitch: 0.5,
-  speed: 1,
+  speed: 3.6,
   animate: true,
 };
 

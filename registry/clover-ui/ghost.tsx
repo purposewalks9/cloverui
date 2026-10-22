@@ -409,6 +409,10 @@ function GhostProvider({ children, ghost = true, ...props }: GhostProviderProps)
   );
 }
 
+const subscribeNever = () => () => {};
+const isClient = () => true;
+const isServer = () => false;
+
 function Ghost({
   color,
   size = "md",
@@ -430,7 +434,7 @@ function Ghost({
   const messageRef = React.useRef(message);
   const layerRef = React.useRef<HTMLDivElement>(null);
   const anchorRef = React.useRef<HTMLSpanElement>(null);
-  const [mounted, setMounted] = React.useState(false);
+  const mounted = React.useSyncExternalStore(subscribeNever, isClient, isServer);
   React.useImperativeHandle(
     ref,
     () => (mounted || boundary === "parent" ? layerRef.current! : null!),
@@ -463,10 +467,6 @@ function Ghost({
     const t = window.setTimeout(() => sayRef.current?.(message, true), 600);
     return () => window.clearTimeout(t);
   }, [message]);
-
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
 
   React.useEffect(() => {
     const layer = layerRef.current;

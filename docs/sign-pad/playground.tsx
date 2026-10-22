@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import * as React from "react";
 import { SignPad, type SignPadValue } from "@/registry/clover-ui/sign-pad";
-import { PlaygroundShell } from "@/components/garden/playground-shell";
+import { PlaygroundShell } from "@/components/playground/playground-shell";
 import { expr, jsx, type ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [
@@ -32,7 +32,7 @@ const defaultProps = {
 };
 
 export function SignPadPlayground() {
-  const [, setSignature] = useState<SignPadValue | null>(null);
+  const [, setSignature] = React.useState<SignPadValue | null>(null);
 
   return (
     <PlaygroundShell

@@ -6,7 +6,7 @@ import {
   type GridRevealColor,
   type GridRevealPattern,
 } from "@/registry/clover-ui/grid-reveal";
-import { PlaygroundShell } from "@/components/garden/playground-shell";
+import { PlaygroundShell } from "@/components/playground/playground-shell";
 import { jsx, type ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [
@@ -52,7 +52,7 @@ const defaultProps = {
   cols: 8,
   blockDuration: 0.28,
   stagger: 0.018,
-  loop: false,
+  loop: true,
 };
 
 export function GridRevealPlayground() {

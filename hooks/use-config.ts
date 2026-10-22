@@ -1,8 +1,8 @@
 import * as React from "react";
 
-type Config = {
+interface Config {
   packageManager: "npm" | "yarn" | "pnpm" | "bun";
-};
+}
 
 const STORAGE_KEY = "clover-ui-config";
 

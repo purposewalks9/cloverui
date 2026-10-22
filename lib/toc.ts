@@ -1,3 +1,5 @@
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { remark } from "remark";
 import { toc } from "mdast-util-toc";
 import type { Node } from "unist";
@@ -51,6 +53,12 @@ export async function getTableOfContents(content: string): Promise<TocItem[]> {
 
   const items = extractItems(tocResult.map as ListNode, 2);
   return items;
+}
+
+export async function getDocToc(...pathSegments: string[]) {
+  const content = await readFile(join(process.cwd(), ...pathSegments), "utf-8");
+  const toc = await getTableOfContents(content);
+  return { content, toc };
 }
 
 function extractItems(node: ListNode, depth: number): TocItem[] {

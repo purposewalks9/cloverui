@@ -1,13 +1,13 @@
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/config";
 import { getPublishedSlugs } from "@/lib/slugs";
-import { guideIds } from "@/lib/basic-doc";
+import { guideIds } from "@/lib/guides";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const slugs = await getPublishedSlugs();
 
   const componentRoutes: MetadataRoute.Sitemap = slugs.map((slug) => ({
-    url: `${siteConfig.url}/components/${slug}`,
+    url: `${siteConfig.url}/docs/${slug}`,
     lastModified: new Date(),
     changeFrequency: "weekly",
     priority: 0.7,

@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
-import { ComponentPage } from "@/components/leaves/component-page";
-import { guides } from "@/lib/basic-doc";
+import { notFound } from "next/navigation";
+import { DocPage } from "@/components/docs/doc-page";
+import { getDoc, getDocIds, getDocNav } from "@/lib/doc";
 import { siteConfig } from "@/lib/config";
-import { constructMetadata } from "@/lib/utils";
+import { buildOgUrl, buildMetadata } from "@/lib/metadata";
 
 export const dynamicParams = false;
 
-export function generateStaticParams() {
-  return guides.map((guide) => ({ slug: guide.id }));
+export async function generateStaticParams() {
+  const ids = await getDocIds();
+  return ids.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -16,18 +18,25 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const guide = guides.find((item) => item.id === slug);
+  const doc = await getDoc(slug);
 
-  return constructMetadata({
-    title: guide ? `${guide.title} | ${siteConfig.name}` : siteConfig.name,
-    description: guide?.description,
+  return buildMetadata({
+    title: doc ? `${doc.title} | ${siteConfig.name}` : siteConfig.name,
+    description: doc?.description,
+    image: buildOgUrl(slug),
     path: `/docs/${slug}`,
   });
 }
 
-export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
+export default async function DocSlugPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const Doc = (await import(`@/docs/guides/${slug}.mdx`)).default;
+  if (!(await getDocIds()).includes(slug)) notFound();
+  const Doc = (await import(`@/docs/${slug}/doc.mdx`)).default;
+  const { previous, next } = await getDocNav(slug);
 
-  return <ComponentPage docContent={<Doc />} />;
+  return (
+    <DocPage previous={previous} next={next}>
+      <Doc />
+    </DocPage>
+  );
 }

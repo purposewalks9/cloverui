@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import * as React from "react";
 import {
   PriceRange,
   type PriceRangeColor,
   type PriceRangeKnob,
   type PriceRangeValue,
 } from "@/registry/clover-ui/price-range";
-import { PlaygroundShell } from "@/components/garden/playground-shell";
+import { PlaygroundShell } from "@/components/playground/playground-shell";
 import { expr, jsx, type ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [
@@ -57,7 +57,7 @@ const defaultProps = {
 };
 
 export function PriceRangePlayground() {
-  const [value, setValue] = useState<PriceRangeValue>([30000, 120000]);
+  const [value, setValue] = React.useState<PriceRangeValue>([30000, 120000]);
 
   return (
     <PlaygroundShell

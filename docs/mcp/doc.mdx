@@ -1,0 +1,29 @@
+The shadcn MCP server lets AI editors like Claude Code, Cursor and VS Code browse, search and install components from Clover UI. Ask in plain words and your editor adds the component for you.
+
+## Installation
+
+Run this in your project to set up the shadcn MCP server for your editor:
+
+<CodeBlockCommand item="" mcp />
+
+Then add the Clover UI registry to `components.json`, so the server knows where to find the components:
+
+```json
+{
+  "registries": {
+    "@clover-ui": "https://cloverui.xyz/r/{name}.json"
+  }
+}
+```
+
+Restart your editor and check that the `shadcn` MCP server is connected.
+
+## Usage
+
+Ask for a component by what it does, and mention Clover UI:
+
+- Add the Clover UI clicky hand to my get started button
+- Show me the animated components in Clover UI
+- Install the Clover UI Soft Button and add it to my page
+
+The editor finds the component in the registry, installs it with its dependencies, and can help you use it in your code.

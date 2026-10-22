@@ -5,7 +5,7 @@ import {
   type GlitchyTextColor,
   type GlitchyTextTrigger,
 } from "@/registry/clover-ui/glitchy-text";
-import { PlaygroundShell } from "@/components/garden/playground-shell";
+import { PlaygroundShell } from "@/components/playground/playground-shell";
 import { jsx, type ControlDef } from "@/lib/playground";
 
 const pixelSwatch = [

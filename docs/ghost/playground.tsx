@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import { useGhost, type GhostColor, type GhostSize } from "@/registry/clover-ui/ghost";
-import { useSiteGhostLook } from "@/components/leaves/site-ghost";
-import { PlaygroundShell } from "@/components/garden/playground-shell";
+import { useSiteGhostLook } from "@/components/layout/site-ghost";
+import { PlaygroundShell } from "@/components/playground/playground-shell";
 import { jsx, type ControlDef } from "@/lib/playground";
 
 const colors: { value: GhostColor; swatch: string }[] = [

@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import * as React from "react";
 import {
   RichProgress,
   type RichProgressColor,
   type RichProgressKnob,
   type RichProgressSize,
 } from "@/registry/clover-ui/rich-progress";
-import { PlaygroundShell } from "@/components/garden/playground-shell";
+import { PlaygroundShell } from "@/components/playground/playground-shell";
 import { expr, jsx, type ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [
@@ -69,7 +69,7 @@ const defaultProps = {
 };
 
 export function RichProgressPlayground() {
-  const [value, setValue] = useState(defaultProps.value);
+  const [value, setValue] = React.useState(defaultProps.value);
 
   return (
     <PlaygroundShell

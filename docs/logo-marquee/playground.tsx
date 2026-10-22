@@ -1,12 +1,12 @@
 "use client";
 
 import { LogoMarquee, logoMarqueeLogos } from "@/registry/clover-ui/logo-marquee";
-import { PlaygroundShell } from "@/components/garden/playground-shell";
+import { PlaygroundShell } from "@/components/playground/playground-shell";
 import { expr, jsx, type ControlDef } from "@/lib/playground";
 
 const logos = logoMarqueeLogos.map((logo) => ({
   ...logo,
-  src: logo.src.replace("https://cloverui.vercel.app", ""),
+  src: logo.src.replace("https://cloverui.xyz", ""),
 }));
 
 const colors: Record<string, string | undefined> = {

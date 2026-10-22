@@ -291,11 +291,16 @@ export function responseLabel(status: ResponseStatus, steps: ResponseStep[]) {
   }
   if (status === "summarizing") return "Summarizing";
   const current = [...steps].reverse().find((s) => s.type !== "note" && s.status === "running");
-  if (current?.type === "search") return "Searching the web";
-  if (current?.type === "read")
-    return `Reading ${current.source.title ?? hostOf(current.source.url)}`;
-  if (current?.type === "tool") return current.title;
-  return "Thinking";
+  switch (current?.type) {
+    case "search":
+      return "Searching the web";
+    case "read":
+      return `Reading ${current.source.title ?? hostOf(current.source.url)}`;
+    case "tool":
+      return current.title;
+    default:
+      return "Thinking";
+  }
 }
 
 function unresolvedFailure(steps: ResponseStep[]) {
@@ -313,22 +318,28 @@ function unresolvedFailure(steps: ResponseStep[]) {
 function orbState(status: ResponseStatus, steps: ResponseStep[]): ThinkingStateKind {
   if (status === "summarizing") return "pondering";
   const current = [...steps].reverse().find((s) => s.type !== "note" && s.status === "running");
-  if (current?.type === "search") return "searching";
-  if (current?.type === "read") return "analyzing";
-  if (current?.type === "tool") {
-    if (unresolvedFailure(steps)) return "debugging";
-    return TOOL_KINDS[toolKind(current.kind)].orb;
+  switch (current?.type) {
+    case "search":
+      return "searching";
+    case "read":
+      return "analyzing";
+    case "tool":
+      return unresolvedFailure(steps) ? "debugging" : TOOL_KINDS[toolKind(current.kind)].orb;
+    default:
+      return "thinking";
   }
-  return "thinking";
 }
 
 function useNow(active: boolean) {
   const [now, setNow] = React.useState<number | null>(null);
   React.useEffect(() => {
-    setNow(Date.now());
-    if (!active) return;
-    const timer = window.setInterval(() => setNow(Date.now()), 1000);
-    return () => window.clearInterval(timer);
+    const tick = () => setNow(Date.now());
+    const first = window.setTimeout(tick, 0);
+    const timer = active ? window.setInterval(tick, 1000) : undefined;
+    return () => {
+      window.clearTimeout(first);
+      window.clearInterval(timer);
+    };
   }, [active]);
   return now;
 }
@@ -703,9 +714,11 @@ function ResponseBlock({
   const canToggle = finished && steps.length > 0;
   const open = finished ? (override ?? !collapseWhenDone) : true;
 
-  React.useEffect(() => {
+  const [seenFinished, setSeenFinished] = React.useState(finished);
+  if (seenFinished !== finished) {
+    setSeenFinished(finished);
     if (!finished) setOverride(null);
-  }, [finished]);
+  }
   const now = useNow(!finished && elapsed === undefined && startedAt !== undefined);
 
   const ms =

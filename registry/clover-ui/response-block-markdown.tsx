@@ -39,13 +39,16 @@ function asJson(source: string) {
   }
 }
 
+const LANGUAGE_HINTS: [string, (text: string) => boolean][] = [
+  ["json", (text) => asJson(text) !== null],
+  ["bash", (text) => /^(\$ |(npm|pnpm|npx|yarn|bun|git|curl|cd|brew|pip)\s)/m.test(text)],
+  ["html", (text) => /^\s*<[a-zA-Z!]/.test(text)],
+  ["ts", (text) => /\b(import|export|const|let|function|=>)\b/.test(text)],
+];
+
 export function guessLanguage(code: string) {
   const text = code.trim();
-  if (asJson(text) !== null) return "json";
-  if (/^(\$ |(npm|pnpm|npx|yarn|bun|git|curl|cd|brew|pip)\s)/m.test(text)) return "bash";
-  if (/^\s*<[a-zA-Z!]/.test(text)) return "html";
-  if (/\b(import|export|const|let|function|=>)\b/.test(text)) return "ts";
-  return "";
+  return LANGUAGE_HINTS.find(([, matches]) => matches(text))?.[0] ?? "";
 }
 
 const LANGUAGE_NAMES: Record<string, string> = {

@@ -28,7 +28,7 @@ export interface Candle {
   close: number;
 }
 
-export interface CandleChartStickProps {
+export interface CandlestickChartProps {
   data: Candle[];
   name?: string;
   upColor?: string;
@@ -46,7 +46,7 @@ export interface CandleChartStickProps {
   className?: string;
 }
 
-export function CandleChartStick({
+function CandlestickChart({
   data,
   name,
   upColor = "#22c55e",
@@ -62,7 +62,7 @@ export function CandleChartStick({
   maxBodyWidth = 14,
   zoomable = true,
   className,
-}: CandleChartStickProps) {
+}: CandlestickChartProps) {
   const transition = animated ? TRANSITION : "0ms";
   const root = React.useRef<HTMLDivElement>(null);
 
@@ -78,6 +78,21 @@ export function CandleChartStick({
       ? Math.max(0, Math.min(defaultIndex, initialVisible - 1))
       : initialVisible - 1,
   );
+  const [seenLength, setSeenLength] = React.useState(data.length);
+  if (seenLength !== data.length) {
+    setSeenLength(data.length);
+    if (visibleCount === 0 && initialVisible > 0) {
+      setVisibleCount(initialVisible);
+      setRangeStart(Math.max(0, data.length - initialVisible));
+      setActiveLocalIndex(
+        defaultIndex === undefined
+          ? initialVisible - 1
+          : Math.max(0, Math.min(defaultIndex, initialVisible - 1)),
+      );
+    } else {
+      setRangeStart((start) => Math.max(0, Math.min(start, data.length - visibleCount)));
+    }
+  }
 
   const [isDragging, setIsDragging] = React.useState(false);
 
@@ -176,7 +191,7 @@ export function CandleChartStick({
     return { candles: mapped, colWidth: col };
   }, [visibleData]);
 
-  const active = candles[Math.min(activeLocalIndex, candles.length - 1)] ?? candles[0];
+  const active = candles[Math.max(0, Math.min(activeLocalIndex, candles.length - 1))] ?? candles[0];
 
   const activeXPct = active ? active.cx / VIEWBOX_W : 0;
   const activeYPct = active ? active.yClose / VIEWBOX_H : 0;
@@ -282,25 +297,6 @@ export function CandleChartStick({
 
     return Array.from({ length: count }, (_, i) => Math.round((i * (n - 1)) / (count - 1)));
   }, [axisVisible, candles.length, tickCount, containerWidth]);
-
-  React.useEffect(() => {
-    setActiveLocalIndex((i) => Math.max(0, Math.min(i, candles.length - 1)));
-  }, [candles.length]);
-
-  React.useEffect(() => {
-    setRangeStart((start) => Math.max(0, Math.min(start, data.length - visibleCount)));
-  }, [data.length, visibleCount]);
-
-  React.useEffect(() => {
-    if (visibleCount !== 0 || initialVisible === 0) return;
-    setVisibleCount(initialVisible);
-    setRangeStart(Math.max(0, data.length - initialVisible));
-    setActiveLocalIndex(
-      defaultIndex === undefined
-        ? initialVisible - 1
-        : Math.max(0, Math.min(defaultIndex, initialVisible - 1)),
-    );
-  }, [data.length, initialVisible, visibleCount, defaultIndex]);
 
   if (candles.length === 0 || !active) return null;
 
@@ -473,3 +469,5 @@ export function CandleChartStick({
     </div>
   );
 }
+
+export { CandlestickChart };

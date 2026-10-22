@@ -2,7 +2,7 @@
 
 import { GrainCube } from "@/registry/clover-ui/grain-cube";
 import { GRAIN_CUBE_THEMES, type GrainCubeTheme } from "@/registry/clover-ui/grain-cube";
-import { PlaygroundShell } from "@/components/garden/playground-shell";
+import { PlaygroundShell } from "@/components/playground/playground-shell";
 import { jsx, type ControlDef } from "@/lib/playground";
 
 const themeSwatch = (theme: GrainCubeTheme) =>

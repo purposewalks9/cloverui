@@ -1,7 +1,7 @@
 "use client";
 
 import { Block404 } from "@/registry/clover-ui/404-block";
-import { PlaygroundShell } from "@/components/garden/playground-shell";
+import { PlaygroundShell } from "@/components/playground/playground-shell";
 import { expr, jsx, type ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [

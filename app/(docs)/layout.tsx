@@ -1,5 +1,5 @@
-import { AppSidebar } from "@/components/stem/app-sidebar";
-import { SiteHeader } from "@/components/stem/site-header";
+import { AppSidebar } from "@/components/layout/app-sidebar";
+import { DocsHeader } from "@/components/layout/docs-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { getDocSchema } from "@/lib/doc";
 
@@ -17,7 +17,7 @@ export default async function DocsLayout({
       <SidebarProvider>
         <AppSidebar docSchema={docSchema} />
         <SidebarInset className="bg-sidebar min-w-0">
-          <SiteHeader docSchema={docSchema} />
+          <DocsHeader docSchema={docSchema} />
           {children}
         </SidebarInset>
         {toc}

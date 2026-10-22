@@ -1,7 +1,7 @@
 "use client";
 
 import { TextGif } from "@/registry/clover-ui/text-gif";
-import { PlaygroundShell } from "@/components/garden/playground-shell";
+import { PlaygroundShell } from "@/components/playground/playground-shell";
 import { jsx, type ControlDef } from "@/lib/playground";
 import { gifs } from "./demo";
 

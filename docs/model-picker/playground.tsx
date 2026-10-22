@@ -2,7 +2,7 @@
 
 import { ModelPicker, type ModelPickerSide } from "@/registry/clover-ui/model-picker";
 import type { EffortSliderTheme } from "@/registry/clover-ui/effort-slider";
-import { PlaygroundShell } from "@/components/garden/playground-shell";
+import { PlaygroundShell } from "@/components/playground/playground-shell";
 import { jsx, type ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [

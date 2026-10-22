@@ -1,10 +1,11 @@
 import type { MDXComponents } from "mdx/types";
-import { DemoCanvas, DemoCode, DemoPreview } from "@/components/leaves/demo-canvas";
-import { CopyCodeButton } from "@/components/leaves/copy-code-button";
-import { InstallationTabs } from "@/components/leaves/installation-tabs";
-import { CodeBlockCommand } from "@/components/leaves/code-block-command";
-import { PropsTable } from "@/components/leaves/props-table";
-import { CreditLink, CreditList } from "@/components/leaves/credits";
+import { DemoCanvas, DemoCode, DemoPreview } from "@/components/docs/demo-canvas";
+import { CopyCodeButton } from "@/components/docs/copy-code-button";
+import { InstallationTabs } from "@/components/docs/installation-tabs";
+import { CodeBlockCommand } from "@/components/docs/code-block-command";
+import { PropsTable } from "@/components/docs/props-table";
+import { CreditLink, CreditList } from "@/components/docs/credits";
+import { SponsorTiers, SponsorWall } from "@/components/docs/sponsors";
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
@@ -17,6 +18,8 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     PropsTable,
     CreditLink,
     CreditList,
+    SponsorTiers,
+    SponsorWall,
     h2: ({ children, ...props }) => {
       return (
         <h2

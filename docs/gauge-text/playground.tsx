@@ -1,7 +1,7 @@
 "use client";
 
 import { GaugeText } from "@/registry/clover-ui/gauge-text";
-import { PlaygroundShell } from "@/components/garden/playground-shell";
+import { PlaygroundShell } from "@/components/playground/playground-shell";
 import { jsx, type ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [

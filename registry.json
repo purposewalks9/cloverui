@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "clover-ui",
-  "homepage": "https://cloverui.vercel.app",
+  "homepage": "https://cloverui.xyz",
   "author": "purposewalks9 (https://github.com/purposewalks9)",
   "items": [
     {
@@ -10,40 +10,40 @@
       "title": "All components",
       "description": "Every Clover UI component in one install.",
       "registryDependencies": [
-        "https://cloverui.vercel.app/r/apple-music-card.json",
-        "https://cloverui.vercel.app/r/block-text.json",
-        "https://cloverui.vercel.app/r/candlestick-chart.json",
-        "https://cloverui.vercel.app/r/clicky.json",
-        "https://cloverui.vercel.app/r/cursor-tag.json",
-        "https://cloverui.vercel.app/r/drop-text.json",
-        "https://cloverui.vercel.app/r/gauge-text.json",
-        "https://cloverui.vercel.app/r/ghost.json",
-        "https://cloverui.vercel.app/r/grain-cube.json",
-        "https://cloverui.vercel.app/r/grid-reveal.json",
-        "https://cloverui.vercel.app/r/logo-marquee.json",
-        "https://cloverui.vercel.app/r/nucleus-text.json",
-        "https://cloverui.vercel.app/r/price-range.json",
-        "https://cloverui.vercel.app/r/pulse-loader.json",
-        "https://cloverui.vercel.app/r/rich-progress.json",
-        "https://cloverui.vercel.app/r/rich-text.json",
-        "https://cloverui.vercel.app/r/sign-pad.json",
-        "https://cloverui.vercel.app/r/soft-button.json",
-        "https://cloverui.vercel.app/r/spinner.json",
-        "https://cloverui.vercel.app/r/text-gif.json",
-        "https://cloverui.vercel.app/r/thermal-flow.json",
-        "https://cloverui.vercel.app/r/token-fall.json",
-        "https://cloverui.vercel.app/r/theme-toggle.json",
-        "https://cloverui.vercel.app/r/glitchy-text.json",
-        "https://cloverui.vercel.app/r/404-block.json",
-        "https://cloverui.vercel.app/r/liquid-button.json",
-        "https://cloverui.vercel.app/r/switch.json",
-        "https://cloverui.vercel.app/r/thinking-state.json",
-        "https://cloverui.vercel.app/r/response-block.json",
-        "https://cloverui.vercel.app/r/effort-slider.json",
-        "https://cloverui.vercel.app/r/auth-button.json",
-        "https://cloverui.vercel.app/r/checkbox.json",
-        "https://cloverui.vercel.app/r/model-picker.json",
-        "https://cloverui.vercel.app/r/spectrum-bars.json"
+        "https://cloverui.xyz/r/apple-music-card.json",
+        "https://cloverui.xyz/r/block-text.json",
+        "https://cloverui.xyz/r/candlestick-chart.json",
+        "https://cloverui.xyz/r/clicky.json",
+        "https://cloverui.xyz/r/cursor-tag.json",
+        "https://cloverui.xyz/r/drop-text.json",
+        "https://cloverui.xyz/r/gauge-text.json",
+        "https://cloverui.xyz/r/ghost.json",
+        "https://cloverui.xyz/r/grain-cube.json",
+        "https://cloverui.xyz/r/grid-reveal.json",
+        "https://cloverui.xyz/r/logo-marquee.json",
+        "https://cloverui.xyz/r/nucleus-text.json",
+        "https://cloverui.xyz/r/price-range.json",
+        "https://cloverui.xyz/r/pulse-loader.json",
+        "https://cloverui.xyz/r/rich-progress.json",
+        "https://cloverui.xyz/r/rich-text.json",
+        "https://cloverui.xyz/r/sign-pad.json",
+        "https://cloverui.xyz/r/soft-button.json",
+        "https://cloverui.xyz/r/spinner.json",
+        "https://cloverui.xyz/r/text-gif.json",
+        "https://cloverui.xyz/r/thermal-flow.json",
+        "https://cloverui.xyz/r/token-fall.json",
+        "https://cloverui.xyz/r/theme-toggle.json",
+        "https://cloverui.xyz/r/glitchy-text.json",
+        "https://cloverui.xyz/r/404-block.json",
+        "https://cloverui.xyz/r/liquid-button.json",
+        "https://cloverui.xyz/r/switch.json",
+        "https://cloverui.xyz/r/thinking-state.json",
+        "https://cloverui.xyz/r/response-block.json",
+        "https://cloverui.xyz/r/effort-slider.json",
+        "https://cloverui.xyz/r/auth-button.json",
+        "https://cloverui.xyz/r/model-picker.json",
+        "https://cloverui.xyz/r/spectrum-bars.json",
+        "https://cloverui.xyz/r/butterflies.json"
       ]
     },
     {
@@ -418,7 +418,7 @@
         }
       ],
       "dependencies": ["motion"],
-      "registryDependencies": ["https://cloverui.vercel.app/r/liquid-button.json"],
+      "registryDependencies": ["https://cloverui.xyz/r/liquid-button.json"],
       "category": "block"
     },
     {
@@ -485,7 +485,7 @@
         }
       ],
       "dependencies": ["motion", "lucide-react"],
-      "registryDependencies": ["https://cloverui.vercel.app/r/thinking-state.json"],
+      "registryDependencies": ["https://cloverui.xyz/r/thinking-state.json"],
       "category": "block",
       "meta": {
         "addedAt": "2026-10-14"
@@ -528,24 +528,6 @@
       }
     },
     {
-      "name": "checkbox",
-      "type": "registry:component",
-      "title": "Check Box",
-      "description": "A rounded checkbox where the color grows from the center and the check draws in, with a quick burst of colorful sparkles.",
-      "files": [
-        {
-          "path": "registry/clover-ui/checkbox.tsx",
-          "type": "registry:component"
-        }
-      ],
-      "dependencies": ["class-variance-authority", "motion"],
-      "registryDependencies": ["utils"],
-      "category": "control",
-      "meta": {
-        "addedAt": "2026-10-20"
-      }
-    },
-    {
       "name": "model-picker",
       "type": "registry:component",
       "title": "Model Picker",
@@ -557,7 +539,7 @@
         }
       ],
       "dependencies": ["lucide-react"],
-      "registryDependencies": ["https://cloverui.vercel.app/r/effort-slider.json"],
+      "registryDependencies": ["https://cloverui.xyz/r/effort-slider.json"],
       "category": "control",
       "meta": {
         "addedAt": "2026-10-18"
@@ -579,6 +561,24 @@
       "category": "background",
       "meta": {
         "addedAt": "2026-10-18"
+      }
+    },
+    {
+      "name": "butterflies",
+      "type": "registry:component",
+      "title": "Butterflies",
+      "description": "Realistic butterflies with painted, flapping wings that flutter around a block and circle your cursor, in six colorful species.",
+      "files": [
+        {
+          "path": "registry/clover-ui/butterflies.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "category": "effect",
+      "meta": {
+        "addedAt": "2026-10-20"
       }
     }
   ]

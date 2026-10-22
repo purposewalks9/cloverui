@@ -19,7 +19,7 @@ export interface LogoMarqueeProps extends React.ComponentProps<"ul"> {
   shimmerColor?: string;
 }
 
-const BASE = "https://cloverui.vercel.app/logos/";
+const BASE = "https://cloverui.xyz/logos/";
 
 export const logoMarqueeLogos: LogoMarqueeLogo[] = (
   [
@@ -71,7 +71,7 @@ function LogoMarquee({
   const pace = 1 / Math.max(speed, 0.1);
   const listRef = React.useRef<HTMLUListElement>(null);
   React.useImperativeHandle(ref, () => listRef.current!, []);
-  const [active, setActive] = React.useState(0);
+  const [{ active, previous }, setStep] = React.useState({ active: 0, previous: 0 });
   const [inView, setInView] = React.useState(false);
   const pageShown = React.useSyncExternalStore(
     subscribePage,
@@ -80,10 +80,6 @@ function LogoMarquee({
   );
   const visible = inView && pageShown;
   const marks = React.useRef<(HTMLSpanElement | null)[]>([]);
-  const previous = React.useRef(active);
-  React.useEffect(() => {
-    previous.current = active;
-  }, [active]);
 
   React.useEffect(() => {
     const list = listRef.current;
@@ -97,7 +93,10 @@ function LogoMarquee({
 
   React.useEffect(() => {
     if (!visible || reduceMotion || logos.length < 2) return;
-    const timer = window.setInterval(() => setActive((current) => current - 1), 1750 * pace);
+    const timer = window.setInterval(
+      () => setStep((step) => ({ active: step.active - 1, previous: step.active })),
+      1750 * pace,
+    );
     return () => window.clearInterval(timer);
   }, [visible, reduceMotion, logos.length, pace]);
 
@@ -136,7 +135,7 @@ function LogoMarquee({
         const mask = `url("${logo.src}")`;
         const offset = wrap(index - active, logos.length);
         const spot = SPOTS[Math.min(Math.abs(offset), SPOTS.length - 1)];
-        const jump = Math.abs(offset - wrap(index - previous.current, logos.length)) > 1;
+        const jump = Math.abs(offset - wrap(index - previous, logos.length)) > 1;
         return (
           <li
             key={`${logo.name}-${index}`}

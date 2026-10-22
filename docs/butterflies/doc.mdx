@@ -1,0 +1,53 @@
+import { ButterfliesPlayground } from "./playground"
+
+<ButterfliesPlayground />
+
+## Installation
+
+<InstallationTabs item="butterflies">
+```tsx file=../../registry/clover-ui/butterflies.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { Butterflies } from "@/components/butterflies";
+
+<div className="relative h-96 overflow-hidden rounded-2xl">
+  <div className="relative">Your content</div>
+  <Butterflies />
+</div>
+```
+
+Realistic butterflies in six species that flutter around a block. Each one has painted wings with veins, dark edges and small spots, and a body with antennae. The wings flap in 3D, darkening as they fold up, and every so often a butterfly stops flapping and glides with its wings held open. Each one casts a soft shadow, and they come in a few sizes so some look closer than others.
+
+They wander on their own and turn back before they reach the edges. With `followCursor` on, they drift over to your cursor while it's inside the block and circle around it.
+
+Pick a look with `species`. There are six:
+
+- `"monarch"`: orange with black veins and white spots
+- `"morpho"`: shiny blue with black edges
+- `"swallowtail"`: yellow with black stripes and tails
+- `"emerald"`: dark green with glowing emerald bands and tails
+- `"violet"`: bright purple with a pink shimmer and a pink eye spot
+- `"glasswing"`: see-through wings with dark brown edges, so the page shows through
+
+`"mixed"` (the default) mixes all of them. `count` sets how many there are (up to 60), `size` their wingspan in pixels, and `speed` how fast they fly and flap.
+
+It fills its parent, so give the parent `position: relative` and a size. Put it after your content to fly over it, or before to fly behind. It ignores the mouse, so clicks go through to your content. The background is clear, so your page shows through.
+
+It's drawn on a canvas and pauses when it's off screen or the tab is hidden. When reduced motion is on, `animate` is false or `speed` is 0, the butterflies stay still with their wings open.
+
+## Props
+
+<PropsTable data={[
+  { name: "species", type: '"mixed" | "monarch" | "morpho" | "swallowtail" | "emerald" | "violet" | "glasswing"', default: '"mixed"', description: "Which butterflies to show. Mixed uses all six." },
+  { name: "count", type: "number", default: "6", description: "How many butterflies, from 0 to 60." },
+  { name: "size", type: "number", default: "56", description: "Wingspan in pixels. Each butterfly is drawn a little smaller or larger than this." },
+  { name: "speed", type: "number", default: "1", description: "How fast they fly and flap. 0 holds them still." },
+  { name: "followCursor", type: "boolean", default: "true", description: "Drift toward the cursor and circle it while it's inside the block." },
+  { name: "animate", type: "boolean", default: "true", description: "Set to false to show one still frame." },
+  { name: "className", type: "string" },
+  { name: "style", type: "CSSProperties" },
+]} />
