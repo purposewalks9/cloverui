@@ -29,7 +29,7 @@ export function ColorField({
       colors={colors}
       value={(value ?? "").toLowerCase()}
       onColorSelect={onChange}
-      className="flex-wrap p-0.5"
+      className="min-w-0 justify-end gap-2.5 overflow-x-auto p-1"
     />
   );
 }

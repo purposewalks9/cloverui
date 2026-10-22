@@ -41,7 +41,7 @@
         "https://cloverui.xyz/r/response-block.json",
         "https://cloverui.xyz/r/effort-slider.json",
         "https://cloverui.xyz/r/auth-button.json",
-        "https://cloverui.xyz/r/model-picker.json",
+        "https://cloverui.xyz/r/model-switcher.json",
         "https://cloverui.xyz/r/spectrum-bars.json",
         "https://cloverui.xyz/r/butterflies.json"
       ]
@@ -528,13 +528,13 @@
       }
     },
     {
-      "name": "model-picker",
+      "name": "model-switcher",
       "type": "registry:component",
-      "title": "Model Picker",
+      "title": "Model Switcher",
       "description": "A small dropdown for choosing an AI model and effort, with a Model menu, one-color logos and a built-in Effort Slider.",
       "files": [
         {
-          "path": "registry/clover-ui/model-picker.tsx",
+          "path": "registry/clover-ui/model-switcher.tsx",
           "type": "registry:component"
         }
       ],

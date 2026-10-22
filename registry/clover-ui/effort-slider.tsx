@@ -398,7 +398,10 @@ function EffortSlider({
       data-slot="effort-slider"
       data-disabled={disabled || undefined}
       className={cn(
-        "bg-card text-card-foreground w-full max-w-xs rounded-lg border-2 border-[color-mix(in_oklab,var(--card),var(--foreground)_8%)] p-4 select-none dark:border-[color-mix(in_oklab,var(--card),var(--foreground)_12%)] dark:bg-[color-mix(in_oklab,var(--card),var(--foreground)_6%)]",
+        "text-card-foreground w-full max-w-xs rounded-lg border border-transparent p-4 select-none",
+        "[background:linear-gradient(var(--effort-surface),var(--effort-surface))_padding-box,linear-gradient(180deg,var(--effort-edge-top),var(--effort-edge-mid)_50%,var(--effort-edge-bottom))_border-box]",
+        "[--effort-edge-bottom:color-mix(in_oklab,var(--foreground)_14%,transparent)] [--effort-edge-mid:color-mix(in_oklab,var(--foreground)_8%,transparent)] [--effort-edge-top:color-mix(in_oklab,var(--foreground)_22%,transparent)] [--effort-surface:var(--card)]",
+        "dark:[--effort-edge-bottom:color-mix(in_oklab,var(--foreground)_16%,transparent)] dark:[--effort-edge-mid:color-mix(in_oklab,var(--foreground)_9%,transparent)] dark:[--effort-edge-top:color-mix(in_oklab,var(--foreground)_34%,transparent)] dark:[--effort-surface:color-mix(in_oklab,var(--card),var(--foreground)_6%)]",
         "[--effort-fill:color-mix(in_oklab,var(--effort-fill-light)_80%,var(--effort-line))] dark:[--effort-fill:var(--effort-fill-dark)]",
         "[--effort-max:var(--effort-max-light)] dark:[--effort-max:var(--effort-max-dark)]",
         disabled && "opacity-50",

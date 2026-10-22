@@ -1,11 +1,11 @@
 "use client";
 
 import * as React from "react";
-import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { ControlDef } from "@/lib/playground";
 import { ColorField } from "@/components/playground/color-field";
 import { ColorSelector } from "@/components/ui/color-selector";
+import { SelectField } from "@/components/playground/select-field";
 
 interface ControlPanelProps {
   controls: ControlDef[];
@@ -17,6 +17,18 @@ const TILE_CLASS =
   "border-border bg-muted/40 focus-within:ring-ring relative flex min-h-11 min-w-0 items-center justify-between gap-3 overflow-hidden rounded-none border px-3 focus-within:ring-2";
 
 const LABEL_CLASS = "text-muted-foreground relative min-w-0 truncate text-sm whitespace-nowrap";
+
+const COLOR_TILE_CLASS = cn(TILE_CLASS, "col-span-full");
+
+const MAX_SWATCHES = 8;
+
+function limitSwatches<T extends { value: string }>(options: T[], value: unknown) {
+  if (options.length <= MAX_SWATCHES) return options;
+  const shown = options.slice(0, MAX_SWATCHES);
+  const picked = options.find((option) => option.value === value);
+  if (!picked || shown.includes(picked)) return shown;
+  return [...shown.slice(0, MAX_SWATCHES - 1), picked];
+}
 
 function isColorControl(control: ControlDef) {
   if (control.type === "color" || control.type === "color-list") return true;
@@ -41,10 +53,6 @@ function sortControls(controls: ControlDef[]) {
     (a, b) =>
       controlRank(a) - controlRank(b) || Number(isPatternControl(b)) - Number(isPatternControl(a)),
   );
-}
-
-function isWide(control: ControlDef) {
-  return control.type === "select" && isColorControl(control) && control.options.length > 6;
 }
 
 function ControlPanel({ controls, values, onChange }: ControlPanelProps) {
@@ -121,8 +129,8 @@ function ColorTile({
   onChange: (value: string) => void;
 }) {
   return (
-    <div className={cn(TILE_CLASS, "flex-wrap py-2")}>
-      <span className={LABEL_CLASS}>{label}</span>
+    <div className={COLOR_TILE_CLASS}>
+      <span className={cn(LABEL_CLASS, "shrink-0")}>{label}</span>
       <ColorField value={value} onChange={onChange} />
     </div>
   );
@@ -180,25 +188,11 @@ function SelectTile({
   onChange: (value: string) => void;
 }) {
   return (
-    <div className={TILE_CLASS}>
+    <div className={cn(TILE_CLASS, "overflow-visible")}>
       <label htmlFor={id} className={cn(LABEL_CLASS, "shrink-0")}>
         {label}
       </label>
-      <div className="relative flex min-w-0 items-center">
-        <select
-          id={id}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className="text-foreground [&>option]:bg-popover [&>option]:text-popover-foreground max-w-full min-w-0 cursor-pointer appearance-none truncate bg-transparent py-1 pr-5 text-right text-sm outline-none"
-        >
-          {options.map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
-        <ChevronDown className="text-muted-foreground pointer-events-none absolute right-0 size-3.5" />
-      </div>
+      <SelectField id={id} options={options} value={value} onChange={onChange} />
     </div>
   );
 }
@@ -290,20 +284,21 @@ function Tile({
 
     case "select":
       if (isColorControl(control)) {
+        const swatches = limitSwatches(control.options, value);
         return (
-          <div className={cn(TILE_CLASS, "flex-wrap py-2", isWide(control) && "sm:col-span-2")}>
-            <span className={LABEL_CLASS}>{control.label}</span>
+          <div className={COLOR_TILE_CLASS}>
+            <span className={cn(LABEL_CLASS, "shrink-0")}>{control.label}</span>
             <ColorSelector
               size="sm"
-              colors={control.options.map((opt) => opt.value)}
+              colors={swatches.map((opt) => opt.value)}
               swatches={Object.fromEntries(
-                control.options
+                swatches
                   .filter((opt) => opt.swatch)
                   .map((opt) => [opt.value, opt.swatch as string]),
               )}
               value={value as string}
               onColorSelect={onChange}
-              className="flex-wrap justify-end gap-2 p-0.5"
+              className="min-w-0 justify-end gap-2.5 overflow-x-auto p-1"
             />
           </div>
         );

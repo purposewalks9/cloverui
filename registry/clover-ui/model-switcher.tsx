@@ -11,33 +11,33 @@ import {
   type EffortSliderTheme,
 } from "@/registry/clover-ui/effort-slider";
 
-export type ModelPickerOption = {
+export type ModelSwitcherOption = {
   value: string;
   label: string;
   description?: string;
   icon?: React.ReactNode;
 };
 
-export type ModelPickerSide = "top" | "bottom";
+export type ModelSwitcherSide = "top" | "bottom";
 
 type Section = "model" | "effort";
 
 type Place = "right" | "left" | "inset";
 
-export interface ModelPickerProps extends Omit<
+export interface ModelSwitcherProps extends Omit<
   React.ComponentProps<"div">,
   "defaultValue" | "onChange"
 > {
-  models?: ModelPickerOption[];
+  models?: ModelSwitcherOption[];
   model?: string;
   defaultModel?: string;
-  onModelChange?: (model: string, option: ModelPickerOption) => void;
+  onModelChange?: (model: string, option: ModelSwitcherOption) => void;
   effort?: number;
   defaultEffort?: number;
   onEffortChange?: (effort: number, level: string) => void;
   effortLevels?: string[];
   effortTheme?: EffortSliderTheme;
-  side?: ModelPickerSide;
+  side?: ModelSwitcherSide;
   disabled?: boolean;
 }
 
@@ -47,9 +47,6 @@ const LOGOS = {
   ],
   claude: [
     "m4.7144 15.9555 4.7174-2.6471.079-.2307-.079-.1275h-.2307l-.7893-.0486-2.6956-.0729-2.3375-.0971-2.2646-.1214-.5707-.1215-.5343-.7042.0546-.3522.4797-.3218.686.0608 1.5179.1032 2.2767.1578 1.6514.0972 2.4468.255h.3886l.0546-.1579-.1336-.0971-.1032-.0972L6.973 9.8356l-2.55-1.6879-1.3356-.9714-.7225-.4918-.3643-.4614-.1578-1.0078.6557-.7225.8803.0607.2246.0607.8925.686 1.9064 1.4754 2.4893 1.8336.3643.3035.1457-.1032.0182-.0728-.164-.2733-1.3539-2.4467-1.445-2.4893-.6435-1.032-.17-.6194c-.0607-.255-.1032-.4674-.1032-.7285L6.287.1335 6.6997 0l.9957.1336.419.3642.6192 1.4147 1.0018 2.2282 1.5543 3.0296.4553.8985.2429.8318.091.255h.1579v-.1457l.1275-1.706.2368-2.0947.2307-2.6957.0789-.7589.3764-.9107.7468-.4918.5828.2793.4797.686-.0668.4433-.2853 1.8517-.5586 2.9021-.3643 1.9429h.2125l.2429-.2429.9835-1.3053 1.6514-2.0643.7286-.8196.85-.9046.5464-.4311h1.0321l.759 1.1293-.34 1.1657-1.0625 1.3478-.8804 1.1414-1.2628 1.7-.7893 1.36.0729.1093.1882-.0183 2.8535-.607 1.5421-.2794 1.8396-.3157.8318.3886.091.3946-.3278.8075-1.967.4857-2.3072.4614-3.4364.8136-.0425.0304.0486.0607 1.5482.1457.6618.0364h1.621l3.0175.2247.7892.522.4736.6376-.079.4857-1.2142.6193-1.6393-.3886-3.825-.9107-1.3113-.3279h-.1822v.1093l1.0929 1.0686 2.0035 1.8092 2.5075 2.3314.1275.5768-.3218.4554-.34-.0486-2.2039-1.6575-.85-.7468-1.9246-1.621h-.1275v.17l.4432.6496 2.3436 3.5214.1214 1.0807-.17.3521-.6071.2125-.6679-.1214-1.3721-1.9246L14.38 17.959l-1.1414-1.9428-.1397.079-.674 7.2552-.3156.3703-.7286.2793-.6071-.4614-.3218-.7468.3218-1.4753.3886-1.9246.3157-1.53.2853-1.9004.17-.6314-.0121-.0425-.1397.0182-1.4328 1.9672-2.1796 2.9446-1.7243 1.8456-.4128.164-.7164-.3704.0667-.6618.4008-.5889 2.386-3.0357 1.4389-1.882.929-1.0868-.0062-.1579h-.0546l-6.3385 4.1164-1.1293.1457-.4857-.4554.0608-.7467.2307-.2429 1.9064-1.3114Z",
-  ],
-  gemini: [
-    "M11.04 19.32Q12 21.51 12 24q0-2.49.93-4.68.96-2.19 2.58-3.81t3.81-2.55Q21.51 12 24 12q-2.49 0-4.68-.93a12.3 12.3 0 0 1-3.81-2.58 12.3 12.3 0 0 1-2.58-3.81Q12 2.49 12 0q0 2.49-.96 4.68-.93 2.19-2.55 3.81a12.3 12.3 0 0 1-3.81 2.58Q2.49 12 0 12q2.49 0 4.68.96 2.19.93 3.81 2.55t2.55 3.81",
   ],
   grok: [
     "M9.27 15.29l7.978-5.897c.391-.29.95-.177 1.137.272.98 2.369.542 5.215-1.41 7.169-1.951 1.954-4.667 2.382-7.149 1.406l-2.711 1.257c3.889 2.661 8.611 2.003 11.562-.953 2.341-2.344 3.066-5.539 2.388-8.42l.006.007c-.983-4.232.242-5.924 2.75-9.383.06-.082.12-.164.179-.248l-3.301 3.305v-.01L9.267 15.292M7.623 16.723c-2.792-2.67-2.31-6.801.071-9.184 1.761-1.763 4.647-2.483 7.166-1.425l2.705-1.25a7.808 7.808 0 00-1.829-1A8.975 8.975 0 005.984 5.83c-2.533 2.536-3.33 6.436-1.962 9.764 1.022 2.487-.653 4.246-2.34 6.022-.599.63-1.199 1.259-1.682 1.925l7.62-6.815",
@@ -86,12 +83,24 @@ function ModelLogo({
   );
 }
 
-export const defaultModels: ModelPickerOption[] = [
-  { value: "gpt-5.5", label: "GPT-5.5", description: "OpenAI", icon: <ModelLogo name="openai" /> },
-  { value: "grok-4", label: "Grok 4", description: "xAI", icon: <ModelLogo name="grok" /> },
+export const defaultModels: ModelSwitcherOption[] = [
+  { value: "gpt-6", label: "GPT-6", description: "OpenAI", icon: <ModelLogo name="openai" /> },
   {
-    value: "kimi-k2",
-    label: "Kimi K2",
+    value: "claude-opus-5.5",
+    label: "Claude Opus 5.5",
+    description: "Anthropic",
+    icon: <ModelLogo name="claude" />,
+  },
+  { value: "grok-4.7", label: "Grok 4.7", description: "xAI", icon: <ModelLogo name="grok" /> },
+  {
+    value: "deepseek-v4.1",
+    label: "DeepSeek V4.1",
+    description: "DeepSeek",
+    icon: <ModelLogo name="deepseek" />,
+  },
+  {
+    value: "kimi-k3",
+    label: "Kimi K3",
     description: "Moonshot AI",
     icon: <ModelLogo name="kimi" />,
   },
@@ -99,10 +108,19 @@ export const defaultModels: ModelPickerOption[] = [
 
 const SECTIONS: Section[] = ["model", "effort"];
 const TITLES: Record<Section, string> = { model: "Model", effort: "Effort" };
-const WIDTHS: Record<Section, number> = { model: 176, effort: 256 };
+const PANEL_WIDTH = 232;
 
-const stroke =
-  "border-[color-mix(in_oklab,var(--card),var(--foreground)_10%)] dark:border-[color-mix(in_oklab,var(--card),var(--foreground)_14%)]";
+const surface = cn(
+  "border border-transparent [background:linear-gradient(var(--switcher-fill),var(--switcher-fill))_padding-box,linear-gradient(180deg,var(--switcher-edge-top),var(--switcher-edge-mid)_50%,var(--switcher-edge-bottom))_border-box]",
+  "[--switcher-edge-top:color-mix(in_oklab,var(--foreground)_22%,transparent)] [--switcher-edge-mid:color-mix(in_oklab,var(--foreground)_8%,transparent)] [--switcher-edge-bottom:color-mix(in_oklab,var(--foreground)_14%,transparent)]",
+  "dark:[--switcher-edge-top:color-mix(in_oklab,var(--foreground)_34%,transparent)] dark:[--switcher-edge-mid:color-mix(in_oklab,var(--foreground)_9%,transparent)] dark:[--switcher-edge-bottom:color-mix(in_oklab,var(--foreground)_16%,transparent)]",
+);
+
+const panel = cn(
+  surface,
+  "text-popover-foreground rounded-2xl p-1 [--switcher-fill:var(--popover)]",
+  "origin-top transition-[opacity,scale] duration-150 ease-out starting:scale-[0.97] starting:opacity-0 motion-reduce:transition-none",
+);
 
 const row =
   "relative flex h-8 w-full cursor-pointer items-center gap-2 rounded-xl px-2 text-left text-sm whitespace-nowrap outline-none transition-colors duration-150";
@@ -130,7 +148,7 @@ function roomAround(element: HTMLElement) {
   return { left, right };
 }
 
-function ModelPicker({
+function ModelSwitcher({
   models = defaultModels,
   model,
   defaultModel,
@@ -144,7 +162,7 @@ function ModelPicker({
   disabled = false,
   className,
   ...props
-}: ModelPickerProps) {
+}: ModelSwitcherProps) {
   const [modelValue, setModel] = useControllable(
     model,
     defaultModel ?? models[0]?.value ?? "",
@@ -160,7 +178,8 @@ function ModelPicker({
   const effortIndex = Math.min(Math.max(0, Math.round(rawEffort)), levelCount - 1);
 
   const [open, setOpen] = React.useState(false);
-  const [section, setSection] = React.useState<Section | null>(null);
+  const [section, setSectionState] = React.useState<Section | null>(null);
+  const [draftEffort, setDraftEffort] = React.useState<number | null>(null);
   const [hover, setHover] = React.useState(-1);
   const [subHover, setSubHover] = React.useState(-1);
   const [place, setPlace] = React.useState<Place>("right");
@@ -184,6 +203,16 @@ function ModelPicker({
     "--effort-brain": tone.brain,
     "--effort-line": tone.line,
   } as React.CSSProperties;
+
+  const commitEffort = () => {
+    if (draftEffort !== null && draftEffort !== effortIndex) setEffort(draftEffort);
+    setDraftEffort(null);
+  };
+
+  const setSection = (next: Section | null) => {
+    if (section === "effort" && next !== "effort") commitEffort();
+    setSectionState(next);
+  };
 
   const close = (refocus: boolean) => {
     setOpen(false);
@@ -212,7 +241,7 @@ function ModelPicker({
     if (!section || !menuRef.current) return;
     const rect = menuRef.current.getBoundingClientRect();
     const room = roomAround(menuRef.current);
-    const needed = WIDTHS[section] + 6;
+    const needed = PANEL_WIDTH + 6;
     if (rect.right + needed <= room.right) setPlace("right");
     else if (rect.left - needed >= room.left) setPlace("left");
     else {
@@ -308,7 +337,7 @@ function ModelPicker({
   return (
     <div
       ref={rootRef}
-      data-slot="model-picker"
+      data-slot="model-switcher"
       className={cn("relative inline-flex", className)}
       {...props}
     >
@@ -328,10 +357,10 @@ function ModelPicker({
           }
         }}
         className={cn(
-          "bg-card text-card-foreground hover:bg-muted focus-visible:ring-ring inline-flex h-8 shrink-0 cursor-pointer items-center gap-1.5 rounded-full border pr-2 pl-3 text-sm whitespace-nowrap outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-50",
-          "transition-[background-color,scale] duration-150 active:scale-[0.97]",
-          stroke,
-          open && "bg-muted",
+          surface,
+          "text-card-foreground focus-visible:ring-ring inline-flex h-8 shrink-0 cursor-pointer items-center gap-1.5 rounded-full pr-2 pl-3 text-sm whitespace-nowrap outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-50",
+          "transition-[scale] duration-150 [--switcher-fill:var(--card)] hover:[--switcher-fill:var(--muted)] active:scale-[0.97]",
+          open && "[--switcher-fill:var(--muted)]",
         )}
         style={toneStyle}
       >
@@ -357,11 +386,7 @@ function ModelPicker({
             role="menu"
             aria-label="Model settings"
             onPointerLeave={() => !section && setHover(-1)}
-            className={cn(
-              "bg-popover text-popover-foreground rounded-2xl border p-1",
-              stroke,
-              place === "inset" && section && "invisible",
-            )}
+            className={cn(panel, place === "inset" && section && "invisible")}
           >
             {SECTIONS.map((item, index) => {
               const active = section === item;
@@ -412,15 +437,15 @@ function ModelPicker({
                 place === "left" && "right-[calc(100%+0.375rem)]",
                 place === "inset" && "left-0",
               )}
-              style={{ width: WIDTHS[section] }}
+              style={{ width: PANEL_WIDTH }}
             >
               {place === "inset" && (
                 <button
                   type="button"
                   onClick={back}
                   className={cn(
-                    "bg-popover text-muted-foreground hover:text-foreground focus-visible:ring-ring mb-1.5 flex h-7 cursor-pointer items-center gap-1 rounded-full border pr-2.5 pl-1.5 text-xs outline-none focus-visible:ring-2",
-                    stroke,
+                    surface,
+                    "text-muted-foreground hover:text-foreground focus-visible:ring-ring mb-1.5 flex h-7 cursor-pointer items-center gap-1 rounded-full pr-2.5 pl-1.5 text-xs outline-none [--switcher-fill:var(--popover)] focus-visible:ring-2",
                   )}
                 >
                   <ChevronLeft aria-hidden className="size-3.5" />
@@ -433,10 +458,7 @@ function ModelPicker({
                   aria-label="Model"
                   onKeyDown={onModelKeyDown}
                   onPointerLeave={() => setSubHover(-1)}
-                  className={cn(
-                    "bg-popover text-popover-foreground rounded-2xl border p-1",
-                    stroke,
-                  )}
+                  className={panel}
                 >
                   {models.map((option, index) => {
                     const active = index === activeModel;
@@ -458,6 +480,14 @@ function ModelPicker({
                         }}
                         className={cn(row, "h-auto py-1.5", subHover === index && "bg-muted")}
                       >
+                        <span
+                          className={cn(
+                            "flex size-4 shrink-0 items-center justify-center transition-colors duration-150 [&_svg]:size-4",
+                            active ? "text-foreground" : "text-muted-foreground",
+                          )}
+                        >
+                          {option.icon}
+                        </span>
                         <span className="flex min-w-0 flex-1 flex-col leading-tight">
                           <span className={cn("truncate", active && "font-medium")}>
                             {option.label}
@@ -468,11 +498,7 @@ function ModelPicker({
                             </span>
                           )}
                         </span>
-                        {active && (
-                          <span className="flex size-4 shrink-0 items-center justify-center [&_svg]:size-4">
-                            {option.icon ?? <Check aria-hidden className="size-4" />}
-                          </span>
-                        )}
+                        {active && <Check aria-hidden className="size-4 shrink-0" />}
                       </button>
                     );
                   })}
@@ -480,6 +506,7 @@ function ModelPicker({
               ) : (
                 <div
                   ref={effortRef}
+                  className={cn(panel, "p-0")}
                   onKeyDown={(event) => {
                     if (event.key === "Escape") {
                       event.preventDefault();
@@ -491,9 +518,9 @@ function ModelPicker({
                   <EffortSlider
                     levels={effortLevels}
                     theme={effortTheme}
-                    value={effortIndex}
-                    onValueChange={(index) => setEffort(index)}
-                    className="max-w-none"
+                    value={draftEffort ?? effortIndex}
+                    onValueChange={(index) => setDraftEffort(index)}
+                    className="text-popover-foreground max-w-none rounded-2xl border-0 p-3 [background:none]"
                   />
                 </div>
               )}
@@ -505,4 +532,4 @@ function ModelPicker({
   );
 }
 
-export { ModelPicker, ModelLogo };
+export { ModelSwitcher, ModelLogo };

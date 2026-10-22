@@ -34,6 +34,16 @@ const nextConfig = {
   redirects: async () => {
     return [
       {
+        source: "/components/model-picker",
+        destination: "/docs/model-switcher",
+        permanent: true,
+      },
+      {
+        source: "/docs/model-picker",
+        destination: "/docs/model-switcher",
+        permanent: true,
+      },
+      {
         source: "/components/:slug",
         destination: "/docs/:slug",
         permanent: true,

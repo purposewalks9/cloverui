@@ -1,6 +1,6 @@
 "use client";
 
-import { ModelPicker, type ModelPickerSide } from "@/registry/clover-ui/model-picker";
+import { ModelSwitcher } from "@/registry/clover-ui/model-switcher";
 import type { EffortSliderTheme } from "@/registry/clover-ui/effort-slider";
 import { PlaygroundShell } from "@/components/playground/playground-shell";
 import { jsx, type ControlDef } from "@/lib/playground";
@@ -18,47 +18,29 @@ const controls: ControlDef[] = [
       { label: "Mono", value: "mono" },
     ],
   },
-  {
-    type: "select",
-    prop: "side",
-    label: "Opens",
-    options: [
-      { label: "Below", value: "bottom" },
-      { label: "Above", value: "top" },
-    ],
-  },
   { type: "boolean", prop: "disabled", label: "Disabled" },
 ];
 
 const defaultProps = {
   effortTheme: "aurora",
-  side: "bottom",
   disabled: false,
 };
 
-export function ModelPickerPlayground() {
+export function ModelSwitcherPlayground() {
   return (
     <PlaygroundShell
       controls={controls}
       defaultProps={defaultProps}
       code={(values) =>
-        jsx("ModelPicker", {
+        jsx("ModelSwitcher", {
           effortTheme: values.effortTheme,
-          side: values.side,
           disabled: values.disabled,
         })
       }
       render={(values) => (
-        <div
-          className={
-            values.side === "bottom"
-              ? "flex h-72 w-full items-start justify-center"
-              : "flex h-72 w-full items-end justify-center"
-          }
-        >
-          <ModelPicker
+        <div className="flex h-[30rem] w-full items-center justify-center">
+          <ModelSwitcher
             effortTheme={values.effortTheme as EffortSliderTheme}
-            side={values.side as ModelPickerSide}
             disabled={values.disabled as boolean}
           />
         </div>
