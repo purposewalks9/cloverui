@@ -50,13 +50,54 @@
 .card {
   position: relative;
   display: flex;
-  width: min(100%, 360px);
+  width: min(100%, 420px);
   aspect-ratio: 36 / 20;
   max-height: 100%;
   flex-direction: column;
   overflow: hidden;
-  border: 1px solid #262626;
-  background: #000;
+  border: 1px solid transparent;
+  background:
+    linear-gradient(#000, #000) padding-box,
+    var(
+        --card-stroke,
+        linear-gradient(
+          110deg,
+          rgb(192 132 252 / 0.45) 0%,
+          rgb(248 113 113 / 0.45) 33%,
+          rgb(244 114 182 / 0.45) 66%,
+          rgb(192 132 252 / 0.45) 100%
+        )
+      )
+      border-box;
+  background-size:
+    100% 100%,
+    300% 100%;
+  animation: card-stroke 5s ease-in-out infinite;
+}
+
+@keyframes card-stroke {
+  0%,
+  100% {
+    background-position:
+      0 0,
+      0% 50%;
+  }
+  50% {
+    background-position:
+      0 0,
+      100% 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    animation: none;
+  }
+}
+
+.card[data-size="wide"] {
+  width: min(100%, 720px);
+  aspect-ratio: 16 / 10;
 }
 
 .cardDisplay {
@@ -217,6 +258,14 @@
 .squares > :only-child {
   grid-column: 1 / -1;
   max-width: 260px;
+}
+
+.top {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: center;
 }
 
 .fill {
