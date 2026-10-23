@@ -18,7 +18,6 @@ const controls: ControlDef[] = [
       { label: "Aurora", value: "aurora", swatch: themeSwatch("aurora") },
       { label: "Sunset", value: "sunset", swatch: themeSwatch("sunset") },
       { label: "Ocean", value: "ocean", swatch: themeSwatch("ocean") },
-      { label: "Ember", value: "ember", swatch: themeSwatch("ember") },
       { label: "Candy", value: "candy", swatch: themeSwatch("candy") },
       { label: "Mono", value: "mono", swatch: themeSwatch("mono") },
     ],

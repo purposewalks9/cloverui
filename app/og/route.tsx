@@ -9,9 +9,9 @@ import { getDoc } from "@/lib/doc";
 const size = { width: 1200, height: 630 };
 
 const colors = {
-  background: "#0a0a0a",
-  foreground: "#fafafa",
-  muted: "#a1a1aa",
+  background: "#ffffff",
+  foreground: "#0a0a0a",
+  muted: "#52525b",
 };
 
 const stroke = ["#6b21a8", "#991b1b", "#9d174d"];

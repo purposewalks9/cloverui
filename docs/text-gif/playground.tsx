@@ -13,7 +13,7 @@ const controls: ControlDef[] = [
     label: "GIF",
     options: Object.entries(gifs).map(([label, value]) => ({ label, value })),
   },
-  { type: "color", prop: "fallbackColor", label: "Fallback color" },
+  { type: "color", prop: "fallbackColor", label: "Color" },
 ];
 
 const defaultProps = {

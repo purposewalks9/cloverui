@@ -57,7 +57,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [],
-      "category": "asset"
+      "category": "effect"
     },
     {
       "name": "grid-reveal",
@@ -474,7 +474,7 @@
       "name": "auth-button",
       "type": "registry:component",
       "title": "Auth Button",
-      "description": "A sign-in button for 12 providers with a soft tint of each brand's colors.",
+      "description": "A sign-in button for 16 providers with a soft tint of each brand's colors.",
       "files": [
         {
           "path": "registry/clover-ui/auth-button.tsx",

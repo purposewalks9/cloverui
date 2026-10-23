@@ -17,8 +17,20 @@ const controls: ControlDef[] = [
     options: [
       { label: "Google", value: "google" },
       { label: "GitHub", value: "github" },
+      { label: "Apple", value: "apple" },
       { label: "Microsoft", value: "microsoft" },
       { label: "Discord", value: "discord" },
+      { label: "ChatGPT", value: "chatgpt" },
+      { label: "Spotify", value: "spotify" },
+      { label: "GitLab", value: "gitlab" },
+      { label: "Bitbucket", value: "bitbucket" },
+      { label: "LinkedIn", value: "linkedin" },
+      { label: "Slack", value: "slack" },
+      { label: "Twitch", value: "twitch" },
+      { label: "Notion", value: "notion" },
+      { label: "Vercel", value: "vercel" },
+      { label: "Reddit", value: "reddit" },
+      { label: "Dropbox", value: "dropbox" },
     ],
   },
   {
@@ -46,7 +58,7 @@ const controls: ControlDef[] = [
 const defaultProps = {
   provider: "google",
   intent: "signin",
-  size: "default",
+  size: "lg",
   disabled: false,
 };
 

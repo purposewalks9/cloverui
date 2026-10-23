@@ -17,28 +17,120 @@ const TILE_CLASS =
 
 const LABEL_CLASS = "text-muted-foreground relative min-w-0 truncate text-sm whitespace-nowrap";
 
-const MAX_SWATCHES = 5;
+const SWATCHES_CLASS = "ml-auto w-max flex-nowrap gap-2 p-1";
 
-const SWATCHES_CLASS = "min-w-0 justify-end gap-2 overflow-x-auto p-1";
+const SELECTED = '[aria-checked="true"], [aria-pressed="true"]';
 
-const TILE_WIDTH = 208;
-const WIDE_TILE_WIDTH = 256;
+const FADE = 16;
 
-function optionSpan(label: string, options: { label: string }[]) {
-  const optionsWidth = options.reduce((total, option) => total + option.label.length * 6.5 + 24, 6);
-  const needed = 36 + label.length * 7.5 + optionsWidth;
-  if (needed <= TILE_WIDTH) return "";
-  if (needed <= WIDE_TILE_WIDTH) return "@md:col-span-2 @3xl:col-span-1";
-  if (needed <= TILE_WIDTH * 2) return "@md:col-span-2";
-  return "col-span-full";
+function useScrollStrip(selection: unknown) {
+  const ref = React.useRef<HTMLDivElement>(null);
+  const drag = React.useRef<{ x: number; left: number; moved: boolean } | null>(null);
+  const [edges, setEdges] = React.useState({ start: false, end: false });
+
+  React.useEffect(() => {
+    const strip = ref.current;
+    if (!strip) return;
+    const node = strip;
+
+    function measure() {
+      const max = node.scrollWidth - node.clientWidth;
+      setEdges({ start: node.scrollLeft > 1, end: node.scrollLeft < max - 1 });
+    }
+
+    function onWheel(event: WheelEvent) {
+      if (Math.abs(event.deltaX) >= Math.abs(event.deltaY)) return;
+      const max = node.scrollWidth - node.clientWidth;
+      const next = node.scrollLeft + event.deltaY;
+      if (
+        max <= 0 ||
+        (event.deltaY < 0 && node.scrollLeft <= 0) ||
+        (event.deltaY > 0 && node.scrollLeft >= max)
+      )
+        return;
+      event.preventDefault();
+      node.scrollLeft = Math.min(max, Math.max(0, next));
+    }
+
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(node);
+    if (node.firstElementChild) observer.observe(node.firstElementChild);
+    node.addEventListener("scroll", measure, { passive: true });
+    node.addEventListener("wheel", onWheel, { passive: false });
+    return () => {
+      observer.disconnect();
+      node.removeEventListener("scroll", measure);
+      node.removeEventListener("wheel", onWheel);
+    };
+  }, []);
+
+  React.useEffect(() => {
+    const strip = ref.current;
+    const picked = strip?.querySelector<HTMLElement>(SELECTED);
+    if (!strip || !picked) return;
+    const box = strip.getBoundingClientRect();
+    const item = picked.getBoundingClientRect();
+    const offset =
+      item.left < box.left + FADE
+        ? item.left - box.left - FADE
+        : item.right > box.right - FADE
+          ? item.right - box.right + FADE
+          : 0;
+    if (!offset) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    strip.scrollBy({ left: offset, behavior: reduce ? "auto" : "smooth" });
+  }, [selection]);
+
+  const scrollable = edges.start || edges.end;
+
+  const stripProps = {
+    ref,
+    style: {
+      maskImage: `linear-gradient(to right, ${edges.start ? "transparent" : "black"}, black ${FADE}px, black calc(100% - ${FADE}px), ${edges.end ? "transparent" : "black"})`,
+    },
+    onPointerDown(event: React.PointerEvent<HTMLDivElement>) {
+      if (!scrollable || event.pointerType !== "mouse" || event.button !== 0) return;
+      drag.current = { x: event.clientX, left: event.currentTarget.scrollLeft, moved: false };
+    },
+    onPointerMove(event: React.PointerEvent<HTMLDivElement>) {
+      const state = drag.current;
+      if (!state) return;
+      const distance = event.clientX - state.x;
+      if (!state.moved && Math.abs(distance) < 4) return;
+      if (!state.moved) event.currentTarget.setPointerCapture(event.pointerId);
+      state.moved = true;
+      event.currentTarget.scrollLeft = state.left - distance;
+    },
+    onPointerUp() {
+      if (drag.current && !drag.current.moved) drag.current = null;
+    },
+    onClickCapture(event: React.MouseEvent<HTMLDivElement>) {
+      if (drag.current?.moved) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      drag.current = null;
+    },
+  };
+
+  return { stripProps, scrollable };
 }
 
-function limitSwatches<T extends { value: string }>(options: T[], value: unknown) {
-  if (options.length <= MAX_SWATCHES) return options;
-  const shown = options.slice(0, MAX_SWATCHES);
-  const picked = options.find((option) => option.value === value);
-  if (!picked || shown.includes(picked)) return shown;
-  return [...shown.slice(0, MAX_SWATCHES - 1), picked];
+function ScrollStrip({ selection, children }: { selection: unknown; children: React.ReactNode }) {
+  const { stripProps, scrollable } = useScrollStrip(selection);
+
+  return (
+    <div
+      {...stripProps}
+      className={cn(
+        "min-w-0 flex-1 overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+        scrollable && "cursor-grab active:cursor-grabbing",
+      )}
+    >
+      {children}
+    </div>
+  );
 }
 
 function isColorControl(control: ControlDef) {
@@ -200,7 +292,6 @@ function OptionsTile({
   value: string;
   onChange: (value: string) => void;
 }) {
-  const span = optionSpan(label, options);
   const selected = Math.max(
     0,
     options.findIndex((option) => option.value === value),
@@ -216,41 +307,40 @@ function OptionsTile({
   }
 
   return (
-    <div className={cn(TILE_CLASS, "has-[:focus-visible]:ring-0", span, span && "flex-wrap py-2")}>
+    <div className={cn(TILE_CLASS, "has-[:focus-visible]:ring-0")}>
       <span id={`${id}-label`} className={cn(LABEL_CLASS, "shrink-0")}>
         {label}
       </span>
-      <div
-        role="radiogroup"
-        aria-labelledby={`${id}-label`}
-        onKeyDown={onKeyDown}
-        className={cn(
-          "bg-foreground/[0.06] flex min-w-0 flex-wrap gap-0.5 p-0.5",
-          span === "col-span-full" ? "w-full justify-start" : "justify-end",
-        )}
-      >
-        {options.map((option, index) => {
-          const checked = index === selected;
-          return (
-            <button
-              key={option.value}
-              type="button"
-              role="radio"
-              aria-checked={checked}
-              tabIndex={checked ? 0 : -1}
-              onClick={() => onChange(option.value)}
-              className={cn(
-                "focus-visible:ring-ring h-7 shrink-0 cursor-pointer rounded-none border px-2.5 text-xs whitespace-nowrap transition-colors outline-none focus-visible:ring-2",
-                checked
-                  ? "border-border bg-background text-foreground"
-                  : "text-muted-foreground hover:text-foreground border-transparent",
-              )}
-            >
-              {option.label}
-            </button>
-          );
-        })}
-      </div>
+      <ScrollStrip selection={value}>
+        <div
+          role="radiogroup"
+          aria-labelledby={`${id}-label`}
+          onKeyDown={onKeyDown}
+          className="bg-foreground/[0.06] ml-auto flex w-max gap-0.5 p-0.5"
+        >
+          {options.map((option, index) => {
+            const checked = index === selected;
+            return (
+              <button
+                key={option.value}
+                type="button"
+                role="radio"
+                aria-checked={checked}
+                tabIndex={checked ? 0 : -1}
+                onClick={() => onChange(option.value)}
+                className={cn(
+                  "focus-visible:ring-ring h-7 shrink-0 cursor-pointer rounded-none border px-2.5 text-xs whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-inset",
+                  checked
+                    ? "border-border bg-background text-foreground"
+                    : "text-muted-foreground hover:text-foreground border-transparent",
+                )}
+              >
+                {option.label}
+              </button>
+            );
+          })}
+        </div>
+      </ScrollStrip>
     </div>
   );
 }
@@ -279,9 +369,15 @@ function SliderTile({
     <div className={TILE_CLASS}>
       <div
         aria-hidden="true"
-        className="bg-foreground/10 pointer-events-none absolute inset-y-0 left-0"
+        className="from-foreground/[0.02] to-foreground/[0.12] pointer-events-none absolute inset-y-0 left-0 bg-linear-to-r"
         style={{ width: `${percent}%` }}
       />
+      <div
+        aria-hidden="true"
+        className="bg-foreground/10 pointer-events-none absolute inset-x-0 bottom-0 h-0.5"
+      >
+        <div className="bg-foreground h-full" style={{ width: `${percent}%` }} />
+      </div>
       <div
         aria-hidden="true"
         className="bg-foreground/60 pointer-events-none absolute inset-y-2.5 w-0.5"
@@ -342,22 +438,23 @@ function Tile({
 
     case "select":
       if (isColorControl(control)) {
-        const swatches = limitSwatches(control.options, value);
         return (
           <div className={TILE_CLASS}>
             <span className={cn(LABEL_CLASS, "shrink-0")}>{control.label}</span>
-            <ColorSelector
-              size="sm"
-              colors={swatches.map((opt) => opt.value)}
-              swatches={Object.fromEntries(
-                swatches
-                  .filter((opt) => opt.swatch)
-                  .map((opt) => [opt.value, opt.swatch as string]),
-              )}
-              value={value as string}
-              onColorSelect={onChange}
-              className={SWATCHES_CLASS}
-            />
+            <ScrollStrip selection={value}>
+              <ColorSelector
+                size="sm"
+                colors={control.options.map((opt) => opt.value)}
+                swatches={Object.fromEntries(
+                  control.options
+                    .filter((opt) => opt.swatch)
+                    .map((opt) => [opt.value, opt.swatch as string]),
+                )}
+                value={value as string}
+                onColorSelect={onChange}
+                className={SWATCHES_CLASS}
+              />
+            </ScrollStrip>
           </div>
         );
       }

@@ -6,8 +6,8 @@ import { jsx, type ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [
   { type: "text", prop: "children", label: "Text" },
-  { type: "color", prop: "color", label: "Text color" },
-  { type: "color", prop: "particleColor", label: "Particle color" },
+  { type: "color", prop: "color", label: "Color" },
+  { type: "color", prop: "particleColor", label: "Particles" },
   { type: "number", prop: "particleCount", label: "Particles", min: 12, max: 320, step: 8 },
   { type: "number", prop: "particleSize", label: "Particle size", min: 0.5, max: 3, step: 0.1 },
   { type: "number", prop: "gatherSpeed", label: "Gather speed", min: 0.3, max: 2.5, step: 0.1 },

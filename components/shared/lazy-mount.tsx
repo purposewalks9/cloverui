@@ -23,18 +23,28 @@ export function LazyMount({
     const el = ref.current;
     if (!el || mounted) return;
 
+    let cancel: (() => void) | undefined;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setMounted(true);
-          observer.disconnect();
+        if (!entry.isIntersecting || cancel) return;
+        observer.disconnect();
+        const mount = () => setMounted(true);
+        if (typeof requestIdleCallback === "function") {
+          const id = requestIdleCallback(mount, { timeout: 1500 });
+          cancel = () => cancelIdleCallback(id);
+        } else {
+          const id = setTimeout(mount, 200);
+          cancel = () => clearTimeout(id);
         }
       },
       { rootMargin },
     );
 
     observer.observe(el);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      cancel?.();
+    };
   }, [mounted, rootMargin]);
 
   return (

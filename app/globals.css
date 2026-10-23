@@ -105,6 +105,12 @@
 
   --brand: #c4ca00;
   --rotating-border-color: #d4d4d4;
+  --rich-stroke: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--foreground) 22%, transparent),
+    color-mix(in oklab, var(--foreground) 8%, transparent) 50%,
+    color-mix(in oklab, var(--foreground) 14%, transparent)
+  );
 }
 
 .dark {
@@ -157,6 +163,12 @@
   --sidebar-ring: #3a3a3a;
 
   --rotating-border-color: #353535;
+  --rich-stroke: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--foreground) 34%, transparent),
+    color-mix(in oklab, var(--foreground) 9%, transparent) 50%,
+    color-mix(in oklab, var(--foreground) 16%, transparent)
+  );
 }
 
 html,
@@ -180,6 +192,18 @@ body {
 
 html {
   scroll-behavior: smooth;
+}
+
+:is(.rich-strokes, .rich-strokes *):not(
+  [data-plain-stroke],
+  [data-plain-stroke] *,
+  [class*="border-transparent"]
+) {
+  border-image: var(--rich-stroke) 1;
+}
+
+:is(.rich-strokes, .rich-strokes *):not([data-plain-stroke], [data-plain-stroke] *) {
+  border-radius: 0;
 }
 
 html,
@@ -255,7 +279,7 @@ summary {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: sponsor-gradient 5s ease-in-out infinite;
+  animation: sponsor-gradient 5s ease-in-out;
 }
 
 .dark .sponsor-gradient {

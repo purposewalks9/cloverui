@@ -80,6 +80,7 @@ export function DemoPreview({
           >
             <div
               key={key}
+              data-plain-stroke
               className={cn("w-full min-w-0", center && "flex items-center justify-center")}
             >
               {children}

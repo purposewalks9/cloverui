@@ -62,7 +62,7 @@ export function BentoActiveCard({
     <div
       data-active={active || undefined}
       className={cn(
-        "relative isolate flex flex-col overflow-hidden transition-colors duration-700",
+        "relative isolate flex flex-col overflow-hidden transition-colors duration-700 [contain-intrinsic-size:auto_13rem] [content-visibility:auto]",
         active ? "bg-foreground/[0.04]" : "bg-transparent",
         className,
       )}

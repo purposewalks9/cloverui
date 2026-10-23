@@ -10,7 +10,7 @@ Clover UI distributes React 19 and Tailwind CSS v4 components as source through 
 | `registry.json`       | Component names, descriptions, categories, dependencies and install-all membership |
 | `public/r/`           | Generated registry artifacts; rebuild instead of editing contents                  |
 | `docs/<name>/`        | Component documentation, demo, playground and optional examples                    |
-| `app/`                | Site routes, metadata endpoints and sponsor webhook                                |
+| `app/`                | Site routes and metadata endpoints                                                 |
 | `components/`         | Documentation-site UI and supporting primitives                                    |
 | `lib/`, `hooks/`      | Site data loading, utilities and hooks                                             |
 | `scripts/`, `tests/`  | Repository validation and regression checks                                        |
@@ -36,6 +36,6 @@ Registry validation checks metadata, generated content, import declarations, sel
 
 ## Site integrations
 
-`lib/config.ts` holds site identity and URLs. Optional sponsor data is loaded server-side by `lib/sponsors.ts`. The `/api/sponsors` endpoint verifies a webhook signature before invalidating cached sponsor data. `.env.example` describes optional configuration; credentials remain local or in deployment settings.
+`lib/config.ts` holds site identity and URLs. `.env.example` describes optional configuration.
 
 The shadcn MCP server provides registry tooling. Consumers configure `@clover-ui` in their own `components.json`. Contributor agents should also read `AGENTS.md` and `CONTRIBUTING.md`; MCP access alone does not explain maintenance boundaries.

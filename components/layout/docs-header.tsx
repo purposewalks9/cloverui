@@ -52,7 +52,7 @@ export function DocsHeader({ docSchema }: { docSchema: DocSchema }) {
         <CommandMenu docSchema={docSchema} nav className="hidden w-40 sm:inline-flex" />
         <CommandMenu docSchema={docSchema} nav compact shortcut={false} className="sm:hidden" />
 
-        <div className="mt-1">
+        <div data-plain-stroke className="mt-1">
           <ThemeToggle />
         </div>
       </div>

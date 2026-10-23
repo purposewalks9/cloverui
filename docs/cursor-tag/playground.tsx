@@ -26,14 +26,14 @@ const controls: ControlDef[] = [
     ],
   },
   { type: "color", prop: "color", label: "Color" },
-  { type: "color", prop: "textColor", label: "Text color" },
+  { type: "color", prop: "textColor", label: "Text" },
   { type: "boolean", prop: "float", label: "Float" },
 ];
 
 const defaultProps = {
   label: "Content Reviewer",
   side: "right",
-  size: "default",
+  size: "lg",
   color: "#7c3aed",
   textColor: "#ffffff",
   float: true,

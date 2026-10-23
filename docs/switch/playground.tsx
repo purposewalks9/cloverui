@@ -8,14 +8,12 @@ const controls: ControlDef[] = [
   {
     type: "select",
     prop: "color",
-    label: "On color",
+    label: "Color",
     options: [
       { label: "Green", value: "#42aa78", swatch: "#42aa78" },
-      { label: "Black", value: "#111111", swatch: "#111111" },
       { label: "Red", value: "#ef4444", swatch: "#ef4444" },
       { label: "Orange", value: "#f97316", swatch: "#f97316" },
       { label: "Yellow", value: "#e1e900", swatch: "#e1e900" },
-      { label: "Lime", value: "#22c55e", swatch: "#22c55e" },
       { label: "Blue", value: "#0b87da", swatch: "#0b87da" },
       { label: "Purple", value: "#7c3aed", swatch: "#7c3aed" },
     ],
@@ -36,7 +34,7 @@ const controls: ControlDef[] = [
 
 const defaultProps = {
   color: "#42aa78",
-  size: "default",
+  size: "lg",
   showLabels: true,
   disabled: false,
 };

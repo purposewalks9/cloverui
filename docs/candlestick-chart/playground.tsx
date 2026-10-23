@@ -6,8 +6,8 @@ import { expr, jsx, type ControlDef } from "@/lib/playground";
 import { data } from "./demo";
 
 const controls: ControlDef[] = [
-  { type: "color", prop: "upColor", label: "Up color" },
-  { type: "color", prop: "downColor", label: "Down color" },
+  { type: "color", prop: "upColor", label: "Up" },
+  { type: "color", prop: "downColor", label: "Down" },
   { type: "boolean", prop: "showXAxis", label: "X axis" },
   { type: "boolean", prop: "animated", label: "Animated" },
   { type: "boolean", prop: "zoomable", label: "Zoomable" },

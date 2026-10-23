@@ -23,11 +23,9 @@ const controls: ControlDef[] = [
       },
       { label: "Green", value: "#22c55e", swatch: "#22c55e" },
       { label: "Sky", value: "#38bdf8", swatch: "#38bdf8" },
-      { label: "Blue", value: "#3b82f6", swatch: "#3b82f6" },
       { label: "Violet", value: "#8b5cf6", swatch: "#8b5cf6" },
       { label: "Pink", value: "#ec4899", swatch: "#ec4899" },
       { label: "Orange", value: "#f97316", swatch: "#f97316" },
-      { label: "Red", value: "#ef4444", swatch: "#ef4444" },
     ],
   },
   {

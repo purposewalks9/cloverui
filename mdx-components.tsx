@@ -4,8 +4,7 @@ import { CopyCodeButton } from "@/components/docs/copy-code-button";
 import { InstallationTabs } from "@/components/docs/installation-tabs";
 import { CodeBlockCommand } from "@/components/docs/code-block-command";
 import { PropsTable } from "@/components/docs/props-table";
-import { CreditLink } from "@/components/docs/credits";
-import { SponsorWall } from "@/components/docs/sponsors";
+import { CreditLink, CreditList, CreditPerson } from "@/components/docs/credits";
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
@@ -17,7 +16,8 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     CodeBlockCommand,
     PropsTable,
     CreditLink,
-    SponsorWall,
+    CreditList,
+    CreditPerson,
     h2: ({ children, ...props }) => {
       return (
         <h2

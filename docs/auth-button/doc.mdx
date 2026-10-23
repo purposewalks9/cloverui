@@ -21,11 +21,11 @@ import { AuthButton } from "@/components/auth-button";
 
 The label reads "Sign in with Google" or "Sign up with GitHub", based on `intent` and the provider. Pass children to write your own.
 
-Each button sits on a frosted surface with a faint tint of the brand's colors. It moves down 1px when clicked, like a normal button press.
+Each button sits on a frosted surface with a faint tint of the brand's colors. When pressed, the inside of the button lights up softly in the brand's color.
 
 ## Providers
 
-Google, GitHub, Microsoft, ChatGPT, Discord, Spotify, GitLab, LinkedIn, Slack, Twitch, Notion and Dropbox. Black logos like GitHub and ChatGPT turn white in dark mode.
+Google, GitHub, Apple, Microsoft, Discord, ChatGPT, Spotify, GitLab, Bitbucket, LinkedIn, Slack, Twitch, Notion, Vercel, Reddit and Dropbox. Black logos like GitHub, Apple and Vercel turn white in dark mode.
 
 ## Connecting your auth
 
@@ -75,6 +75,7 @@ const brand: AuthBrand = {
 - `name` goes in the label.
 - `logo` is any image URL, path or SVG data URL.
 - `colors` sets the tint. Leave it out for a plain button.
+- `glow` sets the press glow color. It defaults to the first of `colors`, or gray.
 - `mono: true` turns a black logo white in dark mode.
 
 If the logo fails to load, the first letter of the name shows instead.
@@ -86,7 +87,7 @@ It follows light and dark mode through the `dark` class. The focus outline uses 
 ## Props
 
 <PropsTable data={[
-  { name: "provider", type: "AuthProvider | AuthBrand", default: '"google"', description: "One of the 12 built-in providers, or your own brand object." },
+  { name: "provider", type: "AuthProvider | AuthBrand", default: '"google"', description: "One of the 16 built-in providers, or your own brand object." },
   { name: "intent", type: '"signin" | "signup"', default: '"signin"', description: "Shows Sign in with or Sign up with." },
   { name: "size", type: '"sm" | "default" | "lg"', default: '"default"', description: "36px, 44px or 48px tall." },
   { name: "disabled", type: "boolean", default: "false", description: "Fades the button and stops clicks." },

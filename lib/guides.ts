@@ -16,11 +16,6 @@ export const guides = [
     title: "MCP",
     description: "Let your AI editor browse and install Clover UI components for you.",
   },
-  {
-    id: "sponsors",
-    title: "Sponsors",
-    description: "Support Clover UI through GitHub Sponsors and see who already does.",
-  },
 ];
 
 export const guideIds = guides.map((guide) => guide.id);

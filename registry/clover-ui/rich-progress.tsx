@@ -40,7 +40,7 @@ const knobVariants = cva(
   {
     variants: {
       knob: {
-        circle: "rounded-full shadow-md shadow-black/25",
+        circle: "rounded-full",
         square: "rounded-none",
       },
       size: {

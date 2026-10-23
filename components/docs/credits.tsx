@@ -1,3 +1,4 @@
+import { SiGithub } from "@icons-pack/react-simple-icons";
 import { cn } from "@/lib/utils";
 
 type Logo = (props: { className?: string }) => React.ReactNode;
@@ -46,6 +47,8 @@ const BaseUiLogo: Logo = ({ className }) => (
   </svg>
 );
 
+const GithubLogo: Logo = ({ className }) => <SiGithub aria-hidden className={className} />;
+
 const LOGOS = {
   spell: { Logo: SpellLogo, className: "size-[1.35em] -mx-[0.15em]" },
   shadcn: { Logo: ShadcnLogo, className: "size-[0.95em]" },
@@ -53,6 +56,7 @@ const LOGOS = {
   motion: { Logo: MotionLogo, className: "h-[0.5em] w-[1.4em]" },
   tailwind: { Logo: TailwindLogo, className: "size-[1.05em]" },
   baseui: { Logo: BaseUiLogo, className: "size-[1em]" },
+  github: { Logo: GithubLogo, className: "size-[1em]" },
 } as const;
 
 export function CreditLink({
@@ -77,4 +81,28 @@ export function CreditLink({
       {children}
     </a>
   );
+}
+
+export function CreditPerson({ handle, children }: { handle: string; children?: React.ReactNode }) {
+  return (
+    <a
+      href={`https://x.com/${handle}`}
+      target="_blank"
+      rel="noreferrer"
+      className="text-foreground inline-flex items-baseline gap-[0.4em] font-semibold whitespace-nowrap underline-offset-4 hover:underline"
+    >
+      <span
+        aria-hidden
+        data-plain-stroke
+        className="bg-muted ring-foreground/10 size-[1.25em] shrink-0 self-center rounded-full bg-cover bg-center ring-1"
+        style={{ backgroundImage: `url(https://unavatar.io/x/${handle}?v=2)` }}
+      />
+      {children}
+      <span className={cn(children && "text-muted-foreground font-normal")}>@{handle}</span>
+    </a>
+  );
+}
+
+export function CreditList({ children }: { children: React.ReactNode }) {
+  return <ul className="list-none ps-0 [&>li]:ps-0">{children}</ul>;
 }

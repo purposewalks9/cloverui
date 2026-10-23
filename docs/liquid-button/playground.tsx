@@ -38,7 +38,7 @@ const controls: ControlDef[] = [
 const defaultProps = {
   children: "Get started",
   element: "lava",
-  size: "default",
+  size: "lg",
   disabled: false,
 };
 

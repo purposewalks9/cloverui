@@ -255,7 +255,7 @@ export function Search({
             inputRef.current?.focus();
           }}
           className={cn(
-            "border-border bg-muted text-popover-foreground fixed top-[calc(var(--search-viewport-top,0px)+1rem)] left-1/2 z-[70] flex max-h-[calc(var(--search-viewport-height,100dvh)-2rem)] w-[calc(100%-1.5rem)] max-w-[560px] -translate-x-1/2 flex-col gap-2 border p-2 shadow-[0_24px_80px_-24px_rgb(0_0_0/0.25)] outline-none sm:top-[calc(var(--search-viewport-top,0px)+var(--search-viewport-height,100dvh)*0.12)] sm:max-h-[calc(var(--search-viewport-height,100dvh)*0.76)]",
+            "rich-strokes border-border bg-muted text-popover-foreground fixed top-[calc(var(--search-viewport-top,0px)+1rem)] left-1/2 z-[70] flex max-h-[calc(var(--search-viewport-height,100dvh)-2rem)] w-[calc(100%-1.5rem)] max-w-[560px] -translate-x-1/2 flex-col gap-2 border p-2 shadow-[0_24px_80px_-24px_rgb(0_0_0/0.25)] outline-none sm:top-[calc(var(--search-viewport-top,0px)+var(--search-viewport-height,100dvh)*0.12)] sm:max-h-[calc(var(--search-viewport-height,100dvh)*0.76)]",
             contentClassName,
           )}
         >

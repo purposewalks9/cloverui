@@ -535,7 +535,7 @@ const wrap = (a: number) => Math.atan2(Math.sin(a), Math.cos(a));
 
 function Butterflies({
   species = "mixed",
-  count = 6,
+  count = 12,
   size = 56,
   speed = 1,
   followCursor = true,

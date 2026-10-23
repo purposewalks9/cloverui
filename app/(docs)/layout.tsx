@@ -13,7 +13,7 @@ export default async function DocsLayout({
   const docSchema = await getDocSchema();
 
   return (
-    <div className="bg-sidebar min-h-screen">
+    <div className="bg-sidebar rich-strokes min-h-screen">
       <SidebarProvider>
         <AppSidebar docSchema={docSchema} />
         <SidebarInset className="bg-sidebar min-w-0">

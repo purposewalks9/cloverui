@@ -36,7 +36,7 @@ const controls: ControlDef[] = [
 
 const defaultProps = {
   species: "mixed",
-  count: 6,
+  count: 12,
   size: 56,
   speed: 1,
   followCursor: true,

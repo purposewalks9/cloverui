@@ -3,6 +3,7 @@ import { LazyMount } from "@/components/shared/lazy-mount";
 import { SponsorButton } from "@/components/shared/sponsor-button";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { HomeHeader } from "@/components/layout/home-header";
+import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
 import { BlockText } from "@/registry/clover-ui/block-text";
 import {
@@ -21,7 +22,7 @@ import {
 } from "@/components/home/bento-previews";
 import { BentoActiveCard, BentoActiveProvider } from "@/components/home/bento-active";
 
-const HERO_WORDS = ["headlines", "buttons", "controls", "cursors", "loaders", "effects"];
+const HERO_WORDS = ["buttons", "controls", "cursors", "loaders", "effects"];
 
 interface BentoItem {
   slug: string;
@@ -65,7 +66,7 @@ const TOTAL_CARDS = ROWS.reduce((sum, row) => sum + row.items.length, 0);
 function BentoCard({ Demo, className, index }: BentoItem & { index: number }) {
   return (
     <BentoActiveCard index={index} className={className}>
-      <LazyMount className="flex w-full flex-1 items-center justify-center p-6">
+      <LazyMount rootMargin="200px" className="flex w-full flex-1 items-center justify-center p-6">
         <Demo />
       </LazyMount>
     </BentoActiveCard>
@@ -85,20 +86,19 @@ export default function HomePage() {
                 words={HERO_WORDS}
                 colors={["#9333ea", "#dc2626", "#db2777"]}
                 textColor="#fafafa"
-                className="mx-1 text-[length:inherit] font-semibold [--block-h:1.6em] [--block-px:0.3em]"
+                className="mx-1 text-[length:inherit] font-semibold [--block-h:1.6em] [--block-px:0.12em]"
               />{" "}
               for thoughtful interfaces.
             </h1>
             <p className="text-muted-foreground max-w-md text-base leading-relaxed text-pretty sm:text-lg">
-              Shaders, physics, motion primitives and AI chat pieces for React and Tailwind CSS.
-              Open source and ready to drop in.
+              {siteConfig.description}
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3">
               <Link
                 href="/docs/introduction"
                 className="border-border focus-visible:ring-ring inline-flex h-9 shrink-0 items-center justify-center border bg-white px-4 text-sm font-medium whitespace-nowrap text-[#171717] transition-[filter] hover:brightness-95 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none dark:bg-black dark:text-white dark:hover:brightness-125"
               >
-                Get started
+                <span className="sponsor-gradient">Get started</span>
               </Link>
               <SponsorButton />
             </div>

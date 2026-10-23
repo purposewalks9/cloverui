@@ -22,7 +22,7 @@ const controls: ControlDef[] = [
   {
     type: "select",
     prop: "shimmerColor",
-    label: "Shimmer color",
+    label: "Color",
     options: Object.entries(colors).map(([value, swatch]) => ({
       label: value[0].toUpperCase() + value.slice(1),
       value,

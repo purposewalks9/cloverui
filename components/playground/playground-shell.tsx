@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, Copy, RotateCcw, ThumbsUp } from "lucide-react";
+import { ArrowCounterClockwise, CaretLeft, CaretRight, Check, Copy } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { cn } from "@/lib/utils";
@@ -15,10 +15,12 @@ const NAV_LINK_CLASS =
 
 function ToolbarButton({
   label,
+  primary = false,
   onClick,
   children,
 }: {
   label: string;
+  primary?: boolean;
   onClick: () => void;
   children: React.ReactNode;
 }) {
@@ -27,7 +29,12 @@ function ToolbarButton({
       type="button"
       variant="ghost"
       onClick={onClick}
-      className="border-border bg-background text-muted-foreground hover:text-foreground hover:bg-background h-8 shrink-0 cursor-pointer gap-1.5 rounded-none border px-2.5 text-xs font-medium whitespace-nowrap [&_svg]:size-3.5"
+      className={cn(
+        "h-8 shrink-0 cursor-pointer gap-1.5 rounded-none border px-3 text-xs font-medium whitespace-nowrap [&_svg]:size-4",
+        primary
+          ? "border-foreground bg-foreground text-background hover:bg-foreground/85 hover:text-background"
+          : "border-foreground/20 bg-background text-foreground hover:bg-background hover:border-foreground/40",
+      )}
     >
       {children}
       <span>{label}</span>
@@ -69,7 +76,7 @@ export function PlaygroundShell({
   }
 
   return (
-    <div className="not-prose my-6 flex flex-col gap-4">
+    <div data-plain-stroke className="not-prose my-6 flex flex-col gap-4">
       <div
         className={cn(
           "border-foreground/15 relative flex min-h-[22rem] min-w-0 items-center justify-center overflow-hidden rounded-none border p-4 sm:p-8 lg:min-h-[28rem]",
@@ -81,16 +88,6 @@ export function PlaygroundShell({
             {render(values)}
           </div>
         </div>
-        {controls.length > 0 && (
-          <div className="absolute top-3 right-3 z-10 flex shrink-0 items-center gap-2">
-            <ToolbarButton label="Reset" onClick={reset}>
-              <RotateCcw />
-            </ToolbarButton>
-            <ToolbarButton label={isCopied ? "Copied" : "Code"} onClick={copySettings}>
-              {isCopied ? <ThumbsUp /> : <Copy />}
-            </ToolbarButton>
-          </div>
-        )}
       </div>
 
       {controls.length > 0 && (
@@ -98,10 +95,18 @@ export function PlaygroundShell({
           aria-label="Customize"
           className="border-foreground/15 bg-muted rounded-none border"
         >
-          <div className="flex h-12 items-center pr-3 pl-4">
+          <div className="flex h-12 items-center justify-between gap-2 pr-3 pl-4">
             <h2 className="text-foreground shrink-0 text-sm font-medium whitespace-nowrap">
               Customize
             </h2>
+            <div className="flex shrink-0 items-center gap-2">
+              <ToolbarButton label="Reset" onClick={reset}>
+                <ArrowCounterClockwise weight="fill" />
+              </ToolbarButton>
+              <ToolbarButton label={isCopied ? "Copied" : "Code"} primary onClick={copySettings}>
+                {isCopied ? <Check weight="fill" /> : <Copy weight="fill" />}
+              </ToolbarButton>
+            </div>
           </div>
 
           <div className="px-3 pb-3">
@@ -115,7 +120,7 @@ export function PlaygroundShell({
             >
               {previous ? (
                 <Link href={previous.href} className={NAV_LINK_CLASS}>
-                  <ChevronLeft className="size-3.5 shrink-0" />
+                  <CaretLeft weight="fill" className="size-3.5 shrink-0" />
                   <span className="truncate">{previous.title}</span>
                 </Link>
               ) : (
@@ -124,7 +129,7 @@ export function PlaygroundShell({
               {next && (
                 <Link href={next.href} className={NAV_LINK_CLASS}>
                   <span className="truncate">{next.title}</span>
-                  <ChevronRight className="size-3.5 shrink-0" />
+                  <CaretRight weight="fill" className="size-3.5 shrink-0" />
                 </Link>
               )}
             </nav>

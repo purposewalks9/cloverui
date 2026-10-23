@@ -5,7 +5,6 @@ import * as Dialog from "@radix-ui/react-dialog";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Heart, Menu, X } from "lucide-react";
-import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
 import type { DocSchema } from "@/lib/types";
 
@@ -45,15 +44,14 @@ export function MobileMenu({ docSchema }: { docSchema: DocSchema }) {
               <X aria-hidden className="size-5" />
               <Dialog.Title className="text-xl font-medium tracking-tight">Menu</Dialog.Title>
             </Dialog.Close>
-            <Link
-              href={siteConfig.links.sponsor}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex min-h-10 items-center gap-1.5 px-1 text-sm font-medium whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current"
+            <span
+              aria-disabled="true"
+              title="Coming soon"
+              className="text-muted-foreground inline-flex min-h-10 cursor-not-allowed items-center gap-1.5 px-1 text-sm font-medium whitespace-nowrap opacity-60"
             >
-              <Heart aria-hidden className="size-4 shrink-0 text-[#db2777] dark:text-[#f472b6]" />
-              <span className="sponsor-gradient">Sponsor</span>
-            </Link>
+              <Heart aria-hidden className="size-4 shrink-0" />
+              Sponsor
+            </span>
           </div>
           <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 pt-6 pb-[max(2rem,env(safe-area-inset-bottom))] sm:px-8">
             <nav aria-label="Documentation sections" className="space-y-7">

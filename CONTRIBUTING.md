@@ -49,7 +49,7 @@ Consumers need React 19, Tailwind CSS v4 and a configured shadcn project. Contri
 
 ### Optional configuration
 
-The site runs without sponsor credentials. `.env.example` documents the optional sponsor token, webhook secret and metadata URL. Only copy the values you need into `.env.local`; never commit credentials. Without the sponsor token, sponsor data is unavailable. Without the webhook secret, the webhook returns `501 Webhook not configured`.
+The site runs without any credentials. `.env.example` documents the optional metadata URL. Only copy the values you need into `.env.local`.
 
 ## Project Structure
 

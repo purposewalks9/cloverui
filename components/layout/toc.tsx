@@ -4,7 +4,7 @@ import { OpenAILogo } from "@/components/icons/openai-logo";
 
 import * as React from "react";
 import Link from "next/link";
-import { ArrowUp, Copy, SquarePen, ThumbsUp } from "lucide-react";
+import { ArrowCircleUp, Copy, PencilSimple, ThumbsUp } from "@phosphor-icons/react";
 import { SiClaude, SiV0, SiX } from "@icons-pack/react-simple-icons";
 
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
@@ -258,7 +258,7 @@ export function DocsTableOfContents({
 
           <div className="border-border mt-5 flex flex-col gap-2 border-t pt-4">
             <ActionButton label={isCopied ? "Copied" : "Copy page"} onClick={copyPage}>
-              {isCopied ? <ThumbsUp /> : <Copy />}
+              {isCopied ? <ThumbsUp weight="fill" /> : <Copy weight="fill" />}
             </ActionButton>
             <ActionButton
               label="Share"
@@ -291,7 +291,7 @@ export function DocsTableOfContents({
                 say(ghostWords.edit);
               }}
             >
-              <SquarePen />
+              <PencilSimple weight="fill" />
             </ActionButton>
             <ActionButton
               label="Back to top"
@@ -300,7 +300,7 @@ export function DocsTableOfContents({
                 say(ghostWords.top);
               }}
             >
-              <ArrowUp />
+              <ArrowCircleUp weight="fill" />
             </ActionButton>
             <GhostToggle className={ROW_CLASS} />
           </div>

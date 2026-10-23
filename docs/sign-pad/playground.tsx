@@ -6,7 +6,7 @@ import { PlaygroundShell } from "@/components/playground/playground-shell";
 import { expr, jsx, type ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [
-  { type: "color", prop: "accent", label: "Accent" },
+  { type: "color", prop: "accent", label: "Color" },
   {
     type: "number",
     prop: "strokeWidth",

@@ -16,13 +16,18 @@ export type AuthProvider =
   | "twitch"
   | "notion"
   | "chatgpt"
-  | "dropbox";
+  | "dropbox"
+  | "apple"
+  | "vercel"
+  | "reddit"
+  | "bitbucket";
 
 export interface AuthBrand {
   name: string;
   logo: string;
   mono?: boolean;
   colors?: string[];
+  glow?: string;
 }
 
 export type AuthButtonSize = "sm" | "default" | "lg";
@@ -39,6 +44,7 @@ const svg = (source: string) => `data:image/svg+xml,${encodeURIComponent(source)
 const providerBrands: Record<AuthProvider, AuthBrand> = {
   google: {
     name: "Google",
+    glow: "#4285F4",
     colors: ["#EA4335", "#FBBC05", "#34A853", "#4285F4"],
     logo: svg(
       '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5Z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65Z"/><path fill="#FBBC05" d="M10.53 28.59A14.4 14.4 0 0 1 9.75 24c0-1.59.27-3.13.76-4.59l-7.98-6.19A23.87 23.87 0 0 0 0 24c0 3.87.93 7.52 2.56 10.78l7.97-6.19Z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.91-5.8l-7.73-6c-2.15 1.45-4.92 2.3-8.18 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48Z"/></svg>',
@@ -53,6 +59,7 @@ const providerBrands: Record<AuthProvider, AuthBrand> = {
   },
   microsoft: {
     name: "Microsoft",
+    glow: "#00A4EF",
     colors: ["#F25022", "#7FBA00", "#00A4EF", "#FFB900"],
     logo: svg(
       '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="#F25022" d="M1 1h10.5v10.5H1z"/><path fill="#7FBA00" d="M12.5 1H23v10.5H12.5z"/><path fill="#00A4EF" d="M1 12.5h10.5V23H1z"/><path fill="#FFB900" d="M12.5 12.5H23V23H12.5z"/></svg>',
@@ -88,6 +95,7 @@ const providerBrands: Record<AuthProvider, AuthBrand> = {
   },
   slack: {
     name: "Slack",
+    glow: "#E01E5A",
     colors: ["#36C5F0", "#2EB67D", "#ECB22E", "#E01E5A"],
     logo: svg(
       '<svg viewBox="0 0 2447.6 2452.5" xmlns="http://www.w3.org/2000/svg" ><g clip-rule="evenodd" fill-rule="evenodd"><path d="m897.4 0c-135.3.1-244.8 109.9-244.7 245.2-.1 135.3 109.5 245.1 244.8 245.2h244.8v-245.1c.1-135.3-109.5-245.1-244.9-245.3.1 0 .1 0 0 0m0 654h-652.6c-135.3.1-244.9 109.9-244.8 245.2-.2 135.3 109.4 245.1 244.7 245.3h652.7c135.3-.1 244.9-109.9 244.8-245.2.1-135.4-109.5-245.2-244.8-245.3z" fill="#36c5f0" /><path d="m2447.6 899.2c.1-135.3-109.5-245.1-244.8-245.2-135.3.1-244.9 109.9-244.8 245.2v245.3h244.8c135.3-.1 244.9-109.9 244.8-245.3zm-652.7 0v-654c.1-135.2-109.4-245-244.7-245.2-135.3.1-244.9 109.9-244.8 245.2v654c-.2 135.3 109.4 245.1 244.7 245.3 135.3-.1 244.9-109.9 244.8-245.3z" fill="#2eb67d" /><path d="m1550.1 2452.5c135.3-.1 244.9-109.9 244.8-245.2.1-135.3-109.5-245.1-244.8-245.2h-244.8v245.2c-.1 135.2 109.5 245 244.8 245.2zm0-654.1h652.7c135.3-.1 244.9-109.9 244.8-245.2.2-135.3-109.4-245.1-244.7-245.3h-652.7c-135.3.1-244.9 109.9-244.8 245.2-.1 135.4 109.4 245.2 244.7 245.3z" fill="#ecb22e" /><path d="m0 1553.2c-.1 135.3 109.5 245.1 244.8 245.2 135.3-.1 244.9-109.9 244.8-245.2v-245.2h-244.8c-135.3.1-244.9 109.9-244.8 245.2zm652.7 0v654c-.2 135.3 109.4 245.1 244.7 245.3 135.3-.1 244.9-109.9 244.8-245.2v-653.9c.2-135.3-109.4-245.1-244.7-245.3-135.4 0-244.9 109.8-244.8 245.1 0 0 0 .1 0 0" fill="#e01e5a" /></g></svg>',
@@ -118,6 +126,34 @@ const providerBrands: Record<AuthProvider, AuthBrand> = {
     colors: ["#0061FE"],
     logo: svg(
       '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 128 128"><path fill="#0061FE" d="M0 0h128v128H0z"/><path fill="#F7F5F2" d="M43.7 32 23.404 44.75 43.701 57.5 64 44.75 84.3 57.5l20.298-12.75L84.299 32 64.002 44.75 43.7 32Zm0 51L23.404 70.25 43.701 57.5 64 70.25 43.702 83Zm20.302-12.75L84.299 57.5l20.298 12.75L84.299 83 64.002 70.25Zm0 29.75L43.7 87.25 64 74.5l20.3 12.75L64.002 100Z"/></svg>',
+    ),
+  },
+  apple: {
+    name: "Apple",
+    mono: true,
+    logo: svg(
+      '<svg xmlns="http://www.w3.org/2000/svg" fill="#000000" viewBox="0 0 24 24"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>',
+    ),
+  },
+  vercel: {
+    name: "Vercel",
+    mono: true,
+    logo: svg(
+      '<svg xmlns="http://www.w3.org/2000/svg" fill="#000000" viewBox="0 0 24 24"><path d="m12 1.608 12 20.784H0Z"/></svg>',
+    ),
+  },
+  reddit: {
+    name: "Reddit",
+    colors: ["#FF4500"],
+    logo: svg(
+      '<svg xmlns="http://www.w3.org/2000/svg" fill="#FF4500" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12c0 3.314 1.343 6.314 3.515 8.485l-2.286 2.286C.775 23.225 1.097 24 1.738 24H12c6.627 0 12-5.373 12-12S18.627 0 12 0Zm4.388 3.199c1.104 0 1.999.895 1.999 1.999 0 1.105-.895 2-1.999 2-.946 0-1.739-.657-1.947-1.539v.002c-1.147.162-2.032 1.15-2.032 2.341v.007c1.776.067 3.4.567 4.686 1.363.473-.363 1.064-.58 1.707-.58 1.547 0 2.802 1.254 2.802 2.802 0 1.117-.655 2.081-1.601 2.531-.088 3.256-3.637 5.876-7.997 5.876-4.361 0-7.905-2.617-7.998-5.87-.954-.447-1.614-1.415-1.614-2.538 0-1.548 1.255-2.802 2.803-2.802.645 0 1.239.218 1.712.585 1.275-.79 2.881-1.291 4.64-1.365v-.01c0-1.663 1.263-3.034 2.88-3.207.188-.911.993-1.595 1.959-1.595Zm-8.085 8.376c-.784 0-1.459.78-1.506 1.797-.047 1.016.64 1.429 1.426 1.429.786 0 1.371-.369 1.418-1.385.047-1.017-.553-1.841-1.338-1.841Zm7.406 0c-.786 0-1.385.824-1.338 1.841.047 1.017.634 1.385 1.418 1.385.785 0 1.473-.413 1.426-1.429-.046-1.017-.721-1.797-1.506-1.797Zm-3.703 4.013c-.974 0-1.907.048-2.77.135-.147.015-.241.168-.183.305.483 1.154 1.622 1.964 2.953 1.964 1.33 0 2.47-.81 2.953-1.964.057-.137-.037-.29-.184-.305-.863-.087-1.795-.135-2.769-.135Z"/></svg>',
+    ),
+  },
+  bitbucket: {
+    name: "Bitbucket",
+    colors: ["#0052CC", "#2684FF"],
+    logo: svg(
+      '<svg xmlns="http://www.w3.org/2000/svg" fill="#0052CC" viewBox="0 0 24 24"><path d="M.778 1.213a.768.768 0 00-.768.892l3.263 19.81c.084.5.515.868 1.022.873H19.95a.772.772 0 00.77-.646l3.27-20.03a.768.768 0 00-.768-.891zM14.52 15.53H9.522L8.17 8.466h7.561z"/></svg>',
     ),
   },
 };
@@ -152,10 +188,9 @@ const styles = `
     background: var(--auth-base);
     border: 1.5px solid var(--auth-border);
     color: var(--auth-text);
-    transition: opacity 200ms ease, transform 180ms cubic-bezier(.2, .8, .2, 1);
+    transition: opacity 200ms ease;
     -webkit-tap-highlight-color: transparent;
   }
-  .clover-auth:active:not(:disabled) { transform: translateY(1px); transition-duration: 200ms, 60ms; }
   .clover-auth:focus-visible { outline: 2px solid var(--ring, #8989a5); outline-offset: 4px; }
   .clover-auth:disabled { opacity: .45; }
   .dark .clover-auth {
@@ -171,6 +206,14 @@ const styles = `
     --auth-mono: brightness(0) invert(1);
   }
   .clover-auth-surface { background: var(--auth-base); }
+  .clover-auth-press {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(90% 120% at 50% 55%, color-mix(in oklab, var(--auth-glow) 12%, transparent), transparent 75%);
+    opacity: 0;
+    transition: opacity 280ms ease;
+  }
+  .clover-auth:active:not(:disabled) .clover-auth-press { opacity: 1; transition-duration: 80ms; }
   .clover-auth-color {
     position: absolute;
     inset: -20%;
@@ -199,7 +242,6 @@ const styles = `
   .clover-auth-lens[data-mono] img { filter: var(--auth-mono); }
   @media (prefers-reduced-motion: reduce) {
     .clover-auth, .clover-auth * { transition: none !important; animation: none !important; }
-    .clover-auth:active:not(:disabled) { transform: none; }
   }
   @media (forced-colors: active) {
     .clover-auth { border: 1px solid ButtonText; background: ButtonFace; color: ButtonText; box-shadow: none; }
@@ -216,6 +258,7 @@ function AuthButton({
   disabled = false,
   type = "button",
   className,
+  style,
   children,
   ...props
 }: AuthButtonProps) {
@@ -224,6 +267,7 @@ function AuthButton({
   const logoFailed = failedLogo === brand.logo;
   const prefix = { signin: "Sign in with", signup: "Sign up with" }[intent];
   const label = children ?? `${prefix} ${brand.name}`;
+  const glow = brand.glow ?? brand.colors?.[0] ?? "#71717a";
   const wash = brand.colors?.length
     ? `linear-gradient(110deg, ${[...brand.colors, brand.colors[0]].join(", ")})`
     : undefined;
@@ -238,6 +282,7 @@ function AuthButton({
         type={type}
         disabled={disabled}
         className={cn(buttonVariants({ size }), className)}
+        style={{ "--auth-glow": glow, ...style } as React.CSSProperties}
       >
         <span
           aria-hidden="true"
@@ -246,6 +291,7 @@ function AuthButton({
         >
           {wash && <span className="clover-auth-color" />}
           <span className="clover-auth-glass" />
+          <span className="clover-auth-press" />
           <span className="clover-auth-depth" />
         </span>
         <span

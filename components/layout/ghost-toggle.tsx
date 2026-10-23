@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { GraduationCap } from "lucide-react";
+import { GraduationCap } from "@phosphor-icons/react";
 import { useGhost } from "@/registry/clover-ui/ghost";
 import { useSiteGhostGuide } from "@/components/layout/site-ghost";
 import { cn } from "@/lib/utils";
@@ -34,7 +34,7 @@ export function GhostToggle({ className }: { className?: string }) {
           "text-[#a855f7] hover:text-[#a855f7] dark:text-[#c084fc] dark:hover:text-[#c084fc]",
       )}
     >
-      <GraduationCap />
+      <GraduationCap weight="fill" />
       <span className={cn(shown && "sponsor-gradient")}>Guide</span>
     </button>
   );
