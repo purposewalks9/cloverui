@@ -1,4 +1,3 @@
-<img alt="Clover UI — Thoughtfully crafted components for expressive interfaces." src="https://cloverui.xyz/og?title=Clover%20UI&description=Thoughtfully%20crafted%20components%20for%20expressive%20interfaces." width="100%">
 
 ## Documentation
 
