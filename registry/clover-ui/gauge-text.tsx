@@ -100,6 +100,14 @@ function GaugeText({
     setLanded(false);
     callbacks.current.onStart?.();
 
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setDisplay(value);
+      setLanded(true);
+      frame.current = null;
+      callbacks.current.onComplete?.();
+      return;
+    }
+
     const start = performance.now();
 
     const tick = (now: number) => {

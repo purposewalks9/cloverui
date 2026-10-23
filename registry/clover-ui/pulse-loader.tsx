@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
@@ -42,6 +42,8 @@ function PulseLoader({
   autoStart = true,
 }: PulseLoaderProps) {
   const [running, setRunning] = React.useState(autoStart);
+  const reduceMotion = useReducedMotion();
+  const pulsing = running && !reduceMotion;
 
   const play = React.useCallback(() => setRunning(true), []);
   const pause = React.useCallback(() => setRunning(false), []);
@@ -78,11 +80,11 @@ function PulseLoader({
             backgroundColor: color,
             opacity: ring.opacity,
           }}
-          animate={running ? { scale: [1, contraction, 1] } : { scale: 1 }}
+          animate={pulsing ? { scale: [1, contraction, 1] } : { scale: 1 }}
           transition={{
             duration,
             delay: ring.delay,
-            repeat: running ? Infinity : 0,
+            repeat: pulsing ? Infinity : 0,
             ease: "easeInOut",
           }}
         />

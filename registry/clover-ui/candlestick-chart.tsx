@@ -46,6 +46,14 @@ export interface CandlestickChartProps {
   className?: string;
 }
 
+const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
+
+function subscribeReducedMotion(onChange: () => void) {
+  const query = window.matchMedia(REDUCED_MOTION);
+  query.addEventListener("change", onChange);
+  return () => query.removeEventListener("change", onChange);
+}
+
 function CandlestickChart({
   data,
   name,
@@ -63,7 +71,12 @@ function CandlestickChart({
   zoomable = true,
   className,
 }: CandlestickChartProps) {
-  const transition = animated ? TRANSITION : "0ms";
+  const reduceMotion = React.useSyncExternalStore(
+    subscribeReducedMotion,
+    () => window.matchMedia(REDUCED_MOTION).matches,
+    () => false,
+  );
+  const transition = animated && !reduceMotion ? TRANSITION : "0ms";
   const root = React.useRef<HTMLDivElement>(null);
 
   const initialVisible = Math.min(defaultVisibleCount ?? Math.min(100, data.length), data.length);

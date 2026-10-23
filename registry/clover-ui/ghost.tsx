@@ -198,6 +198,7 @@ function GhostBody({ color, size, facing, className, ref, ...props }: GhostBodyP
                 cy={drip.cy}
                 rx={drip.rx}
                 ry={drip.ry}
+                initial={{ ry: drip.ry, cy: drip.cy }}
                 animate={
                   still
                     ? undefined
@@ -213,6 +214,7 @@ function GhostBody({ color, size, facing, className, ref, ...props }: GhostBodyP
           <motion.path
             d={sheet(0)}
             fill={`url(#${id}-fill)`}
+            initial={{ d: sheet(0) }}
             animate={still ? undefined : { d: [sheet(0), sheet(1), sheet(-1), sheet(0)] }}
             transition={ripple}
           />
