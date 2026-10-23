@@ -15,7 +15,12 @@ type SoftColor =
   | "pink"
   | "cyan"
   | "white"
-  | "black";
+  | "black"
+  | "teal"
+  | "indigo"
+  | "coral"
+  | "mint"
+  | "plum";
 
 type SizeVariant = "sm" | "default" | "lg";
 
@@ -88,6 +93,31 @@ const colorMap: Record<SoftColor, { background: string; foreground: string; glow
     background: "radial-gradient(120% 140% at 50% 0%, #555555 0%, #222222 42%, #000000 100%)",
     foreground: "#fff",
     glow: "rgba(0, 0, 0, .3)",
+  },
+  teal: {
+    background: "radial-gradient(120% 140% at 50% 0%, #6ee0c8 0%, #14a88e 42%, #0a6656 100%)",
+    foreground: "#fff",
+    glow: "rgba(20, 168, 142, .3)",
+  },
+  indigo: {
+    background: "radial-gradient(120% 140% at 50% 0%, #9aa4ff 0%, #5b5ff0 42%, #2c2a9e 100%)",
+    foreground: "#fff",
+    glow: "rgba(91, 95, 240, .3)",
+  },
+  coral: {
+    background: "radial-gradient(120% 140% at 50% 0%, #ffb09a 0%, #ff6f52 42%, #c43a22 100%)",
+    foreground: "#fff",
+    glow: "rgba(255, 111, 82, .3)",
+  },
+  mint: {
+    background: "radial-gradient(120% 140% at 50% 0%, #d4ffe6 0%, #7beeb0 42%, #2fae6c 100%)",
+    foreground: "#062414",
+    glow: "rgba(123, 238, 176, .3)",
+  },
+  plum: {
+    background: "radial-gradient(120% 140% at 50% 0%, #e28ad8 0%, #a8329b 42%, #5e1456 100%)",
+    foreground: "#fff",
+    glow: "rgba(168, 50, 155, .3)",
   },
 };
 

@@ -21,8 +21,8 @@ export const ghostWords = {
   home: "home",
   github: "star",
   starred: "yay",
-  share: "share",
-  shared: "shared",
+  follow: "follow",
+  followed: "yay",
   copy: "copy",
   copied: "copied",
   theme: "lights",
@@ -39,6 +39,16 @@ export const ghostWords = {
   code: "code",
   props: "props",
   section: "jump",
+  reset: "reset",
+  soon: "soon",
+  thanks: "thanks",
+  menu: "menu",
+  slide: "slide",
+  type: "type",
+  flip: "flip",
+  on: "on",
+  off: "off",
+  peek: "peek",
 };
 
 const flavors: Record<string, string[]> = {
@@ -54,7 +64,7 @@ const flavors: Record<string, string[]> = {
 };
 
 const hoverLinks: [string[], string][] = [
-  [["x.com", "twitter.com"], ghostWords.share],
+  [["x.com", "twitter.com"], ghostWords.follow],
   [["v0.dev"], ghostWords.v0],
   [["chatgpt.com"], ghostWords.chatgpt],
   [["claude.ai"], ghostWords.claude],
@@ -79,6 +89,7 @@ export function sectionWord(text: string | null | undefined) {
 
 const react: GhostReaction = (target, kind) => {
   const press = kind === "press";
+  if (target.closest("[aria-disabled='true']")) return ghostWords.soon;
   const link = target.closest("a[href]");
   const href = link?.getAttribute("href") ?? "";
   const label = target.closest("[aria-label]")?.getAttribute("aria-label") ?? "";
@@ -97,8 +108,23 @@ const react: GhostReaction = (target, kind) => {
   const hoverLink = hoverLinks.find(([parts]) => parts.some((part) => href.includes(part)));
   if (hoverLink) return press ? null : hoverLink[1];
   if (href.includes("github.com")) return press ? ghostWords.starred : ghostWords.github;
+  if (link && target.closest("article, main") && href.startsWith("http"))
+    return press ? null : ghostWords.thanks;
 
   if (/^cop/i.test(label) || /^cop/i.test(text)) return press ? null : ghostWords.copy;
+  if (text === "Code") return press ? ghostWords.copied : ghostWords.code;
+  if (text === "Reset") return press ? ghostWords.replay : ghostWords.reset;
+  if (label === "Open menu") return ghostWords.menu;
+
+  const option = target.closest("[role='radio']");
+  if (option) return sectionWord(option.textContent);
+  const toggle = target.closest("[role='switch']");
+  if (toggle) {
+    if (!press) return ghostWords.flip;
+    return toggle.getAttribute("aria-checked") === "true" ? ghostWords.off : ghostWords.on;
+  }
+  if (target.closest("input[type='range']")) return ghostWords.slide;
+  if (target.closest("input[type='text'], input:not([type])")) return ghostWords.type;
   if (label.startsWith("Switch to")) return press ? null : ghostWords.theme;
   if (label.startsWith("Select ") && label.endsWith(" color")) return label.slice(7, -6);
   if (label === "Refresh component" || label === "Replay") return ghostWords.replay;
@@ -106,6 +132,8 @@ const react: GhostReaction = (target, kind) => {
 
   const tab = target.closest("[role='tab']")?.textContent?.trim().toLowerCase();
   if (tab && ["pnpm", "npm", "yarn", "bun"].includes(tab)) return tab;
+  if (tab === "preview") return ghostWords.peek;
+  if (tab === "code") return ghostWords.code;
   if (text.includes("Search")) return ghostWords.search;
   if (target.closest("pre")) return ghostWords.code;
   if (target.closest("table")) return ghostWords.props;

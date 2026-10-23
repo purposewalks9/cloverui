@@ -11,12 +11,10 @@ const size = { width: 1200, height: 630 };
 const colors = {
   background: "#ffffff",
   foreground: "#0a0a0a",
-  muted: "#52525b",
+  muted: "#262626",
 };
 
-const stroke = ["#6b21a8", "#991b1b", "#9d174d"];
-const strokeGradient = (angle: number) =>
-  `linear-gradient(${angle}deg, ${stroke[0]} 0%, ${stroke[1]} 33%, ${stroke[2]} 66%, ${stroke[0]} 100%)`;
+const stroke = "#e5e5e5";
 
 const INSET = 64;
 
@@ -71,7 +69,7 @@ export async function GET(request: NextRequest) {
           bottom: 0,
           left: INSET,
           width: 1,
-          backgroundImage: strokeGradient(180),
+          backgroundColor: stroke,
         }}
       />
       <div
@@ -82,7 +80,7 @@ export async function GET(request: NextRequest) {
           bottom: 0,
           right: INSET,
           width: 1,
-          backgroundImage: strokeGradient(180),
+          backgroundColor: stroke,
         }}
       />
       <div
@@ -93,7 +91,7 @@ export async function GET(request: NextRequest) {
           right: 0,
           top: INSET,
           height: 1,
-          backgroundImage: strokeGradient(90),
+          backgroundColor: stroke,
         }}
       />
       <div
@@ -104,7 +102,7 @@ export async function GET(request: NextRequest) {
           right: 0,
           bottom: INSET,
           height: 1,
-          backgroundImage: strokeGradient(90),
+          backgroundColor: stroke,
         }}
       />
 

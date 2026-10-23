@@ -114,19 +114,16 @@ function useScrollStrip(selection: unknown) {
     },
   };
 
-  return { stripProps, scrollable };
+  return stripProps;
 }
 
 function ScrollStrip({ selection, children }: { selection: unknown; children: React.ReactNode }) {
-  const { stripProps, scrollable } = useScrollStrip(selection);
+  const stripProps = useScrollStrip(selection);
 
   return (
     <div
       {...stripProps}
-      className={cn(
-        "min-w-0 flex-1 overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
-        scrollable && "cursor-grab active:cursor-grabbing",
-      )}
+      className="min-w-0 flex-1 overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
     >
       {children}
     </div>
@@ -367,38 +364,35 @@ function SliderTile({
 
   return (
     <div className={TILE_CLASS}>
-      <div
-        aria-hidden="true"
-        className="from-foreground/[0.02] to-foreground/[0.12] pointer-events-none absolute inset-y-0 left-0 bg-linear-to-r"
-        style={{ width: `${percent}%` }}
-      />
-      <div
-        aria-hidden="true"
-        className="bg-foreground/10 pointer-events-none absolute inset-x-0 bottom-0 h-0.5"
-      >
-        <div className="bg-foreground h-full" style={{ width: `${percent}%` }} />
-      </div>
-      <div
-        aria-hidden="true"
-        className="bg-foreground/60 pointer-events-none absolute inset-y-2.5 w-0.5"
-        style={{ left: `calc(${percent}% - ${percent / 100} * 2px)` }}
-      />
-      <label htmlFor={id} className={cn(LABEL_CLASS, "pointer-events-none")}>
+      <label htmlFor={id} className={cn(LABEL_CLASS, "shrink-0")}>
         {label}
       </label>
-      <span className="text-foreground pointer-events-none relative shrink-0 text-sm tabular-nums">
+      <div className="relative h-4 min-w-0 flex-1">
+        <div
+          aria-hidden="true"
+          className="bg-foreground/15 absolute inset-x-0 top-1/2 h-0.5 -translate-y-1/2"
+        >
+          <div className="bg-foreground h-full" style={{ width: `${percent}%` }} />
+        </div>
+        <div
+          aria-hidden="true"
+          className="bg-foreground pointer-events-none absolute top-1/2 size-2.5 -translate-y-1/2"
+          style={{ left: `calc(${percent}% - ${percent / 100} * 0.625rem)` }}
+        />
+        <input
+          id={id}
+          type="range"
+          min={min}
+          max={max}
+          step={step}
+          value={value}
+          onChange={(e) => onChange(Number(Number(e.target.value).toFixed(decimals)))}
+          className="absolute inset-0 size-full cursor-default opacity-0"
+        />
+      </div>
+      <span className="text-foreground min-w-[3ch] shrink-0 text-right text-sm tabular-nums">
         {value.toFixed(decimals)}
       </span>
-      <input
-        id={id}
-        type="range"
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        onChange={(e) => onChange(Number(Number(e.target.value).toFixed(decimals)))}
-        className="absolute inset-0 size-full cursor-ew-resize opacity-0"
-      />
     </div>
   );
 }

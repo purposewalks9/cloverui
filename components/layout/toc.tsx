@@ -131,14 +131,12 @@ function ActionButton({
 export function DocsTableOfContents({
   toc,
   docId,
-  title,
   content,
   url,
   editPath = `docs/${docId}/doc.mdx`,
 }: {
   toc: TocItem[];
   docId: string;
-  title: string;
   content: string;
   url: string;
   editPath?: string;
@@ -177,10 +175,6 @@ export function DocsTableOfContents({
       say(ghostWords.copied);
     }
   };
-
-  const shareUrl = `https://x.com/intent/post?text=${encodeURIComponent(
-    `${title} · ${siteConfig.name}`,
-  )}&url=${encodeURIComponent(`${siteConfig.url}${url}`)}`;
 
   const prompt = encodeURIComponent(
     `I'm looking at this Clover UI documentation: ${siteConfig.url}${url}\nHelp me understand how to use it. Be ready to explain concepts, give examples, or help debug based on it.`,
@@ -261,11 +255,11 @@ export function DocsTableOfContents({
               {isCopied ? <ThumbsUp weight="fill" /> : <Copy weight="fill" />}
             </ActionButton>
             <ActionButton
-              label="Share"
-              href={shareUrl}
+              label={`@${siteConfig.links.x.split("/").filter(Boolean).pop()}`}
+              href={siteConfig.links.x}
               onClick={() => {
-                trackEvent("share_on_x", { url });
-                say(ghostWords.shared);
+                trackEvent("follow_on_x", { url });
+                say(ghostWords.followed);
               }}
             >
               <SiX className="text-black dark:text-white" />

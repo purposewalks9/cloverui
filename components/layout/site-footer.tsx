@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Heart } from "lucide-react";
+import { SiGithub } from "@icons-pack/react-simple-icons";
 import { siteConfig } from "@/lib/config";
 
 const focusClass =
@@ -12,8 +13,8 @@ const xUsername = siteConfig.links.x.split("/").filter(Boolean).pop();
 export function SiteFooter() {
   return (
     <footer className="text-muted-foreground w-full text-sm">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-4 py-6 font-medium sm:px-6 md:flex-row md:items-center md:justify-between">
-        <p className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
+      <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-3 px-4 py-8 font-medium sm:px-6 md:flex-row md:justify-between md:py-6">
+        <p className="flex flex-col items-center gap-1.5 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-x-4">
           <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
             Made with care by
             <Link
@@ -37,13 +38,17 @@ export function SiteFooter() {
             © {new Date().getFullYear()}. All rights reserved.
           </span>
         </p>
-        <nav aria-label="Footer" className="flex flex-wrap items-center gap-x-5 gap-y-2">
+        <nav
+          aria-label="Footer"
+          className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2"
+        >
           <Link
             href={siteConfig.links.github}
             target="_blank"
             rel="noreferrer"
-            className={`${linkClass} text-foreground`}
+            className={`${linkClass} text-foreground inline-flex items-baseline gap-1.5`}
           >
+            <SiGithub aria-hidden className="size-[0.95em] shrink-0 self-center" />
             Open source
           </Link>
           <span

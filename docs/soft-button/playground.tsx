@@ -19,6 +19,11 @@ const controls: ControlDef[] = [
       { label: "purple", value: "purple", swatch: "#9c4cff" },
       { label: "orange", value: "orange", swatch: "#ff922e" },
       { label: "pink", value: "pink", swatch: "#f04fbd" },
+      { label: "teal", value: "teal", swatch: "#14a88e" },
+      { label: "indigo", value: "indigo", swatch: "#5b5ff0" },
+      { label: "coral", value: "coral", swatch: "#ff6f52" },
+      { label: "mint", value: "mint", swatch: "#7beeb0" },
+      { label: "plum", value: "plum", swatch: "#a8329b" },
     ],
   },
   {

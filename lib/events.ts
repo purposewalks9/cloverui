@@ -10,7 +10,7 @@ type EventName =
   | "search_query"
   | "select_package_manager"
   | "click_edit_page"
-  | "share_on_x";
+  | "follow_on_x";
 
 type EventProperties = Record<string, string | number | boolean | null>;
 
