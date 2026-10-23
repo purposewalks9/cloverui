@@ -32,6 +32,11 @@ const colors = [
   { value: "green", label: "Green", swatch: "#22c55e" },
   { value: "purple", label: "Purple", swatch: "#a855f7" },
   { value: "orange", label: "Orange", swatch: "#f97316" },
+  { value: "pink", label: "Pink", swatch: "#ec4899" },
+  { value: "yellow", label: "Yellow", swatch: "#eab308" },
+  { value: "teal", label: "Teal", swatch: "#14b8a6" },
+  { value: "cyan", label: "Cyan", swatch: "#06b6d4" },
+  { value: "indigo", label: "Indigo", swatch: "#6366f1" },
   { value: "pixel", label: "Pixel", swatch: pixelSwatch },
 ];
 

@@ -7,7 +7,19 @@ import { cn } from "@/lib/utils";
 
 export type GlitchyTextTrigger = "auto" | "hover" | "always";
 
-export type GlitchyTextColor = "default" | "red" | "blue" | "green" | "purple" | "orange" | "pixel";
+export type GlitchyTextColor =
+  | "default"
+  | "red"
+  | "blue"
+  | "green"
+  | "purple"
+  | "orange"
+  | "pink"
+  | "yellow"
+  | "teal"
+  | "cyan"
+  | "indigo"
+  | "pixel";
 
 export interface GlitchyTextProps extends Omit<React.ComponentProps<"span">, "children"> {
   children: string;
@@ -41,6 +53,11 @@ const PALETTES: Record<GlitchyTextColor, [string, string]> = {
   green: ["#22c55e", "#a3e635"],
   purple: ["#a855f7", "#d946ef"],
   orange: ["#f97316", "#facc15"],
+  pink: ["#ec4899", "#fb7185"],
+  yellow: ["#eab308", "#fde047"],
+  teal: ["#14b8a6", "#5eead4"],
+  cyan: ["#06b6d4", "#67e8f9"],
+  indigo: ["#6366f1", "#a78bfa"],
   pixel: ["#ef4444", "#22d3ee"],
 };
 

@@ -26,6 +26,12 @@ const controls: ControlDef[] = [
       { label: "Violet", value: "#8b5cf6", swatch: "#8b5cf6" },
       { label: "Pink", value: "#ec4899", swatch: "#ec4899" },
       { label: "Orange", value: "#f97316", swatch: "#f97316" },
+      { label: "Red", value: "#ef4444", swatch: "#ef4444" },
+      { label: "Yellow", value: "#eab308", swatch: "#eab308" },
+      { label: "Lime", value: "#84cc16", swatch: "#84cc16" },
+      { label: "Teal", value: "#14b8a6", swatch: "#14b8a6" },
+      { label: "Indigo", value: "#6366f1", swatch: "#6366f1" },
+      { label: "Rose", value: "#f43f5e", swatch: "#f43f5e" },
     ],
   },
   {

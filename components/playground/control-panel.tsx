@@ -233,7 +233,9 @@ function ColorTile({
   return (
     <div className={TILE_CLASS}>
       <span className={cn(LABEL_CLASS, "shrink-0")}>{label}</span>
-      <ColorField value={value} onChange={onChange} />
+      <ScrollStrip selection={value}>
+        <ColorField value={value} onChange={onChange} />
+      </ScrollStrip>
     </div>
   );
 }
