@@ -46,8 +46,7 @@ export function MobileMenu({ docSchema }: { docSchema: DocSchema }) {
             </Dialog.Close>
             <span
               aria-disabled="true"
-              title="Coming soon"
-              className="text-muted-foreground inline-flex min-h-10 cursor-not-allowed items-center gap-1.5 px-1 text-sm font-medium whitespace-nowrap opacity-60"
+              className="text-muted-foreground inline-flex min-h-10 cursor-default items-center gap-1 px-1 text-sm font-medium whitespace-nowrap opacity-60"
             >
               <Heart aria-hidden className="size-4 shrink-0" />
               Sponsor

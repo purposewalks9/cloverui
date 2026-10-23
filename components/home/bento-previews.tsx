@@ -6,6 +6,7 @@ import { BlockText } from "@/registry/clover-ui/block-text";
 import type { SoftColor } from "@/registry/clover-ui/soft-button";
 import type { ElementName } from "@/registry/clover-ui/liquid-button";
 import type { PriceRangeValue } from "@/registry/clover-ui/price-range";
+import type { ThinkingStateKind } from "@/registry/clover-ui/thinking-state";
 
 const GrainCube = dynamic(
   () => import("@/registry/clover-ui/grain-cube").then((m) => m.GrainCube),
@@ -23,9 +24,10 @@ const SoftButton = dynamic(
   () => import("@/registry/clover-ui/soft-button").then((m) => m.SoftButton),
   { ssr: false },
 );
-const DropText = dynamic(() => import("@/registry/clover-ui/drop-text").then((m) => m.DropText), {
-  ssr: false,
-});
+const ThinkingState = dynamic(
+  () => import("@/registry/clover-ui/thinking-state").then((m) => m.ThinkingState),
+  { ssr: false },
+);
 const CursorTag = dynamic(
   () => import("@/registry/clover-ui/cursor-tag").then((m) => m.CursorTag),
   { ssr: false },
@@ -120,22 +122,23 @@ export function CursorTagPreview() {
 export function ClickyPreview() {
   return (
     <Clicky>
-      <span className="text-3xl font-semibold tracking-tight">Click here</span>
+      <span className="text-xl font-semibold tracking-tight sm:text-3xl">Click here</span>
     </Clicky>
   );
 }
 
-export function DropTextPreview() {
-  const run = useCycle(2, 3500);
-  return (
-    <DropText
-      key={run}
-      stagger={0.065}
-      className="text-center text-3xl font-semibold tracking-tight"
-    >
-      Dropping in.
-    </DropText>
-  );
+const THINKING_STATES: ThinkingStateKind[] = [
+  "thinking",
+  "analyzing",
+  "debugging",
+  "searching",
+  "building",
+  "pondering",
+];
+
+export function ThinkingStatePreview() {
+  const state = THINKING_STATES[useCycle(THINKING_STATES.length, 2200)];
+  return <ThinkingState state={state} className="text-xl" />;
 }
 
 const SOFT_COLORS: SoftColor[] = ["lime", "blue", "pink", "orange", "purple"];

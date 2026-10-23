@@ -9,7 +9,7 @@ import { BlockText } from "@/registry/clover-ui/block-text";
 import {
   ClickyPreview,
   CursorTagPreview,
-  DropTextPreview,
+  ThinkingStatePreview,
   PriceRangePreview,
   GrainCubePreview,
   GridRevealPreview,
@@ -37,7 +37,12 @@ const ROWS: { grid: string; items: BentoItem[] }[] = [
     items: [
       { slug: "nucleus-text", title: "Nucleus Text", Demo: NucleusPreview, className: "" },
       { slug: "grid-reveal", title: "Grid Reveal", Demo: GridRevealPreview, className: "" },
-      { slug: "drop-text", title: "Drop Text", Demo: DropTextPreview, className: "" },
+      {
+        slug: "thinking-state",
+        title: "Thinking State",
+        Demo: ThinkingStatePreview,
+        className: "",
+      },
       { slug: "cursor-tag", title: "Cursor Tag", Demo: CursorTagPreview, className: "" },
       { slug: "liquid-button", title: "Liquid Button", Demo: LiquidButtonPreview, className: "" },
       { slug: "clicky", title: "Clicky", Demo: ClickyPreview, className: "" },
@@ -67,7 +72,9 @@ function BentoCard({ Demo, className, index }: BentoItem & { index: number }) {
   return (
     <BentoActiveCard index={index} className={className}>
       <LazyMount rootMargin="200px" className="flex w-full flex-1 items-center justify-center p-6">
-        <Demo />
+        <div data-plain-stroke className="contents">
+          <Demo />
+        </div>
       </LazyMount>
     </BentoActiveCard>
   );
@@ -75,7 +82,7 @@ function BentoCard({ Demo, className, index }: BentoItem & { index: number }) {
 
 export default function HomePage() {
   return (
-    <div className="relative flex min-h-dvh flex-col">
+    <div className="rich-strokes relative flex min-h-dvh flex-col">
       <HomeHeader />
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 pt-12 pb-24 sm:px-6 sm:pt-16">
         <section>
@@ -83,6 +90,7 @@ export default function HomePage() {
             <h1 className="text-3xl font-medium tracking-tight text-balance sm:text-4xl">
               Crafted{" "}
               <BlockText
+                data-plain-stroke
                 words={HERO_WORDS}
                 colors={["#9333ea", "#dc2626", "#db2777"]}
                 textColor="#fafafa"

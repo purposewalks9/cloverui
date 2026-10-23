@@ -42,7 +42,9 @@ export async function HomeHeader() {
         <div className="flex shrink-0 items-center gap-2">
           <CommandMenu docSchema={docSchema} nav className="hidden w-40 md:inline-flex" />
           <CommandMenu docSchema={docSchema} nav compact shortcut={false} className="md:hidden" />
-          <ThemeToggle />
+          <span data-plain-stroke className="contents">
+            <ThemeToggle />
+          </span>
         </div>
       </div>
     </header>
