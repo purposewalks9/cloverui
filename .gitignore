@@ -33,11 +33,13 @@ yarn-error.log*
 .cursor
 .claude
 /.agents/
-AGENTS.md
+**/AGENTS.md
+!/AGENTS.md
 skills-lock.json
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel

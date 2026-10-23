@@ -1,5 +1,16 @@
-export const SEED = Number(process.env.PROPERTY_SEED ?? 20261022);
-export const RUNS = Number(process.env.PROPERTY_RUNS ?? 100);
+function integerSetting(name, fallback, min, max) {
+  const raw = process.env[name] ?? String(fallback);
+  const value = Number(raw);
+  if (!/^\d+$/.test(raw) || !Number.isSafeInteger(value) || value < min || value > max) {
+    throw new RangeError(
+      `${name} must be an integer from ${min} to ${max}; received ${JSON.stringify(raw)}`,
+    );
+  }
+  return value;
+}
+
+export const SEED = integerSetting("PROPERTY_SEED", 20261022, 0, 0xffffffff);
+export const RUNS = integerSetting("PROPERTY_RUNS", 100, 1, 10000);
 
 export function createRandom(seed = SEED) {
   let state = seed >>> 0;
@@ -29,6 +40,7 @@ export function forAll(name, generate, check) {
       throw error;
     }
   }
+  console.info(`${name}: checked ${RUNS} cases (PROPERTY_SEED=${SEED})`);
 }
 
 export const numbers = (html, attribute) =>

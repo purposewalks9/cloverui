@@ -7,12 +7,14 @@
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
-    "registry:build": "pnpm dlx shadcn@4.21.0 build",
+    "registry:build": "shadcn build",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "registry:check": "node scripts/check-registry.mjs",
     "registry:typecheck": "tsc --noEmit -p tsconfig.registry.json",
-    "test": "node --import ./tests/register.mjs --test \"tests/*.test.mjs\""
+    "test": "node --import ./tests/register.mjs --test \"tests/*.test.mjs\"",
+    "typecheck": "tsc --noEmit",
+    "verify": "pnpm lint && pnpm typecheck && pnpm registry:typecheck && pnpm registry:check && pnpm test && pnpm build"
   },
   "dependencies": {
     "@base-ui/react": "^1.1.0",
