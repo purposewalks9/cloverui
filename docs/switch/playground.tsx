@@ -50,7 +50,7 @@ export function SwitchPlayground() {
           color: values.color,
           size: values.size,
           showLabels: values.showLabels,
-          disabled: values.disabled,
+          disabled: values.disabled || undefined,
         })
       }
       render={(values) => (

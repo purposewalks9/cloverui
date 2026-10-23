@@ -50,7 +50,7 @@ export function LiquidButtonPlayground() {
       code={(values) =>
         jsx(
           "LiquidButton",
-          { element: values.element, size: values.size, disabled: values.disabled },
+          { element: values.element, size: values.size, disabled: values.disabled || undefined },
           values.children as string,
         )
       }

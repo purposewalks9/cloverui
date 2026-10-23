@@ -55,7 +55,7 @@ export function EffortSliderPlayground() {
           theme: values.theme,
           label: values.label,
           recommended: values.recommended,
-          disabled: values.disabled,
+          disabled: values.disabled || undefined,
         })
       }
       render={(values) => (

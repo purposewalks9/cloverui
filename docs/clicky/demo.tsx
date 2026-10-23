@@ -4,7 +4,7 @@ export function Demo() {
   return (
     <div className="flex min-h-[220px] items-center justify-center">
       <Clicky>
-        <span className="text-3xl font-semibold tracking-tight">Click here</span>
+        <span className="text-xl font-semibold tracking-tight sm:text-3xl">Click here</span>
       </Clicky>
     </div>
   );

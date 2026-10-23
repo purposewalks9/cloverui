@@ -72,7 +72,7 @@ export function PriceRangePlayground() {
           knob: values.knob,
           ticks: values.ticks,
           showTicks: values.showTicks,
-          disabled: values.disabled,
+          disabled: values.disabled || undefined,
         })
       }
       render={(values) => (

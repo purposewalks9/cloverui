@@ -14,6 +14,7 @@ const colors: { value: ClickyColor; swatch: string }[] = [
 ];
 
 const controls: ControlDef[] = [
+  { type: "text", prop: "children", label: "Text" },
   {
     type: "select",
     prop: "color",
@@ -31,12 +32,17 @@ const controls: ControlDef[] = [
 ];
 
 const defaultProps = {
+  children: "Click here",
   color: "purple",
   size: 40,
   delay: 0.2,
   loop: true,
   interval: 2.4,
 };
+
+function getLabel(values: Record<string, unknown>) {
+  return (values.children as string).trim() || "Click here";
+}
 
 export function ClickyPlayground() {
   return (
@@ -53,7 +59,7 @@ export function ClickyPlayground() {
             loop: values.loop,
             interval: values.interval,
           },
-          '<span className="text-3xl font-semibold tracking-tight">Click here</span>',
+          `<span className="text-xl font-semibold tracking-tight sm:text-3xl">${getLabel(values)}</span>`,
         )
       }
       render={(values) => (
@@ -65,7 +71,9 @@ export function ClickyPlayground() {
             loop={values.loop as boolean}
             interval={values.interval as number}
           >
-            <span className="text-3xl font-semibold tracking-tight">Click here</span>
+            <span className="text-xl font-semibold tracking-tight sm:text-3xl">
+              {getLabel(values)}
+            </span>
           </Clicky>
         </div>
       )}

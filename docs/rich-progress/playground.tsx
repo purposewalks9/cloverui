@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import {
   RichProgress,
   type RichProgressColor,
@@ -54,8 +53,6 @@ const defaultProps = {
 };
 
 export function RichProgressPlayground() {
-  const [value, setValue] = React.useState(defaultProps.value);
-
   return (
     <PlaygroundShell
       controls={controls}
@@ -71,11 +68,11 @@ export function RichProgressPlayground() {
           knob: values.knob,
         })
       }
-      render={(values) => (
+      render={(values, setValue) => (
         <div className="flex w-full items-center justify-center px-6 py-8">
           <RichProgress
-            value={value}
-            onChange={setValue}
+            value={values.value as number}
+            onChange={(next) => setValue("value", next)}
             label={values.label as string}
             color={values.color as RichProgressColor}
             size={values.size as RichProgressSize}

@@ -7,7 +7,7 @@ import {
   type AuthProvider,
 } from "@/registry/clover-ui/auth-button";
 import { PlaygroundShell } from "@/components/playground/playground-shell";
-import type { ControlDef } from "@/lib/playground";
+import { jsx, type ControlDef } from "@/lib/playground";
 
 const controls: ControlDef[] = [
   {
@@ -67,6 +67,14 @@ export function AuthButtonPlayground() {
     <PlaygroundShell
       controls={controls}
       defaultProps={defaultProps}
+      code={(values) =>
+        jsx("AuthButton", {
+          provider: values.provider,
+          intent: values.intent,
+          size: values.size,
+          disabled: values.disabled || undefined,
+        })
+      }
       render={(values) => (
         <AuthButton
           provider={values.provider as AuthProvider}

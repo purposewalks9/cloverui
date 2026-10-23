@@ -46,7 +46,10 @@ interface PlaygroundShellProps {
   controls: ControlDef[];
   defaultProps: Record<string, unknown>;
   stageClassName?: string;
-  render: (values: Record<string, unknown>) => React.ReactNode;
+  render: (
+    values: Record<string, unknown>,
+    setValue: (prop: string, value: unknown) => void,
+  ) => React.ReactNode;
   code?: (values: Record<string, unknown>) => string;
 }
 
@@ -85,7 +88,7 @@ export function PlaygroundShell({
       >
         <div className="text-foreground flex w-full max-w-full items-center justify-center">
           <div key={replayKey} className="flex w-full min-w-0 items-center justify-center">
-            {render(values)}
+            {render(values, setValue)}
           </div>
         </div>
       </div>

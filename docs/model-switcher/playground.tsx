@@ -50,7 +50,7 @@ export function ModelSwitcherPlayground() {
       code={(values) =>
         jsx("ModelSwitcher", {
           effortTheme: values.effortTheme,
-          disabled: values.disabled,
+          disabled: values.disabled || undefined,
         })
       }
       render={(values) => (
