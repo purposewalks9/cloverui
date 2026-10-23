@@ -1,18 +1,20 @@
-## What changed
+## Change
 
-<!-- One or two sentences. -->
+<!-- Describe the problem and resulting behavior in a few sentences. -->
 
-## Why
+## Verification
 
-<!-- The problem this solves, or the component it adds. -->
+<!-- List commands and results. Explain failures or checks that could not run. -->
+
+- [ ] `pnpm verify` passes
+- [ ] Regenerated `public/r/` with `pnpm registry:build` if source or metadata changed
+- [ ] Checked affected interactions and layouts in a browser, if applicable
+- [ ] Preserved existing visual defaults, except for explicitly described design changes
+
+## Compatibility
+
+<!-- Note renamed exports, routes, registry items or other migration needs. Delete if none. -->
 
 ## Screenshots
 
-<!-- For anything visual, show light and dark mode. Delete this section otherwise. -->
-
-## Checklist
-
-- [ ] `pnpm lint`, `pnpm exec tsc --noEmit`, `pnpm registry:check` and `pnpm test` pass
-- [ ] Ran `pnpm registry:build` after changing a component or `registry.json`
-- [ ] Tried every playground control, in light and dark mode, at phone width
-- [ ] Existing component designs look the same, unless this pull request is about changing them
+<!-- For visual changes, include light/dark examples. Delete for nonvisual changes. -->

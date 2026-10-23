@@ -21,11 +21,11 @@ export type DocSchema = Array<{
 
 export interface RegistryItem {
   name: string;
-  type: "registry:component" | "registry:hook" | "registry:lib";
+  type: "registry:item" | "registry:component" | "registry:hook" | "registry:lib";
   title: string;
   description: string;
   category?: string;
-  files: Array<{
+  files?: Array<{
     path: string;
     type: string;
   }>;

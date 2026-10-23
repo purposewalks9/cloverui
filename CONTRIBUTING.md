@@ -2,7 +2,7 @@
 
 Thank you for your interest in contributing to Clover UI! This guide walks you through the project layout and shows you, step by step, how to add a new component.
 
-**Adding a component touches 5 files.** The sidebar, search, sitemap and share images all build themselves from the registry.
+**Adding a component usually changes five authored files, plus generated registry output.** The sidebar, search, sitemap and share images derive their component metadata from the registry. See [ARCHITECTURE.md](./ARCHITECTURE.md) for source ownership and the publication pipeline.
 
 When you're done, open a pull request from your fork to the main repo [here](https://github.com/purposewalks9/cloverui/compare).
 
@@ -31,10 +31,10 @@ When you're done, open a pull request from your fork to the main repo [here](htt
    git checkout -b my-new-component
    ```
 
-5. **Install dependencies** (Node.js 20+ and [pnpm](https://pnpm.io))
+5. **Install dependencies** (use the Node.js version in `.nvmrc` and the pnpm version pinned in `package.json`)
 
    ```bash
-   pnpm i
+   pnpm install --frozen-lockfile
    ```
 
 6. **Run the project**
@@ -43,7 +43,13 @@ When you're done, open a pull request from your fork to the main repo [here](htt
    pnpm dev
    ```
 
-Open http://localhost:3000 to view the docs. Every page lives at `/docs/<name>`.
+Open http://localhost:3000 to view the site. Documentation pages live at `/docs/<name>`.
+
+Consumers need React 19, Tailwind CSS v4 and a configured shadcn project. Contributors also need the tooling above to run the documentation site and verification scripts.
+
+### Optional configuration
+
+The site runs without sponsor credentials. `.env.example` documents the optional sponsor token, webhook secret and metadata URL. Only copy the values you need into `.env.local`; never commit credentials. Without the sponsor token, sponsor data is unavailable. Without the webhook secret, the webhook returns `501 Webhook not configured`.
 
 ## Project Structure
 
@@ -254,30 +260,38 @@ The Switch page (`docs/switch/`) is a full example.
 - Style with Tailwind, put variants in `cva`, and merge classes with `cn()` from `@/lib/utils`. Accept `className` and spread `...props` onto the root element.
 - Animate with `motion`. Respect `prefers-reduced-motion` with `useReducedMotion()`, and clean up timers, frames and listeners when the component unmounts.
 - Work in light and dark mode, and at every width from 360px up.
-- Don't write code comments. Clear names do that job here.
+- Prefer clear names. Add short comments when they explain a constraint, algorithm or cleanup requirement that the code alone does not make clear. Avoid comments that merely repeat the code.
 
 ## Before Opening a Pull Request
 
-Make sure all of these pass:
+Run the same verification command used by CI:
 
 ```bash
-pnpm lint
-pnpm exec tsc --noEmit
-pnpm registry:check
-pnpm test
-pnpm build
+pnpm verify
 ```
 
-`pnpm test` also runs property tests. They check that every component renders, then give the number-heavy components 100 random and extreme sets of props each, and check rules that must always hold, like "a slider value stays inside its range" or "nothing renders `NaN`". If one fails, it prints the input and a `PROPERTY_SEED`, so you can run the exact same case again with `PROPERTY_SEED=<seed> pnpm test`.
+This runs lint, application TypeScript, registry TypeScript, registry validation, tests and the production build. After changing a component or registry metadata, run `pnpm registry:build` first and commit the generated output. The build uses the shadcn CLI installed from the lockfile. CI also rebuilds the registry and rejects a diff or untracked generated files.
 
-Then open your page, try every playground control, and shrink the window to phone width. Write the commit message as a short sentence, like `Add Example Component` or `Fix Switch focus ring`.
+The registry checks validate source/output agreement, dependencies, required docs, metadata and generated-file inventory. The component tests check server rendering and sampled numeric invariants; they do not verify browser interactions or prove correctness for every input.
+
+Property checks use 100 cases per property by default. Failures include the input and seed. Reproduce a case with:
+
+```bash
+PROPERTY_SEED=20261022 PROPERTY_RUNS=100 pnpm test
+```
+
+`PROPERTY_SEED` must be an integer from 0 to 4294967295. `PROPERTY_RUNS` must be an integer from 1 to 10000. Invalid settings fail immediately, and each completed property reports its seed and case count.
+
+For component or playground changes, also exercise the affected controls, keyboard behavior, light/dark themes and phone layouts in a browser. Report the commands and results in the PR, including checks that could not run. Documentation-only changes do not require screenshots.
+
+Write commit titles as concise imperative sentences, such as `Add Example Component` or `Fix Switch focus handling`. Use the body to explain a non-obvious reason or compatibility impact. Preserve published history; do not rewrite old commits to normalize wording.
 
 ## How Pull Requests Get Merged
 
 Small, focused pull requests get reviewed and merged fastest.
 
 - Keep one change per pull request: one new component, or one fix.
-- Say what changed and why in a few sentences. The pull request template walks you through it.
+- Describe the problem and resulting behavior in a few sentences, then include relevant verification and compatibility notes. Use consistent component names and plain English. Keep execution logs and duplicate tool/session boilerplate out of the description; preserve contributor credit.
 - Add a screenshot or short recording for anything visual, in light and dark mode.
 - Don't change an existing component's look unless the pull request is about that. Fixes should leave its default appearance the same.
 - Only commit the files your change needs. `public/r/` should only change through `pnpm registry:build`.
@@ -285,6 +299,12 @@ Small, focused pull requests get reviewed and merged fastest.
 ## Renaming or Removing a Component
 
 Change everything in one pass: the component file, the `docs/<name>/` folder, the `registry.json` entry and its URL in the `all` item, and any home page card. Run `pnpm registry:build`, delete the old `public/r/<name>.json` by hand, then search the repo for the old name.
+
+## Working with agents
+
+Read [AGENTS.md](./AGENTS.md) for shared maintenance rules and [ARCHITECTURE.md](./ARCHITECTURE.md) for the source map. Personal skills and private instructions remain local.
+
+The checked-in `.mcp.json` configures the shadcn MCP server. Consumers must also add the `@clover-ui` registry mapping to their own `components.json`, as described in the [MCP guide](https://cloverui.xyz/docs/mcp). The authoring repository uses local registry source for development; an MCP connection is not a replacement for reading the source or running verification.
 
 ## Ask for Help
 

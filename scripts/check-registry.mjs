@@ -2,14 +2,22 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import ts from "typescript";
+import { assertRegistry, findUnexpectedRegistryFiles } from "../lib/registry-schema.mjs";
 
 const root = path.resolve(
   process.argv[2] ?? path.join(path.dirname(fileURLToPath(import.meta.url)), ".."),
 );
 const read = (file) => fs.readFileSync(path.join(root, file), "utf8");
 const registry = JSON.parse(read("registry.json"));
+assertRegistry(registry);
 const errors = [];
 const fail = (name, message) => errors.push(`${name}: ${message}`);
+const publishedDirectory = path.join(root, "public/r");
+if (fs.existsSync(publishedDirectory)) {
+  for (const file of findUnexpectedRegistryFiles(registry, fs.readdirSync(publishedDirectory))) {
+    fail("registry", `unexpected generated file public/r/${file}; remove obsolete output`);
+  }
+}
 try {
   if (JSON.stringify(JSON.parse(read("public/r/registry.json"))) !== JSON.stringify(registry)) {
     fail("registry", "published index is stale; run pnpm registry:build");
