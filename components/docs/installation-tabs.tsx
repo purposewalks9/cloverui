@@ -25,7 +25,7 @@ export function InstallationTabs({ item, children }: InstallationTabsProps) {
       <TabsContent value="cli">
         <CodeBlockCommand item={item} />
         <p className="text-muted-foreground not-prose mt-3 text-sm">
-          No registry configuration needed. See{" "}
+          First time? See the{" "}
           <Link href="/docs/installation" className="text-foreground underline underline-offset-4">
             Installation
           </Link>
