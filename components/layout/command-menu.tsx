@@ -74,7 +74,7 @@ export function CommandMenu({
       { pnpm: "pnpm dlx", bun: "bunx --bun", yarn: "yarn dlx", npm: "npx" }[
         config.packageManager
       ] ?? "npx";
-    const command = `${prefix} shadcn@latest add @clover-ui/${highlighted.id.split("/").pop()}`;
+    const command = `${prefix} shadcn@latest add https://cloverui.xyz/r/${highlighted.id.split("/").pop()}.json`;
     copyToClipboard(command);
     trackEvent("copy_install_command", { command, pm: config.packageManager });
   };
