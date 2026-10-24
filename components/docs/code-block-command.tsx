@@ -40,10 +40,10 @@ export function CodeBlockCommand({ item, className, mcp = false }: CodeBlockComm
       };
     }
     return {
-      pnpm: `pnpm dlx shadcn@latest add @clover-ui/${item}`,
-      npm: `npx shadcn@latest add @clover-ui/${item}`,
-      yarn: `yarn dlx shadcn@latest add @clover-ui/${item}`,
-      bun: `bunx --bun shadcn@latest add @clover-ui/${item}`,
+      pnpm: `pnpm dlx shadcn@latest add https://cloverui.xyz/r/${item}.json`,
+      npm: `npx shadcn@latest add https://cloverui.xyz/r/${item}.json`,
+      yarn: `yarn dlx shadcn@latest add https://cloverui.xyz/r/${item}.json`,
+      bun: `bunx --bun shadcn@latest add https://cloverui.xyz/r/${item}.json`,
     };
   }, [item, mcp]);
 
