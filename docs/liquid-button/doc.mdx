@@ -35,6 +35,14 @@ Use `asChild` to render a link instead of a button:
 </LiquidButton>
 ```
 
+In Base UI projects, pass the link to `render` instead:
+
+```tsx
+<LiquidButton element="ocean" render={<a href="/docs" />}>
+  Read the docs
+</LiquidButton>
+```
+
 Pass three hex colors to `colors`, from brightest to darkest, to recolor an element while keeping its motion.
 
 ## Props
@@ -44,6 +52,7 @@ Pass three hex colors to `colors`, from brightest to darkest, to recolor an elem
   { name: "size", type: '"sm" | "default" | "lg"', default: '"default"' },
   { name: "colors", type: "[string, string, string]", description: "Three hex colors, brightest to darkest. Defaults to the element's own colors." },
   { name: "asChild", type: "boolean", default: "false", description: "Renders the child element (for example a link) with the button's look." },
+  { name: "render", type: "React.ReactElement", description: "An element, such as a link, to render with the button's look. The Base UI version of asChild." },
   { name: "disabled", type: "boolean", default: "false" },
   { name: "className", type: "string" },
 ]} />

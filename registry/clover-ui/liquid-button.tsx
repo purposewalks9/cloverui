@@ -353,6 +353,7 @@ export interface LiquidButtonProps
   element?: ElementName;
   colors?: ElementColors;
   asChild?: boolean;
+  render?: React.ReactElement;
 }
 
 function LiquidButton({
@@ -360,6 +361,7 @@ function LiquidButton({
   colors,
   size,
   asChild = false,
+  render,
   className,
   style,
   children,
@@ -373,7 +375,8 @@ function LiquidButton({
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const palette = elementPalettes[element];
   const { ready, boost } = useElementSurface(canvasRef, element, colors, still);
-  const Comp = asChild ? Slot : "button";
+  const slotted = asChild || Boolean(render);
+  const Comp = slotted ? Slot : "button";
 
   return (
     <Comp
@@ -403,7 +406,7 @@ function LiquidButton({
         onBlur?.(event);
         boost(1);
       }}
-      {...(asChild ? {} : { type: "button" as const })}
+      {...(slotted ? {} : { type: "button" as const })}
       {...props}
     >
       <canvas
@@ -418,7 +421,7 @@ function LiquidButton({
         aria-hidden
         className="pointer-events-none absolute inset-px -z-10 rounded-[inherit] bg-[linear-gradient(180deg,rgb(255_255_255/0.12),transparent_55%)] opacity-80 transition-opacity duration-300 group-hover/element:opacity-100"
       />
-      <Slottable>{children}</Slottable>
+      <Slottable>{render ? React.cloneElement(render, undefined, children) : children}</Slottable>
     </Comp>
   );
 }
