@@ -1,0 +1,51 @@
+import { PetalRevealPlayground } from "./playground"
+
+<PetalRevealPlayground />
+
+## Installation
+
+<InstallationTabs item="petal-reveal">
+```tsx file=../../registry/clover-ui/petal-reveal.tsx
+```
+</InstallationTabs>
+
+## Usage
+
+```tsx
+import { PetalReveal } from "@/components/petal-reveal";
+
+<PetalReveal color="pink" pattern="random" className="aspect-square w-full max-w-[340px]">
+  <YourContent />
+</PetalReveal>
+```
+
+Your content starts buried under a thick pile of flower petals. Then the petals come loose, tumble, flip and blow away off the bottom, and the content shows through. With `loop` on (the default), the petals drift back down, settle into a pile again and blow away once more.
+
+Each petal is a smooth curved shape with a pale base, a deeper colored tip with a small notch, fine veins, and light from the top left. When a petal flips you see its paler back. Petals are drawn sharp at your screen's resolution.
+
+`pattern` sets the order they leave in: `"random"` scatters them, `"top"` goes from the top down like a breeze, `"wave"` goes left to right, `"diagonal"` goes from the top left corner and `"center"` goes outward from the middle. `duration` is how long that spread takes in seconds, and `size` is the length of a petal in pixels, so smaller petals mean a denser pile.
+
+Pick a color with `color`: `"pink"` (the default), `"red"`, `"white"`, `"yellow"`, `"peach"` or `"purple"`. `"mixed"` uses all of them.
+
+The petals sit on top of your content and ignore the mouse, so links and buttons underneath still work once they're uncovered. It pauses when it's off screen or the tab is hidden. With reduced motion on, the petals skip the animation and the content is shown right away.
+
+Pass a `ref` to control it yourself: `play()` blows the petals away, `cover()` brings them back and `reset()` covers it again instantly.
+
+## Props
+
+<PropsTable data={[
+  { name: "children", type: "React.ReactNode", description: "Content revealed under the petals." },
+  { name: "color", type: '"pink" | "red" | "white" | "yellow" | "peach" | "purple" | "mixed"', default: '"pink"', description: "Petal color. Mixed uses all six." },
+  { name: "size", type: "number", default: "44", description: "Petal length in pixels." },
+  { name: "pattern", type: '"random" | "top" | "wave" | "diagonal" | "center"', default: '"random"', description: "The order the petals blow away in." },
+  { name: "duration", type: "number", default: "1", description: "Seconds between the first and last petal leaving." },
+  { name: "loop", type: "boolean", default: "true", description: "Covers and reveals again on repeat. Plays once when reduced motion is on." },
+  { name: "loopDelay", type: "number", default: "1.6", description: "Seconds to wait while revealed and while covered before the next step." },
+  { name: "autoStart", type: "boolean", default: "true" },
+  { name: "inView", type: "boolean", default: "false", description: "Waits until it scrolls into view." },
+  { name: "once", type: "boolean", default: "true" },
+  { name: "ref", type: "React.Ref<PetalRevealRef>", description: "Gives you play, cover and reset." },
+  { name: "onStart", type: "() => void" },
+  { name: "onComplete", type: "() => void" },
+  { name: "className", type: "string" },
+]} />

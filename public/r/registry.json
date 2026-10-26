@@ -41,7 +41,8 @@
         "https://cloverui.xyz/r/auth-button.json",
         "https://cloverui.xyz/r/model-switcher.json",
         "https://cloverui.xyz/r/spectrum-bars.json",
-        "https://cloverui.xyz/r/butterflies.json"
+        "https://cloverui.xyz/r/butterflies.json",
+        "https://cloverui.xyz/r/petal-reveal.json"
       ]
     },
     {
@@ -543,6 +544,24 @@
       "category": "effect",
       "meta": {
         "addedAt": "2026-10-20"
+      }
+    },
+    {
+      "name": "petal-reveal",
+      "type": "registry:component",
+      "title": "Petal Reveal",
+      "description": "A thick pile of real looking flower petals that blows away to reveal your content, then settles back on a loop.",
+      "files": [
+        {
+          "path": "registry/clover-ui/petal-reveal.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "category": "effect",
+      "meta": {
+        "addedAt": "2026-10-26"
       }
     }
   ]
