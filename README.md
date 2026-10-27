@@ -7,13 +7,11 @@ Visit https://cloverui.xyz/docs/introduction to view the documentation.
 
 Use a React 19 project with Tailwind CSS v4 and shadcn configured. Components are copied into your project as editable source files.
 
-Install directly from the Clover UI registry URL; no custom registry configuration is needed:
+Clover UI is listed in the [shadcn registry directory](https://ui.shadcn.com/docs/directory), so you can install any component by name with no extra setup:
 
 ```bash
-npx shadcn@latest add https://cloverui.xyz/r/soft-button.json
+npx shadcn@latest add @clover-ui/soft-button
 ```
-
-To use the shorter `@clover-ui/soft-button` command, optionally configure the namespace in `components.json` as described in the installation guide.
 
 See the [installation guide](https://cloverui.xyz/docs/installation) for every option.
 

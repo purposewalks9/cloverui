@@ -1,4 +1,4 @@
-Clover UI components install directly from the Clover UI registry with the shadcn CLI. You need a React project with Tailwind CSS v4.
+Clover UI components install with the shadcn CLI. You need a React project with Tailwind CSS v4.
 
 ## Set up shadcn
 
@@ -10,15 +10,17 @@ npx shadcn@latest init
 
 ## Install everything
 
-Install every Clover UI component without configuring a custom registry:
+Add every Clover UI component in one go:
 
 <CodeBlockCommand item="all" />
 
 ## Add a component
 
-Install just the components you need:
+Or install just the ones you need, by name:
 
 <CodeBlockCommand item="clicky" />
+
+Clover UI is listed in the [shadcn registry directory](https://ui.shadcn.com/docs/directory), so the CLI finds `@clover-ui` on its own. No `components.json` changes are needed.
 
 The CLI copies the component into your project and installs its dependencies, such as `motion`. Then import it like any other file:
 
@@ -26,18 +28,13 @@ The CLI copies the component into your project and installs its dependencies, su
 import { Clicky } from "@/components/clicky";
 ```
 
-## Optional: registry namespace
+## Install from a URL
 
-If you prefer shorter `@clover-ui/name` commands, add the registry to `components.json`:
+Every component is also published as a plain URL, which works with any version of the shadcn CLI:
 
-```json
-{
-  "registries": {
-    "@clover-ui": "https://cloverui.xyz/r/{name}.json"
-  }
-}
+```bash
+npx shadcn@latest add https://cloverui.xyz/r/clicky.json
+npx shadcn@latest add https://cloverui.xyz/r/all.json
 ```
-
-Then run `npx shadcn@latest add @clover-ui/clicky`. This configuration is optional when installing with the full URL. Once Clover UI is included in the published shadcn registry directory, the namespace may work without manual configuration.
 
 You can also open any component page, choose the **Manual** tab under Installation, and copy the source yourself.

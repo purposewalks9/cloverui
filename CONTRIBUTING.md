@@ -304,7 +304,7 @@ Change everything in one pass: the component file, the `docs/<name>/` folder, th
 
 Read [AGENTS.md](./AGENTS.md) for shared maintenance rules and [ARCHITECTURE.md](./ARCHITECTURE.md) for the source map. Personal skills and private instructions remain local.
 
-The checked-in `.mcp.json` configures the shadcn MCP server. Consumers must also add the `@clover-ui` registry mapping to their own `components.json`, as described in the [MCP guide](https://cloverui.xyz/docs/mcp). The authoring repository uses local registry source for development; an MCP connection is not a replacement for reading the source or running verification.
+The checked-in `.mcp.json` configures the shadcn MCP server. Consumers don't need a `components.json` mapping, since `@clover-ui` is listed in the shadcn registry directory. See the [MCP guide](https://cloverui.xyz/docs/mcp). The authoring repository uses local registry source for development; an MCP connection is not a replacement for reading the source or running verification.
 
 ## Ask for Help
 

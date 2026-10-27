@@ -38,4 +38,4 @@ Registry validation checks metadata, generated content, import declarations, sel
 
 `lib/config.ts` holds site identity and URLs. `.env.example` describes optional configuration.
 
-The shadcn MCP server provides registry tooling. Consumers configure `@clover-ui` in their own `components.json`. Contributor agents should also read `AGENTS.md` and `CONTRIBUTING.md`; MCP access alone does not explain maintenance boundaries.
+The shadcn MCP server provides registry tooling. Consumers need no registry configuration, since `@clover-ui` is listed in the shadcn registry directory. Contributor agents should also read `AGENTS.md` and `CONTRIBUTING.md`; MCP access alone does not explain maintenance boundaries.
